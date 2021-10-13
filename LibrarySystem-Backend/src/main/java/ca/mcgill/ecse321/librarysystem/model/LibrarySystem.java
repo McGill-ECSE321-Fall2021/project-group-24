@@ -7,7 +7,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
 @Entity
-public abstract class LibrarySystem{
+public class LibrarySystem{
 
-    
+}
 
