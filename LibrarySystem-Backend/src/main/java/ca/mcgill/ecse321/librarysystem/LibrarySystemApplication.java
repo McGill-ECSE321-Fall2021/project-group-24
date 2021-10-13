@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LibrarySystemApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(LibrarySystemApplication.class, args);
+    // SpringApplication.run(LibrarySystemApplication.class, args);
+    System.out.println("bob");
   }
 
   @RequestMapping("/")
