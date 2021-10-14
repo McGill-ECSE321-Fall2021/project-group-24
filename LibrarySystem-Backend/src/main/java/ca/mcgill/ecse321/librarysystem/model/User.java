@@ -6,7 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
-@Entity
+@MappedSuperclass
 public abstract class User{
 
     private String username;
@@ -15,7 +15,6 @@ public abstract class User{
     private String idNum;
     private String firstName;
     private String lastName;
-
 
     public String getUsername() {
         return this.username;

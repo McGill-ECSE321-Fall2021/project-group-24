@@ -9,6 +9,14 @@ import javax.persistence.Id;
 @Entity
 public class LibraryCalendar{
 
-   
+    private Set<TimeSlot> timeSlots;
 
+    @OneToMany(cascade={CascadeType.ALL})
+    public Set<TimeSlot> getTimeSlot() {
+        return this.timeSlots;
+    }
+
+    public void setTimeSlot(Set<TimeSlot> theTimeSlots){
+        this.timeSlots = theTimeSlots;
+    }
 }

@@ -7,6 +7,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
 @Entity
-public class Archive{
+public class Archive extends Item{
 
 }

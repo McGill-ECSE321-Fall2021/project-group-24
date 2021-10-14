@@ -20,6 +20,16 @@ public abstract class Item{
     private boolean isReservable;
     private boolean isCheckedOut;
 
+    private Set<ItemReservation> itemReservations;
+
+    @OneToMany(cascade={CascadeType.ALL})
+    public Set<ItemReservation> getItemReservation() {
+        return this.itemReservations;
+    }
+
+    public void setItemReservation(Set<ItemReservation> theItemReservations){
+        this.itemReservations = theItemReservations;
+    }
 
     public String getItemTitle() {
         return this.itemTitle;

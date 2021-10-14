@@ -7,7 +7,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
 @Entity
-public class Patron{
+public class Patron extends User{
 
     private boolean isVerified;
     private boolean isResident;

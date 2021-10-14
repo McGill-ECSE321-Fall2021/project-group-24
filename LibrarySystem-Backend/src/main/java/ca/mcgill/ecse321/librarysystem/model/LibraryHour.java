@@ -7,7 +7,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
 @Entity
-public class LibraryHour{
+public class LibraryHour extends TimeSlot{
 
    
 

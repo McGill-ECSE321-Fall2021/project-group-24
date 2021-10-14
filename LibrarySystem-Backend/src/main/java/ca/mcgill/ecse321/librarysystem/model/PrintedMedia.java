@@ -7,7 +7,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
 @Entity
-public class PrintedMedia{
+public class PrintedMedia extends Item{
 
     private String issueNumber;
 

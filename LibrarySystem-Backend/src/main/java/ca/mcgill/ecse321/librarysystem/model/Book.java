@@ -7,7 +7,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
 @Entity
-public class Book{
+public class Book extends Item{
 
     private String author;
     private String publisher;

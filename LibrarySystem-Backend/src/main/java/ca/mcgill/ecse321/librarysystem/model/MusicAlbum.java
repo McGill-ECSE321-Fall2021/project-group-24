@@ -7,7 +7,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
 @Entity
-public class MusicAlbum{
+public class MusicAlbum extends Item{
 
    private String artist;
    private String recordingLabel;

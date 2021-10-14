@@ -7,8 +7,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
 @Entity
-public class Shift{
-
-   
+public class Shift extends TimeSlot{
 
 }

@@ -7,11 +7,21 @@ import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
 @Entity
-public class ItemReservation{
+public class ItemReservation extends TimeSlot{
 
    private String reservationID;
    private int numOfRenewalsLeft; 
+    private Patron patron;
 
+    @ManyToOne(optional=false)
+    public Patron getPatron() {
+   return this.patron;
+    }
+
+    public void setPatron(Patron thePatron) {
+   this.patron = thePatron;
+    }
+    
    @Id
     public String getReservationID() {
         return this.reservationID;

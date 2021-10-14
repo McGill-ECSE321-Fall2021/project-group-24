@@ -7,7 +7,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
 @Entity
-public class Movie{
+public class Movie extends Item{
 
     private String productionCompany;
     private String cast;

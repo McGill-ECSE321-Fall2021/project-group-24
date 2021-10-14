@@ -7,7 +7,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
 @Entity
-public class HeadLibrarian{
+public class HeadLibrarian extends Librarian{
 
 
 }
