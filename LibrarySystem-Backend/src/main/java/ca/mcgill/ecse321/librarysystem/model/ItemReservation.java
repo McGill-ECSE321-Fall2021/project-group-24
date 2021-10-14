@@ -1,43 +1,42 @@
 package ca.mcgill.ecse321.librarysystem.model;
 
-import javax.persistence.Entity;
 import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.OneToMany;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
-public class ItemReservation extends TimeSlot{
+public class ItemReservation extends TimeSlot {
 
-   private String reservationID;
-   private int numOfRenewalsLeft; 
-    private Patron patron;
+  private String reservationID;
+  private int numOfRenewalsLeft;
+  private Patron patron;
 
-    @ManyToOne(optional=false)
-    public Patron getPatron() {
-   return this.patron;
-    }
+  @ManyToOne(optional = false)
+  public Patron getPatron() {
+    return this.patron;
+  }
 
-    public void setPatron(Patron thePatron) {
-   this.patron = thePatron;
-    }
-    
-   @Id
-    public String getReservationID() {
-        return this.reservationID;
-    }
+  public void setPatron(Patron thePatron) {
+    this.patron = thePatron;
+  }
 
-    public void setReservationID(String reservationID) {
-        this.reservationID = reservationID;
-    }
+  @Id
+  public String getReservationID() {
+    return this.reservationID;
+  }
 
-    public int getNumOfRenewalsLeft() {
-        return this.numOfRenewalsLeft;
-    }
+  public void setReservationID(String reservationID) {
+    this.reservationID = reservationID;
+  }
 
-    public void setNumOfRenewalsLeft(int numOfRenewalsLeft) {
-        this.numOfRenewalsLeft = numOfRenewalsLeft;
-    }
+  public int getNumOfRenewalsLeft() {
+    return this.numOfRenewalsLeft;
+  }
 
+  public void setNumOfRenewalsLeft(int numOfRenewalsLeft) {
+    this.numOfRenewalsLeft = numOfRenewalsLeft;
+  }
 }

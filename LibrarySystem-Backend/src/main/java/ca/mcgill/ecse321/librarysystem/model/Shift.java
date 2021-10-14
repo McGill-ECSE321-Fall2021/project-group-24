@@ -1,12 +1,10 @@
 package ca.mcgill.ecse321.librarysystem.model;
 
-import javax.persistence.Entity;
 import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.OneToMany;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
-public class Shift extends TimeSlot{
-
-}
+public class Shift extends TimeSlot {}
