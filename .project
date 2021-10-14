@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>project-group-24</name>
-	<comment>Project project-group-24 created by Buildship.</comment>
+
+	<name>project</name>
+	<comment>Project project created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -16,7 +17,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1634165360861</id>
+			<id>1634167673002</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
