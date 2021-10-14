@@ -6,7 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
 import javax.persistence.Id;
 
-@Entity
+@MappedSuperclass
 public class TimeSlot{
 
    private Date startDate;
