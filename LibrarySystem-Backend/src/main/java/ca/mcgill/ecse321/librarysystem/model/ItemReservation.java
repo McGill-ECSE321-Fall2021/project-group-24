@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class ItemReservation extends TimeSlot{

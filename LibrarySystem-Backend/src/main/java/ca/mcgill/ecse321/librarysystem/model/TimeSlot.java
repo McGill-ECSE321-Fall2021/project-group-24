@@ -4,7 +4,10 @@ import javax.persistence.Entity;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Id;
+import java.sql.Time;
+import java.sql.Date;
 
 @MappedSuperclass
 public class TimeSlot{
