@@ -8,15 +8,22 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Patron extends User {
-
+  
+  private String address;
   private boolean isVerified;
   private boolean isResident;
   private boolean isRegisteredOnline;
 
-  public boolean isIsVerified() {
-    return this.isVerified;
-  }
 
+
+  public String getAddress() {
+	return this.address;
+  }
+  
+  public void setAddress(String badabing) {
+	this.address = badabing;
+  }
+  
   public boolean getIsVerified() {
     return this.isVerified;
   }
@@ -25,20 +32,12 @@ public class Patron extends User {
     this.isVerified = isVerified;
   }
 
-  public boolean isIsResident() {
-    return this.isResident;
-  }
-
   public boolean getIsResident() {
     return this.isResident;
   }
 
   public void setIsResident(boolean isResident) {
     this.isResident = isResident;
-  }
-
-  public boolean isIsRegisteredOnline() {
-    return this.isRegisteredOnline;
   }
 
   public boolean getIsRegisteredOnline() {
