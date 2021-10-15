@@ -129,7 +129,6 @@ private String itemNumber;
 		b.setAuthor(author);
 		b.setGenre(genre);
 		b.setIsCheckedOut(isCheckedOut);
-		b.isIsReservable();
 		b.setPublishDate(publishDate);
 		b.setItemNumber(itemNumber);
 		b.setPublisher(publisher);
