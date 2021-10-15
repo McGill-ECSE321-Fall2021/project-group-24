@@ -7,4 +7,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Shift extends TimeSlot {}
+public class Shift extends TimeSlot {
+	private String shiftID;
+	
+	public String getShiftID() {
+		return shiftID;
+	}
+	
+	public void setShiftID(String shiftID) {
+		this.shiftID = shiftID;
+	}
+}

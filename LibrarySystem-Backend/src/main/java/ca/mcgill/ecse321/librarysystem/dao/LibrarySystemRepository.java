@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.librarysystem.dao;
 
+import ca.mcgill.ecse321.librarysystem.model.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -9,22 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ca.mcgill.ecse321.librarysystem.model.*;
-
 //import ca.mcgill.ecse321.eventregistration.model.Person;
 //import ca.mcgill.ecse321.eventregistration.model.Event;
 
 @Repository
 public class LibrarySystemRepository {
 
-  @Autowired
-  EntityManager entityManager;
-  //GOT TO 2.2.2
-private String itemNumber;
+	@Autowired
+	EntityManager entityManager;
 
-  	// by Nafis, Saggar, Selena
+	// by Nafis, Saggar, Selena
 	@Transactional
-	public Patron createPatronIRL(String idNum, String firstName, String lastName, boolean isResident, String address, String email) {
+	public Patron createPatronIRL(
+		String idNum,
+		String firstName,
+		String lastName,
+		boolean isResident,
+		String address,
+		String email
+	) {
 		Patron p = new Patron();
 		p.setFirstName(firstName);
 		p.setLastName(lastName);
@@ -36,13 +40,22 @@ private String itemNumber;
 		p.setIsVerified(true);
 		p.setPassword(null);
 		p.setUsername(null);
-		
+
 		entityManager.persist(p);
 		return p;
 	}
-	
+
 	@Transactional
-	public Patron createPatronOnline(String idNum, String firstName, String lastName, boolean isResident, String address, String email, String username, String password) {
+	public Patron createPatronOnline(
+		String idNum,
+		String firstName,
+		String lastName,
+		boolean isResident,
+		String address,
+		String email,
+		String username,
+		String password
+	) {
 		Patron p = new Patron();
 		p.setUsername(username);
 		p.setPassword(password);
@@ -56,18 +69,27 @@ private String itemNumber;
 		p.setIsRegisteredOnline(true);
 
 		entityManager.persist(p);
-		return p;		
+		return p;
 	}
-	
+
 	@Transactional
 	public Patron getPatron(String idNum) {
 		Patron p = entityManager.find(Patron.class, idNum);
 		return p;
 	}
-	
-	// by Saagar	
+
+	// by Saagar
 	@Transactional
-	public Librarian createLibrarian(String idNum, String firstName, String lastName, boolean isResident, String address, String email, String username, String password) {
+	public Librarian createLibrarian(
+		String idNum,
+		String firstName,
+		String lastName,
+		boolean isResident,
+		String address,
+		String email,
+		String username,
+		String password
+	) {
 		Librarian l = new Librarian();
 		l.setUsername(username);
 		l.setPassword(password);
@@ -78,19 +100,26 @@ private String itemNumber;
 		l.setAddress(address);
 
 		entityManager.persist(l);
-		return l;		
+		return l;
 	}
-	
-	
+
 	@Transactional
 	public Librarian getLibrarian(String idNum) {
 		Librarian l = entityManager.find(Librarian.class, idNum);
 		return l;
 	}
-	
-	
+
 	@Transactional
-	public HeadLibrarian createHeadLibrarian(String idNum, String firstName, String lastName, boolean isResident, String address, String email, String username, String password) {
+	public HeadLibrarian createHeadLibrarian(
+		String idNum,
+		String firstName,
+		String lastName,
+		boolean isResident,
+		String address,
+		String email,
+		String username,
+		String password
+	) {
 		HeadLibrarian h = new HeadLibrarian();
 		h.setUsername(username);
 		h.setPassword(password);
@@ -101,36 +130,45 @@ private String itemNumber;
 		h.setAddress(address);
 
 		entityManager.persist(h);
-		return h;		
+		return h;
 	}
-	
+
 	@Transactional
 	public HeadLibrarian getHeadLibrarian(String idNum) {
 		HeadLibrarian h = entityManager.find(HeadLibrarian.class, idNum);
 		return h;
 	}
 
-	
 	@Transactional
 	public Room createRoom(String roomNum, int capacity) {
 		Room r = new Room();
 		r.setCapacity(capacity);
 		r.setRoomNum(roomNum);
-		
+
 		entityManager.persist(r);
 		return r;
 	}
-	
+
 	@Transactional
 	public Room getRoom(String roomNum) {
 		Room r = entityManager.find(Room.class, roomNum);
 		return r;
 	}
-	
-	
+
 	// by Selena
 	@Transactional
-	public Book createBook(String itemTitle, String description, String imageURL,String publisher, String author, boolean isCheckedOut, String genre, Date publishDate, boolean isReservable) {
+	public Book createBook(
+		String itemTitle,
+		String description,
+		String imageURL,
+		String publisher,
+		String author,
+		boolean isCheckedOut,
+		String genre,
+		Date publishDate,
+		boolean isReservable,
+		String itemNumber
+	) {
 		Book b = new Book();
 		b.setItemTitle(itemTitle);
 		b.setDescription(description);
@@ -144,15 +182,25 @@ private String itemNumber;
 		entityManager.persist(b);
 		return b;
 	}
-	
+
 	@Transactional
 	public Book getBook(String itemNumber) {
 		Book book = entityManager.find(Book.class, itemNumber);
 		return book;
 	}
-	
+
 	@Transactional
-	public MusicAlbum createMusicAlbum(String description, String genre, String imageUrl, String itemTitle, Date publishDate, boolean isCheckedOut, String recordingLabel, String artist) {
+	public MusicAlbum createMusicAlbum(
+		String description,
+		String genre,
+		String imageUrl,
+		String itemTitle,
+		Date publishDate,
+		boolean isCheckedOut,
+		String recordingLabel,
+		String artist,
+		String itemNumber
+	) {
 		MusicAlbum m = new MusicAlbum();
 		m.setDescription(description);
 		m.setGenre(genre);
@@ -167,7 +215,7 @@ private String itemNumber;
 		entityManager.persist(m);
 		return m;
 	}
-	
+
 	@Transactional
 	public MusicAlbum getMusicAlbum(String itemNumber) {
 		MusicAlbum musicAlbum = entityManager.find(MusicAlbum.class, itemNumber);
@@ -175,7 +223,18 @@ private String itemNumber;
 	}
 
 	@Transactional
-	public Movie createMovie(String description, String genre, String imageUrl, String itemTitle, Date publishDate, String productionCompany, String cast, String director, boolean isCheckedOut) {
+	public Movie createMovie(
+		String description,
+		String genre,
+		String imageUrl,
+		String itemTitle,
+		Date publishDate,
+		String productionCompany,
+		String cast,
+		String director,
+		boolean isCheckedOut,
+		String itemNumber
+	) {
 		Movie m = new Movie();
 		m.setDescription(description);
 		m.setGenre(genre);
@@ -191,7 +250,7 @@ private String itemNumber;
 		entityManager.persist(m);
 		return m;
 	}
-	
+
 	@Transactional
 	public Movie getMovie(String itemNumber) {
 		Movie movie = entityManager.find(Movie.class, itemNumber);
@@ -199,7 +258,16 @@ private String itemNumber;
 	}
 
 	@Transactional
-	public PrintedMedia createPrintedMedia(String description, String genre, String imageUrl, String itemTitle, Date publishDate, String issueNumber, boolean isCheckedOut) {
+	public PrintedMedia createPrintedMedia(
+		String description,
+		String genre,
+		String imageUrl,
+		String itemTitle,
+		Date publishDate,
+		String issueNumber,
+		boolean isCheckedOut,
+		String itemNumber
+	) {
 		PrintedMedia pm = new PrintedMedia();
 		pm.setDescription(description);
 		pm.setGenre(genre);
@@ -213,7 +281,7 @@ private String itemNumber;
 		entityManager.persist(pm);
 		return pm;
 	}
-	
+
 	@Transactional
 	public PrintedMedia getPrintedMedia(String itemNumber) {
 		PrintedMedia item = entityManager.find(PrintedMedia.class, itemNumber);
@@ -221,7 +289,14 @@ private String itemNumber;
 	}
 
 	@Transactional
-	public Archive createArchive(String description, String genre, String imageUrl, String itemTitle, Date publishDate) {
+	public Archive createArchive(
+		String description,
+		String genre,
+		String imageUrl,
+		String itemTitle,
+		Date publishDate,
+		String itemNumber
+	) {
 		Archive a = new Archive();
 		a.setDescription(description);
 		a.setGenre(genre);
@@ -233,15 +308,14 @@ private String itemNumber;
 		a.setPublishDate(publishDate);
 		entityManager.persist(a);
 		return a;
-		
 	}
-	
+
 	@Transactional
 	public Archive getArchive(String itemNumber) {
 		Archive archive = entityManager.find(Archive.class, itemNumber);
 		return archive;
 	}
-	
+
 	//by Nafis
 	@Transactional
 	public RoomBooking createRoomBooking(String bookingID, Room room, Patron patron) {
@@ -251,15 +325,23 @@ private String itemNumber;
 		roombooking.setPatron(patron);
 		return roombooking;
 	}
-	
+
 	@Transactional
 	public RoomBooking getRoomBooking(String bookingID) {
 		RoomBooking roombooking = entityManager.find(RoomBooking.class, bookingID);
 		return roombooking;
 	}
-	
+
 	@Transactional
-	public ItemReservation createItemReservation(Date startDate, Date endDate, Time startTime, Time endTime, String reservationID, String itemNumber, Patron patron) {
+	public ItemReservation createItemReservation(
+		Date startDate,
+		Date endDate,
+		Time startTime,
+		Time endTime,
+		String reservationID,
+		String itemNumber,
+		Patron patron
+	) {
 		ItemReservation reservation = new ItemReservation();
 		reservation.setStartDate(startDate);
 		reservation.setEndDate(endDate);
@@ -271,17 +353,16 @@ private String itemNumber;
 		reservation.setItemNumber(itemNumber);
 		return reservation;
 	}
-	
+
 	@Transactional
 	public ItemReservation getItemReservation(String reservationID) {
 		ItemReservation itemReservation = entityManager.find(ItemReservation.class, reservationID);
 		return itemReservation;
 	}
-	
-	
+
 	@Transactional
 	public Shift createShift(Date startDate, Date endDate, Time startTime, Time endTime) {
-		//add TimeSlotID
+		//add shiftID
 		Shift shift = new Shift();
 		shift.setStartDate(startDate);
 		shift.setEndDate(endDate);
@@ -289,14 +370,19 @@ private String itemNumber;
 		shift.setEndTime(endTime);
 		return shift;
 	}
-	
-//	@Transactional
-//	public Shift getShift() {
-//		
-//	}
-	
+
+	//	@Transactional
+	//	public Shift getShift() {
+	//
+	//	}
+
 	@Transactional
-	public LibraryHour createLibraryHour(Date startDate, Date endDate, Time startTime, Time endTime) {
+	public LibraryHour createLibraryHour(
+		Date startDate,
+		Date endDate,
+		Time startTime,
+		Time endTime
+	) {
 		//add timeSlotID after Arman pushes changes to model
 		LibraryHour libHour = new LibraryHour();
 		libHour.setStartDate(startDate);
@@ -305,12 +391,9 @@ private String itemNumber;
 		libHour.setEndTime(endTime);
 		return libHour;
 	}
-	
-//	@Transactional
-//	public LibraryHour getLibraryHour{
-//		write after Arman pushes changes made to model
-//	}
-	
-	
-	
+	//	@Transactional
+	//	public LibraryHour getLibraryHour{
+	//		write after Arman pushes changes made to model
+	//	}
+
 }

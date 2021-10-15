@@ -1,9 +1,8 @@
 package ca.mcgill.ecse321.librarysystem.dao;
 
+import ca.mcgill.ecse321.librarysystem.model.MusicAlbum;
 import org.springframework.data.repository.CrudRepository;
 
-import ca.mcgill.ecse321.librarysystem.model.MusicAlbum;
-
 public interface MusicAlbumRepository extends CrudRepository<MusicAlbum, String> {
-	MusicAlbum findBookByIdNum(String idNum);
+	MusicAlbum findMusicAlbumByIdNum(String itemNumber);
 }
