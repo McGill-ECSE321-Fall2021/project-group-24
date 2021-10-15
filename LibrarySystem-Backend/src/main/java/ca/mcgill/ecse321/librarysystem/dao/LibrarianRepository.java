@@ -1,9 +1,8 @@
 package ca.mcgill.ecse321.librarysystem.dao;
 
+import ca.mcgill.ecse321.librarysystem.model.Librarian;
 import org.springframework.data.repository.CrudRepository;
 
-import ca.mcgill.ecse321.librarysystem.model.Librarian;
-
 public interface LibrarianRepository extends CrudRepository<Librarian, String> {
-	Librarian findLibrarianByIdNum(String idNum);
+  Librarian findLibrarianByIdNum(String idNum);
 }

@@ -8,22 +8,20 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Patron extends User {
-  
+
   private String address;
   private boolean isVerified;
   private boolean isResident;
   private boolean isRegisteredOnline;
 
-
-
   public String getAddress() {
-	return this.address;
+    return this.address;
   }
-  
+
   public void setAddress(String badabing) {
-	this.address = badabing;
+    this.address = badabing;
   }
-  
+
   public boolean getIsVerified() {
     return this.isVerified;
   }
