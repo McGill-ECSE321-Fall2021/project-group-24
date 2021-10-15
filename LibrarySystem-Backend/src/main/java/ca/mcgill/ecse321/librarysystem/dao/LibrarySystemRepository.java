@@ -318,8 +318,12 @@ public class LibrarySystemRepository {
 
 	//by Nafis
 	@Transactional
-	public RoomBooking createRoomBooking(String bookingID, Room room, Patron patron) {
+	public RoomBooking createRoomBooking(Date startDate, Date endDate, Time startTime, Time endTime, String bookingID, Room room, Patron patron){
 		RoomBooking roombooking = new RoomBooking();
+		roombooking.setStartDate(startDate);
+		roombooking.setEndDate(endDate);
+		roombooking.setStartTime(startTime);
+		roombooking.setEndTime(endTime);
 		roombooking.setBookingID(bookingID);
 		roombooking.setRoom(room);
 		roombooking.setPatron(patron);
@@ -361,27 +365,30 @@ public class LibrarySystemRepository {
 	}
 
 	@Transactional
-	public Shift createShift(Date startDate, Date endDate, Time startTime, Time endTime) {
+	public Shift createShift(Date startDate, Date endDate, Time startTime, Time endTime, String shiftID) {
 		//add shiftID
 		Shift shift = new Shift();
 		shift.setStartDate(startDate);
 		shift.setEndDate(endDate);
 		shift.setStartTime(startTime);
 		shift.setEndTime(endTime);
+		shift.setShiftID(shiftID);
 		return shift;
 	}
 
-	//	@Transactional
-	//	public Shift getShift() {
-	//
-	//	}
+	@Transactional
+	public Shift getShift(String shiftID) {
+		Shift shift = entityManager.find(Shift.class, shiftID);
+		return shift;
+	}
 
 	@Transactional
 	public LibraryHour createLibraryHour(
 		Date startDate,
 		Date endDate,
 		Time startTime,
-		Time endTime
+		Time endTime,
+		String hourID
 	) {
 		//add timeSlotID after Arman pushes changes to model
 		LibraryHour libHour = new LibraryHour();
@@ -389,11 +396,14 @@ public class LibrarySystemRepository {
 		libHour.setEndDate(endDate);
 		libHour.setStartTime(startTime);
 		libHour.setEndTime(endTime);
+		libHour.setHourID(hourID);
 		return libHour;
 	}
-	//	@Transactional
-	//	public LibraryHour getLibraryHour{
-	//		write after Arman pushes changes made to model
-	//	}
+	
+	@Transactional
+	public LibraryHour getLibraryHour(String hourID){
+		LibraryHour hour = entityManager.find(LibraryHour.class, hourID);
+		return hour;
+	}
 
 }

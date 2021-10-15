@@ -14,7 +14,7 @@ public class LibraryHour extends TimeSlot {
 		return hourID;
 	}
 	
-	public void setHourID() {
-		this.hourID = hourID;
+	public void setHourID(String HourID) {
+		this.hourID = HourID;
 	}
 }
