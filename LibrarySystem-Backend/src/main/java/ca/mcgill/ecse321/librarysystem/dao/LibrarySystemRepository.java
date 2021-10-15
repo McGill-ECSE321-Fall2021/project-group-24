@@ -75,6 +75,7 @@ private String itemNumber;
 		l.setLastName(lastName);
 		l.setEmail(email);
 		l.setIdNum(idNum);
+		l.setAddress(address);
 
 		entityManager.persist(l);
 		return l;		
@@ -97,6 +98,7 @@ private String itemNumber;
 		h.setLastName(lastName);
 		h.setEmail(email);
 		h.setIdNum(idNum);
+		h.setAddress(address);
 
 		entityManager.persist(h);
 		return h;		

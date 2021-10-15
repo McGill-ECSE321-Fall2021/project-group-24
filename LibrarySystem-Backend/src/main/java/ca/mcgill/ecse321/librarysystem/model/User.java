@@ -16,6 +16,7 @@ public abstract class User {
   private String idNum;
   private String firstName;
   private String lastName;
+  private String address;
 
   public String getUsername() {
     return this.username;
@@ -64,5 +65,13 @@ public abstract class User {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+  
+  public void setAddress(String address) {
+	  this.address = address;
+  }
+  
+  public String getAddress() {
+	  return this.address;
   }
 }
