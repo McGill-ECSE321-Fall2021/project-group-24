@@ -80,9 +80,6 @@ public abstract class Item {
     this.publishDate = publishDate;
   }
 
-  public boolean isIsReservable() {
-    return this.isReservable;
-  }
 
   public boolean getIsReservable() {
     return this.isReservable;
@@ -92,9 +89,6 @@ public abstract class Item {
     this.isReservable = isReservable;
   }
 
-  public boolean isIsCheckedOut() {
-    return this.isCheckedOut;
-  }
 
   public boolean getIsCheckedOut() {
     return this.isCheckedOut;

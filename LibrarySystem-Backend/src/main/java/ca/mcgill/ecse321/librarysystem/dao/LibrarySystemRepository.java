@@ -64,7 +64,56 @@ public class LibrarySystemRepository {
 		return p;
 	}
 	
+	public Librarian createLibrarian(String idNum, String firstName, String lastName, boolean isResident, String address, String email, String username, String password) {
+		Librarian l = new Librarian();
+		l.setUsername(username);
+		l.setPassword(password);
+		l.setFirstName(firstName);
+		l.setLastName(lastName);
+		l.setEmail(email);
+		l.setIdNum(idNum);
+
+		entityManager.persist(l);
+		return l;		
+	}
 	
 	
+	public Librarian getLibrarian(String idNum) {
+		Librarian l = entityManager.find(Librarian.class, idNum);
+		return l;
+	}
+	
+	public HeadLibrarian createHeadLibrarian(String idNum, String firstName, String lastName, boolean isResident, String address, String email, String username, String password) {
+		HeadLibrarian h = new HeadLibrarian();
+		h.setUsername(username);
+		h.setPassword(password);
+		h.setFirstName(firstName);
+		h.setLastName(lastName);
+		h.setEmail(email);
+		h.setIdNum(idNum);
+
+		entityManager.persist(h);
+		return h;		
+	}
+	
+	
+	public HeadLibrarian getHeadLibrarian(String idNum) {
+		HeadLibrarian h = entityManager.find(HeadLibrarian.class, idNum);
+		return h;
+	}
+	
+	public Room createRoom(String roomNum, int capacity) {
+		Room r = new Room();
+		r.setCapacity(capacity);
+		r.setRoomNum(roomNum);
+		
+		entityManager.persist(r);
+		return r;
+	}
+	
+	public Room getRoom(String roomNum) {
+		Room r = entityManager.find(Room.class, roomNum);
+		return r;
+	}
   
 }
