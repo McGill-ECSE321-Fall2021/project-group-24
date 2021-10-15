@@ -13,6 +13,7 @@ public class ItemReservation extends TimeSlot {
   private String reservationID;
   private int numOfRenewalsLeft;
   private Patron patron;
+  private String itemNumber;
 
   @ManyToOne(optional = false)
   public Patron getPatron() {
@@ -38,5 +39,13 @@ public class ItemReservation extends TimeSlot {
 
   public void setNumOfRenewalsLeft(int numOfRenewalsLeft) {
     this.numOfRenewalsLeft = numOfRenewalsLeft;
+  }
+  
+  public String getItemNumber() {
+	  return this.itemNumber;
+  }
+  
+  public void setItemNumber(String itemnumber) {
+	  this.itemNumber = itemnumber;
   }
 }
