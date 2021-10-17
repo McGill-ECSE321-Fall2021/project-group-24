@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Movie extends Item {
 
   private String productionCompany;
-  private String cast;
+  private String movieCast;
   private String director;
   private String producer;
 
@@ -20,11 +20,11 @@ public class Movie extends Item {
   }
 
   public String getCast() {
-    return this.cast;
+    return this.movieCast;
   }
 
-  public void setCast(String cast) {
-    this.cast = cast;
+  public void setMovieCast(String movieCast) {
+    this.movieCast = movieCast;
   }
 
   public String getDirector() {

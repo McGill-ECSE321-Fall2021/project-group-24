@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.librarysystem.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import ca.mcgill.ecse321.librarysystem.model.*;
 import java.sql.Date;
 import org.junit.jupiter.api.AfterEach;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -47,22 +47,21 @@ public class TestLibrarySystemPersistence {
   @Autowired
   private RoomRepository roomRepository;
 
-  @BeforeEach
-  @AfterEach
-  public void clearDatabase() {
-    // First, we clear registrations to avoid exceptions due to inconsistencies
-    //librarySystemRepository.deleteAll();
-    // Then we can clear the other tables
-    archiveRepository.deleteAll();
-    bookRepository.deleteAll();
-    headLibrarianRepository.deleteAll();
-    librarianRepository.deleteAll();
-//    movieRepository.deleteAll();
-    musicAlbumRepository.deleteAll();
-    patronRepository.deleteAll();
-    printedMediaRepository.deleteAll();
-    roomRepository.deleteAll();
-  }
+    @BeforeEach
+    public void clearDatabase() {
+      // First, we clear registrations to avoid exceptions due to inconsistencies
+//      librarySystemRepository.deleteAll();
+      // Then we can clear the other tables
+      archiveRepository.deleteAll();
+      bookRepository.deleteAll();
+      headLibrarianRepository.deleteAll();
+      librarianRepository.deleteAll();
+      movieRepository.deleteAll();
+      musicAlbumRepository.deleteAll();
+      patronRepository.deleteAll();
+      printedMediaRepository.deleteAll();
+      roomRepository.deleteAll();
+    }
 
   //------------------TESTING ARCHIVE------------------------//
   @Test
@@ -78,7 +77,7 @@ public class TestLibrarySystemPersistence {
     Date publishDate = Date.valueOf("2021-10-15");
     boolean isReservable = true;
     boolean isCheckedOut = true;
-    
+
     archive.setItemTitle(itemTitle);
     archive.setDescription(description);
     archive.setImageUrl(imageURL);
@@ -93,7 +92,6 @@ public class TestLibrarySystemPersistence {
     archive = null;
 
     archive = archiveRepository.findArchiveByItemNumber(itemNumber);
-    System.out.println("BOBERTO" + archive.getItemNumber());
     assertNotNull(archive);
 
     assertEquals(itemTitle, archive.getItemTitle());
@@ -105,6 +103,7 @@ public class TestLibrarySystemPersistence {
     assertEquals(isReservable, archive.getIsReservable());
     assertEquals(isCheckedOut, archive.getIsCheckedOut());
   }
+
   //------------------TESTING BOOK------------------------//
   @Test
   public void testPersistAndLoadBook() {
@@ -177,7 +176,7 @@ public class TestLibrarySystemPersistence {
 
     headLibrarian = null;
 
-    headLibrarian = headLibrarianRepository.findHeadLibrarianByIdNum(idNum);
+    headLibrarian = headLibrarianRepository.findUserByIdNum(idNum);
 
     assertNotNull(headLibrarian);
 
@@ -213,7 +212,7 @@ public class TestLibrarySystemPersistence {
 
     librarian = null;
 
-    librarian = librarianRepository.findLibrarianByIdNum(idNum);
+    librarian = librarianRepository.findUserByIdNum(idNum);
 
     assertNotNull(librarian);
 
@@ -232,7 +231,7 @@ public class TestLibrarySystemPersistence {
     Movie movie = new Movie();
     // First example for attribute save/load
     String productionCompany = "Movie Production Company";
-    String cast = "Movie Cast";
+    String movieCast = "Movie Cast";
     String director = "Movie Director";
     String producer = "Movie Producer";
     String itemTitle = "Movie Item Title";
@@ -245,7 +244,7 @@ public class TestLibrarySystemPersistence {
     boolean isCheckedOut = true;
 
     movie.setProductionCompany(productionCompany);
-    movie.setCast(cast);
+    movie.setMovieCast(movieCast);
     movie.setDirector(director);
     movie.setProducer(producer);
     movie.setItemTitle(itemTitle);
@@ -266,7 +265,7 @@ public class TestLibrarySystemPersistence {
     assertNotNull(movie);
 
     assertEquals(productionCompany, movie.getProductionCompany());
-    assertEquals(cast, movie.getCast());
+    assertEquals(movieCast, movie.getCast());
     assertEquals(director, movie.getDirector());
     assertEquals(producer, movie.getProducer());
     assertEquals(itemTitle, movie.getItemTitle());
@@ -358,10 +357,10 @@ public class TestLibrarySystemPersistence {
     patronRepository.save(patron);
 
     patron = null;
-    Patron newPatron = null;
-    newPatron = patronRepository.findPatronByIdNum(idNum);
 
-    assertNotNull(newPatron);
+    patron = patronRepository.findUserByIdNum(idNum);
+
+    assertNotNull(patron);
 
     assertEquals(address, patron.getAddress());
     assertEquals(isVerified, patron.getIsVerified());
@@ -405,7 +404,8 @@ public class TestLibrarySystemPersistence {
 
     printedMedia = null;
 
-    printedMedia = printedMediaRepository.findPrintedMediaByItemNumber(itemNumber);
+    printedMedia =
+      printedMediaRepository.findPrintedMediaByItemNumber(itemNumber);
 
     assertNotNull(printedMedia);
 
@@ -443,5 +443,4 @@ public class TestLibrarySystemPersistence {
     assertEquals(roomNum, room.getRoomNum());
     assertEquals(capacity, room.getCapacity());
   }
-
 }
