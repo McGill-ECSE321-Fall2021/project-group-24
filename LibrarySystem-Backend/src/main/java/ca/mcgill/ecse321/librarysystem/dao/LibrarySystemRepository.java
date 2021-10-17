@@ -336,6 +336,7 @@ public class LibrarySystemRepository {
     roombooking.setEndTime(endTime);
     roombooking.setTimeSlotId(bookingID);
     roombooking.setRoomNum(roomNum);
+    entityManager.persist(roombooking);
     return roombooking;
   }
 
@@ -364,6 +365,7 @@ public class LibrarySystemRepository {
     reservation.setNumOfRenewalsLeft(2);
     reservation.setIdNum(idNum);
     reservation.setItemNumber(itemNumber);
+    entityManager.persist(reservation);
     return reservation;
   }
 
@@ -390,6 +392,7 @@ public class LibrarySystemRepository {
     shift.setStartTime(startTime);
     shift.setEndTime(endTime);
     shift.setTimeSlotId(timeSlotId);
+    entityManager.persist(shift);
     return shift;
   }
 
@@ -414,6 +417,7 @@ public class LibrarySystemRepository {
     libHour.setStartTime(startTime);
     libHour.setEndTime(endTime);
     libHour.setTimeSlotId(timeSlotId);
+    entityManager.persist(libHour);
     return libHour;
   }
 

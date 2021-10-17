@@ -23,10 +23,10 @@ public class LibraryCalendar {
 	  this.calendarNum = calendarNum;
   }
   
-  @OneToMany(cascade = { CascadeType.ALL })
-  public Set<TimeSlot> getTimeSlot() {
-    return this.timeSlots;
-  }
+//  @OneToMany(cascade = { CascadeType.ALL })
+//  public Set<TimeSlot> getTimeSlot() {
+//    return this.timeSlots;
+//  }
 
   public void setTimeSlot(Set<TimeSlot> theTimeSlots) {
     this.timeSlots = theTimeSlots;
