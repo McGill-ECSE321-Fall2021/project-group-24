@@ -405,5 +405,4 @@ public class LibrarySystemRepository {
 		LibraryHour hour = entityManager.find(LibraryHour.class, hourID);
 		return hour;
 	}
-
 }
