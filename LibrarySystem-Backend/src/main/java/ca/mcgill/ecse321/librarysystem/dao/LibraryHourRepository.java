@@ -1,11 +1,8 @@
 package ca.mcgill.ecse321.librarysystem.dao;
 
-
+import ca.mcgill.ecse321.librarysystem.model.LibraryHour;
 import org.springframework.data.repository.CrudRepository;
 
-import ca.mcgill.ecse321.librarysystem.model.LibraryHour;
-
 public interface LibraryHourRepository extends CrudRepository<LibraryHour, String> {
-	LibraryHour findHourByHourID(String HourID);
+	LibraryHour findHourByTimeSlotId(String timeSlotId);
 }
-

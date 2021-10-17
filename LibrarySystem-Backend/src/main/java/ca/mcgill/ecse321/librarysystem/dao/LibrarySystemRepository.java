@@ -233,7 +233,8 @@ public class LibrarySystemRepository {
 		String cast,
 		String director,
 		boolean isCheckedOut,
-		String itemNumber
+		String itemNumber,
+		String producer
 	) {
 		Movie m = new Movie();
 		m.setDescription(description);
@@ -247,6 +248,7 @@ public class LibrarySystemRepository {
 		m.setProductionCompany(productionCompany);
 		m.setCast(cast);
 		m.setDirector(director);
+		m.setProducer(producer);
 		entityManager.persist(m);
 		return m;
 	}
@@ -318,15 +320,22 @@ public class LibrarySystemRepository {
 
 	//by Nafis
 	@Transactional
-	public RoomBooking createRoomBooking(Date startDate, Date endDate, Time startTime, Time endTime, String bookingID, Room room, Patron patron){
+	public RoomBooking createRoomBooking(
+		Date startDate,
+		Date endDate,
+		Time startTime,
+		Time endTime,
+		String bookingID,
+		String roomNum,
+		String idNum
+	) {
 		RoomBooking roombooking = new RoomBooking();
 		roombooking.setStartDate(startDate);
 		roombooking.setEndDate(endDate);
 		roombooking.setStartTime(startTime);
 		roombooking.setEndTime(endTime);
-		roombooking.setBookingID(bookingID);
-		roombooking.setRoom(room);
-		roombooking.setPatron(patron);
+		roombooking.setTimeSlotId(bookingID);
+		roombooking.setRoomNum(roomNum);
 		return roombooking;
 	}
 
@@ -342,43 +351,48 @@ public class LibrarySystemRepository {
 		Date endDate,
 		Time startTime,
 		Time endTime,
-		String reservationID,
+		String timeSlotId,
 		String itemNumber,
-		Patron patron
+		String idNum
 	) {
 		ItemReservation reservation = new ItemReservation();
 		reservation.setStartDate(startDate);
 		reservation.setEndDate(endDate);
 		reservation.setStartTime(startTime);
 		reservation.setEndTime(endTime);
-		reservation.setReservationID(reservationID);
+		reservation.setIdNum(timeSlotId);
 		reservation.setNumOfRenewalsLeft(2);
-		reservation.setPatron(patron);
+		reservation.setIdNum(idNum);
 		reservation.setItemNumber(itemNumber);
 		return reservation;
 	}
 
 	@Transactional
-	public ItemReservation getItemReservation(String reservationID) {
-		ItemReservation itemReservation = entityManager.find(ItemReservation.class, reservationID);
+	public ItemReservation getItemReservation(String timeSlotId) {
+		ItemReservation itemReservation = entityManager.find(ItemReservation.class, timeSlotId);
 		return itemReservation;
 	}
 
 	@Transactional
-	public Shift createShift(Date startDate, Date endDate, Time startTime, Time endTime, String shiftID) {
-		//add shiftID
+	public Shift createShift(
+		Date startDate,
+		Date endDate,
+		Time startTime,
+		Time endTime,
+		String timeSlotId
+	) {
 		Shift shift = new Shift();
 		shift.setStartDate(startDate);
 		shift.setEndDate(endDate);
 		shift.setStartTime(startTime);
 		shift.setEndTime(endTime);
-		shift.setShiftID(shiftID);
+		shift.setTimeSlotId(timeSlotId);
 		return shift;
 	}
 
 	@Transactional
-	public Shift getShift(String shiftID) {
-		Shift shift = entityManager.find(Shift.class, shiftID);
+	public Shift getShift(String timeSlotId) {
+		Shift shift = entityManager.find(Shift.class, timeSlotId);
 		return shift;
 	}
 
@@ -388,7 +402,7 @@ public class LibrarySystemRepository {
 		Date endDate,
 		Time startTime,
 		Time endTime,
-		String hourID
+		String timeSlotId
 	) {
 		//add timeSlotID after Arman pushes changes to model
 		LibraryHour libHour = new LibraryHour();
@@ -396,13 +410,13 @@ public class LibrarySystemRepository {
 		libHour.setEndDate(endDate);
 		libHour.setStartTime(startTime);
 		libHour.setEndTime(endTime);
-		libHour.setHourID(hourID);
+		libHour.setTimeSlotId(timeSlotId);
 		return libHour;
 	}
-	
+
 	@Transactional
-	public LibraryHour getLibraryHour(String hourID){
-		LibraryHour hour = entityManager.find(LibraryHour.class, hourID);
+	public LibraryHour getLibraryHour(String timeSlotId) {
+		LibraryHour hour = entityManager.find(LibraryHour.class, timeSlotId);
 		return hour;
 	}
 }

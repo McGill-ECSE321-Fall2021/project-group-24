@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface MovieRepository extends CrudRepository<Movie, String> {
 
-	Movie findMovieByIdNum(String itemNumber);
+	Movie findMovieByItemNumber(String itemNumber);
 }

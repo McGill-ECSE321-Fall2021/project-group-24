@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 
 public interface PrintedMediaRepository extends CrudRepository<PrintedMedia, String> {
-	PrintedMedia findPrintedMediaByIdNum(String itemNumber);
+	PrintedMedia findPrintedMediaByItemNumber(String itemNumber);
 }

@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 
 public interface MusicAlbumRepository extends CrudRepository<MusicAlbum, String> {
-	MusicAlbum findMusicAlbumByIdNum(String itemNumber);
+	MusicAlbum findMusicAlbumByItemNumber(String itemNumber);
 }

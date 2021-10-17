@@ -2,19 +2,16 @@ package ca.mcgill.ecse321.librarysystem.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import ca.mcgill.ecse321.librarysystem.model.*;
 import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Month;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -50,16 +47,17 @@ public class TestLibrarySystemPersistence {
   @Autowired
   private RoomRepository roomRepository;
 
+  @BeforeEach
   @AfterEach
   public void clearDatabase() {
-    // Fisrt, we clear registrations to avoid exceptions due to inconsistencies
-    librarySystemRepository.deleteAll();
+    // First, we clear registrations to avoid exceptions due to inconsistencies
+    //librarySystemRepository.deleteAll();
     // Then we can clear the other tables
     archiveRepository.deleteAll();
     bookRepository.deleteAll();
     headLibrarianRepository.deleteAll();
     librarianRepository.deleteAll();
-    movieRepository.deleteAll();
+//    movieRepository.deleteAll();
     musicAlbumRepository.deleteAll();
     patronRepository.deleteAll();
     printedMediaRepository.deleteAll();
@@ -80,7 +78,7 @@ public class TestLibrarySystemPersistence {
     Date publishDate = Date.valueOf("2021-10-15");
     boolean isReservable = true;
     boolean isCheckedOut = true;
-
+    
     archive.setItemTitle(itemTitle);
     archive.setDescription(description);
     archive.setImageUrl(imageURL);
@@ -94,8 +92,8 @@ public class TestLibrarySystemPersistence {
 
     archive = null;
 
-    archive = archiveRepository.findArchiveByIdNum(itemNumber);
-
+    archive = archiveRepository.findArchiveByItemNumber(itemNumber);
+    System.out.println("BOBERTO" + archive.getItemNumber());
     assertNotNull(archive);
 
     assertEquals(itemTitle, archive.getItemTitle());
@@ -107,7 +105,6 @@ public class TestLibrarySystemPersistence {
     assertEquals(isReservable, archive.getIsReservable());
     assertEquals(isCheckedOut, archive.getIsCheckedOut());
   }
-
   //------------------TESTING BOOK------------------------//
   @Test
   public void testPersistAndLoadBook() {
@@ -140,7 +137,7 @@ public class TestLibrarySystemPersistence {
 
     book = null;
 
-    book = bookRepository.findBookByIdNum(itemNumber);
+    book = bookRepository.findBookByItemNumber(itemNumber);
 
     assertNotNull(book);
 
@@ -264,7 +261,7 @@ public class TestLibrarySystemPersistence {
 
     movie = null;
 
-    movie = movieRepository.findMovieByIdNum(itemNumber);
+    movie = movieRepository.findMovieByItemNumber(itemNumber);
 
     assertNotNull(movie);
 
@@ -314,7 +311,7 @@ public class TestLibrarySystemPersistence {
 
     musicAlbum = null;
 
-    musicAlbum = musicAlbumRepository.findMusicAlbumByIdNum(itemNumber);
+    musicAlbum = musicAlbumRepository.findMusicAlbumByItemNumber(itemNumber);
 
     assertNotNull(musicAlbum);
 
@@ -361,10 +358,10 @@ public class TestLibrarySystemPersistence {
     patronRepository.save(patron);
 
     patron = null;
+    Patron newPatron = null;
+    newPatron = patronRepository.findPatronByIdNum(idNum);
 
-    patron = patronRepository.findPatronByIdNum(idNum);
-
-    assertNotNull(patron);
+    assertNotNull(newPatron);
 
     assertEquals(address, patron.getAddress());
     assertEquals(isVerified, patron.getIsVerified());
@@ -408,7 +405,7 @@ public class TestLibrarySystemPersistence {
 
     printedMedia = null;
 
-    printedMedia = printedMediaRepository.findPrintedMediaByIdNum(itemNumber);
+    printedMedia = printedMediaRepository.findPrintedMediaByItemNumber(itemNumber);
 
     assertNotNull(printedMedia);
 
@@ -439,11 +436,12 @@ public class TestLibrarySystemPersistence {
 
     room = null;
 
-    room = roomRepository.findRoomByIdNum(roomNum);
+    room = roomRepository.findRoomByRoomNum(roomNum);
 
     assertNotNull(room);
 
     assertEquals(roomNum, room.getRoomNum());
     assertEquals(capacity, room.getCapacity());
   }
+
 }

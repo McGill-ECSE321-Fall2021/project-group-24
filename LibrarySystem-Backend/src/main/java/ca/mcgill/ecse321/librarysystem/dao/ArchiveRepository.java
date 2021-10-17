@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ArchiveRepository extends CrudRepository<Archive, String> {
 
-	Archive findArchiveByIdNum(String itemNumber);
+	Archive findArchiveByItemNumber(String itemNumber);
 }

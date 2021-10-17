@@ -2,20 +2,29 @@ package ca.mcgill.ecse321.librarysystem.model;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
-@MappedSuperclass
-public class TimeSlot {
+import org.hibernate.annotations.GenericGenerator;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class TimeSlot {
+
+	@Id @GeneratedValue(generator="system-uuid")
+	@GenericGenerator(name="system-uuid", strategy = "uuid")
+  private String timeSlotId;
   private Date startDate;
   private Time startTime;
   private Date endDate;
   private Time endTime;
+  
+  public String getTimeSlotId() {
+		return timeSlotId;
+	}
+	
+	public void setTimeSlotId(String idNum) {
+		this.timeSlotId = idNum;
+	}
 
   public Date getStartDate() {
     return this.startDate;
