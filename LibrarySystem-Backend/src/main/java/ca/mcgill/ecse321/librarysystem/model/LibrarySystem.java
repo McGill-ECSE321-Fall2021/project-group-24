@@ -10,54 +10,44 @@ import javax.persistence.OneToOne;
 @Entity
 public class LibrarySystem {
 
-  private String systemNum;
-  private Set<User> users;
-  private Set<Room> rooms;
-  private Set<Item> items;
-  private LibraryCalendar libraryCalendar;
+	private String systemNum;
+	private Set<User> users;
+	private Set<Room> rooms;
+	private Set<Item> items;
 
-  @OneToMany(cascade = { CascadeType.ALL })
-  public Set<User> getUsers() {
-    return this.users;
-  }
+	@OneToMany(cascade = { CascadeType.ALL })
+	public Set<User> getUsers() {
+		return this.users;
+	}
 
-  public void setUsers(Set<User> theUsers) {
-    this.users = theUsers;
-  }
+	public void setUsers(Set<User> theUsers) {
+		this.users = theUsers;
+	}
 
-  @OneToMany(cascade = { CascadeType.ALL })
-  public Set<Room> getRooms() {
-    return this.rooms;
-  }
-  
-  @Id
-  public String getSystemNum() {
-	  return this.systemNum;
-  }
-  
-  public void setSystemNum(String systemNum) {
-	  this.systemNum = systemNum;
-  }
+	@OneToMany(cascade = { CascadeType.ALL })
+	public Set<Room> getRooms() {
+		return this.rooms;
+	}
 
-  public void setRooms(Set<Room> theRooms) {
-    this.rooms = theRooms;
-  }
+	@Id
+	public String getSystemNum() {
+		return this.systemNum;
+	}
 
-  @OneToMany(cascade = { CascadeType.ALL })
-  public Set<Item> getItems() {
-    return this.items;
-  }
+	public void setSystemNum(String systemNum) {
+		this.systemNum = systemNum;
+	}
 
-  public void setItems(Set<Item> theItems) {
-    this.items = theItems;
-  }
+	public void setRooms(Set<Room> theRooms) {
+		this.rooms = theRooms;
+	}
 
-  @OneToOne(cascade = { CascadeType.ALL })
-  public LibraryCalendar getLibraryCalendar() {
-    return this.libraryCalendar;
-  }
+	@OneToMany(cascade = { CascadeType.ALL })
+	public Set<Item> getItems() {
+		return this.items;
+	}
 
-  public void setLibraryCalendar(LibraryCalendar theLibraryCalendar) {
-    this.libraryCalendar = theLibraryCalendar;
-  }
+	public void setItems(Set<Item> theItems) {
+		this.items = theItems;
+	}
 }

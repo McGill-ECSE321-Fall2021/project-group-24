@@ -3,7 +3,7 @@ package ca.mcgill.ecse321.librarysystem.model;
 import javax.persistence.*;
 
 @Entity
-@DiscriminatorColumn(name = "roomBooking") 
+@DiscriminatorValue("roomBooking")
 public class RoomBooking extends TimeSlot {
   private String roomNum;
 
