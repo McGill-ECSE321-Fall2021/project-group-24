@@ -4,5 +4,5 @@ import ca.mcgill.ecse321.librarysystem.model.ItemReservation;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ItemReservationRepository extends CrudRepository<ItemReservation, String> {
-	ItemReservation findReservationByTimeSlotId(String timeSlotId);
+	ItemReservation findItemReservationByTimeSlotId(String timeSlotId);
 }
