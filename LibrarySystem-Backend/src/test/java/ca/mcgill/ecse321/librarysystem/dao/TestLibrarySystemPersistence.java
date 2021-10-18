@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import ca.mcgill.ecse321.librarysystem.model.*;
 import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +28,9 @@ public class TestLibrarySystemPersistence {
 
   @Autowired
   private HeadLibrarianRepository headLibrarianRepository;
+  
+  @Autowired
+  private ItemReservationRepository itemReservationRepository;
 
   @Autowired
   private LibrarianRepository librarianRepository;
@@ -55,6 +61,7 @@ public class TestLibrarySystemPersistence {
       archiveRepository.deleteAll();
       bookRepository.deleteAll();
       headLibrarianRepository.deleteAll();
+      itemReservationRepository.deleteAll();
       librarianRepository.deleteAll();
       movieRepository.deleteAll();
       musicAlbumRepository.deleteAll();
@@ -187,7 +194,46 @@ public class TestLibrarySystemPersistence {
     assertEquals(firstName, headLibrarian.getFirstName());
     assertEquals(lastName, headLibrarian.getLastName());
   }
+  //------------------TESTING ITEM RESERVATION------------------------//
+  @Test
+  public void testPersistAndLoadItemReservation() {
+    // First example for object save/load
+    ItemReservation itemReservation = new ItemReservation();
+    // First example for attribute save/load
+    int numOfRenewalsLeft = 0;
+    String idNum = "Item Reservation ID Number";
+    String itemNumber = "Item Reservation Item Number";
+    String timeSlotId = "Item Reservation Time Slot ID";
+    Date startDate = Date.valueOf("2021-10-15");
+    Date endDate = Date.valueOf("2021-10-15");
+    Time startTime = Time.valueOf("00:00:00");
+    Time endTime = Time.valueOf("00:00:00");
+    
+    
+    
+    itemReservation.setIdNum(idNum);
+    itemReservation.setItemNumber(itemNumber);
+    itemReservation.setTimeSlotId(timeSlotId);
+    itemReservation.setStartDate(startDate);
+    itemReservation.setEndDate(endDate);
+    itemReservation.setStartTime(startTime);
+    itemReservation.setEndTime(endTime);
 
+    itemReservationRepository.save(itemReservation);
+
+    itemReservation = null;
+
+    itemReservation = itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId);
+    assertNotNull(itemReservation);
+
+    assertEquals(idNum, itemReservation.getIdNum());
+    assertEquals(itemNumber, itemReservation.getItemNumber());
+    assertEquals(startDate, itemReservation.getStartDate());
+    assertEquals(endDate, itemReservation.getEndDate());
+    assertEquals(startTime, itemReservation.getStartTime());
+    assertEquals(endTime, itemReservation.getEndTime());
+
+  }
   //------------------TESTING LIBRARIAN------------------------//
   @Test
   public void testPersistAndLoadLibrarian() {
