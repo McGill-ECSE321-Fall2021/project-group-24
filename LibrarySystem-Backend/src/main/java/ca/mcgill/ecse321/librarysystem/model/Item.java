@@ -1,27 +1,32 @@
 package ca.mcgill.ecse321.librarysystem.model;
 
 import java.sql.Date;
-import java.sql.Time;
+
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@DiscriminatorColumn(name = "item") 
 public abstract class Item {
+
 
   private String itemTitle;
   private String description;
   private String imageUrl;
+  @Id 
   private String itemNumber;
   private String genre;
   private Date publishDate;
   private boolean isReservable;
   private boolean isCheckedOut;
 
+  @ElementCollection
   private Set<ItemReservation> itemReservations;
 
+  
   @OneToMany(cascade = { CascadeType.ALL })
   public Set<ItemReservation> getItemReservation() {
     return this.itemReservations;
@@ -55,7 +60,6 @@ public abstract class Item {
     this.imageUrl = imageUrl;
   }
 
-  @Id
   public String getItemNumber() {
     return this.itemNumber;
   }
@@ -80,20 +84,12 @@ public abstract class Item {
     this.publishDate = publishDate;
   }
 
-  public boolean isIsReservable() {
-    return this.isReservable;
-  }
-
   public boolean getIsReservable() {
     return this.isReservable;
   }
 
   public void setIsReservable(boolean isReservable) {
     this.isReservable = isReservable;
-  }
-
-  public boolean isIsCheckedOut() {
-    return this.isCheckedOut;
   }
 
   public boolean getIsCheckedOut() {

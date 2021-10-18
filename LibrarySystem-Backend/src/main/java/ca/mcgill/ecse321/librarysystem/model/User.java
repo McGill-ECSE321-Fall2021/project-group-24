@@ -1,68 +1,78 @@
 package ca.mcgill.ecse321.librarysystem.model;
 
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
-@MappedSuperclass
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@DiscriminatorColumn(name = "user")
 public abstract class User {
 
-  private String username;
-  private String password;
-  private String email;
-  private String idNum;
-  private String firstName;
-  private String lastName;
+	private String username;
+	private String password;
+	private String email;
 
-  public String getUsername() {
-    return this.username;
-  }
+	@Id
+	private String idNum;
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+	private String firstName;
+	private String lastName;
+	private String address;
 
-  public String getPassword() {
-    return this.password;
-  }
+	public String getIdNum() {
+		return idNum;
+	}
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+	public void setIdNum(String timeSlotId) {
+		this.idNum = timeSlotId;
+	}
 
-  public String getEmail() {
-    return this.email;
-  }
+	public String getUsername() {
+		return this.username;
+	}
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-  @Id
-  public String getIdNum() {
-    return this.idNum;
-  }
+	public String getPassword() {
+		return this.password;
+	}
 
-  public void setIdNum(String idNum) {
-    this.idNum = idNum;
-  }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-  public String getFirstName() {
-    return this.firstName;
-  }
+	public String getEmail() {
+		return this.email;
+	}
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-  public String getLastName() {
-    return this.lastName;
-  }
+	public String getFirstName() {
+		return this.firstName;
+	}
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return this.lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
 }
