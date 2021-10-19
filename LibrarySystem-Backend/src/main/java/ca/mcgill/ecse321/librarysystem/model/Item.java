@@ -12,7 +12,6 @@ import org.hibernate.annotations.GenericGenerator;
 @DiscriminatorColumn(name = "item") 
 public abstract class Item {
 
-
   private String itemTitle;
   private String description;
   private String imageUrl;

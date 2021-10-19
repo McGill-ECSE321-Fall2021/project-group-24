@@ -20,6 +20,7 @@ public class LibrarySystemRepository {
   EntityManager entityManager;
 
   // by Nafis, Saggar, Selena
+  //create a patron in person. isVerified == true as they will show up with their proof of address, or payment.
   @Transactional
   public Patron createPatronIRL(
     String idNum,
@@ -45,6 +46,8 @@ public class LibrarySystemRepository {
     return p;
   }
 
+  //this lets a new patron create an account online. isVerified == false as they have not paid or showed their proof of address.
+  //in order to take a book out of the library, they will have to get verified by a librarian.
   @Transactional
   public Patron createPatronOnline(
     String idNum,
@@ -71,7 +74,8 @@ public class LibrarySystemRepository {
     entityManager.persist(p);
     return p;
   }
-
+  
+  //getPatron returns the patron for the idNum that was passed as a parameter
   @Transactional
   public Patron getPatron(String idNum) {
     Patron p = entityManager.find(Patron.class, idNum);
@@ -79,6 +83,7 @@ public class LibrarySystemRepository {
   }
 
   // by Saagar
+  //create a new librarian 
   @Transactional
   public Librarian createLibrarian(
     String idNum,
@@ -102,7 +107,7 @@ public class LibrarySystemRepository {
     entityManager.persist(l);
     return l;
   }
-
+  //getLibrarian returns the patron for the idNum that was passed as a parameter
   @Transactional
   public Librarian getLibrarian(String idNum) {
     Librarian l = entityManager.find(Librarian.class, idNum);
@@ -110,6 +115,7 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //create a head librarian
   public HeadLibrarian createHeadLibrarian(
     String idNum,
     String firstName,
@@ -134,12 +140,14 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //getHeadLibrarian returns the head librarian for the idNum that was passed as a parameter
   public HeadLibrarian getHeadLibrarian(String idNum) {
     HeadLibrarian h = entityManager.find(HeadLibrarian.class, idNum);
     return h;
   }
 
   @Transactional
+  //create a room with a unique number, and a  capacity
   public Room createRoom(String roomNum, int capacity) {
     Room r = new Room();
     r.setCapacity(capacity);
@@ -150,12 +158,14 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //getRoom returns the room for the roomNum that was passed as a parameter
   public Room getRoom(String roomNum) {
     Room r = entityManager.find(Room.class, roomNum);
     return r;
   }
 
   // by Selena
+  //create a new book
   @Transactional
   public Book createBook(
     String itemTitle,
@@ -184,12 +194,14 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //getBook returns the book for the itemNumber that was passed as a parameter
   public Book getBook(String itemNumber) {
     Book book = entityManager.find(Book.class, itemNumber);
     return book;
   }
 
   @Transactional
+  //create a new music album
   public MusicAlbum createMusicAlbum(
     String description,
     String genre,
@@ -217,12 +229,14 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //return a music album with its itemNumber
   public MusicAlbum getMusicAlbum(String itemNumber) {
     MusicAlbum musicAlbum = entityManager.find(MusicAlbum.class, itemNumber);
     return musicAlbum;
   }
 
   @Transactional
+  //create a new movie
   public Movie createMovie(
     String description,
     String genre,
@@ -254,12 +268,14 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //return a movie with its itemNumber
   public Movie getMovie(String itemNumber) {
     Movie movie = entityManager.find(Movie.class, itemNumber);
     return movie;
   }
 
   @Transactional
+  //create a new printed media
   public PrintedMedia createPrintedMedia(
     String description,
     String genre,
@@ -285,12 +301,14 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //return a printed media with its itemNumber
   public PrintedMedia getPrintedMedia(String itemNumber) {
     PrintedMedia item = entityManager.find(PrintedMedia.class, itemNumber);
     return item;
   }
 
   @Transactional
+  //create a new archive
   public Archive createArchive(
     String description,
     String genre,
@@ -313,6 +331,7 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //return an archive with its itemNumber
   public Archive getArchive(String itemNumber) {
     Archive archive = entityManager.find(Archive.class, itemNumber);
     return archive;
@@ -320,6 +339,7 @@ public class LibrarySystemRepository {
 
   //by Nafis
   @Transactional
+  //create a new room booking
   public RoomBooking createRoomBooking(
     Date startDate,
     Date endDate,
@@ -341,12 +361,14 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //return a room booking with its timeslot id
   public RoomBooking getRoomBooking(String bookingID) {
     RoomBooking roombooking = entityManager.find(RoomBooking.class, bookingID);
     return roombooking;
   }
 
   @Transactional
+  //create a new item reservation with a patron's idNum
   public ItemReservation createItemReservation(
     Date startDate,
     Date endDate,
@@ -370,6 +392,7 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //return an item reservation with its timeslot id
   public ItemReservation getItemReservation(String timeSlotId) {
     ItemReservation itemReservation = entityManager.find(
       ItemReservation.class,
@@ -379,6 +402,7 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //create a new shift for a librarian 
   public Shift createShift(
     Date startDate,
     Date endDate,
@@ -397,12 +421,14 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //return a library hour with its timeslot id
   public Shift getShift(String timeSlotId) {
     Shift shift = entityManager.find(Shift.class, timeSlotId);
     return shift;
   }
 
   @Transactional
+  //create a new library hour
   public LibraryHour createLibraryHour(
     Date startDate,
     Date endDate,
@@ -422,6 +448,7 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
+  //return a library hour with its timeslot id
   public LibraryHour getLibraryHour(String timeSlotId) {
     LibraryHour hour = entityManager.find(LibraryHour.class, timeSlotId);
     return hour;

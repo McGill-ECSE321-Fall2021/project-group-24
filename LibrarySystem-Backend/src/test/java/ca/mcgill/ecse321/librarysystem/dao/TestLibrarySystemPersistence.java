@@ -37,9 +37,6 @@ public class TestLibrarySystemPersistence {
   private LibrarianRepository librarianRepository;
 
   @Autowired
-  private LibrarySystemRepository librarySystemRepository;
-
-  @Autowired
   private MovieRepository movieRepository;
 
   @Autowired
