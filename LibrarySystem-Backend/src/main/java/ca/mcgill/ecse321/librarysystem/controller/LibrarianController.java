@@ -1,4 +1,4 @@
-package a.mcgill.ecse321.librarysystem.controller;
+package ca.mcgill.ecse321.librarysystem.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.librarysystem.LibrarySystemApplication;
 import ca.mcgill.ecse321.librarysystem.model.*;
 import ca.mcgill.ecse321.librarysystem.dto.*;
 import ca.mcgill.ecse321.librarysystem.service.*;
