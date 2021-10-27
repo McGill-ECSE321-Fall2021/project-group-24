@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.librarysystem.model.*;
@@ -24,11 +25,13 @@ public class LibrarianController {
 	
 	@GetMapping(value = { "/librarians", "/librarians/" })
 	public List<LibrarianDto> getAllLibrarians() {
+		System.out.println("Flag Get"); 
 		return librarianService.getAllLibrarians().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
 	}
 
 	@PostMapping(value = { "/librarians/{idNum}", "/librarians/{idNum}/" })
 	public LibrarianDto createLibrarian(@PathVariable("idNum") String idNum) {
+		System.out.println("Flag Post"); 
 		Librarian librarian = librarianService.createLibrarian(idNum);
 		return convertToDto(librarian);
 	}
