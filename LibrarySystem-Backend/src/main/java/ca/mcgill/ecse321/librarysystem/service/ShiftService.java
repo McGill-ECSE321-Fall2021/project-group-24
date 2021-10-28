@@ -14,9 +14,11 @@ import ca.mcgill.ecse321.librarysystem.model.*;
 
 @Service 
 public class ShiftService {
+	@Autowired
 	ShiftRepository shiftRepo;
+	@Autowired
 	LibrarianRepository librarianRepo; 
-	LibrarySystemRepository librarySystemRepo; 
+
 
 	/* @author Arman
 	 * @param librarianId, startDate, endDate, startTime, endTime
@@ -25,7 +27,7 @@ public class ShiftService {
 	 */
 	@Transactional 
 	public Shift createShift(String librarianId, Date startDate, Time startTime, Date endDate, Time endTime ) {
-		User user = LibrarySystemApplication.getCurrentUser();
+		User user = null;
 
 		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
 
@@ -53,7 +55,7 @@ public class ShiftService {
 	
 	@Transactional 
 	public Shift modifyShift(String librarianId, Date oldStartDate, Time oldStartTime, Date startDate, Time startTime, Date endDate, Time endTime) {
-		User user = LibrarySystemApplication.getCurrentUser();
+		User user = null;
 
 		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
 
@@ -76,10 +78,13 @@ public class ShiftService {
 		return shift; 
 	}
 	
-	// deletes shift if it can be found, returns true if shift is deleted
+	/* @author Arman
+	 * @param librarianId, startTime, endTime
+	 * @return true if the shift is deleted
+	 */
 	@Transactional 
 	public boolean deleteShift(String librarianId, Date startDate, Time startTime) {
-		User user = LibrarySystemApplication.getCurrentUser();
+		User user = null;
 
 		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
 		Shift shift = shiftRepo.findShiftByLibrarianIdAndStartDateAndStartTime(librarianId, startDate, startTime); 

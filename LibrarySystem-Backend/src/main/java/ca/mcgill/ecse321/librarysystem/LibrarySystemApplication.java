@@ -23,21 +23,7 @@ public class LibrarySystemApplication {
     return "Hello world!";
   }
   
-   public static LibrarySystem getLibrarySystem() {
-	   return librarySystem; 
-   }
-   
-   public static void newLibrarySystem() {
-	   librarySystem = new LibrarySystem(); 
-   }
 
-	public static User getCurrentUser() {
-		return currentUser;
-	}
-	public static void setCurrentUser(User user) {
-		currentUser = user;
-	}
-	
 
   
 }

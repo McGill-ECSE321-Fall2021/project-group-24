@@ -14,6 +14,7 @@ import ca.mcgill.ecse321.librarysystem.model.*;
 import ca.mcgill.ecse321.librarysystem.model.LibraryHour.DayOfWeek;
 
 public class LibraryHourService {
+	@Autowired
 	LibraryHourRepository libraryHourRepo; 
 	
 	/*
@@ -24,7 +25,7 @@ public class LibraryHourService {
 	 */
 	@Transactional 
 	public LibraryHour createLibraryHour(DayOfWeek dayOfWeek, Time startTime, Time endTime) {
-		User user = LibrarySystemApplication.getCurrentUser();
+		User user = null;
 		
 		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify library hours"); 
 		if (dayOfWeek==null || startTime ==null || endTime ==null) {
@@ -50,8 +51,7 @@ public class LibraryHourService {
 	 * @return the new library hour
 	 */
 	public LibraryHour modifyLibraryHour (DayOfWeek dayOfWeek, Time startTime, Time endTime) {
-		User user = LibrarySystemApplication.getCurrentUser();
-		
+		User user = null; 
 		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify library hours"); 
 		if (dayOfWeek==null || startTime ==null || endTime ==null) {
 			throw new IllegalArgumentException ("Fields cannot be blank"); 
@@ -76,7 +76,7 @@ public class LibraryHourService {
 	 */
 	@Transactional 
 	public boolean removeLibraryHour(DayOfWeek dayOfWeek) {
-		User user = LibrarySystemApplication.getCurrentUser();
+		User user = null;
 		
 		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify library hours"); 
 		if (dayOfWeek==null) throw new IllegalArgumentException ("Field cannot be blank");
