@@ -89,7 +89,6 @@ public class LibrarySystemRepository {
     String idNum,
     String firstName,
     String lastName,
-    boolean isResident,
     String address,
     String email,
     String username,
