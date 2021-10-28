@@ -26,21 +26,18 @@ public class LibrarianController {
 	
 	@GetMapping(value = { "/librarians", "/librarians/" })
 	public List<LibrarianDto> getAllLibrarians() {
-		System.out.println("Flag Get"); 
 		return librarianService.getAllLibrarians().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
 	}
 
 	@PostMapping(value = { "/librarians/{idNum}", "/librarians/{idNum}/" })
 	public LibrarianDto createLibrarian(@PathVariable("idNum") String idNum) {
-		System.out.println("Flag Post"); 
 		Librarian librarian = librarianService.createLibrarian(idNum);
 		return convertToDto(librarian);
 	}
 	
 	private LibrarianDto convertToDto(Librarian librarian){
-	//	if (librarian == null) {
-	//		throw new Exception("This user does not exist");
-	//	}
+		if (librarian == null) throw new IllegalArgumentException("This user does not exist");
+		
 		LibrarianDto librarianDto = new LibrarianDto(librarian.getIdNum());
 		librarianDto.setIdNum(librarian.getIdNum());
 		return librarianDto;
