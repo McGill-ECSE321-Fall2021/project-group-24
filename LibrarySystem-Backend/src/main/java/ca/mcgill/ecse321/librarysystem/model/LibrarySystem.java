@@ -9,6 +9,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 /*@Arman (Del 2)
  * Del 2 edits: Added name, email, address, and phone number (i.e. basic contact info for the library) 
+ * Added timeSlots
  */
 @Entity
 public class LibrarySystem {
@@ -21,6 +22,7 @@ public class LibrarySystem {
 	private Set<User> users;
 	private Set<Room> rooms;
 	private Set<Item> items;
+	private List<TimeSlot> timeSlots; 
 	
 	public String getName() {
 		return this.name; 
@@ -54,7 +56,14 @@ public class LibrarySystem {
 	    this.email = email;
 	}
 
+	@OneToMany(cascade = { CascadeType.ALL }) 
+	public List<TimeSlot> getTimeSlots() {
+		return this.timeSlots; 
+	}
 	
+	public void setTimeSlots(List<TimeSlot> timeSlots) {
+		this.timeSlots = timeSlots; 
+	}
 	@OneToMany(cascade = { CascadeType.ALL })
 	public Set<User> getUsers() {
 		return this.users;
