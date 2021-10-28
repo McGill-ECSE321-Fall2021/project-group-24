@@ -14,9 +14,7 @@ public class LibrarianService {
 	
 	@Autowired 
 	LibrarianRepository librarianRepo; 
-	@Autowired 
-	LibrarySystemRepository librarianSystemRepository; 
-	
+		
 	// creates librarian, returns it so we know it's not null 
 	@Transactional 
 	public Librarian createLibrarian(
