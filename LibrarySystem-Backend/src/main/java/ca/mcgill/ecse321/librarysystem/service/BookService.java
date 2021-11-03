@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.librarysystem.service;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,58 +11,69 @@ import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 
 @Service
-public class LibrarianService {
+public class BookService  {
 	
 	@Autowired 
-	LibrarianRepository librarianRepo; 
+	BookRepository bookRepository;
 		
-	// creates librarian, returns it so we know it's not null 
+	// creates book, returns it so we know it's not null 
 	@Transactional 
-	public Librarian createLibrarian(
-			String idNum,
-		    String firstName,
-		    String lastName,
-		    String address,
-		    String email,
-		    String username,
-		    String password) 
+	public Book createBook(
+		String itemTitle,
+		String description,
+		String imageUrl,
+		String itemNumber,
+		String genre,
+		Date publishDate,
+		boolean isReservable,
+		boolean isCheckedOut,
+		String author,
+		String publisher)
 	{
-		Librarian librarian = new Librarian();
-	    librarian.setUsername(username);
-	    librarian.setPassword(password);
-	    librarian.setFirstName(firstName);
-	    librarian.setLastName(lastName);
-	    librarian.setEmail(email);
-	    librarian.setIdNum(idNum);
-	    librarian.setAddress(address);
+		Book book = new Book();
+	    book.setItemTitle(itemTitle);
+	    book.setDescription(description);
+	    book.setImageUrl(imageUrl);
+	    book.setItemNumber(itemNumber);
+	    book.setGenre(genre);
+	    book.setPublishDate(publishDate);
+	    book.setIsReservable(isReservable);
+		book.setIsCheckedOut(isCheckedOut);
+		book.setAuthor(author);
+		book.setPublisher(publisher);
 
-	    librarianRepo.save(librarian);
-	    return librarian;		
+	    bookRepository.save(book);
+	    return book;		
 	}
-	public Librarian createLibrarian(String idNum) {
-		Librarian librarian = new Librarian(); 
-		librarian.setIdNum(idNum);
-	    librarian.setUsername("UN");
-	    librarian.setPassword("PS");
-	    librarian.setFirstName("FN");
-	    librarian.setLastName("LN");
-	    librarian.setEmail("EM");
-	    librarian.setAddress("AD");
-	    
-		librarianRepo.save(librarian); 
-		return librarian;
-	}
-	
-	// looks for a librarian with the given ID number, returns them if found
-	@Transactional 
-	public Librarian getLibrarian(String idNum) {
-		Librarian librarian = librarianRepo.findUserByIdNum(idNum); 
-		return librarian;
+	public Book createBook(String itemNumber) {
+		Book book = new Book(); 
+		long currentMillis = System.currentTimeMillis();
+		Date currentDay = new Date(currentMillis);
+
+		book.setItemTitle("itemTitle");
+	    book.setDescription("description");
+	    book.setImageUrl("imageUrl");
+	    book.setItemNumber(itemNumber);
+	    book.setGenre("genre");
+	    book.setPublishDate(currentDay);
+	    book.setIsReservable(true);
+		book.setIsCheckedOut(false);
+	    book.setAuthor("author");
+		book.setPublisher("publisher");
+		bookRepository.save(book);
+		return book;
 	}
 	
+	// looks for a book with the given item number, returns them if found
 	@Transactional 
-	public List<Librarian> getAllLibrarians() {
-		return toList(librarianRepo.findAll()); 
+	public Book getBook(String itemNumber) {
+		Book book = bookRepository.findBookByItemNumber(itemNumber); 
+		return book;
+	}
+	
+	@Transactional 
+	public List<Book> getAllBooks() {
+		return toList(bookRepository.findAll()); 
 	}
 
 	private <T> List<T> toList(Iterable<T> iterable){

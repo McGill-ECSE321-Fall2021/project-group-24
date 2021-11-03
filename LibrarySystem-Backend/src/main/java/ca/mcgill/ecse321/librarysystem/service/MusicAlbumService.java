@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.librarysystem.service;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,58 +11,70 @@ import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 
 @Service
-public class LibrarianService {
+public class MusicAlbumService {
 	
 	@Autowired 
-	LibrarianRepository librarianRepo; 
+	MusicAlbumRepository musicAlbumRepository; 
 		
-	// creates librarian, returns it so we know it's not null 
+	// creates music album, returns it so we know it's not null 
 	@Transactional 
-	public Librarian createLibrarian(
-			String idNum,
-		    String firstName,
-		    String lastName,
-		    String address,
-		    String email,
-		    String username,
-		    String password) 
+	public MusicAlbum musicAlbum(
+		String itemTitle,
+		String description,
+		String imageUrl,
+		String itemNumber,
+		String genre,
+		Date publishDate,
+		boolean isReservable,
+		boolean isCheckedOut,
+		String artist,
+		String recordingLabel)
 	{
-		Librarian librarian = new Librarian();
-	    librarian.setUsername(username);
-	    librarian.setPassword(password);
-	    librarian.setFirstName(firstName);
-	    librarian.setLastName(lastName);
-	    librarian.setEmail(email);
-	    librarian.setIdNum(idNum);
-	    librarian.setAddress(address);
+		MusicAlbum musicAlbum = new MusicAlbum();
+	    musicAlbum.setItemTitle(itemTitle);
+	    musicAlbum.setDescription(description);
+	    musicAlbum.setImageUrl(imageUrl);
+	    musicAlbum.setItemNumber(itemNumber);
+	    musicAlbum.setGenre(genre);
+	    musicAlbum.setPublishDate(publishDate);
+	    musicAlbum.setIsReservable(isReservable);
+		musicAlbum.setIsCheckedOut(isCheckedOut);
+		musicAlbum.setArtist(artist);
+		musicAlbum.setRecordingLabel(recordingLabel);
 
-	    librarianRepo.save(librarian);
-	    return librarian;		
+	    musicAlbumRepository.save(musicAlbum);
+	    return musicAlbum;		
 	}
-	public Librarian createLibrarian(String idNum) {
-		Librarian librarian = new Librarian(); 
-		librarian.setIdNum(idNum);
-	    librarian.setUsername("UN");
-	    librarian.setPassword("PS");
-	    librarian.setFirstName("FN");
-	    librarian.setLastName("LN");
-	    librarian.setEmail("EM");
-	    librarian.setAddress("AD");
+	public MusicAlbum createMusicAlbum(String itemNumber) {
+		MusicAlbum musicAlbum = new MusicAlbum(); 
+		long currentMillis = System.currentTimeMillis();
+		Date currentDay = new Date(currentMillis);
+
+		musicAlbum.setItemTitle("itemTitle");
+	    musicAlbum.setDescription("description");
+	    musicAlbum.setImageUrl("imageUrl");
+	    musicAlbum.setItemNumber(itemNumber);
+	    musicAlbum.setGenre("genre");
+	    musicAlbum.setPublishDate(currentDay);
+	    musicAlbum.setIsReservable(true);
+		musicAlbum.setIsCheckedOut(false);
+		musicAlbum.setArtist("artist");
+		musicAlbum.setRecordingLabel("recordingLabel");
 	    
-		librarianRepo.save(librarian); 
-		return librarian;
+		musicAlbumRepository.save(musicAlbum);
+		return musicAlbum;
 	}
 	
-	// looks for a librarian with the given ID number, returns them if found
+	// looks for an archive with the given item number, returns them if found
 	@Transactional 
-	public Librarian getLibrarian(String idNum) {
-		Librarian librarian = librarianRepo.findUserByIdNum(idNum); 
-		return librarian;
+	public MusicAlbum getMusicAlbum(String itemNumber) {
+		MusicAlbum musicAlbum = musicAlbumRepository.findMusicAlbumByItemNumber(itemNumber); 
+		return musicAlbum;
 	}
 	
 	@Transactional 
-	public List<Librarian> getAllLibrarians() {
-		return toList(librarianRepo.findAll()); 
+	public List<MusicAlbum> getAllMusicAlbum() {
+		return toList(musicAlbumRepository.findAll()); 
 	}
 
 	private <T> List<T> toList(Iterable<T> iterable){

@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.librarysystem.service;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,58 +11,67 @@ import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 
 @Service
-public class LibrarianService {
+public class PrintedMediaService  {
 	
 	@Autowired 
-	LibrarianRepository librarianRepo; 
+	PrintedMediaRepository printedMediaRepository;
 		
-	// creates librarian, returns it so we know it's not null 
+	// creates archive, returns it so we know it's not null 
 	@Transactional 
-	public Librarian createLibrarian(
-			String idNum,
-		    String firstName,
-		    String lastName,
-		    String address,
-		    String email,
-		    String username,
-		    String password) 
+	public PrintedMedia createPrintedMedia(
+		String itemTitle,
+		String description,
+		String imageUrl,
+		String itemNumber,
+		String genre,
+		Date publishDate,
+		boolean isReservable,
+		boolean isCheckedOut,
+		String issueNumber)
 	{
-		Librarian librarian = new Librarian();
-	    librarian.setUsername(username);
-	    librarian.setPassword(password);
-	    librarian.setFirstName(firstName);
-	    librarian.setLastName(lastName);
-	    librarian.setEmail(email);
-	    librarian.setIdNum(idNum);
-	    librarian.setAddress(address);
+		PrintedMedia printedMedia = new PrintedMedia();
+	    printedMedia.setItemTitle(itemTitle);
+	    printedMedia.setDescription(description);
+	    printedMedia.setImageUrl(imageUrl);
+	    printedMedia.setItemNumber(itemNumber);
+	    printedMedia.setGenre(genre);
+	    printedMedia.setPublishDate(publishDate);
+	    printedMedia.setIsReservable(isReservable);
+		printedMedia.setIsCheckedOut(isCheckedOut);
+		printedMedia.setIssueNumber(issueNumber);
 
-	    librarianRepo.save(librarian);
-	    return librarian;		
+	    printedMediaRepository.save(printedMedia);
+	    return printedMedia;		
 	}
-	public Librarian createLibrarian(String idNum) {
-		Librarian librarian = new Librarian(); 
-		librarian.setIdNum(idNum);
-	    librarian.setUsername("UN");
-	    librarian.setPassword("PS");
-	    librarian.setFirstName("FN");
-	    librarian.setLastName("LN");
-	    librarian.setEmail("EM");
-	    librarian.setAddress("AD");
+	public PrintedMedia createPrintedMedia(String itemNumber) {
+		PrintedMedia printedMedia = new PrintedMedia(); 
+		long currentMillis = System.currentTimeMillis();
+		Date currentDay = new Date(currentMillis);
+
+		printedMedia.setItemTitle("itemTitle");
+	    printedMedia.setDescription("description");
+	    printedMedia.setImageUrl("imageUrl");
+	    printedMedia.setItemNumber(itemNumber);
+	    printedMedia.setGenre("genre");
+	    printedMedia.setPublishDate(currentDay);
+	    printedMedia.setIsReservable(true);
+		printedMedia.setIsCheckedOut(false);
+		printedMedia.setIssueNumber("issueNumber");
 	    
-		librarianRepo.save(librarian); 
-		return librarian;
+		printedMediaRepository.save(printedMedia);
+		return printedMedia;
 	}
 	
-	// looks for a librarian with the given ID number, returns them if found
+	// looks for printed media with the given item number, returns them if found
 	@Transactional 
-	public Librarian getLibrarian(String idNum) {
-		Librarian librarian = librarianRepo.findUserByIdNum(idNum); 
-		return librarian;
+	public PrintedMedia getPrintedMedia(String itemNumber) {
+		PrintedMedia printedMedia = printedMediaRepository.findPrintedMediaByItemNumber(itemNumber); 
+		return printedMedia;
 	}
 	
 	@Transactional 
-	public List<Librarian> getAllLibrarians() {
-		return toList(librarianRepo.findAll()); 
+	public List<PrintedMedia> getAllPrintedMedias() {
+		return toList(printedMediaRepository.findAll()); 
 	}
 
 	private <T> List<T> toList(Iterable<T> iterable){

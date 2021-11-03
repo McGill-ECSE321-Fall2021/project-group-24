@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.librarysystem.service;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,58 +11,65 @@ import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 
 @Service
-public class ArchiveService extends ItemService {
+public class ArchiveService  {
 	
 	@Autowired 
 	ArchiveRepository archiveRepository;
 		
-	// creates librarian, returns it so we know it's not null 
+	// creates archive, returns it so we know it's not null 
 	@Transactional 
 	public Archive createArchive(
-			String idNum,
-		    String firstName,
-		    String lastName,
-		    String address,
-		    String email,
-		    String username,
-		    String password) 
+		String itemTitle,
+		String description,
+		String imageUrl,
+		String itemNumber,
+		String genre,
+		Date publishDate,
+		boolean isReservable,
+		boolean isCheckedOut)
 	{
-		Librarian librarian = new Librarian();
-	    librarian.setUsername(username);
-	    librarian.setPassword(password);
-	    librarian.setFirstName(firstName);
-	    librarian.setLastName(lastName);
-	    librarian.setEmail(email);
-	    librarian.setIdNum(idNum);
-	    librarian.setAddress(address);
+		Archive archive = new Archive();
+	    archive.setItemTitle(itemTitle);
+	    archive.setDescription(description);
+	    archive.setImageUrl(imageUrl);
+	    archive.setItemNumber(itemNumber);
+	    archive.setGenre(genre);
+	    archive.setPublishDate(publishDate);
+	    archive.setIsReservable(isReservable);
+		archive.setIsCheckedOut(isCheckedOut);
 
-	    librarianRepo.save(librarian);
-	    return librarian;		
+	    archiveRepository.save(archive);
+	    return archive;		
 	}
-	public Librarian createLibrarian(String idNum) {
-		Librarian librarian = new Librarian(); 
-		librarian.setIdNum(idNum);
-	    librarian.setUsername("UN");
-	    librarian.setPassword("PS");
-	    librarian.setFirstName("FN");
-	    librarian.setLastName("LN");
-	    librarian.setEmail("EM");
-	    librarian.setAddress("AD");
+	public Archive createArchive(String itemNumber) {
+		Archive archive = new Archive(); 
+		// FIX PAST THIS POINT
+		long currentMillis = System.currentTimeMillis();
+		Date currentDay = new Date(currentMillis);
+
+		archive.setItemTitle("itemTitle");
+	    archive.setDescription("description");
+	    archive.setImageUrl("imageUrl");
+	    archive.setItemNumber(itemNumber);
+	    archive.setGenre("genre");
+	    archive.setPublishDate(currentDay);
+	    archive.setIsReservable(true);
+		archive.setIsCheckedOut(false);
 	    
-		librarianRepo.save(librarian); 
-		return librarian;
+		archiveRepository.save(archive);
+		return archive;
 	}
 	
-	// looks for a librarian with the given ID number, returns them if found
+	// looks for an archive with the given item number, returns them if found
 	@Transactional 
-	public Librarian getLibrarian(String idNum) {
-		Librarian librarian = librarianRepo.findUserByIdNum(idNum); 
-		return librarian;
+	public Archive getArchive(String itemNumber) {
+		Archive archive = archiveRepository.findArchiveByItemNumber(itemNumber); 
+		return archive;
 	}
 	
 	@Transactional 
-	public List<Librarian> getAllLibrarians() {
-		return toList(librarianRepo.findAll()); 
+	public List<Archive> getAllArchives() {
+		return toList(archiveRepository.findAll()); 
 	}
 
 	private <T> List<T> toList(Iterable<T> iterable){

@@ -10,58 +10,43 @@ import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 
 @Service
-public class LibrarianService {
+public class RoomService {
 	
 	@Autowired 
-	LibrarianRepository librarianRepo; 
+	RoomRepository roomRepository; 
 		
-	// creates librarian, returns it so we know it's not null 
+	// creates room, returns it so we know it's not null 
 	@Transactional 
-	public Librarian createLibrarian(
-			String idNum,
-		    String firstName,
-		    String lastName,
-		    String address,
-		    String email,
-		    String username,
-		    String password) 
+	public Room createRoom(
+			String roomNum,
+		    Integer capacity) 
 	{
-		Librarian librarian = new Librarian();
-	    librarian.setUsername(username);
-	    librarian.setPassword(password);
-	    librarian.setFirstName(firstName);
-	    librarian.setLastName(lastName);
-	    librarian.setEmail(email);
-	    librarian.setIdNum(idNum);
-	    librarian.setAddress(address);
+		Room room = new Room();
+	    room.setRoomNum(roomNum);
+	    room.setCapacity(capacity);
 
-	    librarianRepo.save(librarian);
-	    return librarian;		
+	    roomRepository.save(room);
+	    return room;		
 	}
-	public Librarian createLibrarian(String idNum) {
-		Librarian librarian = new Librarian(); 
-		librarian.setIdNum(idNum);
-	    librarian.setUsername("UN");
-	    librarian.setPassword("PS");
-	    librarian.setFirstName("FN");
-	    librarian.setLastName("LN");
-	    librarian.setEmail("EM");
-	    librarian.setAddress("AD");
+	public Room createRoom(String idNum) {
+		Room room = new Room(); 
+		room.setRoomNum("roomNum");
+	    room.setCapacity(0);
 	    
-		librarianRepo.save(librarian); 
-		return librarian;
+		roomRepository.save(room); 
+		return room;
 	}
 	
-	// looks for a librarian with the given ID number, returns them if found
+	// looks for a room with the given ID number, returns them if found
 	@Transactional 
-	public Librarian getLibrarian(String idNum) {
-		Librarian librarian = librarianRepo.findUserByIdNum(idNum); 
-		return librarian;
+	public Room getRoom(String roomNum) {
+		Room room = roomRepository.findRoomByRoomNum(roomNum); 
+		return room;
 	}
 	
 	@Transactional 
-	public List<Librarian> getAllLibrarians() {
-		return toList(librarianRepo.findAll()); 
+	public List<Room> getAllRoom() {
+		return toList(roomRepository.findAll()); 
 	}
 
 	private <T> List<T> toList(Iterable<T> iterable){

@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.librarysystem.service;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,58 +11,76 @@ import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 
 @Service
-public class LibrarianService {
+public class MovieService  {
 	
 	@Autowired 
-	LibrarianRepository librarianRepo; 
+	MovieRepository movieRepository;
 		
-	// creates librarian, returns it so we know it's not null 
+	// creates movie, returns it so we know it's not null 
 	@Transactional 
-	public Librarian createLibrarian(
-			String idNum,
-		    String firstName,
-		    String lastName,
-		    String address,
-		    String email,
-		    String username,
-		    String password) 
+	public Movie createMovie(
+		String itemTitle,
+		String description,
+		String imageUrl,
+		String itemNumber,
+		String genre,
+		Date publishDate,
+		boolean isReservable,
+		boolean isCheckedOut,
+		String productionCompany,
+		String producer,
+		String director,
+		String cast)
 	{
-		Librarian librarian = new Librarian();
-	    librarian.setUsername(username);
-	    librarian.setPassword(password);
-	    librarian.setFirstName(firstName);
-	    librarian.setLastName(lastName);
-	    librarian.setEmail(email);
-	    librarian.setIdNum(idNum);
-	    librarian.setAddress(address);
+		Movie movie = new Movie();
+	    movie.setItemTitle(itemTitle);
+	    movie.setDescription(description);
+	    movie.setImageUrl(imageUrl);
+	    movie.setItemNumber(itemNumber);
+	    movie.setGenre(genre);
+	    movie.setPublishDate(publishDate);
+	    movie.setIsReservable(isReservable);
+		movie.setIsCheckedOut(isCheckedOut);
+		movie.setProductionCompany(productionCompany);
+	    movie.setProducer(producer);
+		movie.setDirector(director);
+		movie.setMovieCast(cast);
 
-	    librarianRepo.save(librarian);
-	    return librarian;		
+	    movieRepository.save(movie);
+	    return movie;		
 	}
-	public Librarian createLibrarian(String idNum) {
-		Librarian librarian = new Librarian(); 
-		librarian.setIdNum(idNum);
-	    librarian.setUsername("UN");
-	    librarian.setPassword("PS");
-	    librarian.setFirstName("FN");
-	    librarian.setLastName("LN");
-	    librarian.setEmail("EM");
-	    librarian.setAddress("AD");
+	public Movie createMovie(String itemNumber) {
+		Movie movie = new Movie(); 
+		long currentMillis = System.currentTimeMillis();
+		Date currentDay = new Date(currentMillis);
+
+		movie.setItemTitle("itemTitle");
+	    movie.setDescription("description");
+	    movie.setImageUrl("imageUrl");
+	    movie.setItemNumber(itemNumber);
+	    movie.setGenre("genre");
+	    movie.setPublishDate(currentDay);
+	    movie.setIsReservable(true);
+		movie.setIsCheckedOut(false);
+		movie.setProductionCompany("productionCompany");
+	    movie.setProducer("producer");
+		movie.setDirector("director");
+		movie.setMovieCast("cast");
 	    
-		librarianRepo.save(librarian); 
-		return librarian;
+		movieRepository.save(movie);
+	    return movie;	
 	}
 	
-	// looks for a librarian with the given ID number, returns them if found
+	// looks for a movie with the given item number, returns them if found
 	@Transactional 
-	public Librarian getLibrarian(String idNum) {
-		Librarian librarian = librarianRepo.findUserByIdNum(idNum); 
-		return librarian;
+	public Movie getMovie(String itemNumber) {
+		Movie movie = movieRepository.findMovieByItemNumber(itemNumber); 
+		return movie;
 	}
 	
 	@Transactional 
-	public List<Librarian> getAllLibrarians() {
-		return toList(librarianRepo.findAll()); 
+	public List<Movie> getAllMovies() {
+		return toList(movieRepository.findAll()); 
 	}
 
 	private <T> List<T> toList(Iterable<T> iterable){
