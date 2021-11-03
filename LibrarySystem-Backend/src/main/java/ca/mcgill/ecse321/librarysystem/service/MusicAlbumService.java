@@ -73,7 +73,7 @@ public class MusicAlbumService {
 	}
 	
 	@Transactional 
-	public List<MusicAlbum> getAllMusicAlbum() {
+	public List<MusicAlbum> getAllMusicAlbums() {
 		return toList(musicAlbumRepository.findAll()); 
 	}
 

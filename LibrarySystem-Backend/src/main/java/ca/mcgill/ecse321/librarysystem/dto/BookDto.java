@@ -55,8 +55,32 @@ public class BookDto {
 	public String getItemNumber() {
 		return this.itemNumber; 
 	}
-	
 	public void setItemNumber(String itemNumber) {
 		this.itemNumber = itemNumber; 
 	}
+	public String getAuthor() {
+		return this.author; 
+	}
+	
+	public String getPublisher() {
+		    return this.publisher;
+	 }
+	public String getItemTitle() {
+		    return this.itemTitle;
+	}
+	public String getDescription() {
+		    return this.description;
+	}
+	  public String getImageUrl() {
+		    return this.imageUrl;
+		  }
+	  public String getGenre() {
+		    return this.genre;
+		  } public Date getPublishDate() {
+			    return this.publishDate;
+		  }  public boolean getIsReservable() {
+			    return this.isReservable;
+		  }  public boolean getIsCheckedOut() {
+			    return this.isCheckedOut;
+		  }
 }
