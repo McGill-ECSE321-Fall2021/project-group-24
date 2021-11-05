@@ -4,12 +4,16 @@ import java.sql.Date;
 import java.sql.Time;
 import javax.persistence.*;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "timeSlot")
 public abstract class TimeSlot {
 
   @Id
+  @GeneratedValue(generator="system-uuid")
+  @GenericGenerator(name="system-uuid", strategy = "uuid")
   private String timeSlotId;
   private Date startDate;
   private Time startTime;

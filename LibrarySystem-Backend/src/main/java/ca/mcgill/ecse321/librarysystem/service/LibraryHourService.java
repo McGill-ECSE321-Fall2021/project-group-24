@@ -24,9 +24,7 @@ public class LibraryHourService {
 	 */
 	@Transactional 
 	public LibraryHour createLibraryHour(DayOfWeek dayOfWeek, Time startTime, Time endTime) {
-		User user = null;
 		
-		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify library hours"); 
 		if (dayOfWeek==null || startTime ==null || endTime ==null) {
 			throw new IllegalArgumentException ("Fields cannot be blank"); 
 		}
@@ -50,9 +48,7 @@ public class LibraryHourService {
 	 * @return the new library hour
 	 */
 	public LibraryHour modifyLibraryHour (DayOfWeek dayOfWeek, Time startTime, Time endTime) {
-		User user = null; 
 		// if (!(HeadLibrarian.isLoggedIn()) throw errors
-		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify library hours"); 
 		if (dayOfWeek==null || startTime ==null || endTime ==null) {
 			throw new IllegalArgumentException ("Fields cannot be blank"); 
 		}
@@ -77,9 +73,8 @@ public class LibraryHourService {
 	 */
 	@Transactional 
 	public boolean removeLibraryHour(DayOfWeek dayOfWeek) {
-		User user = null;
 		
-		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify library hours"); 
+	//	if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify library hours"); 
 		if (dayOfWeek==null) throw new IllegalArgumentException ("Field cannot be blank");
 		
 		if (libraryHourRepo.findHourByDayOfWeek(dayOfWeek)==null) throw new IllegalArgumentException("There's no library hour for that day to delete"); 
