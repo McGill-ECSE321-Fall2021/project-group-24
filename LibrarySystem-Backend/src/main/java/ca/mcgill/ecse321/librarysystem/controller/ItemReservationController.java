@@ -60,8 +60,6 @@ public class ItemReservationController {
 	
 	@PostMapping(value = {"/itemReservations/checkoutItem/{itemNumber}/byPatron/{idNum}", "itemReservations/checkoutItem/{itemNumber}/byPatron/{idNum}"})
 	public ItemReservationDto checkoutItem(@PathVariable("itemNumber") String itemNumber, @PathVariable("idNum") String idNum) {
-		
-	
 		return convertToDto(itemReservationService.checkoutItem(itemNumber, idNum));
 		
 	}
@@ -86,6 +84,26 @@ public class ItemReservationController {
 		try {
 			ItemReservation reservation = itemReservationService.createItemReservation(timeSlotId,
 					startDate, Time.valueOf(LocalTime.parse("00:00")), endDate, Time.valueOf(LocalTime.parse("23:59")), idNum, itemNumber, numOfRenewalsLeft, isCheckedOut
+			     );
+			return convertToDto(reservation);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+	
+	@PostMapping(value = { "/itemReservations/customDate/{timeSlotId}", "/itemReservations/customDate/{timeSlotId}/" })
+	public ItemReservationDto createItemReservationCustomDates(@PathVariable("timeSlotId") String timeSlotId,
+			 @RequestParam Integer numOfRenewalsLeft,
+			 @RequestParam String idNum,
+			 @RequestParam String itemNumber,
+			 @RequestParam boolean isCheckedOut, @RequestParam String startDate
+			) {
+		System.out.println("Flag Post"); 
+		Date endDate = Date.valueOf(LocalDate.parse(startDate).plusWeeks(2));
+		try {
+			ItemReservation reservation = itemReservationService.createItemReservation(timeSlotId,
+					Date.valueOf(LocalDate.parse(startDate)), Time.valueOf(LocalTime.parse("00:00")), endDate, Time.valueOf(LocalTime.parse("23:59")), idNum, itemNumber, numOfRenewalsLeft, isCheckedOut
 			     );
 			return convertToDto(reservation);
 		} catch (IllegalArgumentException e) {

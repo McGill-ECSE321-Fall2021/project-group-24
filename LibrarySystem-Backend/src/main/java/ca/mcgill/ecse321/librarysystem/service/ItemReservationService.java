@@ -97,25 +97,26 @@ public class ItemReservationService {
 	
 	@Transactional
 	public ItemReservation checkoutItem(String itemNumber, String idNum) {
-		ItemReservation latestReservation = null; //find the latest reservation
+		ItemReservation currentReservation = null; //find the reservation
+		Date today = Date.valueOf(LocalDate.now());
 		for (ItemReservation r : getItemReservationsByItemNumberAndIdNum(itemNumber, idNum)) {
-			if (latestReservation == null) {
-				latestReservation = r;
-			} else if (latestReservation.getEndDate().before(r.getStartDate())) {
-				latestReservation = r;
+			if (r.getStartDate().before(today) && r.getEndDate().after(today) || r.getStartDate().equals(today) && r.getEndDate().after(today) || r.getStartDate().before(today) && r.getEndDate().equals(today)) {
+				currentReservation = r;
 			}
 		}
-		Date today = Date.valueOf(LocalDate.now());
-		if (latestReservation.getStartDate().after(today) || latestReservation.getEndDate().before(today)) {
-			throw new IllegalArgumentException("You do not have a reservation for this item at this time");
+		if (currentReservation == null) {
+			//create reservation?
+			return null;
+		} else if (!currentReservation.getIdNum().equals(idNum)) {
+			throw new IllegalArgumentException("No reservation at this time for this patron");
 		}
-		//make so extend if possible
-		latestReservation.setIsCheckedOut(true);
-		Item item = itemRepository.findItemByItemNumber(latestReservation.getItemNumber());
-		item.setCurrentReservationId(latestReservation.getTimeSlotId());
+		currentReservation.setEndDate(Date.valueOf(LocalDate.now().plusWeeks(2)));
+		currentReservation.setIsCheckedOut(true);
+		Item item = itemRepository.findItemByItemNumber(currentReservation.getItemNumber());
+		item.setCurrentReservationId(currentReservation.getTimeSlotId());
 		itemRepository.save(item);
-		itemReservationRepository.save(latestReservation);
-		return latestReservation;
+		itemReservationRepository.save(currentReservation);
+		return currentReservation;
 	}
 	
 	@Transactional
