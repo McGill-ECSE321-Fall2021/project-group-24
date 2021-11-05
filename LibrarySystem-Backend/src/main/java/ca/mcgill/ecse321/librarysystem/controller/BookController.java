@@ -50,9 +50,29 @@ public class BookController {
 			@RequestParam String author,
 			@RequestParam String genre,
 			@RequestParam String publishDate,
-			@RequestParam boolean isReservable,
-			@RequestParam boolean isCheckedOut
+			@RequestParam boolean isReservable
 			) {
+		if (itemTitle == null) {
+			itemTitle = "title";
+		}
+		if (description == null) {
+			description = "description";
+		}
+		if (imageURL == null) {
+			imageURL = "imageURL";
+		}
+		if (publisher == null) {
+			publisher = "publisher";
+		}
+		if (author == null) {
+			author = "author";
+		}
+		if (genre == null) {
+			genre = "genre";
+		}
+		if (publishDate == null) {
+			publishDate = LocalDate.now().toString();
+		}
 		System.out.println("Flag Post"); 
 		Book book = bookService.createBook(itemTitle,
 		     description,
@@ -61,7 +81,42 @@ public class BookController {
 		     genre,
 		     Date.valueOf(LocalDate.parse(publishDate)),
 		     isReservable,
-		     isCheckedOut,
+		     author,
+		     publisher
+		     );
+		System.out.println(book.getAuthor());
+		return convertToDto(book);
+	}
+	
+	@PostMapping(value = { "/items/newEmptyBook/{itemNumber}", "/items/newEmptyBook/{itemNumber}/" })
+	public BookDto createEmptyBook(@PathVariable("itemNumber") String itemNumber
+	
+			) {
+
+			String itemTitle = "title";
+
+	
+			String description = "description";
+
+			String imageURL = "imageURL";
+
+			String publisher = "publisher";
+
+	
+			String author = "author";
+			String genre = "genre";
+		
+
+			String publishDate = LocalDate.now().toString();
+			boolean isReservable = true;
+		System.out.println("Flag Post"); 
+		Book book = bookService.createBook(itemTitle,
+		     description,
+		     imageURL,
+		     itemNumber,
+		     genre,
+		     Date.valueOf(LocalDate.parse(publishDate)),
+		     isReservable,
 		     author,
 		     publisher
 		     );
@@ -70,7 +125,7 @@ public class BookController {
 	}
 	
 	private BookDto convertToDto(Book book){
-		BookDto bookDto = new BookDto(book.getItemTitle(), book.getDescription(), book.getImageUrl(), book.getPublisher(), book.getAuthor(), book.getIsCheckedOut(), book.getGenre(), book.getPublishDate(), book.getIsReservable(),book.getItemNumber());
+		BookDto bookDto = new BookDto(book.getItemTitle(), book.getDescription(), book.getImageUrl(),book.getPublisher(), book.getAuthor(), book.getGenre(), book.getPublishDate(), book.getIsReservable(),book.getCurrentReservationId(), book.getItemNumber());
 		System.out.println(bookDto.getAuthor());
 		return bookDto;
 	}

@@ -157,7 +157,7 @@ public class TestLibrarySystemPersistence {
     String genre = "Archive Genre";
     Date publishDate = Date.valueOf("2021-10-15");
     boolean isReservable = true;
-    boolean isCheckedOut = true;
+    String currentReservationId = null;
 
     archive.setItemTitle(itemTitle);
     archive.setDescription(description);
@@ -166,7 +166,7 @@ public class TestLibrarySystemPersistence {
     archive.setGenre(genre);
     archive.setPublishDate(publishDate);
     archive.setIsReservable(isReservable);
-    archive.setIsCheckedOut(isCheckedOut);
+    archive.setCurrentReservationId(currentReservationId);
 
     archiveRepository.save(archive);
 
@@ -182,7 +182,7 @@ public class TestLibrarySystemPersistence {
     assertEquals(genre, archive.getGenre());
     assertEquals(publishDate, archive.getPublishDate());
     assertEquals(isReservable, archive.getIsReservable());
-    assertEquals(isCheckedOut, archive.getIsCheckedOut());
+    assertEquals(currentReservationId, archive.getCurrentReservationId());
   }
 
   //------------------TESTING BOOK------------------------//
@@ -200,7 +200,7 @@ public class TestLibrarySystemPersistence {
     String genre = "Book Genre";
     Date publishDate = Date.valueOf("2021-10-15");
     boolean isReservable = true;
-    boolean isCheckedOut = true;
+
 
     book.setAuthor(author);
     book.setPublisher(publisher);
@@ -211,7 +211,7 @@ public class TestLibrarySystemPersistence {
     book.setGenre(genre);
     book.setPublishDate(publishDate);
     book.setIsReservable(isReservable);
-    book.setIsCheckedOut(isCheckedOut);
+    book.setCurrentReservationId(null);
 
     bookRepository.save(book);
 
@@ -230,7 +230,7 @@ public class TestLibrarySystemPersistence {
     assertEquals(genre, book.getGenre());
     assertEquals(publishDate, book.getPublishDate());
     assertEquals(isReservable, book.getIsReservable());
-    assertEquals(isCheckedOut, book.getIsCheckedOut());
+    assertEquals(null, book.getCurrentReservationId());
   }
 
   //------------------TESTING HEAD LIBRARIAN------------------------//
@@ -361,7 +361,6 @@ public class TestLibrarySystemPersistence {
     String genre = "Movie Genre";
     Date publishDate = Date.valueOf("2021-10-15");
     boolean isReservable = true;
-    boolean isCheckedOut = true;
 
     movie.setProductionCompany(productionCompany);
     movie.setMovieCast(movieCast);
@@ -374,7 +373,7 @@ public class TestLibrarySystemPersistence {
     movie.setGenre(genre);
     movie.setPublishDate(publishDate);
     movie.setIsReservable(isReservable);
-    movie.setIsCheckedOut(isCheckedOut);
+    movie.setCurrentReservationId(null);
 
     movieRepository.save(movie);
 
@@ -432,7 +431,7 @@ public class TestLibrarySystemPersistence {
       String genre = "Music Album Genre";
       Date publishDate = Date.valueOf("2021-10-15");
       boolean isReservable = true;
-      boolean isCheckedOut = true;
+      String currentReservationId = null;
   
       musicAlbum.setArtist(artist);
       musicAlbum.setRecordingLabel(recordingLabel);
@@ -443,7 +442,7 @@ public class TestLibrarySystemPersistence {
       musicAlbum.setGenre(genre);
       musicAlbum.setPublishDate(publishDate);
       musicAlbum.setIsReservable(isReservable);
-      musicAlbum.setIsCheckedOut(isCheckedOut);
+      musicAlbum.setCurrentReservationId(currentReservationId);
   
       musicAlbumRepository.save(musicAlbum);
   
@@ -462,7 +461,7 @@ public class TestLibrarySystemPersistence {
       assertEquals(genre, musicAlbum.getGenre());
       assertEquals(publishDate, musicAlbum.getPublishDate());
       assertEquals(isReservable, musicAlbum.getIsReservable());
-      assertEquals(isCheckedOut, musicAlbum.getIsCheckedOut());
+      assertEquals(currentReservationId, musicAlbum.getCurrentReservationId());
     }
   
     //------------------TESTING PATRON------------------------//
@@ -537,7 +536,7 @@ public class TestLibrarySystemPersistence {
       printedMedia.setGenre(genre);
       printedMedia.setPublishDate(publishDate);
       printedMedia.setIsReservable(isReservable);
-      printedMedia.setIsCheckedOut(isCheckedOut);
+      printedMedia.setCurrentReservationId(null);
   
       printedMediaRepository.save(printedMedia);
   
@@ -556,7 +555,7 @@ public class TestLibrarySystemPersistence {
       assertEquals(genre, printedMedia.getGenre());
       assertEquals(publishDate, printedMedia.getPublishDate());
       assertEquals(isReservable, printedMedia.getIsReservable());
-      assertEquals(isCheckedOut, printedMedia.getIsCheckedOut());
+      assertEquals(null, printedMedia.getCurrentReservationId());
     }
   
     //------------------TESTING ROOM------------------------//

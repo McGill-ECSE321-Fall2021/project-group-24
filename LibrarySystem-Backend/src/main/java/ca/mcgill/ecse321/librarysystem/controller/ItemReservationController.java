@@ -36,10 +36,34 @@ public class ItemReservationController {
 		return itemReservationService.getAllItemReservations().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
 	}
 	
+	@GetMapping(value = { "/itemReservations/patron/{idNum}", "/registrations/patron/{idNum}/" })
+	public List<ItemReservationDto> getItemReservationsOfPatron(@PathVariable("idNum") String idNum) {
+		return getItemReservationDtosForPatron(idNum);
+	}
+	
+	@GetMapping(value = { "/itemReservations/item/{itemNumber}", "/registrations/item/{itemNumber}/" })
+	public List<ItemReservationDto> getItemReservationsOfItem(@PathVariable("itemNumber") String itemNumber) {
+		return getItemReservationDtosForItem(itemNumber);
+	}
+	
 	@GetMapping(value = { "/itemReservations/{timeSlotId}", "/itemReservations/{timeSlotId}/" })
 	public ItemReservationDto getItemReservation(@PathVariable("timeSlotId") String timeSlotId) {
 		System.out.println("Flag Get" + timeSlotId); 
 		return convertToDto(itemReservationService.getItemReservation(timeSlotId));
+	}
+	
+	@PostMapping(value = {"/itemReservations/returnItem/{itemNumber}", "itemReservations/returnItem/{itemNumber}/"})
+	public ItemReservationDto returnItem(@PathVariable("itemNumber") String itemNumber) {
+		return convertToDto(itemReservationService.returnItemFromReservation(itemNumber));
+		
+	}
+	
+	@PostMapping(value = {"/itemReservations/checkoutItem/{itemNumber}/byPatron/{idNum}", "itemReservations/checkoutItem/{itemNumber}/byPatron/{idNum}"})
+	public String checkoutItem(@PathVariable("itemNumber") String itemNumber, @PathVariable("idNum") String idNum) {
+		itemReservationService.updateReservationCheckedOut(itemNumber, idNum);
+	
+		return "Item successfully checked out";
+		
 	}
 
 	@PostMapping(value = { "/itemReservations/{timeSlotId}", "/itemReservations/{timeSlotId}/" })
@@ -50,17 +74,44 @@ public class ItemReservationController {
 			 @RequestParam String endTime,
 			 @RequestParam Integer numOfRenewalsLeft,
 			 @RequestParam String idNum,
-			 @RequestParam String itemNumber
+			 @RequestParam String itemNumber,
+			 @RequestParam boolean isCheckedOut
 			) {
+		
 		System.out.println("Flag Post"); 
-		ItemReservation reservation = itemReservationService.createItemReservation(timeSlotId,
-				Date.valueOf(LocalDate.parse(startDate)), Time.valueOf(LocalTime.parse(startTime)), Date.valueOf(LocalDate.parse(endDate)), Time.valueOf(LocalTime.parse(endTime)), idNum, itemNumber, numOfRenewalsLeft
-		     );
-		return convertToDto(reservation);
+		try {
+			ItemReservation reservation = itemReservationService.createItemReservation(timeSlotId,
+					Date.valueOf(LocalDate.parse(startDate)), Time.valueOf(LocalTime.parse(startTime)), Date.valueOf(LocalDate.parse(endDate)), Time.valueOf(LocalTime.parse(endTime)), idNum, itemNumber, numOfRenewalsLeft, isCheckedOut
+			     );
+			return convertToDto(reservation);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		
 	}
 	
+	private List<ItemReservationDto> getItemReservationDtosForPatron(String idNum) {
+		List<ItemReservation> itemReservationsForPatron = itemReservationService.getItemReservationsByIdNum(idNum);
+		List<ItemReservationDto> reservations = new ArrayList<>();
+		for (ItemReservation reservation : itemReservationsForPatron) {
+			reservations.add(convertToDto(reservation));
+		}
+		return reservations;
+	}
+	
+	private List<ItemReservationDto> getItemReservationDtosForItem(String itemNumber) {
+		List<ItemReservation> itemReservationsForItem = itemReservationService.getItemReservationsByItemNumber(itemNumber);
+		List<ItemReservationDto> reservations = new ArrayList<>();
+		for (ItemReservation reservation : itemReservationsForItem) {
+			reservations.add(convertToDto(reservation));
+		}
+		return reservations;
+	}
+	
+	
 	private ItemReservationDto convertToDto(ItemReservation reservation){
-		ItemReservationDto reservationDto = new ItemReservationDto(reservation.getTimeSlotId(), reservation.getStartDate(), reservation.getStartTime(), reservation.getEndDate(), reservation.getEndTime(), reservation.getNumOfRenewalsLeft(), reservation.getIdNum(), reservation.getItemNumber());
+		ItemReservationDto reservationDto = new ItemReservationDto(reservation.getTimeSlotId(), reservation.getStartDate(), reservation.getStartTime(), reservation.getEndDate(), reservation.getEndTime(), reservation.getNumOfRenewalsLeft(), reservation.getIdNum(), reservation.getItemNumber(), reservation.getIsCheckedOut());
 	
 		return reservationDto;
 	}

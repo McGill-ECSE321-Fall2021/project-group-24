@@ -26,7 +26,6 @@ public class BookService  {
 		String genre,
 		Date publishDate,
 		boolean isReservable,
-		boolean isCheckedOut,
 		String author,
 		String publisher)
 	{
@@ -38,18 +37,16 @@ public class BookService  {
 	    book.setGenre(genre);
 	    book.setPublishDate(publishDate);
 	    book.setIsReservable(isReservable);
-		book.setIsCheckedOut(isCheckedOut);
 		book.setAuthor(author);
 		book.setPublisher(publisher);
 
-	    bookRepository.save(book);
+		bookRepository.save(book);
 	    return book;		
 	}
 	public Book createBook(String itemNumber) {
 		Book book = new Book(); 
 		long currentMillis = System.currentTimeMillis();
 		Date currentDay = new Date(currentMillis);
-
 		book.setItemTitle("itemTitle");
 	    book.setDescription("description");
 	    book.setImageUrl("imageUrl");
@@ -57,12 +54,12 @@ public class BookService  {
 	    book.setGenre("genre");
 	    book.setPublishDate(currentDay);
 	    book.setIsReservable(true);
-		book.setIsCheckedOut(false);
 	    book.setAuthor("author");
 		book.setPublisher("publisher");
 		bookRepository.save(book);
 		return book;
 	}
+
 	
 	// looks for a book with the given item number, returns them if found
 	@Transactional 

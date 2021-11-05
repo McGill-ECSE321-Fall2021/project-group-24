@@ -176,14 +176,15 @@ public class LibrarySystemRepository {
     String genre,
     Date publishDate,
     boolean isReservable,
-    String itemNumber
+    String itemNumber,
+    String currentReservationId
   ) {
     Book b = new Book();
     b.setItemTitle(itemTitle);
     b.setDescription(description);
     b.setAuthor(author);
     b.setGenre(genre);
-    b.setIsCheckedOut(isCheckedOut);
+    b.setCurrentReservationId(currentReservationId);
     b.setPublishDate(publishDate);
     b.setItemNumber(itemNumber);
     b.setPublisher(publisher);
@@ -207,7 +208,7 @@ public class LibrarySystemRepository {
     String imageUrl,
     String itemTitle,
     Date publishDate,
-    boolean isCheckedOut,
+    String currentReservationId,
     String recordingLabel,
     String artist,
     String itemNumber
@@ -216,7 +217,7 @@ public class LibrarySystemRepository {
     m.setDescription(description);
     m.setGenre(genre);
     m.setImageUrl(imageUrl);
-    m.setIsCheckedOut(isCheckedOut);
+    m.setCurrentReservationId(currentReservationId);
     m.setIsReservable(true);
     m.setItemNumber(itemNumber);
     m.setItemTitle(itemTitle);
@@ -245,7 +246,7 @@ public class LibrarySystemRepository {
     String productionCompany,
     String movieCast,
     String director,
-    boolean isCheckedOut,
+    String currentReservationId,
     String itemNumber,
     String producer
   ) {
@@ -253,7 +254,7 @@ public class LibrarySystemRepository {
     m.setDescription(description);
     m.setGenre(genre);
     m.setImageUrl(imageUrl);
-    m.setIsCheckedOut(isCheckedOut);
+    m.setCurrentReservationId(currentReservationId);
     m.setIsReservable(true);
     m.setItemNumber(itemNumber);
     m.setItemTitle(itemTitle);
@@ -282,14 +283,14 @@ public class LibrarySystemRepository {
     String itemTitle,
     Date publishDate,
     String issueNumber,
-    boolean isCheckedOut,
+    String currentReservationId,
     String itemNumber
   ) {
     PrintedMedia pm = new PrintedMedia();
     pm.setDescription(description);
     pm.setGenre(genre);
     pm.setImageUrl(imageUrl);
-    pm.setIsCheckedOut(isCheckedOut);
+    pm.setCurrentReservationId(currentReservationId);
     pm.setIsReservable(true);
     pm.setItemNumber(itemNumber);
     pm.setItemTitle(itemTitle);
@@ -314,13 +315,13 @@ public class LibrarySystemRepository {
     String imageUrl,
     String itemTitle,
     Date publishDate,
-    String itemNumber
+    String itemNumber,String currentReservationId
   ) {
     Archive a = new Archive();
     a.setDescription(description);
     a.setGenre(genre);
     a.setImageUrl(imageUrl);
-    a.setIsCheckedOut(false);
+    a.setCurrentReservationId(currentReservationId);
     a.setIsReservable(false);
     a.setItemNumber(itemNumber);
     a.setItemTitle(itemTitle);

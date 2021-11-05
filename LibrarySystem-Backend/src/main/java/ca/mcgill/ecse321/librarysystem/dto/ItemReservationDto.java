@@ -13,6 +13,7 @@ public class ItemReservationDto {
 	
 	private String idNum;
 	private String itemNumber;
+	private boolean isCheckedOut;
 	
 	public ItemReservationDto() {
 		
@@ -25,7 +26,7 @@ public class ItemReservationDto {
 	   Time endTime,
 	 int numOfRenewalsLeft,
 	 String idNum,
-	 String itemNumber ) {
+	 String itemNumber, boolean isCheckedOut) {
 		this.timeSlotId = timeSlotId;
 		this.startDate = startDate;
 		this.startTime = startTime;
@@ -34,6 +35,7 @@ public class ItemReservationDto {
 		this.numOfRenewalsLeft = numOfRenewalsLeft;
 		this.idNum = idNum;
 		this.itemNumber = itemNumber;
+		this.isCheckedOut = isCheckedOut;
 		
 	}
 	
@@ -71,5 +73,9 @@ public class ItemReservationDto {
 
 	public String getIdNum() {
 		return idNum;
+	}
+	
+	public boolean getIsCheckedOut() {
+		return isCheckedOut;
 	}
 }

@@ -9,6 +9,7 @@ public class ItemReservation extends TimeSlot {
 	
 	private String idNum;
 	private String itemNumber;
+	private boolean isCheckedOut;
 
 	@ManyToOne(optional = false)
 	public String getIdNum() {
@@ -33,5 +34,11 @@ public class ItemReservation extends TimeSlot {
 
 	public void setItemNumber(String itemNumber) {
 		this.itemNumber = itemNumber;
+	}
+	public boolean getIsCheckedOut() {
+		return this.isCheckedOut;
+	}
+	public void setIsCheckedOut(boolean isCheckedOut) {
+		this.isCheckedOut = isCheckedOut;
 	}
 }

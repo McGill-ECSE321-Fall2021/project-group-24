@@ -20,7 +20,7 @@ public abstract class Item {
   private String genre;
   private Date publishDate;
   private boolean isReservable;
-  private boolean isCheckedOut;
+  private String currentReservationId;
 
   @ElementCollection
   private Set<ItemReservation> itemReservations;
@@ -91,11 +91,11 @@ public abstract class Item {
     this.isReservable = isReservable;
   }
 
-  public boolean getIsCheckedOut() {
-    return this.isCheckedOut;
+  public String getCurrentReservationId() {
+    return this.currentReservationId;
   }
 
-  public void setIsCheckedOut(boolean isCheckedOut) {
-    this.isCheckedOut = isCheckedOut;
+  public void setCurrentReservationId(String currentReservationId) {
+    this.currentReservationId = currentReservationId;
   }
 }

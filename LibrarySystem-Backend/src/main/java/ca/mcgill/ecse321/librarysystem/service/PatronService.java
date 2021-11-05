@@ -14,6 +14,7 @@ public class PatronService {
 	
 	@Autowired 
 	PatronRepository patronRepo; 
+	ItemReservationRepository reservationRepo;
 		
 	// creates patron, returns it so we know it's not null 
 	@Transactional 
@@ -79,5 +80,17 @@ public class PatronService {
 			resultList.add(t);
 		}
 		return resultList;
+	}
+	
+	@Transactional
+	public List<ItemReservation> getItemReservationsByPatron(String idNum) {
+	    if (getPatron(idNum) == null ) {
+	        throw new IllegalArgumentException("Patron cannot be null!");
+	    }
+	    List<ItemReservation> reservationsByPatron = new ArrayList<>();
+	    for (ItemReservation r : reservationRepo.findItemReservationByIdNum(idNum)) {
+	        reservationsByPatron.add(r);
+	    }
+	    return reservationsByPatron;
 	}
 }

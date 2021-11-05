@@ -10,46 +10,31 @@ public class BookDto {
 	private String genre;
 	private Date publishDate;
 	private boolean isReservable;
-	private boolean isCheckedOut;
+	private String currentReservationId;
 	private String author;
 	private String publisher;
 	
-	public BookDto() {
-	}
-	
-	public BookDto(String itemNumber) {
-		this( "itemTitle",
-			     "description",
-			    "imageURL",
-			    "publisher",
-			    "author",
-			    false,
-			    "genre",
-			    new Date(0),
-			    true,
-			    itemNumber); 
-	}
 	
 	public BookDto(String itemTitle,
 		    String description,
 		    String imageURL,
 		    String publisher,
 		    String author,
-		    boolean isCheckedOut,
 		    String genre,
 		    Date publishDate,
 		    boolean isReservable,
+		    String currentReservationId,
 		    String itemNumber) {
 	    this.itemTitle =  itemTitle;
 	    this.description = description;
 	    this.imageUrl = imageURL;
 	    this.publisher = publisher;
 	    this.author = author;
-	    this.isCheckedOut = isCheckedOut;
 	    this.genre = genre;
 	    this.publishDate = publishDate;
 	    this.isReservable = isReservable;
 	    this.itemNumber = itemNumber;
+	    this.currentReservationId = currentReservationId;
 	}
 	
 	public String getItemNumber() {
@@ -80,7 +65,7 @@ public class BookDto {
 			    return this.publishDate;
 		  }  public boolean getIsReservable() {
 			    return this.isReservable;
-		  }  public boolean getIsCheckedOut() {
-			    return this.isCheckedOut;
+		  }  public String getCurrentReservationId() {
+			    return this.currentReservationId;
 		  }
 }
