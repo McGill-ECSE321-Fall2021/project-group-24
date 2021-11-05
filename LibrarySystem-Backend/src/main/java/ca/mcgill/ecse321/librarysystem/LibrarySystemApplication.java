@@ -5,15 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.librarysystem.model.*;
-
 @RestController
 @SpringBootApplication
 public class LibrarySystemApplication {
-  
-  private static LibrarySystem librarySystem; 
-  private static User currentUser; 
-  	
+ 
   public static void main(String[] args) {
     SpringApplication.run(LibrarySystemApplication.class, args);
   }
@@ -22,8 +17,4 @@ public class LibrarySystemApplication {
   public String greeting() {
     return "Hello world!";
   }
-  
-
-
-  
 }
