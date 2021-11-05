@@ -15,8 +15,6 @@ public class LibrarianService {
 	
 	@Autowired 
 	LibrarianRepository librarianRepo; 
-	@Autowired
-	ShiftRepository shiftRepo; 
 		
 	/** 
 	 * @author Arman
