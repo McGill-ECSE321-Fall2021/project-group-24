@@ -1,14 +1,11 @@
 package ca.mcgill.ecse321.librarysystem.service;
-import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ca.mcgill.ecse321.librarysystem.LibrarySystemApplication;
 import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 import ca.mcgill.ecse321.librarysystem.model.LibraryHour.DayOfWeek;
@@ -17,7 +14,7 @@ public class LibraryHourService {
 	@Autowired
 	LibraryHourRepository libraryHourRepo; 
 	
-	/*
+	/**
 	 * @author Arman
 	 * creates a new operating hour (called "libraryHour") for the library 
 	 * @param dayOfWeek, startTime, endTime
@@ -44,7 +41,7 @@ public class LibraryHourService {
 		return libraryHour; 
 	}
 	
-	/*
+	/**
 	 * @author Arman
 	 * modifies an operating hour of the library 
 	 * @param dayOfWeek, new startTime, new endTime
@@ -52,6 +49,7 @@ public class LibraryHourService {
 	 */
 	public LibraryHour modifyLibraryHour (DayOfWeek dayOfWeek, Time startTime, Time endTime) {
 		User user = null; 
+		// if (!(HeadLibrarian.isLoggedIn()) throw errors
 		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify library hours"); 
 		if (dayOfWeek==null || startTime ==null || endTime ==null) {
 			throw new IllegalArgumentException ("Fields cannot be blank"); 
@@ -68,7 +66,8 @@ public class LibraryHourService {
 		return libraryHour; 
 		
 	}
-	/*
+	
+	/**
 	 * @author Arman
 	 * deletes an operating hour of the library 
 	 * @param dayOfWeek
@@ -87,4 +86,36 @@ public class LibraryHourService {
 		return true; 
 	}
 	
+	/**
+	 * @author Arman
+	 * @param dayOfWeek
+	 * @return the library hour for the chosen dayOfWeek. Throws an error if there's no library hour for that day
+	 */
+	@Transactional
+	public LibraryHour getLibraryHour(DayOfWeek dayOfWeek) {
+		if (dayOfWeek==null) throw new IllegalArgumentException ("Field cannot be blank");
+		if (libraryHourRepo.findHourByDayOfWeek(dayOfWeek)==null) throw new IllegalArgumentException("There's no library hour for that day"); 
+		
+		LibraryHour libraryHour = libraryHourRepo.findHourByDayOfWeek(dayOfWeek); 
+		return libraryHour; 
+	}
+	
+	/**
+	 * @author Arman
+	 * @param none
+	 * @return list of all libraryHours
+	 */
+	@Transactional 
+	public List<LibraryHour> getAllLibraryHours() {
+		return toList(libraryHourRepo.findAll()); 
+	}
+	
+	
+	private <T> List<T> toList(Iterable<T> iterable){
+		List<T> resultList = new ArrayList<T>();
+		for (T t : iterable) {
+			resultList.add(t);
+		}
+		return resultList;
+	}
 }

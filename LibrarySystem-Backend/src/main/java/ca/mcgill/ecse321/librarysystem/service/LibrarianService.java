@@ -1,4 +1,6 @@
 package ca.mcgill.ecse321.librarysystem.service;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +16,14 @@ public class LibrarianService {
 	
 	@Autowired 
 	LibrarianRepository librarianRepo; 
+	@Autowired
+	ShiftRepository shiftRepo; 
 		
-	// creates librarian, returns it so we know it's not null 
+	/** 
+	 * @author Arman
+	 * @param idNum, firstName, lastName, address, email, username, password
+	 * @return the librarian if it is successfully created 
+	 */
 	@Transactional 
 	public Librarian createLibrarian(
 			String idNum,
@@ -26,6 +34,9 @@ public class LibrarianService {
 		    String username,
 		    String password) 
 	{
+		if (idNum == null || firstName == null || lastName == null || address == null || email == null || username == null || password==null) {
+			throw new IllegalArgumentException("Fields cannot be blank"); 
+		}
 		Librarian librarian = new Librarian();
 	    librarian.setUsername(username);
 	    librarian.setPassword(password);
@@ -34,11 +45,18 @@ public class LibrarianService {
 	    librarian.setEmail(email);
 	    librarian.setIdNum(idNum);
 	    librarian.setAddress(address);
-
 	    librarianRepo.save(librarian);
 	    return librarian;		
 	}
+	
+	/** 
+	 * @author Arman
+	 * @param idNum
+	 * @return the librarian if it is successfully created 
+	 */
 	public Librarian createLibrarian(String idNum) {
+		if (idNum == null) throw new IllegalArgumentException("Librarian ID cannot be blank"); 
+
 		Librarian librarian = new Librarian(); 
 		librarian.setIdNum(idNum);
 	    librarian.setUsername("UN");
@@ -52,18 +70,29 @@ public class LibrarianService {
 		return librarian;
 	}
 	
-	// looks for a librarian with the given ID number, returns them if found
+	/** 
+	 * @author Arman
+	 * @param idNum
+	 * @return librarian if found, null otherwise. 
+	 */
 	@Transactional 
 	public Librarian getLibrarian(String idNum) {
+		if (idNum == null) throw new IllegalArgumentException("Librarian ID cannot be blank"); 
 		Librarian librarian = librarianRepo.findUserByIdNum(idNum); 
+		if (librarian == null) throw new IllegalArgumentException("Cannot find librarian"); 
 		return librarian;
 	}
+	
+	/** 
+	 * @author Arman
+	 * @return list of all librarians
+	 */
 	
 	@Transactional 
 	public List<Librarian> getAllLibrarians() {
 		return toList(librarianRepo.findAll()); 
 	}
-
+	
 	private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
 		for (T t : iterable) {

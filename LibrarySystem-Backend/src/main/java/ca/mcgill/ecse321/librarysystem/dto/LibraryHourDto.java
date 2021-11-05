@@ -1,14 +1,15 @@
 package ca.mcgill.ecse321.librarysystem.dto;
 
 import java.sql.Time;
+import java.util.List;
 
 import ca.mcgill.ecse321.librarysystem.model.LibraryHour.DayOfWeek;
 
 public class LibraryHourDto {
-	DayOfWeek dayOfWeek; 
-	Time startTime; 
-	Time endTime; 
-	
+	private DayOfWeek dayOfWeek; 
+	private Time startTime; 
+	private Time endTime; 
+	private List<LibraryHourDto> libraryHours; 
 	public LibraryHourDto() {
 	}
 	
@@ -34,4 +35,9 @@ public class LibraryHourDto {
 	public Time getEndTime() {
 		return this.endTime; 
 	}
+
+	public List<LibraryHourDto> getAllLibraryHours() {
+		return this.libraryHours; 
+	}
+	
 }

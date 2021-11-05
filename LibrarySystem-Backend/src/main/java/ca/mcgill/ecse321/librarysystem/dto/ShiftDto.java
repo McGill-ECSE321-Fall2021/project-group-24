@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class ShiftDto {
+	String librarianId; 
 	Date startDate;
 	Time startTime; 
 	Date endDate; 
@@ -12,10 +13,11 @@ public class ShiftDto {
 	public ShiftDto() {
 	}
 	
-	public ShiftDto(Date startDate, Time startTime, Time endTime) {
-		this(startDate, startTime, startDate, endTime); 
+	
+	public ShiftDto(String librarianId, Date startDate, Time startTime, Time endTime) {
+		this(librarianId, startDate, startTime, startDate, endTime); 
 	}
-	public ShiftDto(Date startDate, Time startTime, Date endDate, Time endTime) {
+	public ShiftDto(String librarianId, Date startDate, Time startTime, Date endDate, Time endTime) {
 		this.startDate= startDate;
 		this.startTime= startTime; 
 		this.endDate = endDate;
@@ -37,4 +39,5 @@ public class ShiftDto {
 	public Time getEndTime() {
 		return this.endTime; 
 	}
+	
 }

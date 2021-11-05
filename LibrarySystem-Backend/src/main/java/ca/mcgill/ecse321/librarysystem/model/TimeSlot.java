@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.sql.Time;
 import javax.persistence.*;
 
-import org.hibernate.annotations.GenericGenerator;
-
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "timeSlot")
