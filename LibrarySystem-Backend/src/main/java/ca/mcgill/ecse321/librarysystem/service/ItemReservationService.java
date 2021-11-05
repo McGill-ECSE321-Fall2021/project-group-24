@@ -18,11 +18,8 @@ public class ItemReservationService {
 	@Autowired 
 	ItemReservationRepository itemReservationRepository;
 	@Autowired 
-	BookRepository bookRepository;
-	MovieRepository movieRepository;
-	MusicAlbumRepository musicAlbumRepository;
-	PrintedMediaRepository printedMediaRepository;
-	ArchiveRepository archiveRepository;
+	ItemRepository itemRepository;
+	@Autowired
 	PatronRepository patronRepository;
 	@Autowired
 	LibrarianRepository librarianRepository;
@@ -39,15 +36,11 @@ public class ItemReservationService {
 		int numOfRenewalsLeft, boolean isCheckedOut)
 	{
 		if (patronRepository.findUserByIdNum(idNum) == null && librarianRepository.findUserByIdNum(idNum) == null) {
-			System.out.println(idNum);
+			System.out.println("id num is" + idNum);
 			throw new IllegalArgumentException("Invalid idNum");
 		}
 		
-		if (bookRepository.findBookByItemNumber(itemNumber) == null &&
-				movieRepository.findMovieByItemNumber(itemNumber) == null &&
-				archiveRepository.findArchiveByItemNumber(itemNumber) == null &&
-				musicAlbumRepository.findMusicAlbumByItemNumber(itemNumber) == null &&
-				printedMediaRepository.findPrintedMediaByItemNumber(itemNumber) == null) {
+		if (itemRepository.findItemByItemNumber(itemNumber) == null) {
 				throw new IllegalArgumentException("The item does not exist");
 			}
 		
@@ -117,9 +110,9 @@ public class ItemReservationService {
 			throw new IllegalArgumentException("Reservation is not right now");
 		}
 		latestReservation.setIsCheckedOut(true);
-		Book book = bookRepository.findBookByItemNumber(latestReservation.getItemNumber());
-		book.setCurrentReservationId(latestReservation.getTimeSlotId());
-		bookRepository.save(book);
+		Item item = itemRepository.findItemByItemNumber(latestReservation.getItemNumber());
+		item.setCurrentReservationId(latestReservation.getTimeSlotId());
+		itemRepository.save(item);
 		itemReservationRepository.save(latestReservation);
 		return latestReservation;
 	}
@@ -127,8 +120,8 @@ public class ItemReservationService {
 	@Transactional
 	public ItemReservation returnItemFromReservation(String itemNumber) {
 		String timeSlotId = null;
-		if (bookRepository.findBookByItemNumber(itemNumber) != null) {
-			timeSlotId = bookRepository.findBookByItemNumber(itemNumber).getCurrentReservationId();
+		if (itemRepository.findItemByItemNumber(itemNumber) != null) {
+			timeSlotId = itemRepository.findItemByItemNumber(itemNumber).getCurrentReservationId();
 		}
 
 		ItemReservation reservation = itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId);

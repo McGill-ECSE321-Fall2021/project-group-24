@@ -69,9 +69,7 @@ public class ItemReservationController {
 	@PostMapping(value = { "/itemReservations/{timeSlotId}", "/itemReservations/{timeSlotId}/" })
 	public ItemReservationDto createItemReservation(@PathVariable("timeSlotId") String timeSlotId,
 			 @RequestParam String startDate,
-			 @RequestParam String startTime,
 			 @RequestParam String endDate,
-			 @RequestParam String endTime,
 			 @RequestParam Integer numOfRenewalsLeft,
 			 @RequestParam String idNum,
 			 @RequestParam String itemNumber,
@@ -81,7 +79,7 @@ public class ItemReservationController {
 		System.out.println("Flag Post"); 
 		try {
 			ItemReservation reservation = itemReservationService.createItemReservation(timeSlotId,
-					Date.valueOf(LocalDate.parse(startDate)), Time.valueOf(LocalTime.parse(startTime)), Date.valueOf(LocalDate.parse(endDate)), Time.valueOf(LocalTime.parse(endTime)), idNum, itemNumber, numOfRenewalsLeft, isCheckedOut
+					Date.valueOf(LocalDate.parse(startDate)), Time.valueOf(LocalTime.parse("00:00")), Date.valueOf(LocalDate.parse(endDate)), Time.valueOf(LocalTime.parse("23:59")), idNum, itemNumber, numOfRenewalsLeft, isCheckedOut
 			     );
 			return convertToDto(reservation);
 		} catch (IllegalArgumentException e) {

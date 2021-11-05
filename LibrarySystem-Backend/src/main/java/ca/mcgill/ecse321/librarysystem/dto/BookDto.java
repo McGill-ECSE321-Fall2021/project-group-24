@@ -2,15 +2,10 @@ package ca.mcgill.ecse321.librarysystem.dto;
 
 import java.sql.Date;
 
-public class BookDto {
-	private String itemTitle;
-	private String description;
-	private String imageUrl;
-	private String itemNumber;
-	private String genre;
-	private Date publishDate;
-	private boolean isReservable;
-	private String currentReservationId;
+import ca.mcgill.ecse321.librarysystem.model.Item;
+
+public class BookDto extends ItemDto {
+
 	private String author;
 	private String publisher;
 	
@@ -35,14 +30,10 @@ public class BookDto {
 	    this.isReservable = isReservable;
 	    this.itemNumber = itemNumber;
 	    this.currentReservationId = currentReservationId;
+	    this.type = Item.Type.Book;
 	}
 	
-	public String getItemNumber() {
-		return this.itemNumber; 
-	}
-	public void setItemNumber(String itemNumber) {
-		this.itemNumber = itemNumber; 
-	}
+	
 	public String getAuthor() {
 		return this.author; 
 	}
@@ -50,22 +41,4 @@ public class BookDto {
 	public String getPublisher() {
 		    return this.publisher;
 	 }
-	public String getItemTitle() {
-		    return this.itemTitle;
-	}
-	public String getDescription() {
-		    return this.description;
-	}
-	  public String getImageUrl() {
-		    return this.imageUrl;
-		  }
-	  public String getGenre() {
-		    return this.genre;
-		  } public Date getPublishDate() {
-			    return this.publishDate;
-		  }  public boolean getIsReservable() {
-			    return this.isReservable;
-		  }  public String getCurrentReservationId() {
-			    return this.currentReservationId;
-		  }
 }

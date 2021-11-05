@@ -2,57 +2,39 @@ package ca.mcgill.ecse321.librarysystem.dto;
 
 import java.sql.Date;
 
-public class MusicAlbumDto {
-	private String itemTitle;
-	private String description;
-	private String imageUrl;
-	private String itemNumber;
-	private String genre;
-	private Date publishDate;
-	private boolean isReservable;
-	private boolean isCheckedOut;
+import ca.mcgill.ecse321.librarysystem.model.Item;
+
+public class MusicAlbumDto extends ItemDto{
+
 	  private String artist;
 	  private String recordingLabel;
 	
-	public MusicAlbumDto() {
-	}
-	
-	public MusicAlbumDto(String itemNumber) {
-		this( "itemTitle",
-			     "description",
-			    "imageURL",
-			    false,
-			    "genre",
-			    new Date(0),
-			    true,
-			    itemNumber, "artist", "recording label"); 
-	}
 	
 	public MusicAlbumDto(String itemTitle,
 		    String description,
 		    String imageURL,
-		    boolean isCheckedOut,
 		    String genre,
 		    Date publishDate,
 		    boolean isReservable,
+		    String currentReservationId,
 		    String itemNumber, String artist, String recordingLabel) {
 	    this.itemTitle =  itemTitle;
 	    this.description = description;
 	    this.imageUrl = imageURL;
-	    this.isCheckedOut = isCheckedOut;
 	    this.genre = genre;
 	    this.publishDate = publishDate;
 	    this.isReservable = isReservable;
 	    this.itemNumber = itemNumber;
+	    this.currentReservationId = currentReservationId;
+	    this.type = Item.Type.MusicAlbum;
 	    this.artist = artist;
 	    this.recordingLabel = recordingLabel;
 	}
 	
-	public String getItemNumber() {
-		return this.itemNumber; 
-	}
-	
-	public void setItemNumber(String itemNumber) {
-		this.itemNumber = itemNumber; 
-	}
+		  public String getRecordingLabel() {
+			    return this.recordingLabel;
+			  }
+		  public String getArtist() {
+			    return this.artist;
+			  }
 }

@@ -21,11 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest
 public class TestLibrarySystemPersistence {
 
-  @Autowired
-  private ArchiveRepository archiveRepository;
-
-  @Autowired
-  private BookRepository bookRepository;
+  
 
   @Autowired
   private HeadLibrarianRepository headLibrarianRepository;
@@ -37,16 +33,11 @@ public class TestLibrarySystemPersistence {
   private LibrarianRepository librarianRepository;
 
   @Autowired
-  private MovieRepository movieRepository;
+  private ItemRepository itemRepository;
 
-  @Autowired
-  private MusicAlbumRepository musicAlbumRepository;
 
   @Autowired
   private PatronRepository patronRepository;
-
-  @Autowired
-  private PrintedMediaRepository printedMediaRepository;
 
   @Autowired
   private RoomRepository roomRepository;
@@ -66,15 +57,13 @@ public class TestLibrarySystemPersistence {
 //      librarySystemRepository.deleteAll();
       // Then we can clear the other tables
     	
-      archiveRepository.deleteAll();
-      bookRepository.deleteAll();
+
       headLibrarianRepository.deleteAll();
       itemReservationRepository.deleteAll();
       librarianRepository.deleteAll();
-      movieRepository.deleteAll();
-      musicAlbumRepository.deleteAll();
+
       patronRepository.deleteAll();
-      printedMediaRepository.deleteAll();
+      itemRepository.deleteAll();
       roomRepository.deleteAll();
       roomBookingRepository.deleteAll();
       shiftRepository.deleteAll();
@@ -168,11 +157,11 @@ public class TestLibrarySystemPersistence {
     archive.setIsReservable(isReservable);
     archive.setCurrentReservationId(currentReservationId);
 
-    archiveRepository.save(archive);
+    itemRepository.save(archive);
 
     archive = null;
 
-    archive = archiveRepository.findArchiveByItemNumber(itemNumber);
+    archive = (Archive) itemRepository.findItemByItemNumber(itemNumber);
     assertNotNull(archive);
 
     assertEquals(itemTitle, archive.getItemTitle());
@@ -213,11 +202,11 @@ public class TestLibrarySystemPersistence {
     book.setIsReservable(isReservable);
     book.setCurrentReservationId(null);
 
-    bookRepository.save(book);
+    itemRepository.save(book);
 
     book = null;
 
-    book = bookRepository.findBookByItemNumber(itemNumber);
+    book = (Book) itemRepository.findItemByItemNumber(itemNumber);
 
     assertNotNull(book);
 
@@ -375,7 +364,7 @@ public class TestLibrarySystemPersistence {
     movie.setIsReservable(isReservable);
     movie.setCurrentReservationId(null);
 
-    movieRepository.save(movie);
+    itemRepository.save(movie);
 
     }
       
@@ -444,11 +433,11 @@ public class TestLibrarySystemPersistence {
       musicAlbum.setIsReservable(isReservable);
       musicAlbum.setCurrentReservationId(currentReservationId);
   
-      musicAlbumRepository.save(musicAlbum);
+      itemRepository.save(musicAlbum);
   
       musicAlbum = null;
   
-      musicAlbum = musicAlbumRepository.findMusicAlbumByItemNumber(itemNumber);
+      musicAlbum = (MusicAlbum) itemRepository.findItemByItemNumber(itemNumber);
   
       assertNotNull(musicAlbum);
   
@@ -538,12 +527,12 @@ public class TestLibrarySystemPersistence {
       printedMedia.setIsReservable(isReservable);
       printedMedia.setCurrentReservationId(null);
   
-      printedMediaRepository.save(printedMedia);
+      itemRepository.save(printedMedia);
   
       printedMedia = null;
   
-      printedMedia =
-        printedMediaRepository.findPrintedMediaByItemNumber(itemNumber);
+      printedMedia = (PrintedMedia)
+    		  itemRepository.findItemByItemNumber(itemNumber);
   
       assertNotNull(printedMedia);
   
