@@ -86,10 +86,10 @@ public class ShiftService {
 	 * @return true if the shift is deleted
 	 */
 	@Transactional 
-	public boolean deleteShift(String librarianId, Date startDate, Time startTime) {
+	public boolean removeShift(String librarianId, Date startDate, Time startTime) {
 		User user = null;
 
-		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
+		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can remove librarian shifts");
 		if (librarianId==null || startDate==null || startTime==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
@@ -105,7 +105,7 @@ public class ShiftService {
 	 * @return true if all their shifts are deleted
 	 */
 	@Transactional 
-	public boolean deleteLibrarianShifts(String librarianId) {
+	public boolean removeLibrarianShifts(String librarianId) {
 		// check that it's head librarian 
 		if (librarianId == null) throw new IllegalArgumentException("librarian ID cannot be blank"); 
 		// Searches through all the shifts, deleting the ones associated with a certain librarian
