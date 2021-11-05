@@ -8,6 +8,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ItemReservationRepository extends CrudRepository<ItemReservation, String> {
 	ItemReservation findItemReservationByTimeSlotId(String timeSlotId);
-	List<ItemReservation> findItemReservationByIdNum(String idNum);
-	List<ItemReservation> findItemReservationByItemNumber(String itemNumber);
+	List<ItemReservation> findItemReservationsByIdNum(String idNum);
+	List<ItemReservation> findItemReservationsByItemNumber(String itemNumber);
 }

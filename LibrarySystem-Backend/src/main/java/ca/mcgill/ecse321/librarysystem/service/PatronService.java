@@ -88,7 +88,7 @@ public class PatronService {
 	        throw new IllegalArgumentException("Patron cannot be null!");
 	    }
 	    List<ItemReservation> reservationsByPatron = new ArrayList<>();
-	    for (ItemReservation r : reservationRepo.findItemReservationByIdNum(idNum)) {
+	    for (ItemReservation r : reservationRepo.findItemReservationsByIdNum(idNum)) {
 	        reservationsByPatron.add(r);
 	    }
 	    return reservationsByPatron;

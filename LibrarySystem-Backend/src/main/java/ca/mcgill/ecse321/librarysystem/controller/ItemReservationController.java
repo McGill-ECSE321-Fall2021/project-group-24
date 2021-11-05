@@ -59,34 +59,49 @@ public class ItemReservationController {
 	}
 	
 	@PostMapping(value = {"/itemReservations/checkoutItem/{itemNumber}/byPatron/{idNum}", "itemReservations/checkoutItem/{itemNumber}/byPatron/{idNum}"})
-	public String checkoutItem(@PathVariable("itemNumber") String itemNumber, @PathVariable("idNum") String idNum) {
-		itemReservationService.updateReservationCheckedOut(itemNumber, idNum);
+	public ItemReservationDto checkoutItem(@PathVariable("itemNumber") String itemNumber, @PathVariable("idNum") String idNum) {
+		
 	
-		return "Item successfully checked out";
+		return convertToDto(itemReservationService.checkoutItem(itemNumber, idNum));
 		
 	}
 
 	@PostMapping(value = { "/itemReservations/{timeSlotId}", "/itemReservations/{timeSlotId}/" })
 	public ItemReservationDto createItemReservation(@PathVariable("timeSlotId") String timeSlotId,
-			 @RequestParam String startDate,
-			 @RequestParam String endDate,
 			 @RequestParam Integer numOfRenewalsLeft,
 			 @RequestParam String idNum,
 			 @RequestParam String itemNumber,
 			 @RequestParam boolean isCheckedOut
 			) {
-		
 		System.out.println("Flag Post"); 
+		Date startDate = itemReservationService.findNextAvailabilityForItem(itemNumber);
+		//if they are at the library rn and the book is available 
+		if (isCheckedOut && startDate.equals(Date.valueOf(LocalDate.now().plusDays(1))) ) {
+			startDate = Date.valueOf(LocalDate.now());
+		//if they are at the library rn but the book should not be available
+		} else if (isCheckedOut) {
+			throw new IllegalArgumentException("Book has a future reservation");
+		}
+		Date endDate = Date.valueOf(startDate.toLocalDate().plusWeeks(2));
 		try {
 			ItemReservation reservation = itemReservationService.createItemReservation(timeSlotId,
-					Date.valueOf(LocalDate.parse(startDate)), Time.valueOf(LocalTime.parse("00:00")), Date.valueOf(LocalDate.parse(endDate)), Time.valueOf(LocalTime.parse("23:59")), idNum, itemNumber, numOfRenewalsLeft, isCheckedOut
+					startDate, Time.valueOf(LocalTime.parse("00:00")), endDate, Time.valueOf(LocalTime.parse("23:59")), idNum, itemNumber, numOfRenewalsLeft, isCheckedOut
 			     );
 			return convertToDto(reservation);
 		} catch (IllegalArgumentException e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
-		
+	}
+	
+	@PostMapping(value = {"/itemReservations/renew/{timeSlotId}", "/itemReservations/renew/{timeSlotId}/"})
+	public ItemReservationDto renewItemReservation(@PathVariable("timeSlotId") String timeSlotId) {
+		return convertToDto(itemReservationService.renewByTimeSlotId(timeSlotId));
+	}
+	
+	@PostMapping(value = {"/itemReservations/cancel/{timeSlotId}", "/itemReservations/cancel/{timeSlotId}/"})
+	public boolean cancelItemReservation(@PathVariable("timeSlotId") String timeSlotId) {
+		return itemReservationService.cancelItemReservation(timeSlotId);
 	}
 	
 	private List<ItemReservationDto> getItemReservationDtosForPatron(String idNum) {

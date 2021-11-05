@@ -44,7 +44,7 @@ public class ItemReservationService {
 				throw new IllegalArgumentException("The item does not exist");
 			}
 		
-		List<ItemReservation> currentItemReservations = getItemReservationsByItemNumber(itemNumber);
+		List<ItemReservation> currentItemReservations = itemReservationRepository.findItemReservationsByItemNumber(itemNumber);
 		for (ItemReservation currentReservation : currentItemReservations) {
 			//if the new reservation starts or ends within the current one
 			if (startDate.after(currentReservation.getStartDate()) && startDate.before(currentReservation.getEndDate()) ||
@@ -89,15 +89,15 @@ public class ItemReservationService {
 	@Transactional
 	public List<ItemReservation> getItemReservationsByIdNum(String idNum) {
 	    List<ItemReservation> reservationsByIdNum = new ArrayList<>();
-	    for (ItemReservation r : itemReservationRepository.findItemReservationByIdNum(idNum)) {
+	    for (ItemReservation r : itemReservationRepository.findItemReservationsByIdNum(idNum)) {
 	        reservationsByIdNum.add(r);
 	    }
 	    return reservationsByIdNum;
 	}
 	
 	@Transactional
-	public ItemReservation updateReservationCheckedOut(String itemNumber, String idNum) {
-		ItemReservation latestReservation = null;
+	public ItemReservation checkoutItem(String itemNumber, String idNum) {
+		ItemReservation latestReservation = null; //find the latest reservation
 		for (ItemReservation r : getItemReservationsByItemNumberAndIdNum(itemNumber, idNum)) {
 			if (latestReservation == null) {
 				latestReservation = r;
@@ -107,8 +107,9 @@ public class ItemReservationService {
 		}
 		Date today = Date.valueOf(LocalDate.now());
 		if (latestReservation.getStartDate().after(today) || latestReservation.getEndDate().before(today)) {
-			throw new IllegalArgumentException("Reservation is not right now");
+			throw new IllegalArgumentException("You do not have a reservation for this item at this time");
 		}
+		//make so extend if possible
 		latestReservation.setIsCheckedOut(true);
 		Item item = itemRepository.findItemByItemNumber(latestReservation.getItemNumber());
 		item.setCurrentReservationId(latestReservation.getTimeSlotId());
@@ -118,12 +119,25 @@ public class ItemReservationService {
 	}
 	
 	@Transactional
+	public boolean cancelItemReservation(String timeSlotId) {
+		ItemReservation reservation = itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId);
+		if (reservation.getIsCheckedOut() == false) {
+			itemReservationRepository.delete(reservation);
+			return true;
+		} else {
+			throw new IllegalArgumentException("Cannot cancel reservation for item that is already checked out");
+		}
+	}
+	
+	@Transactional
 	public ItemReservation returnItemFromReservation(String itemNumber) {
 		String timeSlotId = null;
-		if (itemRepository.findItemByItemNumber(itemNumber) != null) {
-			timeSlotId = itemRepository.findItemByItemNumber(itemNumber).getCurrentReservationId();
+		Item item = itemRepository.findItemByItemNumber(itemNumber);
+		if (item != null) {
+			timeSlotId = item.getCurrentReservationId();
 		}
-
+		item.setCurrentReservationId(null);
+		itemRepository.save(item);
 		ItemReservation reservation = itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId);
 		reservation.setIsCheckedOut(false);
 		reservation.setEndDate(Date.valueOf(LocalDate.now()));
@@ -152,12 +166,46 @@ public class ItemReservationService {
 	
 	@Transactional
 	public List<ItemReservation> getItemReservationsByItemNumber(String itemNumber) {
-	    List<ItemReservation> reservationsByItemNumber = new ArrayList<>();
-	    for (ItemReservation r : itemReservationRepository.findItemReservationByItemNumber(itemNumber)) {
-	        reservationsByItemNumber.add(r);
-	    }
-	    return reservationsByItemNumber;
+		return itemReservationRepository.findItemReservationsByItemNumber(itemNumber);
 	}
+	
+	@Transactional
+	public ItemReservation renewByTimeSlotId(String timeSlotId) {
+		ItemReservation reservation = getItemReservation(timeSlotId);
+		if (reservation.getNumOfRenewalsLeft() > 0) {
+			Date nextAvailable = findNextAvailabilityForItem(reservation.getItemNumber());
+			//if this is the last reservation
+			if (Date.valueOf(nextAvailable.toLocalDate().minusDays(1)).equals(reservation.getEndDate())) {
+				reservation.setNumOfRenewalsLeft(reservation.getNumOfRenewalsLeft() - 1);
+				reservation.setEndDate(Date.valueOf(reservation.getEndDate().toLocalDate().plusWeeks(2)));
+				itemReservationRepository.save(reservation);
+				return reservation;
+			} else {
+				throw new IllegalArgumentException("There is another reservation after yours");
+			}
+		} else {
+			throw new IllegalArgumentException("No more renewals left");
+		}
+	}
+	
+	@Transactional
+	public Date findNextAvailabilityForItem(String itemNumber) {
+		List<ItemReservation> reservationsByItemNumber = itemReservationRepository.findItemReservationsByItemNumber(itemNumber);
+		ItemReservation latestReservation = null;
+		for (ItemReservation r : reservationsByItemNumber) {
+			if (latestReservation == null) {
+				latestReservation = r;
+			} else if (latestReservation.getEndDate().before(r.getStartDate())) {
+				latestReservation = r;
+			}
+		}
+		if (latestReservation == null) {
+			return Date.valueOf(LocalDate.now().plusDays(1));
+		} else {
+			return Date.valueOf(latestReservation.getEndDate().toLocalDate().plusDays(1));
+		}
+	}
+
 	
 	private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();

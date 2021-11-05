@@ -43,9 +43,6 @@ public class ItemReservationDto {
 		return this.timeSlotId; 
 	}
 	
-	public void setTimeSlotId(String timeSlotId) {
-		this.timeSlotId = timeSlotId; 
-	}
 
 	public Time getStartTime() {
 		return startTime;
