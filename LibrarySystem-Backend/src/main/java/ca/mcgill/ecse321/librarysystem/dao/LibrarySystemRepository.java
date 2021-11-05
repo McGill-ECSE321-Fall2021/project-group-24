@@ -28,6 +28,7 @@ public class LibrarySystemRepository {
     String lastName,
     boolean isResident,
     String address,
+    String username,
     String email
   ) {
     Patron p = new Patron();
@@ -40,7 +41,7 @@ public class LibrarySystemRepository {
     p.setAddress(address);
     p.setIsVerified(true);
     p.setPassword(null);
-    p.setUsername(null);
+    p.setUsername(username);
 
     entityManager.persist(p);
     return p;

@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface HeadLibrarianRepository extends CrudRepository<HeadLibrarian, String> {
 	HeadLibrarian findUserByIdNum(String idNumber);
+	HeadLibrarian findUserByUsername(String username);
 }

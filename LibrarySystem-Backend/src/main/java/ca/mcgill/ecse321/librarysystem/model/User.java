@@ -19,6 +19,7 @@ public abstract class User {
 	private String firstName;
 	private String lastName;
 	private String address;
+	private boolean isLoggedIn;
 
 	public String getIdNum() {
 		return idNum;
@@ -75,4 +76,13 @@ public abstract class User {
 	public String getAddress() {
 		return this.address;
 	}
+	
+	public void setIsLoggedIn(boolean x) {
+		this.isLoggedIn=x;
+	}
+	
+	public boolean getIsLoggedIn() {
+		return this.isLoggedIn;
+	}
+	
 }

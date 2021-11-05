@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface PatronRepository extends CrudRepository<Patron, String> {
   Patron findUserByIdNum(String idNum);
   Patron findPatronByUsername(String username); 
+  void deletePatronByIdNum(String idNum);
 }
