@@ -142,7 +142,7 @@ public class ShiftService {
 	 *@return list of all the librarian's shifts 
 	 */
 	@Transactional 
-	public List<Shift> getAllShiftsFromLibrarian(String librarianId) {
+	public List<Shift> getAllShiftsForLibrarian(String librarianId) {
 		// check if user is a librarian
 		if (librarianId==null) throw new IllegalArgumentException("Librarian ID cannot be blank"); 
 		
@@ -154,7 +154,6 @@ public class ShiftService {
 				desiredShifts.add(shift); 
 			}
 		}
-		
 		return desiredShifts; 
 	}
 	

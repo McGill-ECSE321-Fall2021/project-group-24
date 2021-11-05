@@ -30,34 +30,17 @@ import ca.mcgill.ecse321.librarysystem.service.*;
 public class ShiftController {
 	@Autowired 
 	ShiftService shiftService; 
-	/** Method adds a shift (not overnight) 
-	 * @author Arman 
-	 * @param librarianId, startDate, startTime, endTime 
-	 * @return Response Entity 
-	 */
-	@PostMapping(value = {"/add_shift", "/add_shift/"})
-	public  ResponseEntity<?> addShift(@RequestParam String librarianId, @RequestParam String startDate, @RequestParam String startTime, @RequestParam String endTime) {
-		Shift shift = null; 
-		String endDate = startDate; 
-		try {
-			shift =shiftService.createShift(librarianId, Date.valueOf(startDate), Time.valueOf(startTime), Date.valueOf(endDate), Time.valueOf(endTime)); 
-			}		
-			catch(IllegalArgumentException e) {
-				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		return new ResponseEntity<>(convertToDto(shift), HttpStatus.CREATED);
-	}
 	
-	/** Method adds an overnight shift (start date is different from end date)
+	/** Method adds a shift (if startDate is different from endDate then it's an overnight shift)
 	 * @author Arman 
 	 * @param librarianId, startDate, endDate, startTime, endTime 
 	 * @return Response Entity 
 	 */
 	@PostMapping(value = {"/add_overnight_shift", "/add_overnight_shift/"})
-	public  ResponseEntity<?> addShift(@RequestParam String librarianId, @RequestParam String startDate, @RequestParam String startTime, @RequestParam String endDate, @RequestParam String endTime) {
+	public ResponseEntity<?> addShift(@RequestParam String librarianId, @RequestParam String startDate, @RequestParam String startTime, @RequestParam String endDate, @RequestParam String endTime) {
 		Shift shift = null; 
 		try {
-			shift =shiftService.createShift(librarianId, Date.valueOf(startDate), Time.valueOf(startTime), Date.valueOf(endDate), Time.valueOf(endTime)); 
+			shift =shiftService.createShift(librarianId, Date.valueOf(startDate), Time.valueOf(startTime + ":00"), Date.valueOf(endDate), Time.valueOf(endTime+":00")); 
 			}		
 			catch(IllegalArgumentException e) {
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -65,9 +48,9 @@ public class ShiftController {
 		return new ResponseEntity<>(convertToDto(shift), HttpStatus.CREATED);
 	}
 	
-	/** Method modifies a shift (new shift is not overnight)
+	/** Method modifies a shift
 	 * @author Arman 
-	 * @param librarianId, startDate, endDate, startTime, endTime 
+	 * @param librarianId, oldStartDate, oldStartTime, startDate, endDate, startTime, endTime 
 	 * @return Response Entity 
 	 */
 	@PostMapping(value = {"/modify_shift", "/modify_shift/"})
@@ -75,13 +58,63 @@ public class ShiftController {
 			@RequestParam String startDate, @RequestParam String startTime, @RequestParam String endDate, @RequestParam String endTime) {
 		Shift shift = null; 
 		try {
-			shift =shiftService.modifyShift(librarianId, Date.valueOf(oldStartDate), Time.valueOf(oldStartTime), 
-					Date.valueOf(startDate), Time.valueOf(startTime), Date.valueOf(endDate), Time.valueOf(endTime)); 
+			shift =shiftService.modifyShift(librarianId, Date.valueOf(oldStartDate), Time.valueOf(oldStartTime+":00"), 
+					Date.valueOf(startDate), Time.valueOf(startTime+":00"), Date.valueOf(endDate), Time.valueOf(endTime+":00")); 
 			}		
 			catch(IllegalArgumentException e) {
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		return new ResponseEntity<>(convertToDto(shift), HttpStatus.CREATED);
+	}
+	
+	/** Method removes an existing shift for a librarian
+	 * @author Arman 
+	 * @param librarianId, startDate, startTime
+	 * @return true if the shift is successfully deleted 
+	 */
+	@PostMapping(value = {"/remove_shift", "/remove_shift/"}) 
+	public boolean removeShift(@RequestParam String librarianId, @RequestParam String startDate, @RequestParam String startTime) {
+		return shiftService.removeShift(librarianId, Date.valueOf(startDate), Time.valueOf(startTime + ":00"));   
+	}
+	
+	/** Method removes all shifts for a librarian
+	 * @author Arman 
+	 * @param librarianId
+	 * @return true if their shifts are successfully deleted
+	 */
+	@PostMapping(value = {"/remove_librarian_shifts", "/remove_librarian_shifts/"}) 
+	public boolean removeLibrarianShifts(@RequestParam String librarianId) {
+		return shiftService.removeLibrarianShifts(librarianId); 
+	}
+	
+	/** Method returns a specific shift
+	 * @author Arman 
+	 * @param librarianId, startDate, startTime
+	 * @return ShiftDto
+	 */
+	@GetMapping(value = {"/view_shift", "/view_shift/"})
+	public ShiftDto viewShift(@RequestParam String librarianId, @RequestParam String startDate, @RequestParam String startTime){
+		return convertToDto(shiftService.getShift(librarianId, Date.valueOf(startDate), Time.valueOf(startTime)));
+				
+	}
+	
+	/** Method returns all the shifts for a certain librarian
+	 * @author Arman 
+	 * @param librarianId
+	 * @return List of type ShiftDto 
+	 */
+	@GetMapping(value = {"/view_librarian_shifts", "/view_librarian_shifts/"})
+	public List<ShiftDto> viewLibrarianShifts(@RequestParam String librarianId){
+		return 	shiftService.getAllShiftsForLibrarian(librarianId).stream().map(lh -> convertToDto(lh)).collect(Collectors.toList());
+	}
+	
+	/** Method returns all the shifts for every librarian
+	 * @author Arman 
+	 * @return List of type ShiftDto 
+	 */
+	@GetMapping(value = {"/view_all_shifts", "/view_all_shifts/"})
+	public List<ShiftDto> viewAllShifts(@RequestParam String librarianId){
+		return shiftService.getAllShifts().stream().map(lh -> convertToDto(lh)).collect(Collectors.toList());
 	}
 	
 	/** Method converts a shift object into a shift DTO
