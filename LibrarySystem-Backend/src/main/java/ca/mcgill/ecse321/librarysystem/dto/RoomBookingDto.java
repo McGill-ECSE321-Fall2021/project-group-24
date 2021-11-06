@@ -1,15 +1,18 @@
 package ca.mcgill.ecse321.librarysystem.dto;
 
 import java.sql.Time;
+
+import ca.mcgill.ecse321.librarysystem.model.TimeSlot;
+
 import java.sql.Date;
 
 public class RoomBookingDto {
 	private String roomNum;
 	private String idNum;
 	private String timeSlotId;
-	private Date startDate;
+	private Date date;
 	private Time startTime;
-	private Date endDate;
+	private TimeSlot.DayOfWeek dayOfWeek;
 	private Time endTime;
 	
 	public RoomBookingDto() {
@@ -18,16 +21,15 @@ public class RoomBookingDto {
 	
 	public RoomBookingDto( 
 		String timeSlotId,
-		Date startDate,
+		Date date,
 		Time startTime,
-		Date endDate,
 		Time endTime,
 		String idNum,
 		String roomNum) {
 			this.timeSlotId = timeSlotId;
-			this.startDate = startDate;
+			this.date = date;
 			this.startTime = startTime;
-			this.endDate = endDate;
+			this.dayOfWeek = TimeSlot.DayOfWeek.valueOf(date.toLocalDate().getDayOfWeek().toString());
 			this.endTime = endTime;
 			this.idNum = idNum;
 			this.roomNum = roomNum;		
@@ -53,12 +55,12 @@ public class RoomBookingDto {
 		return endTime;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	public Date getDate() {
+		return date;
 	}
 
-	public Date getEndDate() {
-		return endDate;
+	public TimeSlot.DayOfWeek getDayOfWeek() {
+		return dayOfWeek;
 	}
 	
 }

@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class RoomBooking extends TimeSlot {
   private String roomNum;
   private String idNum;
+  private Date date;
 
   @ManyToOne(optional = false)
   public String getRoomNum() {

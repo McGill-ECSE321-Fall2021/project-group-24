@@ -40,26 +40,6 @@ public abstract class TimeSlot {
 	public void setTimeSlotId(String idNum) {
 		this.timeSlotId = idNum;
 	}
-	public DayOfWeek stringToDayOfWeek(String dayOfWeek) {
-		if (dayOfWeek.equals("Monday")) {
-			 return DayOfWeek.Monday;
-		} else if (dayOfWeek.equals("Tuesday")) {
-			return DayOfWeek.Tuesday;
-		} else if (dayOfWeek.equals("Wednesday")) {
-			return DayOfWeek.Wednesday;
-		} else if (dayOfWeek.equals("Thursday")) {
-			return DayOfWeek.Thursday;
-		} else if (dayOfWeek.equals("Friday")) {
-			return DayOfWeek.Friday;
-		} else if (dayOfWeek.equals("Saturday")) {
-			return DayOfWeek.Saturday;
-		} else if (dayOfWeek.equals("Sunday")){
-			return DayOfWeek.Sunday;
-		} else {
-			return null;
-		}
-		
-	}
 
   public Time getStartTime() {
     return this.startTime;

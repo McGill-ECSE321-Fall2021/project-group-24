@@ -67,7 +67,6 @@ public class RoomBookingController {
 				timeSlotId,
 				Date.valueOf(LocalDate.parse(startDate)),
 				Time.valueOf(LocalTime.parse(startTime)),
-				Date.valueOf(LocalDate.parse(endDate)),
 				Time.valueOf(LocalTime.parse(endTime)),
 				idNum,
 				roomNum
@@ -96,7 +95,7 @@ public class RoomBookingController {
 	
 	
 	private RoomBookingDto convertToDto(RoomBooking roomBooking){
-		RoomBookingDto roomBookingDto = new RoomBookingDto(roomBooking.getTimeSlotId(), roomBooking.getStartDate(), roomBooking.getStartTime(), roomBooking.getEndDate(), roomBooking.getEndTime(), roomBooking.getIdNum(), roomBooking.getRoomNum());
+		RoomBookingDto roomBookingDto = new RoomBookingDto(roomBooking.getTimeSlotId(), roomBooking.getDate(), roomBooking.getStartTime(), roomBooking.getEndTime(), roomBooking.getIdNum(), roomBooking.getRoomNum());
 		return roomBookingDto;
 	}
 }
