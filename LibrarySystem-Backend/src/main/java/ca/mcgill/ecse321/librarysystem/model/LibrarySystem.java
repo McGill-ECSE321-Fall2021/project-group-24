@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 /*@Arman (Del 2)
  * Del 2 edits: Added name, email, address, and phone number (i.e. basic contact info for the library) 
+ * Added timeSlots
  */
 /*
  * @Saagar (Del 2)
@@ -49,7 +50,6 @@ public class LibrarySystem {
 	public void setEmail(String email) {
 	    this.email = email;
 	}
-
 	
 	@Id
 	public String getSystemNum() {

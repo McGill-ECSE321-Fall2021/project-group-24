@@ -5,7 +5,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -22,5 +21,10 @@ public class Librarian extends User {
 
   public void setShifts(Set<Shift> theShifts) {
     this.shifts = theShifts;
+  }
+  
+  // added in deliverable 2
+  public void addShift(Shift shift) {
+	  shifts.add(shift); 
   }
 }
