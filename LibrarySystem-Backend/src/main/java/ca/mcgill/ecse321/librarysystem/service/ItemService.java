@@ -16,6 +16,8 @@ public class ItemService  {
 	ItemRepository itemRepository;
 	@Autowired
 	LibrarianRepository librarianRepository;
+	@Autowired
+	HeadLibrarianRepository headLibrarianRepository;
 		
 	// creates book, returns it so we know it's not null 
 	@Transactional 
@@ -29,7 +31,7 @@ public class ItemService  {
 		String author,
 		String publisher)
 	{
-		if (librarianRepository.findById(idNum) == null) {
+		if (librarianRepository.findById(idNum) == null && headLibrarianRepository.findById(idNum) == null) {
 			throw new IllegalArgumentException("You do not have permission to create an item");
 		} else if (itemTitle.length() == 0) {
 			throw new IllegalArgumentException("Item must have a title");
@@ -59,7 +61,7 @@ public class ItemService  {
 		Date publishDate,
 		boolean isReservable)
 	{
-		if (librarianRepository.findById(idNum) == null) {
+		if (librarianRepository.findById(idNum) == null && headLibrarianRepository.findById(idNum) == null) {
 			throw new IllegalArgumentException("You do not have permission to create an item");
 		} else if (itemTitle.length() == 0) {
 			throw new IllegalArgumentException("Item must have a title");
@@ -87,7 +89,7 @@ public class ItemService  {
 		Date publishDate,
 		boolean isReservable,String artist, String recordingLabel)
 	{
-		if (librarianRepository.findById(idNum) == null) {
+		if (librarianRepository.findById(idNum) == null && headLibrarianRepository.findById(idNum) == null) {
 			throw new IllegalArgumentException("You do not have permission to create an item");
 		} else if (itemTitle.length() == 0) {
 			throw new IllegalArgumentException("Item must have a title");
@@ -117,7 +119,7 @@ public class ItemService  {
 		Date publishDate,
 		boolean isReservable, String issueNumber)
 	{
-		if (librarianRepository.findById(idNum) == null) {
+		if (librarianRepository.findById(idNum) == null && headLibrarianRepository.findById(idNum) == null) {
 			throw new IllegalArgumentException("You do not have permission to create an item");
 		} else if (itemTitle.length() == 0) {
 			throw new IllegalArgumentException("Item must have a title");
@@ -149,7 +151,7 @@ public class ItemService  {
 		 String director,
 		 String producer)
 	{
-		if (librarianRepository.findById(idNum) == null) {
+		if (librarianRepository.findById(idNum) == null && headLibrarianRepository.findById(idNum) == null) {
 			throw new IllegalArgumentException("You do not have permission to create an item");
 		} else if (itemTitle.length() == 0) {
 			throw new IllegalArgumentException("Item must have a title");

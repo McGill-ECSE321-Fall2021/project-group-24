@@ -1,4 +1,4 @@
-nchupackage ca.mcgill.ecse321.librarysystem.service;
+package ca.mcgill.ecse321.librarysystem.service;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -51,7 +51,7 @@ public class ItemReservationService {
 		
 		if (itemRepository.findItemByItemNumber(itemNumber) == null) {
 				throw new IllegalArgumentException("The item does not exist");
-			}
+		}
 		
 		List<ItemReservation> currentItemReservations = itemReservationRepository.findItemReservationsByItemNumber(itemNumber);
 		for (ItemReservation currentReservation : currentItemReservations) {
@@ -63,9 +63,11 @@ public class ItemReservationService {
 			}
 		}
 		
-		if (getItemReservationsByIdNum(idNum).size() > 9) {
-			throw new IllegalArgumentException("Patron can have a maximum of 10 reservations or checked out books at a time");
+		if (getCurrentReservationsByIdNum(idNum).size() > 9) {
+			throw new IllegalArgumentException("Patron cannot have more than 10 reservations at a time");
 		}
+		
+		
 		ItemReservation reservation = new ItemReservation();
 		reservation.setTimeSlotId(timeSlotId);
 		reservation.setStartDate(startDate);
@@ -111,16 +113,21 @@ public class ItemReservationService {
 				currentReservation = r;
 			}
 		}
+		Item item = itemRepository.findItemByItemNumber(itemNumber);
+		if (item == null) {
+			throw new IllegalArgumentException("Item does not exist");
+		}
 		if (currentReservation == null) {
 			return createItemReservation(today, idNum, itemNumber, true);
 		} else if (!currentReservation.getIdNum().equals(idNum)) {
 			throw new IllegalArgumentException("No reservation at this time for this patron");
 		} else if (patronRepository.findUserByIdNum(idNum).getIsVerified()) {
 			throw new IllegalArgumentException("Must verify patron before checking out books");
+		} else if (currentReservation.getIsCheckedOut()) {
+			throw new IllegalArgumentException("Item is already checked out");
 		}
 		currentReservation.setEndDate(Date.valueOf(LocalDate.now().plusWeeks(2)));
 		currentReservation.setIsCheckedOut(true);
-		Item item = itemRepository.findItemByItemNumber(currentReservation.getItemNumber());
 		item.setCurrentReservationId(currentReservation.getTimeSlotId());
 		itemRepository.save(item);
 		itemReservationRepository.save(currentReservation);
@@ -142,34 +149,35 @@ public class ItemReservationService {
 	public ItemReservation returnItemFromReservation(String itemNumber) {
 		String timeSlotId = null;
 		Item item = itemRepository.findItemByItemNumber(itemNumber);
-		if (item != null) {
-			timeSlotId = item.getCurrentReservationId();
-		}
+
+		timeSlotId = item.getCurrentReservationId();
+		
 		item.setCurrentReservationId(null);
 		itemRepository.save(item);
-		ItemReservation reservation = itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId);
-		reservation.setIsCheckedOut(false);
-		reservation.setEndDate(Date.valueOf(LocalDate.now()));
+		if (timeSlotId != null ) {
+			ItemReservation reservation = itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId);
+			reservation.setIsCheckedOut(false);
+			reservation.setEndDate(Date.valueOf(LocalDate.now()));
+			
+			itemReservationRepository.save(reservation);
+			return reservation;
+		} else {
+			return null;
+		}
 		
-		itemReservationRepository.save(reservation);
-		return reservation;
 	}
 	
 	@Transactional
 	public List<ItemReservation> getItemReservationsByItemNumberAndIdNum(String itemNumber, String idNum) {
 		List<ItemReservation> reservations = new ArrayList<ItemReservation>();
 		
-		for (ItemReservation r : getItemReservationsByIdNum(idNum)) {
+		for (ItemReservation r : getCurrentReservationsByIdNum(idNum)) {
 	        if (r.getItemNumber().equals(itemNumber)) {
 	        	reservations.add(r);
 	        }
 	    }
 		
-		if (reservations.size() == 0) {
-			throw new IllegalArgumentException("Reservation of that idNum and itemNumber does not exist");			
-		} else {
-			return reservations;
-		}
+		return reservations;
 
 	}
 	
@@ -195,6 +203,17 @@ public class ItemReservationService {
 		} else {
 			throw new IllegalArgumentException("No more renewals left");
 		}
+	}
+	
+	public List<ItemReservation> getCurrentReservationsByIdNum(String idNum) {
+		Date today = Date.valueOf(LocalDate.now());
+		List<ItemReservation> currentReservationsByPatron = new ArrayList<ItemReservation>();
+		for (ItemReservation reservation : getItemReservationsByIdNum(idNum)) {
+			if (reservation.getStartDate().after(today) || reservation.getStartDate().equals(today) || reservation.getEndDate().after(today) || (reservation.getIsCheckedOut() == true && reservation.getEndDate().equals(today))) {
+				currentReservationsByPatron.add(reservation);
+			}
+		}
+		return currentReservationsByPatron;
 	}
 	
 	@Transactional
