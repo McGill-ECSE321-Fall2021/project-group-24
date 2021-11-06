@@ -21,7 +21,7 @@ public class ShiftService {
 
 	/**Method creates a new shift (must be performed by head librarian)
 	 * @author Arman
-	 * @param currentUserId, librarianId, startDate, endDate, startTime, endTime
+	 * @param currentUserId, librarianId, dayOfWeek, startTime, endTime
 	 * @return shift 
 	 * Note that there is a start and an end date to account for overnight shifts
 	 */
@@ -41,23 +41,23 @@ public class ShiftService {
 	}
 	/**Method modifies a shift (must be performed by head librarian)
 	 * @author Arman
-	 * @param currentUserId, librarianId, oldStartDate, oldStartTime, startDate, endDate, startTime, endTime
+	 * @param currentUserId, shiftId, librarianId, dayOfWeek, startTime, endTime
 	 * @return shift
 	 */
 	
 	@Transactional 
-	public Shift modifyShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek oldDayOfWeek,TimeSlot.DayOfWeek newDayOfWeek, Time oldStartTime, Time startTime, Time endTime) {
+	public Shift modifyShift(String currentUserId, String shiftId, String librarianId, TimeSlot.DayOfWeek newDayOfWeek, Time startTime, Time endTime) {
 		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
 		if(librarianRepo.findById(librarianId)==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
-		if (librarianId==null || oldDayOfWeek == null || oldStartTime==null || newDayOfWeek == null || startTime==null || endTime ==null) {
+		if (librarianId==null || librarianId == null ||newDayOfWeek == null || startTime==null || endTime ==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
 		if (startTime.after(endTime)) throw new IllegalArgumentException("Shift end time cannot be before its start time"); 
 		
-		if(shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, oldDayOfWeek, oldStartTime)==null) throw new IllegalArgumentException("Shift does not exist so cannot modify."); 
+		if(shiftRepo.findShiftByTimeSlotId(shiftId)==null) throw new IllegalArgumentException("Shift does not exist so cannot modify."); 
 		if(librarianRepo.findUserByIdNum(librarianId)==null) throw new IllegalArgumentException("No Librarian with this ID exists"); 
 		
-		Shift shift = shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, oldDayOfWeek, oldStartTime);
+		Shift shift = shiftRepo.findShiftByTimeSlotId(shiftId);
 		shift.setDayOfWeek(newDayOfWeek);
 		shift.setStartTime(startTime);
 		shift.setEndTime(endTime);
@@ -68,19 +68,18 @@ public class ShiftService {
 	
 	/**Method removes a certain shift (must be performed by head librarian)
 	 * @author Arman
-	 * @param currentUserId, librarianId, startTime, endTime
+	 * @param currentUserId, shiftId
 	 * @return true if the shift is deleted
 	 */
 	@Transactional 
-	public boolean removeShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime) {
+	public boolean removeShift(String currentUserId, String shiftId) {
 		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can remove librarian shifts");
-		if(librarianRepo.findById(librarianId)==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
-		if (librarianId==null || dayOfWeek==null || startTime==null) {
+		if (shiftId==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
-		Shift shift = shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, dayOfWeek, startTime); 
+		Shift shift = shiftRepo.findShiftByTimeSlotId(shiftId); 
 		if (shift==null) throw new IllegalArgumentException("Shift cannot be found"); 
-		shiftRepo.delete(shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, dayOfWeek, startTime));
+		shiftRepo.delete(shiftRepo.findShiftByTimeSlotId(shiftId)); 
 		return true; 
 	}
 	
@@ -106,7 +105,7 @@ public class ShiftService {
 	
 	/**Method returns a certain shift (can be performed by librarian or head librarian)
 	 *@author Arman
-	 *@param currentUserId, librarianId, startTime, endTime
+	 *@param currentUserId, shiftId
 	 *@return shift
 	 */
 	@Transactional 
