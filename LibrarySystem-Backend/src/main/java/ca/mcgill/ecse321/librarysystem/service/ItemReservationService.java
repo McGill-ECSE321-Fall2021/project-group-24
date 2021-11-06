@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.librarysystem.service;
+nchupackage ca.mcgill.ecse321.librarysystem.service;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -27,11 +27,10 @@ public class ItemReservationService {
 		
 	@Transactional 
 	public ItemReservation createItemReservation (
-			String timeSlotId,
 			   Date startDate,
 		 String idNum,
 		String itemNumber,
-		int numOfRenewalsLeft, boolean isCheckedOut)
+		 boolean isCheckedOut)
 	{
 		if (startDate == null) {
 			startDate = findNextAvailabilityForItem(itemNumber);
@@ -43,6 +42,7 @@ public class ItemReservationService {
 				throw new IllegalArgumentException("Book has a future reservation");
 			}
 		}
+		String timeSlotId = "ItemReservation" + startDate.toLocalDate().toString() + itemNumber + idNum;
 		Date endDate = Date.valueOf(startDate.toLocalDate().plusWeeks(2));
 		if (patronRepository.findUserByIdNum(idNum) == null && librarianRepository.findUserByIdNum(idNum) == null) {
 			System.out.println("id num is" + idNum);
@@ -60,8 +60,6 @@ public class ItemReservationService {
 					endDate.after(currentReservation.getStartDate()) && endDate.before(currentReservation.getEndDate()) ||
 					startDate.equals(currentReservation.getStartDate()) || endDate.equals(currentReservation.getEndDate())) {
 				throw new IllegalArgumentException("Overlaps with previous reservation");
-			} else if (startDate.after(endDate)) {
-				throw new IllegalArgumentException("Start Date cannot be after end date");
 			}
 		}
 		
@@ -76,7 +74,7 @@ public class ItemReservationService {
 		reservation.setEndTime(Time.valueOf(LocalTime.of(23, 59)));
 		reservation.setIdNum(idNum);
 		reservation.setItemNumber(itemNumber);
-		reservation.setNumOfRenewalsLeft(numOfRenewalsLeft);
+		reservation.setNumOfRenewalsLeft(4);
 		reservation.setIsCheckedOut(isCheckedOut);
 
 		itemReservationRepository.save(reservation);
@@ -114,8 +112,7 @@ public class ItemReservationService {
 			}
 		}
 		if (currentReservation == null) {
-			//create reservation?
-			return null;
+			return createItemReservation(today, idNum, itemNumber, true);
 		} else if (!currentReservation.getIdNum().equals(idNum)) {
 			throw new IllegalArgumentException("No reservation at this time for this patron");
 		} else if (patronRepository.findUserByIdNum(idNum).getIsVerified()) {

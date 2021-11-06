@@ -31,6 +31,8 @@ public class ItemService  {
 	{
 		if (librarianRepository.findById(idNum) == null) {
 			throw new IllegalArgumentException("You do not have permission to create an item");
+		} else if (itemTitle.length() == 0) {
+			throw new IllegalArgumentException("Item must have a title");
 		}
 		String itemNumber = "Book-" + getAllBooks().size() + itemTitle.trim();
 		Book book = new Book();
@@ -59,6 +61,8 @@ public class ItemService  {
 	{
 		if (librarianRepository.findById(idNum) == null) {
 			throw new IllegalArgumentException("You do not have permission to create an item");
+		} else if (itemTitle.length() == 0) {
+			throw new IllegalArgumentException("Item must have a title");
 		}
 		String itemNumber = "Archive-" + itemRepository.findItemsByType(Item.Type.Archive).size() + itemTitle.trim();
 		Archive archive = new Archive();
@@ -85,6 +89,8 @@ public class ItemService  {
 	{
 		if (librarianRepository.findById(idNum) == null) {
 			throw new IllegalArgumentException("You do not have permission to create an item");
+		} else if (itemTitle.length() == 0) {
+			throw new IllegalArgumentException("Item must have a title");
 		}
 		String itemNumber = "MusicAlbum-" + itemRepository.findItemsByType(Item.Type.MusicAlbum).size() + itemTitle.trim();
 		MusicAlbum musicAlbum = new MusicAlbum();
@@ -113,6 +119,8 @@ public class ItemService  {
 	{
 		if (librarianRepository.findById(idNum) == null) {
 			throw new IllegalArgumentException("You do not have permission to create an item");
+		} else if (itemTitle.length() == 0) {
+			throw new IllegalArgumentException("Item must have a title");
 		}
 		String itemNumber = "PrintedMedia-" + itemRepository.findItemsByType(Item.Type.MusicAlbum).size() + itemTitle.trim();
 		PrintedMedia printedMedia = new PrintedMedia();
@@ -143,6 +151,8 @@ public class ItemService  {
 	{
 		if (librarianRepository.findById(idNum) == null) {
 			throw new IllegalArgumentException("You do not have permission to create an item");
+		} else if (itemTitle.length() == 0) {
+			throw new IllegalArgumentException("Item must have a title");
 		}
 		String itemNumber = "Movie-" + itemRepository.findItemsByType(Item.Type.Movie).size() + itemTitle.trim();
 		Movie movie = new Movie();
@@ -175,10 +185,30 @@ public class ItemService  {
 	}
 	
 	@Transactional 
-	public List<Book> getAllBooks() {
+	public List<Item> getAllBooks() {
 		return toList(itemRepository.findItemsByType(Item.Type.Book)); 
 	}
+	
+	@Transactional 
+	public List<Item> getAllMovies() {
+		return toList(itemRepository.findItemsByType(Item.Type.Movie)); 
+	}
 
+	@Transactional 
+	public List<Item> getAllPrintedMedias() {
+		return toList(itemRepository.findItemsByType(Item.Type.PrintedMedia)); 
+	}
+	
+	@Transactional 
+	public List<Item> getAllArchives() {
+		return toList(itemRepository.findItemsByType(Item.Type.Archive)); 
+	}
+	
+	@Transactional 
+	public List<Item> getAllMusicAlbums() {
+		return toList(itemRepository.findItemsByType(Item.Type.MusicAlbum)); 
+	}
+	
 	private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
 		for (T t : iterable) {

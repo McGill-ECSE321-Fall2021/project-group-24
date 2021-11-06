@@ -1,24 +1,19 @@
 package ca.mcgill.ecse321.librarysystem.controller;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.librarysystem.LibrarySystemApplication;
 import ca.mcgill.ecse321.librarysystem.model.*;
 import ca.mcgill.ecse321.librarysystem.dto.*;
 import ca.mcgill.ecse321.librarysystem.service.*;
@@ -63,27 +58,26 @@ public class ItemReservationController {
 		
 	}
 
-	@PostMapping(value = { "/itemReservations/{timeSlotId}", "/itemReservations/{timeSlotId}/" })
-	public ItemReservationDto createItemReservation(@PathVariable("timeSlotId") String timeSlotId,
-			 @RequestParam Integer numOfRenewalsLeft, @RequestParam String idNum, @RequestParam String itemNumber, @RequestParam boolean isCheckedOut
+	@PostMapping(value = { "/itemReservations/", "/itemReservations" })
+	public ItemReservationDto createItemReservation( @RequestParam String idNum, @RequestParam String itemNumber, @RequestParam boolean isCheckedOut
 			) {
 		System.out.println("Flag Post"); 
-		ItemReservation reservation = itemReservationService.createItemReservation(timeSlotId,
-				null, idNum, itemNumber, numOfRenewalsLeft, isCheckedOut
+		ItemReservation reservation = itemReservationService.createItemReservation(
+				null, idNum, itemNumber, isCheckedOut
 		     );
 		return convertToDto(reservation);
 	}
 	
-	@PostMapping(value = { "/itemReservations/customDate/{timeSlotId}", "/itemReservations/customDate/{timeSlotId}/" })
-	public ItemReservationDto createItemReservationCustomDate(@PathVariable("timeSlotId") String timeSlotId,
+	@PostMapping(value = { "/itemReservations/customDate", "/itemReservations/customDate/" })
+	public ItemReservationDto createItemReservationCustomDate(
 			 @RequestParam Integer numOfRenewalsLeft,
 			 @RequestParam String idNum,
 			 @RequestParam String itemNumber,
 			 @RequestParam boolean isCheckedOut, @RequestParam String startDate
 			) {
 		System.out.println("Flag Post"); 
-		ItemReservation reservation = itemReservationService.createItemReservation(timeSlotId,
-				Date.valueOf(LocalDate.parse(startDate)), idNum, itemNumber, numOfRenewalsLeft, isCheckedOut
+		ItemReservation reservation = itemReservationService.createItemReservation(
+				Date.valueOf(LocalDate.parse(startDate)), idNum, itemNumber, isCheckedOut
 		     );
 		return convertToDto(reservation);
 	}
