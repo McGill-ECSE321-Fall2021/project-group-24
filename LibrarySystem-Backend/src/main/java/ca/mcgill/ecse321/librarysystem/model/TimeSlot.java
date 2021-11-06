@@ -1,10 +1,13 @@
 package ca.mcgill.ecse321.librarysystem.model;
 
-import java.sql.Date;
 import java.sql.Time;
 import javax.persistence.*;
 
-import org.hibernate.annotations.GenericGenerator;
+
+
+/* @Arman and Saagar (Del 2)
+ * Del 2 edits: added DayOfWeek 
+ */
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -15,10 +18,18 @@ public abstract class TimeSlot {
   @GeneratedValue(generator="system-uuid")
   @GenericGenerator(name="system-uuid", strategy = "uuid")
   private String timeSlotId;
-  private Date startDate;
   private Time startTime;
-  private Date endDate;
   private Time endTime;
+  
+	 public enum DayOfWeek { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday }
+	 private DayOfWeek dayOfWeek; 
+	 
+	 public DayOfWeek getDayOfWeek() {
+		 return this.dayOfWeek; 
+	 }
+	 public void setDayOfWeek(DayOfWeek dayOfWeek) {
+		 this.dayOfWeek = dayOfWeek; 
+	 }
   
   public String getTimeSlotId() {
 		return timeSlotId;
@@ -28,28 +39,12 @@ public abstract class TimeSlot {
 		this.timeSlotId = idNum;
 	}
 
-  public Date getStartDate() {
-    return this.startDate;
-  }
-
-  public void setStartDate(Date startDate) {
-    this.startDate = startDate;
-  }
-
   public Time getStartTime() {
     return this.startTime;
   }
 
   public void setStartTime(Time startTime) {
     this.startTime = startTime;
-  }
-
-  public Date getEndDate() {
-    return this.endDate;
-  }
-
-  public void setEndDate(Date endDate) {
-    this.endDate = endDate;
   }
 
   public Time getEndTime() {

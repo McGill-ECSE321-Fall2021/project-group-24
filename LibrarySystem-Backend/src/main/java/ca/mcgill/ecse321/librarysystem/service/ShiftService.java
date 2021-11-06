@@ -27,23 +27,11 @@ public class ShiftService {
 	 * Note that there is a start and an end date to account for overnight shifts
 	 */
 	@Transactional 
-	public Shift createShift(String currentUserId, String librarianId, Date startDate, Time startTime, Date endDate, Time endTime ) {
-		
-		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can create librarian shifts");
-
-		if (librarianId==null || startDate==null || endDate==null || startTime==null || endTime ==null) {
-			throw new IllegalArgumentException("Fields cannot be blank"); 
-		}
-		if (startDate.after(endDate)) throw new IllegalArgumentException("Shift end date cannot be before start date"); 
-		if (startTime.after(endTime) && startDate.equals(endDate)) throw new IllegalArgumentException("Shift end time cannot be before its start time"); 
-		
-		if(shiftRepo.findShiftByLibrarianIdAndStartDateAndStartTime(librarianId, startDate, startTime)!=null) throw new IllegalArgumentException("Shift already exists"); 
-		if(librarianRepo.findUserByIdNum(librarianId)==null) throw new IllegalArgumentException("No Librarian with this ID exists"); 
-		
+	public Shift createShift(String timeSlotId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime ) {
 		Shift shift = new Shift(); 
-		shift.setStartDate(startDate);
+		shift.setTimeSlotId(timeSlotId);
 		shift.setStartTime(startTime);
-		shift.setEndDate(endDate);
+		shift.setDayOfWeek(dayOfWeek);
 		shift.setEndTime(endTime);
 		shiftRepo.save(shift); 
 		return shift;
