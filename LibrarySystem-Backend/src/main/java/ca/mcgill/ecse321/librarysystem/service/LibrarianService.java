@@ -38,6 +38,16 @@ public class LibrarianService {
     return librarian;
   }
 
+  @Transactional
+  public Librarian createLibrarian(String idNum) {
+    Librarian librarian = new Librarian();
+
+    librarian.setIdNum(idNum);
+
+    librarianRepo.save(librarian);
+    return librarian;
+  }
+
   //fire librarian
   @Transactional
   public Librarian deleteLibrarian(Librarian librarian) {

@@ -1,8 +1,7 @@
 package ca.mcgill.ecse321.librarysystem.dto;
 
-import java.util.Set;
-
 import ca.mcgill.ecse321.librarysystem.model.*;
+import java.util.Set;
 
 public class LibrarianDto {
 
@@ -15,18 +14,6 @@ public class LibrarianDto {
   private String password;
 
   public LibrarianDto() {}
-
-  public LibrarianDto(String idNum) {
-    this(
-      idNum,
-      "First Name",
-      "Surname",
-      "Address",
-      "Email",
-      "username",
-      "password"
-    );
-  }
 
   public LibrarianDto(
     String idNum,

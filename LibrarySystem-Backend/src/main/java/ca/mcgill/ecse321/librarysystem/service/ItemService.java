@@ -18,6 +18,9 @@ public class ItemService {
   @Autowired
   LibrarianRepository librarianRepository;
 
+  @Autowired
+  HeadLibrarianRepository headLibrarianRepository;
+
   // creates book, returns it so we know it's not null
   @Transactional
   public Book createBook(
