@@ -8,7 +8,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "item") 
 public abstract class Item {
 
@@ -20,7 +20,10 @@ public abstract class Item {
   private String genre;
   private Date publishDate;
   private boolean isReservable;
-  private boolean isCheckedOut;
+  private String currentReservationId;
+  private Type type;
+  
+  public enum Type {Archive, Book, Movie, MusicAlbum, PrintedMedia }
 
   @ElementCollection
   private Set<ItemReservation> itemReservations;
@@ -91,11 +94,17 @@ public abstract class Item {
     this.isReservable = isReservable;
   }
 
-  public boolean getIsCheckedOut() {
-    return this.isCheckedOut;
+  public String getCurrentReservationId() {
+    return this.currentReservationId;
   }
 
-  public void setIsCheckedOut(boolean isCheckedOut) {
-    this.isCheckedOut = isCheckedOut;
+  public void setCurrentReservationId(String currentReservationId) {
+    this.currentReservationId = currentReservationId;
+  }
+  public Type getType() {
+	  return this.type;
+  }
+  public void setType(Type type) {
+	  this.type = type;
   }
 }

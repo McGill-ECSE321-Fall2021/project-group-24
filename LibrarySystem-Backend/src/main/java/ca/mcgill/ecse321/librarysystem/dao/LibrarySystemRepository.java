@@ -176,14 +176,15 @@ public class LibrarySystemRepository {
     String genre,
     Date publishDate,
     boolean isReservable,
-    String itemNumber
+    String itemNumber,
+    String currentReservationId
   ) {
     Book b = new Book();
     b.setItemTitle(itemTitle);
     b.setDescription(description);
     b.setAuthor(author);
     b.setGenre(genre);
-    b.setIsCheckedOut(isCheckedOut);
+    b.setCurrentReservationId(currentReservationId);
     b.setPublishDate(publishDate);
     b.setItemNumber(itemNumber);
     b.setPublisher(publisher);
@@ -207,7 +208,7 @@ public class LibrarySystemRepository {
     String imageUrl,
     String itemTitle,
     Date publishDate,
-    boolean isCheckedOut,
+    String currentReservationId,
     String recordingLabel,
     String artist,
     String itemNumber
@@ -216,7 +217,7 @@ public class LibrarySystemRepository {
     m.setDescription(description);
     m.setGenre(genre);
     m.setImageUrl(imageUrl);
-    m.setIsCheckedOut(isCheckedOut);
+    m.setCurrentReservationId(currentReservationId);
     m.setIsReservable(true);
     m.setItemNumber(itemNumber);
     m.setItemTitle(itemTitle);
@@ -245,7 +246,7 @@ public class LibrarySystemRepository {
     String productionCompany,
     String movieCast,
     String director,
-    boolean isCheckedOut,
+    String currentReservationId,
     String itemNumber,
     String producer
   ) {
@@ -253,7 +254,7 @@ public class LibrarySystemRepository {
     m.setDescription(description);
     m.setGenre(genre);
     m.setImageUrl(imageUrl);
-    m.setIsCheckedOut(isCheckedOut);
+    m.setCurrentReservationId(currentReservationId);
     m.setIsReservable(true);
     m.setItemNumber(itemNumber);
     m.setItemTitle(itemTitle);
@@ -282,14 +283,14 @@ public class LibrarySystemRepository {
     String itemTitle,
     Date publishDate,
     String issueNumber,
-    boolean isCheckedOut,
+    String currentReservationId,
     String itemNumber
   ) {
     PrintedMedia pm = new PrintedMedia();
     pm.setDescription(description);
     pm.setGenre(genre);
     pm.setImageUrl(imageUrl);
-    pm.setIsCheckedOut(isCheckedOut);
+    pm.setCurrentReservationId(currentReservationId);
     pm.setIsReservable(true);
     pm.setItemNumber(itemNumber);
     pm.setItemTitle(itemTitle);
@@ -314,13 +315,13 @@ public class LibrarySystemRepository {
     String imageUrl,
     String itemTitle,
     Date publishDate,
-    String itemNumber
+    String itemNumber,String currentReservationId
   ) {
     Archive a = new Archive();
     a.setDescription(description);
     a.setGenre(genre);
     a.setImageUrl(imageUrl);
-    a.setIsCheckedOut(false);
+    a.setCurrentReservationId(currentReservationId);
     a.setIsReservable(false);
     a.setItemNumber(itemNumber);
     a.setItemTitle(itemTitle);
@@ -340,8 +341,7 @@ public class LibrarySystemRepository {
   @Transactional
   //create a new room booking
   public RoomBooking createRoomBooking(
-    Date startDate,
-    Date endDate,
+    TimeSlot.DayOfWeek dayOfWeek,
     Time startTime,
     Time endTime,
     String bookingID,
@@ -349,8 +349,7 @@ public class LibrarySystemRepository {
     String idNum
   ) {
     RoomBooking roombooking = new RoomBooking();
-    roombooking.setStartDate(startDate);
-    roombooking.setEndDate(endDate);
+    roombooking.setDayOfWeek(dayOfWeek);
     roombooking.setStartTime(startTime);
     roombooking.setEndTime(endTime);
     roombooking.setTimeSlotId(bookingID);
@@ -373,16 +372,14 @@ public class LibrarySystemRepository {
     Date endDate,
     Time startTime,
     Time endTime,
-    String timeSlotId,
+    String itemReservationId,
     String itemNumber,
     String idNum
   ) {
     ItemReservation reservation = new ItemReservation();
     reservation.setStartDate(startDate);
     reservation.setEndDate(endDate);
-    reservation.setStartTime(startTime);
-    reservation.setEndTime(endTime);
-    reservation.setIdNum(timeSlotId);
+    reservation.setItemReservationId(itemReservationId);
     reservation.setNumOfRenewalsLeft(2);
     reservation.setIdNum(idNum);
     reservation.setItemNumber(itemNumber);
@@ -403,15 +400,13 @@ public class LibrarySystemRepository {
   @Transactional
   //create a new shift for a librarian 
   public Shift createShift(
-    Date startDate,
-    Date endDate,
+    TimeSlot.DayOfWeek dayOfWeek,
     Time startTime,
     Time endTime,
     String timeSlotId
   ) {
     Shift shift = new Shift();
-    shift.setStartDate(startDate);
-    shift.setEndDate(endDate);
+    shift.setDayOfWeek(dayOfWeek);
     shift.setStartTime(startTime);
     shift.setEndTime(endTime);
     shift.setTimeSlotId(timeSlotId);
@@ -429,16 +424,14 @@ public class LibrarySystemRepository {
   @Transactional
   //create a new library hour
   public LibraryHour createLibraryHour(
-    Date startDate,
-    Date endDate,
+   TimeSlot.DayOfWeek dayOfWeek,
     Time startTime,
     Time endTime,
     String timeSlotId
   ) {
     //add timeSlotID after Arman pushes changes to model
     LibraryHour libHour = new LibraryHour();
-    libHour.setStartDate(startDate);
-    libHour.setEndDate(endDate);
+    libHour.setDayOfWeek(dayOfWeek);
     libHour.setStartTime(startTime);
     libHour.setEndTime(endTime);
     libHour.setTimeSlotId(timeSlotId);

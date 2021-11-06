@@ -17,12 +17,11 @@ public class ShiftService {
 	
 	// Creates a shift with an associated librarian
 	@Transactional 
-	public Shift createShift(String timeSlotId, Date startDate, Date endDate, Time startTime, Time endTime ) {
+	public Shift createShift(String timeSlotId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime ) {
 		Shift shift = new Shift(); 
 		shift.setTimeSlotId(timeSlotId);
-		shift.setStartDate(startDate);
 		shift.setStartTime(startTime);
-		shift.setEndDate(endDate);
+		shift.setDayOfWeek(dayOfWeek);
 		shift.setEndTime(endTime);
 		
 		shiftRepo.save(shift); 

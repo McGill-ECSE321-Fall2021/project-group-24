@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.librarysystem.model;
 
+import java.sql.Date;
+
 import javax.persistence.*;
 
 @Entity
@@ -26,4 +28,11 @@ public class RoomBooking extends TimeSlot {
     this.idNum = idNum;
   }
   
+  public Date getDate() {
+    return this.date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
+  }
 }
