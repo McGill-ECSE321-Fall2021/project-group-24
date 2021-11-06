@@ -29,7 +29,7 @@ public class ShiftController {
 	
 	/** Method adds a shift (if startDate is different from endDate then it's an overnight shift)
 	 * @author Arman 
-	 * @param librarianId, startDate, endDate, startTime, endTime 
+	 * @param librarianId, dayOfWeek, startTime, endTime 
 	 * @return Response Entity 
 	 */
 	@PostMapping(value = {"/add_overnight_shift", "/add_overnight_shift/"})
@@ -47,16 +47,15 @@ public class ShiftController {
 	
 	/** Method modifies a shift
 	 * @author Arman 
-	 * @param currentUserId, librarianId, oldStartDate, oldStartTime, startDate, endDate, startTime, endTime 
+	 * @param currentUserId, librarianId, shiftId, dayOfWeek, startTime, endTime 
 	 * @return Response Entity 
 	 */
 	@PostMapping(value = {"/modify_shift", "/modify_shift/"})
-	public  ResponseEntity<?> modifyShift(@RequestParam String currentUserId, @RequestParam TimeSlot.DayOfWeek oldDayOfWeek,@RequestParam TimeSlot.DayOfWeek newDayOfWeek, @RequestParam String librarianId, @RequestParam String oldStartTime, 
-		 @RequestParam String startTime, @RequestParam String endTime) {
+	public  ResponseEntity<?> modifyShift(@RequestParam String currentUserId, @RequestParam String shiftId, @RequestParam String librarianId, 
+			@RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime, @RequestParam String endTime) {
 		Shift shift = null; 
 		try {
-			shift =shiftService.modifyShift(currentUserId, librarianId, oldDayOfWeek, newDayOfWeek, Time.valueOf(oldStartTime+":00"), 
-					 Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00")); 
+			shift =shiftService.modifyShift(currentUserId, shiftId, librarianId, dayOfWeek, Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00")); 
 			}		
 			catch(IllegalArgumentException e) {
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -66,14 +65,14 @@ public class ShiftController {
 	
 	/** Method removes an existing shift for a librarian
 	 * @author Arman 
-	 * @param currentUserId, librarianId, startDate, startTime
+	 * @param currentUserId, shiftId
 	 * @return true if the shift is successfully deleted 
 	 */
 	@PostMapping(value = {"/remove_shift", "/remove_shift/"}) 
-	public ResponseEntity<?> removeShift(@RequestParam String currentUserId, @RequestParam String librarianId,@RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime) {
+	public ResponseEntity<?> removeShift(@RequestParam String currentUserId, @RequestParam String shiftId) {
 		boolean isDeleted = false; 
 		try {
-			isDeleted = shiftService.removeShift(currentUserId, librarianId, dayOfWeek, Time.valueOf(startTime + ":00"));  
+			isDeleted = shiftService.removeShift(currentUserId, shiftId);  
 		}
 		catch(IllegalArgumentException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
@@ -100,14 +99,14 @@ public class ShiftController {
 	
 	/** Method returns a specific shift
 	 * @author Arman 
-	 * @param currentUserId, librarianId, startDate, startTime
+	 * @param currentUserId, shiftId
 	 * @return ShiftDto
 	 */
 	@GetMapping(value = {"/view_shift", "/view_shift/"})
-	public ResponseEntity<?> viewShift(@RequestParam String currentUserId, @RequestParam String librarianId, @RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime){
+	public ResponseEntity<?> viewShift(@RequestParam String currentUserId, @RequestParam String shiftId){
 		Shift shift = null; 
 		try {
-			shift = shiftService.getShift(currentUserId, librarianId,dayOfWeek, Time.valueOf(startTime)); 
+			shift = shiftService.getShift(currentUserId, shiftId); 
 		}
 		catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
