@@ -14,20 +14,25 @@ import ca.mcgill.ecse321.librarysystem.model.*;
 public class ItemService  {
 	@Autowired
 	ItemRepository itemRepository;
+	@Autowired
+	LibrarianRepository librarianRepository;
 		
 	// creates book, returns it so we know it's not null 
 	@Transactional 
-	public Book createBook(
+	public Book createBook(String idNum,
 		String itemTitle,
 		String description,
 		String imageUrl,
-		String itemNumber,
 		String genre,
 		Date publishDate,
 		boolean isReservable,
 		String author,
 		String publisher)
 	{
+		if (librarianRepository.findById(idNum) == null) {
+			throw new IllegalArgumentException("You do not have permission to create an item");
+		}
+		String itemNumber = "Book-" + getAllBooks().size() + itemTitle.trim();
 		Book book = new Book();
 	    book.setItemTitle(itemTitle);
 	    book.setDescription(description);
@@ -44,15 +49,18 @@ public class ItemService  {
 	}
 
 	@Transactional 
-	public Archive createArchive(
+	public Archive createArchive(String idNum,
 		String itemTitle,
 		String description,
 		String imageUrl,
-		String itemNumber,
 		String genre,
 		Date publishDate,
 		boolean isReservable)
 	{
+		if (librarianRepository.findById(idNum) == null) {
+			throw new IllegalArgumentException("You do not have permission to create an item");
+		}
+		String itemNumber = "Archive-" + itemRepository.findItemsByType(Item.Type.Archive).size() + itemTitle.trim();
 		Archive archive = new Archive();
 		archive.setItemTitle(itemTitle);
 		archive.setDescription(description);
@@ -67,15 +75,18 @@ public class ItemService  {
 	}
 	
 	@Transactional 
-	public MusicAlbum createMusicAlbum(
+	public MusicAlbum createMusicAlbum(String idNum,
 		String itemTitle,
 		String description,
 		String imageUrl,
-		String itemNumber,
 		String genre,
 		Date publishDate,
 		boolean isReservable,String artist, String recordingLabel)
 	{
+		if (librarianRepository.findById(idNum) == null) {
+			throw new IllegalArgumentException("You do not have permission to create an item");
+		}
+		String itemNumber = "MusicAlbum-" + itemRepository.findItemsByType(Item.Type.MusicAlbum).size() + itemTitle.trim();
 		MusicAlbum musicAlbum = new MusicAlbum();
 		musicAlbum.setItemTitle(itemTitle);
 		musicAlbum.setDescription(description);
@@ -92,15 +103,18 @@ public class ItemService  {
 	}
 	
 	@Transactional 
-	public PrintedMedia createPrintedMedia(
+	public PrintedMedia createPrintedMedia(String idNum,
 		String itemTitle,
 		String description,
 		String imageUrl,
-		String itemNumber,
 		String genre,
 		Date publishDate,
 		boolean isReservable, String issueNumber)
 	{
+		if (librarianRepository.findById(idNum) == null) {
+			throw new IllegalArgumentException("You do not have permission to create an item");
+		}
+		String itemNumber = "PrintedMedia-" + itemRepository.findItemsByType(Item.Type.MusicAlbum).size() + itemTitle.trim();
 		PrintedMedia printedMedia = new PrintedMedia();
 		printedMedia.setItemTitle(itemTitle);
 		printedMedia.setDescription(description);
@@ -116,11 +130,10 @@ public class ItemService  {
 	}
 	
 	@Transactional 
-	public Movie createMovie(
+	public Movie createMovie(String idNum,
 		String itemTitle,
 		String description,
 		String imageUrl,
-		String itemNumber,
 		String genre,
 		Date publishDate,
 		boolean isReservable,  String productionCompany,
@@ -128,6 +141,10 @@ public class ItemService  {
 		 String director,
 		 String producer)
 	{
+		if (librarianRepository.findById(idNum) == null) {
+			throw new IllegalArgumentException("You do not have permission to create an item");
+		}
+		String itemNumber = "Movie-" + itemRepository.findItemsByType(Item.Type.Movie).size() + itemTitle.trim();
 		Movie movie = new Movie();
 		movie.setItemTitle(itemTitle);
 		movie.setDescription(description);
@@ -159,7 +176,7 @@ public class ItemService  {
 	
 	@Transactional 
 	public List<Book> getAllBooks() {
-		return toList(itemRepository.findItemsByType("Book")); 
+		return toList(itemRepository.findItemsByType(Item.Type.Book)); 
 	}
 
 	private <T> List<T> toList(Iterable<T> iterable){

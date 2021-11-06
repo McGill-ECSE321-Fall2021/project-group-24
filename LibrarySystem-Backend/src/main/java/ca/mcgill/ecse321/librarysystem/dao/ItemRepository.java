@@ -6,6 +6,6 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ItemRepository extends CrudRepository<Item, String> {
-	List<Book> findItemsByType(String type);
+	List<Book> findItemsByType(Item.Type type);
 	Item findItemByItemNumber(String itemNumber);
 }

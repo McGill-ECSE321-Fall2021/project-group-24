@@ -43,8 +43,8 @@ public class ItemController {
 		return convertToDto(item);
 	}
 
-	@PostMapping(value = { "/items/createBook/{itemNumber}", "/items/createBook/{itemNumber}/" })
-	public BookDto createBook(@PathVariable("itemNumber") String itemNumber,
+	@PostMapping(value = { "/items/createBook/{", "/items/createBook/" })
+	public BookDto createBook(
 			@RequestParam String itemTitle,
 			@RequestParam String description,
 			@RequestParam String imageURL,
@@ -52,45 +52,66 @@ public class ItemController {
 			@RequestParam String author,
 			@RequestParam String genre,
 			@RequestParam String publishDate,
-			@RequestParam boolean isReservable
+			@RequestParam boolean isReservable,
+			@RequestParam String idNum
 			) {
 		System.out.println("Flag Post"); 
-		Book book = itemService.createBook(itemTitle,description,imageURL, itemNumber,genre,Date.valueOf(LocalDate.parse(publishDate)),isReservable,author,publisher);
+		Book book = itemService.createBook(idNum, itemTitle,description,imageURL,genre,Date.valueOf(LocalDate.parse(publishDate)),isReservable,author,publisher);
 		System.out.println(book.getAuthor());
 		return convertToBookDto(book);
 	}
 	
-	@PostMapping(value = { "/items/createNewEmptyBook/{itemNumber}", "/items/createNewEmptyBook/{itemNumber}/" })
-	public BookDto createEmptyBook(@PathVariable("itemNumber") String itemNumber
+	@PostMapping(value = { "/items/createMovie", "/items/createMovie/" })
+	public MovieDto createMovie(
+			@RequestParam String itemTitle,
+			@RequestParam String description,
+			@RequestParam String imageURL,
+			@RequestParam String publisher,
+			@RequestParam String author,
+			@RequestParam String genre,
+			@RequestParam String publishDate,
+			@RequestParam boolean isReservable, 
+			@RequestParam String movieCast,
+			@RequestParam String productionCompany,
+			@RequestParam String director,
+			@RequestParam String producer,
+			@RequestParam String idNum
 			) {
 		System.out.println("Flag Post"); 
-		Book book = itemService.createBook("title","description","imageURL",itemNumber,"genre",Date.valueOf(LocalDate.now()),true,"author","publisher");
+		Movie movie = itemService.createMovie(idNum, itemTitle,description,imageURL,genre,Date.valueOf(LocalDate.parse(publishDate)),isReservable,productionCompany,movieCast,director, producer);
+		return convertToMovieDto(movie);
+	}
+	
+	@PostMapping(value = { "/items/createNewEmptyBook/", "/items/createNewEmptyBook" })
+	public BookDto createEmptyBook(
+			@RequestParam String idNum
+			) {
+		System.out.println("Flag Post"); 
+		Book book = itemService.createBook(idNum, "title","description","imageURL","genre",Date.valueOf(LocalDate.now()),true,"author","publisher");
 		System.out.println(book.getAuthor());
 		return convertToBookDto(book);
 	}
 	
-	@PostMapping(value = { "/items/createEmptyArchive/{itemNumber}", "/items/createEmptyArchive/{itemNumber}/" })
-	public ArchiveDto createEmptyArchive(@PathVariable("itemNumber") String itemNumber
+	@PostMapping(value = { "/items/createEmptyArchive/", "/items/createEmptyArchive" })
+	public ArchiveDto createEmptyArchive(@RequestParam String idNum
 			) {
 		System.out.println("Flag Post"); 
-		Archive archive = itemService.createArchive("title","description","imageURL",itemNumber,"genre",Date.valueOf(LocalDate.now()),true);
+		Archive archive = itemService.createArchive(idNum, "title","description","imageURL","genre",Date.valueOf(LocalDate.now()),true);
 
 		return convertToArchiveDto(archive);
 	}
 	
-	@PostMapping(value = { "/items/createEmptyMovie/{itemNumber}", "/items/createEmptyMovie/{itemNumber}/" })
-	public MovieDto createEmptyMovie(@PathVariable("itemNumber") String itemNumber
-			) {
+	@PostMapping(value = { "/items/createEmptyMovie/", "/items/createEmptyMovie" })
+	public MovieDto createEmptyMovie(@RequestParam String idNum) {
 		System.out.println("Flag Post"); 
-		Movie movie = itemService.createMovie("title","description","imageURL",itemNumber,"genre",Date.valueOf(LocalDate.now()),true,"production company","movieCast","director", "producer");
+		Movie movie = itemService.createMovie(idNum,"title","description","imageURL","genre",Date.valueOf(LocalDate.now()),true,"production company","movieCast","director", "producer");
 		return convertToMovieDto(movie);
 	}
 	
-	@PostMapping(value = { "/items/createEmptyMusicAlbum/{itemNumber}", "/items/createEmptyMusicAlbum/{itemNumber}/" })
-	public MusicAlbumDto createEmptyMusicAlbum(@PathVariable("itemNumber") String itemNumber
-			) {
+	@PostMapping(value = { "/items/createEmptyMusicAlbum/", "/items/createEmptyMusicAlbum" })
+	public MusicAlbumDto createEmptyMusicAlbum(@RequestParam String idNum) {
 		System.out.println("Flag Post"); 
-		MusicAlbum musicAlbum = itemService.createMusicAlbum("title","description","imageURL",itemNumber,"genre",Date.valueOf(LocalDate.now()),true,"artist","recording label");
+		MusicAlbum musicAlbum = itemService.createMusicAlbum(idNum,"title","description","imageURL","genre",Date.valueOf(LocalDate.now()),true,"artist","recording label");
 		return convertToMusicAlbumDto(musicAlbum);
 	}
 	

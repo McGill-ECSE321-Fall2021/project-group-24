@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.librarysystem.service;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +29,21 @@ public class ItemReservationService {
 	public ItemReservation createItemReservation (
 			String timeSlotId,
 			   Date startDate,
-			   Time startTime,
-			   Date endDate,
-			   Time endTime,
 		 String idNum,
 		String itemNumber,
 		int numOfRenewalsLeft, boolean isCheckedOut)
 	{
+		if (startDate == null) {
+			startDate = findNextAvailabilityForItem(itemNumber);
+			//if they are at the library rn and the book is available 
+			if (isCheckedOut && startDate.equals(Date.valueOf(LocalDate.now().plusDays(1))) ) {
+				startDate = Date.valueOf(LocalDate.now());
+			//if they are at the library rn but the book should not be available
+			} else if (isCheckedOut) {
+				throw new IllegalArgumentException("Book has a future reservation");
+			}
+		}
+		Date endDate = Date.valueOf(startDate.toLocalDate().plusWeeks(2));
 		if (patronRepository.findUserByIdNum(idNum) == null && librarianRepository.findUserByIdNum(idNum) == null) {
 			System.out.println("id num is" + idNum);
 			throw new IllegalArgumentException("Invalid idNum");
@@ -62,9 +71,9 @@ public class ItemReservationService {
 		ItemReservation reservation = new ItemReservation();
 		reservation.setTimeSlotId(timeSlotId);
 		reservation.setStartDate(startDate);
-		reservation.setStartTime(startTime);
+		reservation.setStartTime(Time.valueOf(LocalTime.of(0, 0)));
 		reservation.setEndDate(endDate);
-		reservation.setEndTime(endTime);
+		reservation.setEndTime(Time.valueOf(LocalTime.of(23, 59)));
 		reservation.setIdNum(idNum);
 		reservation.setItemNumber(itemNumber);
 		reservation.setNumOfRenewalsLeft(numOfRenewalsLeft);
@@ -109,6 +118,8 @@ public class ItemReservationService {
 			return null;
 		} else if (!currentReservation.getIdNum().equals(idNum)) {
 			throw new IllegalArgumentException("No reservation at this time for this patron");
+		} else if (patronRepository.findUserByIdNum(idNum).getIsVerified()) {
+			throw new IllegalArgumentException("Must verify patron before checking out books");
 		}
 		currentReservation.setEndDate(Date.valueOf(LocalDate.now().plusWeeks(2)));
 		currentReservation.setIsCheckedOut(true);
