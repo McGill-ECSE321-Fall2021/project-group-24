@@ -15,16 +15,18 @@ import ca.mcgill.ecse321.librarysystem.model.LibraryHour.DayOfWeek;
 public class LibraryHourService {
 	@Autowired
 	LibraryHourRepository libraryHourRepo; 
+	@Autowired
+	HeadLibrarianRepository headLibrarianRepo; 
 	
-	/**
+	/**Method creates a new operating hour (called "libraryHour") for the library 
 	 * @author Arman
-	 * creates a new operating hour (called "libraryHour") for the library 
-	 * @param dayOfWeek, startTime, endTime
+	 * @param currentUserId, dayOfWeek, startTime, endTime
 	 * @return the new libraryHour
 	 */
 	@Transactional 
-	public LibraryHour createLibraryHour(DayOfWeek dayOfWeek, Time startTime, Time endTime) {
-		
+	public LibraryHour createLibraryHour(String currentUserId, DayOfWeek dayOfWeek, Time startTime, Time endTime) {
+		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can create library hours");
+
 		if (dayOfWeek==null || startTime ==null || endTime ==null) {
 			throw new IllegalArgumentException ("Fields cannot be blank"); 
 		}
@@ -41,14 +43,13 @@ public class LibraryHourService {
 		return libraryHour; 
 	}
 	
-	/**
+	/**Method modifies an operating hour of the library 
 	 * @author Arman
-	 * modifies an operating hour of the library 
-	 * @param dayOfWeek, new startTime, new endTime
+	 * @param currentUserId, dayOfWeek, new startTime, new endTime
 	 * @return the new library hour
 	 */
-	public LibraryHour modifyLibraryHour (DayOfWeek dayOfWeek, Time startTime, Time endTime) {
-		// if (!(HeadLibrarian.isLoggedIn()) throw errors
+	public LibraryHour modifyLibraryHour (String currentUserId, DayOfWeek dayOfWeek, Time startTime, Time endTime) {
+		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can modify library hours");
 		if (dayOfWeek==null || startTime ==null || endTime ==null) {
 			throw new IllegalArgumentException ("Fields cannot be blank"); 
 		}
@@ -65,18 +66,15 @@ public class LibraryHourService {
 		
 	}
 	
-	/**
+	/**Method removes a library operating hour
 	 * @author Arman
-	 * deletes an operating hour of the library 
-	 * @param dayOfWeek
+	 * @param currentUserId, dayOfWeek
 	 * @return true if the library hour is deleted
 	 */
 	@Transactional 
-	public boolean removeLibraryHour(DayOfWeek dayOfWeek) {
-		
-	//	if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify library hours"); 
+	public boolean removeLibraryHour(String currentUserId, DayOfWeek dayOfWeek) {
+		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can remove library hours");
 		if (dayOfWeek==null) throw new IllegalArgumentException ("Field cannot be blank");
-		
 		if (libraryHourRepo.findHourByDayOfWeek(dayOfWeek)==null) throw new IllegalArgumentException("There's no library hour for that day to delete"); 
 				
 		libraryHourRepo.delete(libraryHourRepo.findHourByDayOfWeek(dayOfWeek)); 

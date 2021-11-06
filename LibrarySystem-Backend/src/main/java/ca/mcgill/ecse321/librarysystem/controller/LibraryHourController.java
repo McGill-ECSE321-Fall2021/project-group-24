@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,8 @@ import ca.mcgill.ecse321.librarysystem.service.*;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api/libraryhour")
+
 public class LibraryHourController {
 	
 	@Autowired 
@@ -27,14 +30,14 @@ public class LibraryHourController {
 	
 	/** Method adds a library hour
 	 * @author Arman 
-	 * @param dayOfWeek, startTime, endTime 
+	 * @param currentUserId, dayOfWeek, startTime, endTime 
 	 * @return Response Entity 
 	 */
 	@PostMapping(value = {"/add_library_hour", "/add_library_hour/"})
-	public  ResponseEntity<?> addLibraryHour(@RequestParam String dayOfWeek, @RequestParam String startTime, @RequestParam String endTime) {
+	public  ResponseEntity<?> addLibraryHour(@RequestParam String currentUserId, @RequestParam String dayOfWeek, @RequestParam String startTime, @RequestParam String endTime) {
 		LibraryHour libraryHour = null;
 		try {
-			libraryHour =libraryHourService.createLibraryHour(DayOfWeek.valueOf(dayOfWeek), Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00"));
+			libraryHour =libraryHourService.createLibraryHour(currentUserId, DayOfWeek.valueOf(dayOfWeek), Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00"));
 			}		
 			catch(IllegalArgumentException e) {
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -44,14 +47,14 @@ public class LibraryHourController {
 	
 	/** Method modifies an existing library hour
 	 * @author Arman 
-	 * @param dayOfWeek, startTime, endTime 
+	 * @param currentUserId, dayOfWeek, startTime, endTime 
 	 * @return Response Entity 
 	 */
 	@PostMapping(value = {"/modify_library_hour", "/modify_library_hour/"})
-	public ResponseEntity<?> modifyLibraryHour(@RequestParam String dayOfWeek, @RequestParam String startTime, @RequestParam String endTime) {
+	public ResponseEntity<?> modifyLibraryHour(@RequestParam String currentUserId, @RequestParam String dayOfWeek, @RequestParam String startTime, @RequestParam String endTime) {
 		LibraryHour libraryHour = null;
 		try {
-			libraryHour =libraryHourService.modifyLibraryHour(DayOfWeek.valueOf(dayOfWeek), Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00"));
+			libraryHour =libraryHourService.modifyLibraryHour(currentUserId, DayOfWeek.valueOf(dayOfWeek), Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00"));
 			}		
 			catch(IllegalArgumentException e) {
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -61,12 +64,12 @@ public class LibraryHourController {
 	
 	/** Method removes an existing library hour
 	 * @author Arman 
-	 * @param dayOfWeek
+	 * @param currentUserId, dayOfWeek
 	 * @return true if the hour is successfully deleted 
 	 */
 	@PostMapping(value = {"/remove_library_hour", "/remove_library_hour/"}) 
-	public boolean removeLibraryHour(@RequestParam String dayOfWeek) {
-		return libraryHourService.removeLibraryHour(DayOfWeek.valueOf(dayOfWeek));  
+	public boolean removeLibraryHour(@RequestParam String currentUserId, @RequestParam String dayOfWeek) {
+		return libraryHourService.removeLibraryHour(currentUserId, DayOfWeek.valueOf(dayOfWeek));  
 	}
 	
 	/** Method returns the library hour of a certain day
@@ -76,7 +79,14 @@ public class LibraryHourController {
 	 */
 	@GetMapping(value = {"/view_library_hour_by_day", "/view_library_hour_by_day/"})
 	public LibraryHourDto viewLibraryHourByDay(@RequestParam String dayOfWeek){
-		return convertToDto(libraryHourService.getLibraryHour(DayOfWeek.valueOf(dayOfWeek)));
+		LibraryHourDto libraryHourDto = null; 
+		try {
+			libraryHourDto= convertToDto(libraryHourService.getLibraryHour(DayOfWeek.valueOf(dayOfWeek)));
+		}
+		catch (IllegalArgumentException e) {
+			
+		}
+		return libraryHourDto; 
 	}
 	
 	/** Method returns all the library hours 

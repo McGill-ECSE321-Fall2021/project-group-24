@@ -9,9 +9,6 @@ public class LibraryHourDto {
 	private DayOfWeek dayOfWeek; 
 	private Time startTime; 
 	private Time endTime; 
-	private List<LibraryHourDto> libraryHours; 
-	public LibraryHourDto() {
-	}
 	
 	// default opening hours are set to 9am-5pm
 	public LibraryHourDto(DayOfWeek dayOfWeek) {
@@ -36,8 +33,4 @@ public class LibraryHourDto {
 		return this.endTime; 
 	}
 
-	public List<LibraryHourDto> getAllLibraryHours() {
-		return this.libraryHours; 
-	}
-	
 }

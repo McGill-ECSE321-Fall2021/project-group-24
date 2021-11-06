@@ -17,19 +17,19 @@ public class ShiftService {
 	ShiftRepository shiftRepo;
 	@Autowired
 	LibrarianRepository librarianRepo; 
+	@Autowired 
+	HeadLibrarianRepository headLibrarianRepo; 
 
-
-	/**
+	/**Method creates a new shift (must be performed by head librarian)
 	 * @author Arman
-	 * @param librarianId, startDate, endDate, startTime, endTime
+	 * @param currentUserId, librarianId, startDate, endDate, startTime, endTime
 	 * @return shift 
 	 * Note that there is a start and an end date to account for overnight shifts
 	 */
 	@Transactional 
-	public Shift createShift(String librarianId, Date startDate, Time startTime, Date endDate, Time endTime ) {
-		User user = null;
-
-		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
+	public Shift createShift(String currentUserId, String librarianId, Date startDate, Time startTime, Date endDate, Time endTime ) {
+		
+		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can create librarian shifts");
 
 		if (librarianId==null || startDate==null || endDate==null || startTime==null || endTime ==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
@@ -48,17 +48,15 @@ public class ShiftService {
 		shiftRepo.save(shift); 
 		return shift;
 	}
-	/**
+	/**Method modifies a shift (must be performed by head librarian)
 	 * @author Arman
-	 * @param librarianId, oldStartDate, oldStartTime, startDate, endDate, startTime, endTime
+	 * @param currentUserId, librarianId, oldStartDate, oldStartTime, startDate, endDate, startTime, endTime
 	 * @return shift
 	 */
 	
 	@Transactional 
-	public Shift modifyShift(String librarianId, Date oldStartDate, Time oldStartTime, Date startDate, Time startTime, Date endDate, Time endTime) {
-		User user = null;
-
-		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
+	public Shift modifyShift(String currentUserId, String librarianId, Date oldStartDate, Time oldStartTime, Date startDate, Time startTime, Date endDate, Time endTime) {
+		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
 
 		if (librarianId==null || oldStartDate==null || oldStartTime==null || startDate==null || endDate==null || startTime==null || endTime ==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
@@ -79,16 +77,15 @@ public class ShiftService {
 		return shift; 
 	}
 	
-	/**
+	/**Method removes a certain shift (must be performed by head librarian)
 	 * @author Arman
-	 * @param librarianId, startTime, endTime
+	 * @param currentUserId, librarianId, startTime, endTime
 	 * @return true if the shift is deleted
 	 */
 	@Transactional 
-	public boolean removeShift(String librarianId, Date startDate, Time startTime) {
-		User user = null;
+	public boolean removeShift(String currentUserId, String librarianId, Date startDate, Time startTime) {
+		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can remove librarian shifts");
 
-		if (!(user instanceof HeadLibrarian)) throw new IllegalArgumentException("Only the Head Librarian can remove librarian shifts");
 		if (librarianId==null || startDate==null || startTime==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
@@ -98,15 +95,16 @@ public class ShiftService {
 		return true; 
 	}
 	
-	/**
+	/**Method removes all of a Librarian's shifts (must be performed by head librarian)
 	 * @author Arman
-	 * @param librarianId
+	 * @param currentUserId, librarianId
 	 * @return true if all their shifts are deleted
 	 */
 	@Transactional 
-	public boolean removeLibrarianShifts(String librarianId) {
-		// check that it's head librarian 
+	public boolean removeLibrarianShifts(String currentUserId, String librarianId) {
+		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can remove librarian shifts");
 		if (librarianId == null) throw new IllegalArgumentException("librarian ID cannot be blank"); 
+		
 		// Searches through all the shifts, deleting the ones associated with a certain librarian
 		List<Shift> allShifts = toList(shiftRepo.findAll()); 
 		for (Shift shift: allShifts) {
@@ -117,16 +115,16 @@ public class ShiftService {
 		return true; 
 	}
 	
-	/**
+	/**Method returns a certain shift (can be performed by librarian or head librarian)
 	 *@author Arman
-	 *@param librarianId, startTime, endTime
+	 *@param currentUserId, librarianId, startTime, endTime
 	 *@return shift
-	 *Note that librarians can view (but not modify) each other's shifts
 	 */
 	@Transactional 
-	public Shift getShift(String librarianId, Date startDate, Time startTime) {
-		// check if user is a librarian 
-		
+	public Shift getShift(String currentUserId, String librarianId, Date startDate, Time startTime) {
+		if (headLibrarianRepo.findById(currentUserId)==null && librarianRepo.findById(currentUserId) == null) {
+			throw new IllegalArgumentException("Only librarians can view shifts");
+		}
 		if (librarianId==null || startDate==null || startTime==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
@@ -135,14 +133,16 @@ public class ShiftService {
 		if (shift==null) throw new IllegalArgumentException("Shift cannot be found"); 
 		return shift; 
 	}
-	/**
+	/**Method returns all of a librarian's shifts (can be performed by a librarian or head librarian)
 	 *@author Arman
-	 *@param librarianId
+	 *@param currentUserId, librarianId
 	 *@return list of all the librarian's shifts 
 	 */
 	@Transactional 
-	public List<Shift> getAllShiftsForLibrarian(String librarianId) {
-		// check if user is a librarian
+	public List<Shift> getAllShiftsForLibrarian(String currentUserId, String librarianId) {
+		if (headLibrarianRepo.findById(currentUserId)==null && librarianRepo.findById(currentUserId) == null) {
+			throw new IllegalArgumentException("Only librarians can view shifts");
+		}
 		if (librarianId==null) throw new IllegalArgumentException("Librarian ID cannot be blank"); 
 		
 		// This searches through all shifts, add the ones with desired librarianId to a list then return the list. 
@@ -156,14 +156,16 @@ public class ShiftService {
 		return desiredShifts; 
 	}
 	
-	/**
+	/**Method returns every librarian's shifts (can be performed by a librarian or head librarian)
 	 *@author Arman
-	 *@param none
-	 *@return list of everyone's shifts
+	 *@param currentUserId
+	 *@return list of every librarian's shifts
 	 */
 	@Transactional 
-	public List<Shift> getAllShifts() {
-		// check if user is a librarian
+	public List<Shift> getAllShifts(String currentUserId) {
+		if (headLibrarianRepo.findById(currentUserId)==null && librarianRepo.findById(currentUserId) == null) {
+			throw new IllegalArgumentException("Only librarians can view shifts");
+		}		
 		return toList(shiftRepo.findAll()); 
 	}
 	
