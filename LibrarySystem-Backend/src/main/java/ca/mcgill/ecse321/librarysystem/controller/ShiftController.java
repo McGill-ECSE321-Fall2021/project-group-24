@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.librarysystem.controller;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,8 +70,15 @@ public class ShiftController {
 	 * @return true if the shift is successfully deleted 
 	 */
 	@PostMapping(value = {"/remove_shift", "/remove_shift/"}) 
-	public boolean removeShift(@RequestParam String currentUserId, @RequestParam String librarianId,@RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime) {
-		return shiftService.removeShift(currentUserId, librarianId, dayOfWeek, Time.valueOf(startTime + ":00"));   
+	public ResponseEntity<?> removeShift(@RequestParam String currentUserId, @RequestParam String librarianId,@RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime) {
+		boolean isDeleted = false; 
+		try {
+			isDeleted = shiftService.removeShift(currentUserId, librarianId, dayOfWeek, Time.valueOf(startTime + ":00"));  
+		}
+		catch(IllegalArgumentException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
+		}
+		return new ResponseEntity<>(isDeleted, HttpStatus.CREATED); 
 	}
 	
 	/** Method removes all shifts for a librarian
@@ -79,8 +87,15 @@ public class ShiftController {
 	 * @return true if their shifts are successfully deleted
 	 */
 	@PostMapping(value = {"/remove_librarian_shifts", "/remove_librarian_shifts/"}) 
-	public boolean removeLibrarianShifts(@RequestParam String currentUserId, @RequestParam String librarianId) {
-		return shiftService.removeLibrarianShifts(currentUserId, librarianId); 
+	public ResponseEntity<?> removeLibrarianShifts(@RequestParam String currentUserId, @RequestParam String librarianId) {
+		boolean isDeleted = false; 
+		try {
+			isDeleted = shiftService.removeLibrarianShifts(currentUserId, librarianId); 
+		}
+		catch(IllegalArgumentException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
+		}
+		return new ResponseEntity<>(isDeleted, HttpStatus.CREATED); 
 	}
 	
 	/** Method returns a specific shift
@@ -89,9 +104,15 @@ public class ShiftController {
 	 * @return ShiftDto
 	 */
 	@GetMapping(value = {"/view_shift", "/view_shift/"})
-	public ShiftDto viewShift(@RequestParam String currentUserId, @RequestParam String librarianId, @RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime){
-		return convertToDto(shiftService.getShift(currentUserId, librarianId,dayOfWeek, Time.valueOf(startTime)));
-				
+	public ResponseEntity<?> viewShift(@RequestParam String currentUserId, @RequestParam String librarianId, @RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime){
+		Shift shift = null; 
+		try {
+			shift = shiftService.getShift(currentUserId, librarianId,dayOfWeek, Time.valueOf(startTime)); 
+		}
+		catch (IllegalArgumentException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
+		}
+		return new ResponseEntity<>(convertToDto(shift), HttpStatus.OK); 
 	}
 	
 	/** Method returns all the shifts for a certain librarian
@@ -100,8 +121,15 @@ public class ShiftController {
 	 * @return List of type ShiftDto 
 	 */
 	@GetMapping(value = {"/view_librarian_shifts", "/view_librarian_shifts/"})
-	public List<ShiftDto> viewLibrarianShifts(@RequestParam String currentUserId, @RequestParam String librarianId){
-		return 	shiftService.getAllShiftsForLibrarian(currentUserId, librarianId).stream().map(lh -> convertToDto(lh)).collect(Collectors.toList());
+	public ResponseEntity<?> viewLibrarianShifts(@RequestParam String currentUserId, @RequestParam String librarianId){
+		List<ShiftDto> shifts = new ArrayList<ShiftDto>(); 
+		try {
+			shifts = shiftService.getAllShiftsForLibrarian(currentUserId, librarianId).stream().map(lh -> convertToDto(lh)).collect(Collectors.toList());
+		}
+		catch (IllegalArgumentException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
+		}
+		return new ResponseEntity<>(shifts, HttpStatus.OK); 
 	}
 	
 	/** Method returns all the shifts for every librarian
@@ -109,8 +137,15 @@ public class ShiftController {
 	 * @return List of type ShiftDto 
 	 */
 	@GetMapping(value = {"/view_all_shifts", "/view_all_shifts/"})
-	public List<ShiftDto> viewAllShifts(@RequestParam String currentUserId, @RequestParam String librarianId){
-		return shiftService.getAllShifts(currentUserId).stream().map(lh -> convertToDto(lh)).collect(Collectors.toList());
+	public ResponseEntity<?> viewAllShifts(@RequestParam String currentUserId, @RequestParam String librarianId){
+		List<ShiftDto> shifts = new ArrayList<ShiftDto>(); 
+		try {
+			shifts = shiftService.getAllShifts(currentUserId).stream().map(lh -> convertToDto(lh)).collect(Collectors.toList());
+		}
+		catch (IllegalArgumentException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
+		}
+		return new ResponseEntity<>(shifts, HttpStatus.OK); 
 	}
 	
 	/** Method converts a shift object into a shift DTO

@@ -101,6 +101,7 @@ public class LibraryHourService {
 	 */
 	@Transactional 
 	public List<LibraryHour> getAllLibraryHours() {
+		if(libraryHourRepo.count()==0) throw new IllegalArgumentException("No library hours exist"); 
 		return toList(libraryHourRepo.findAll()); 
 	}
 	

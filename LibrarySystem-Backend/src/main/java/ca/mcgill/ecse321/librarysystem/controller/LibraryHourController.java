@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.librarysystem.controller;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,8 +68,16 @@ public class LibraryHourController {
 	 * @return true if the hour is successfully deleted 
 	 */
 	@PostMapping(value = {"/remove_library_hour", "/remove_library_hour/"}) 
-	public boolean removeLibraryHour(@RequestParam String currentUserId, @RequestParam TimeSlot.DayOfWeek dayOfWeek) {
-		return libraryHourService.removeLibraryHour(currentUserId, dayOfWeek);  
+	public ResponseEntity<?> removeLibraryHour(@RequestParam String currentUserId, @RequestParam TimeSlot.DayOfWeek dayOfWeek) {
+		boolean isDeleted = false;
+		try {
+				isDeleted = libraryHourService.removeLibraryHour(currentUserId, dayOfWeek); 
+			}		
+			catch(IllegalArgumentException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+		return new ResponseEntity<>(isDeleted, HttpStatus.CREATED);
+		  
 	}
 	
 	/** Method returns the library hour of a certain day
@@ -77,15 +86,15 @@ public class LibraryHourController {
 	 * @return LibraryHourDto
 	 */
 	@GetMapping(value = {"/view_library_hour_by_day", "/view_library_hour_by_day/"})
-	public LibraryHourDto viewLibraryHourByDay(@RequestParam TimeSlot.DayOfWeek dayOfWeek){
+	public ResponseEntity<?> viewLibraryHourByDay(@RequestParam TimeSlot.DayOfWeek dayOfWeek){
 		LibraryHourDto libraryHourDto = null; 
 		try {
 			libraryHourDto= convertToDto(libraryHourService.getLibraryHour(dayOfWeek));
 		}
 		catch (IllegalArgumentException e) {
-			
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		return libraryHourDto; 
+		return new ResponseEntity<>(libraryHourDto, HttpStatus.OK); 
 	}
 	
 	/** Method returns all the library hours 
@@ -94,8 +103,17 @@ public class LibraryHourController {
 	 * @return List of type LibraryHourDto 
 	 */
 	@GetMapping(value = {"/view_library_hours", "/view_library_hours"})
-	public List<LibraryHourDto> viewLibraryHours(){
-		return libraryHourService.getAllLibraryHours().stream().map(lh -> convertToDto(lh)).collect(Collectors.toList());
+	public ResponseEntity<?> viewLibraryHours(){
+		List<LibraryHourDto> libraryHours = new ArrayList<LibraryHourDto>(); 
+		
+		try {
+			libraryHours = libraryHourService.getAllLibraryHours().stream().map(lh -> convertToDto(lh)).collect(Collectors.toList());
+		}
+		catch (IllegalArgumentException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+
+		}
+		return new ResponseEntity<>(libraryHours, HttpStatus.OK); 
 	}
 	
 	/** Method converts a library hour object into a library hour DTO
