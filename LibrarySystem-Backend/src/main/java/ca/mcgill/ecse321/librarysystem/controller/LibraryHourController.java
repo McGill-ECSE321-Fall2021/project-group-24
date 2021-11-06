@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.librarysystem.model.*;
-import ca.mcgill.ecse321.librarysystem.model.LibraryHour.DayOfWeek;
 import ca.mcgill.ecse321.librarysystem.dto.*;
 import ca.mcgill.ecse321.librarysystem.service.*;
 
@@ -37,7 +36,7 @@ public class LibraryHourController {
 	public  ResponseEntity<?> addLibraryHour(@RequestParam String currentUserId, @RequestParam String dayOfWeek, @RequestParam String startTime, @RequestParam String endTime) {
 		LibraryHour libraryHour = null;
 		try {
-			libraryHour =libraryHourService.createLibraryHour(currentUserId, DayOfWeek.valueOf(dayOfWeek), Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00"));
+			libraryHour =libraryHourService.createLibraryHour(currentUserId, TimeSlot.DayOfWeek.valueOf(dayOfWeek), Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00"));
 			}		
 			catch(IllegalArgumentException e) {
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -51,10 +50,10 @@ public class LibraryHourController {
 	 * @return Response Entity 
 	 */
 	@PostMapping(value = {"/modify_library_hour", "/modify_library_hour/"})
-	public ResponseEntity<?> modifyLibraryHour(@RequestParam String currentUserId, @RequestParam String dayOfWeek, @RequestParam String startTime, @RequestParam String endTime) {
+	public ResponseEntity<?> modifyLibraryHour(@RequestParam String currentUserId, @RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime, @RequestParam String endTime) {
 		LibraryHour libraryHour = null;
 		try {
-			libraryHour =libraryHourService.modifyLibraryHour(currentUserId, DayOfWeek.valueOf(dayOfWeek), Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00"));
+			libraryHour =libraryHourService.modifyLibraryHour(currentUserId, dayOfWeek, Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00"));
 			}		
 			catch(IllegalArgumentException e) {
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -68,8 +67,8 @@ public class LibraryHourController {
 	 * @return true if the hour is successfully deleted 
 	 */
 	@PostMapping(value = {"/remove_library_hour", "/remove_library_hour/"}) 
-	public boolean removeLibraryHour(@RequestParam String currentUserId, @RequestParam String dayOfWeek) {
-		return libraryHourService.removeLibraryHour(currentUserId, DayOfWeek.valueOf(dayOfWeek));  
+	public boolean removeLibraryHour(@RequestParam String currentUserId, @RequestParam TimeSlot.DayOfWeek dayOfWeek) {
+		return libraryHourService.removeLibraryHour(currentUserId, dayOfWeek);  
 	}
 	
 	/** Method returns the library hour of a certain day
@@ -78,10 +77,10 @@ public class LibraryHourController {
 	 * @return LibraryHourDto
 	 */
 	@GetMapping(value = {"/view_library_hour_by_day", "/view_library_hour_by_day/"})
-	public LibraryHourDto viewLibraryHourByDay(@RequestParam String dayOfWeek){
+	public LibraryHourDto viewLibraryHourByDay(@RequestParam TimeSlot.DayOfWeek dayOfWeek){
 		LibraryHourDto libraryHourDto = null; 
 		try {
-			libraryHourDto= convertToDto(libraryHourService.getLibraryHour(DayOfWeek.valueOf(dayOfWeek)));
+			libraryHourDto= convertToDto(libraryHourService.getLibraryHour(dayOfWeek));
 		}
 		catch (IllegalArgumentException e) {
 			

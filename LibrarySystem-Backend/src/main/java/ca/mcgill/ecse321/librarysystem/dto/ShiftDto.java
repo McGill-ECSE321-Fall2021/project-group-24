@@ -3,37 +3,25 @@ package ca.mcgill.ecse321.librarysystem.dto;
 import java.sql.Date;
 import java.sql.Time;
 
+import ca.mcgill.ecse321.librarysystem.model.TimeSlot;
+
 public class ShiftDto {
 	String librarianId; 
-	Date startDate;
 	Time startTime; 
-	Date endDate; 
+	TimeSlot.DayOfWeek dayOfWeek;
 	Time endTime; 
 	
 	public ShiftDto() {
 	}
 	
-	
-	public ShiftDto(String librarianId, Date startDate, Time startTime, Time endTime) {
-		this(librarianId, startDate, startTime, startDate, endTime); 
-	}
-	public ShiftDto(String librarianId, Date startDate, Time startTime, Date endDate, Time endTime) {
-		this.startDate= startDate;
+	public ShiftDto(String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime) {
 		this.startTime= startTime; 
-		this.endDate = endDate;
+		this.dayOfWeek = dayOfWeek;
 		this.endTime= endTime;
-	}
-	
-	public Date getStartDate() {
-		return this.startDate;
 	}
 	
 	public Time getStartTime() {
 		return this.startTime;
-	}
-	
-	public Date getEndDate() {
-		return this.endDate;
 	}
 	
 	public Time getEndTime() {

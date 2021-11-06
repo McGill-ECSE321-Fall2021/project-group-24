@@ -3,25 +3,25 @@ package ca.mcgill.ecse321.librarysystem.dto;
 import java.sql.Time;
 import java.util.List;
 
-import ca.mcgill.ecse321.librarysystem.model.LibraryHour.DayOfWeek;
+import ca.mcgill.ecse321.librarysystem.model.*;
 
 public class LibraryHourDto {
-	private DayOfWeek dayOfWeek; 
+	private TimeSlot.DayOfWeek dayOfWeek; 
 	private Time startTime; 
 	private Time endTime; 
 	
 	// default opening hours are set to 9am-5pm
-	public LibraryHourDto(DayOfWeek dayOfWeek) {
+	public LibraryHourDto(TimeSlot.DayOfWeek dayOfWeek) {
 		this(dayOfWeek, Time.valueOf("09:00:00"), Time.valueOf("17:00:00")); 
 	}
 	
-	public LibraryHourDto(DayOfWeek dayOfWeek, Time startTime, Time endTime) {
+	public LibraryHourDto(TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime) {
 		this.dayOfWeek = dayOfWeek;
 		this.startTime = startTime; 
 		this.endTime = endTime; 
 	}
 	
-	public DayOfWeek getDayOfWeek() {
+	public TimeSlot.DayOfWeek getDayOfWeek() {
 		return this.dayOfWeek; 
 	}
 	

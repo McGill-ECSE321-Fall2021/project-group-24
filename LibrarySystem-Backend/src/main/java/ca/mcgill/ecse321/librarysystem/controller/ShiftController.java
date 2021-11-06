@@ -32,11 +32,11 @@ public class ShiftController {
 	 * @return Response Entity 
 	 */
 	@PostMapping(value = {"/add_overnight_shift", "/add_overnight_shift/"})
-	public ResponseEntity<?> addShift(@RequestParam String currentUserId, @RequestParam String librarianId, @RequestParam String startDate, @RequestParam String startTime, @RequestParam String endDate, @RequestParam String endTime) {
+	public ResponseEntity<?> addShift(@RequestParam String currentUserId, @RequestParam String librarianId, @RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startDate, @RequestParam String startTime, @RequestParam String endDate, @RequestParam String endTime) {
 		Shift shift = null; 
 		// request param usernameId, do that in shift methods as well so that we verify that the username is one in headLibrarian Repo
 		try {
-			shift =shiftService.createShift(currentUserId, librarianId, Date.valueOf(startDate), Time.valueOf(startTime + ":00"), Date.valueOf(endDate), Time.valueOf(endTime+":00")); 
+			shift =shiftService.createShift(currentUserId, librarianId, dayOfWeek, Time.valueOf(startTime + ":00"),  Time.valueOf(endTime+":00")); 
 			}		
 			catch(IllegalArgumentException e) {
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -50,12 +50,12 @@ public class ShiftController {
 	 * @return Response Entity 
 	 */
 	@PostMapping(value = {"/modify_shift", "/modify_shift/"})
-	public  ResponseEntity<?> modifyShift(@RequestParam String currentUserId, @RequestParam String librarianId, @RequestParam String oldStartDate, @RequestParam String oldStartTime, 
-			@RequestParam String startDate, @RequestParam String startTime, @RequestParam String endDate, @RequestParam String endTime) {
+	public  ResponseEntity<?> modifyShift(@RequestParam String currentUserId, @RequestParam TimeSlot.DayOfWeek oldDayOfWeek,@RequestParam TimeSlot.DayOfWeek newDayOfWeek, @RequestParam String librarianId, @RequestParam String oldStartTime, 
+		 @RequestParam String startTime, @RequestParam String endTime) {
 		Shift shift = null; 
 		try {
-			shift =shiftService.modifyShift(currentUserId, librarianId, Date.valueOf(oldStartDate), Time.valueOf(oldStartTime+":00"), 
-					Date.valueOf(startDate), Time.valueOf(startTime+":00"), Date.valueOf(endDate), Time.valueOf(endTime+":00")); 
+			shift =shiftService.modifyShift(currentUserId, librarianId, oldDayOfWeek, newDayOfWeek, Time.valueOf(oldStartTime+":00"), 
+					 Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00")); 
 			}		
 			catch(IllegalArgumentException e) {
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -69,8 +69,8 @@ public class ShiftController {
 	 * @return true if the shift is successfully deleted 
 	 */
 	@PostMapping(value = {"/remove_shift", "/remove_shift/"}) 
-	public boolean removeShift(@RequestParam String currentUserId, @RequestParam String librarianId, @RequestParam String startDate, @RequestParam String startTime) {
-		return shiftService.removeShift(currentUserId, librarianId, Date.valueOf(startDate), Time.valueOf(startTime + ":00"));   
+	public boolean removeShift(@RequestParam String currentUserId, @RequestParam String librarianId,@RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime) {
+		return shiftService.removeShift(currentUserId, librarianId, dayOfWeek, Time.valueOf(startTime + ":00"));   
 	}
 	
 	/** Method removes all shifts for a librarian
@@ -89,8 +89,8 @@ public class ShiftController {
 	 * @return ShiftDto
 	 */
 	@GetMapping(value = {"/view_shift", "/view_shift/"})
-	public ShiftDto viewShift(@RequestParam String currentUserId, @RequestParam String librarianId, @RequestParam String startDate, @RequestParam String startTime){
-		return convertToDto(shiftService.getShift(currentUserId, librarianId, Date.valueOf(startDate), Time.valueOf(startTime)));
+	public ShiftDto viewShift(@RequestParam String currentUserId, @RequestParam String librarianId, @RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime){
+		return convertToDto(shiftService.getShift(currentUserId, librarianId,dayOfWeek, Time.valueOf(startTime)));
 				
 	}
 	
@@ -120,7 +120,7 @@ public class ShiftController {
 	 */
 	private ShiftDto convertToDto(Shift shift){
 		if (shift == null) throw new IllegalArgumentException("This shift does not exist");
-		ShiftDto shiftDto = new ShiftDto(shift.getLibrarianId(), shift.getStartDate(), shift.getStartTime(), shift.getEndDate(), shift.getStartTime()); 
+		ShiftDto shiftDto = new ShiftDto(shift.getLibrarianId(), shift.getDayOfWeek(), shift.getStartTime(), shift.getStartTime()); 
 		return shiftDto;
 	}
 }

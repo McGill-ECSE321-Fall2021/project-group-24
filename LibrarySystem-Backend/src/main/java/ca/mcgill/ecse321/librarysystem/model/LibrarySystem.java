@@ -50,11 +50,6 @@ public class LibrarySystem {
 	public void setEmail(String email) {
 	    this.email = email;
 	}
-
-	@OneToMany(cascade = { CascadeType.ALL }) 
-	public List<TimeSlot> getTimeSlots() {
-		return this.timeSlots; 
-	}
 	
 	@Id
 	public String getSystemNum() {
