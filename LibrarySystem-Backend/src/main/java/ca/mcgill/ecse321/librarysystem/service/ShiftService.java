@@ -1,5 +1,4 @@
 package ca.mcgill.ecse321.librarysystem.service;
-import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,7 @@ public class ShiftService {
 	@Transactional 
 	public Shift createShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime ) {
 		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
+		if(librarianRepo.findById(librarianId)==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
 		Shift shift = new Shift(); 
 		String timeSlotId = dayOfWeek.toString() + librarianId + startTime;
 		shift.setTimeSlotId(timeSlotId);
@@ -48,11 +48,10 @@ public class ShiftService {
 	@Transactional 
 	public Shift modifyShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek oldDayOfWeek,TimeSlot.DayOfWeek newDayOfWeek, Time oldStartTime, Time startTime, Time endTime) {
 		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
-
+		if(librarianRepo.findById(librarianId)==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
 		if (librarianId==null || oldDayOfWeek == null || oldStartTime==null || newDayOfWeek == null || startTime==null || endTime ==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
-//		if (startDate.after(endDate)) throw new IllegalArgumentException("Shift end date cannot be before start date"); 
 		if (startTime.after(endTime)) throw new IllegalArgumentException("Shift end time cannot be before its start time"); 
 		
 		if(shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, oldDayOfWeek, oldStartTime)==null) throw new IllegalArgumentException("Shift does not exist so cannot modify."); 
@@ -75,7 +74,7 @@ public class ShiftService {
 	@Transactional 
 	public boolean removeShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime) {
 		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can remove librarian shifts");
-
+		if(librarianRepo.findById(librarianId)==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
 		if (librarianId==null || dayOfWeek==null || startTime==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
@@ -111,15 +110,15 @@ public class ShiftService {
 	 *@return shift
 	 */
 	@Transactional 
-	public Shift getShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime) {
+	public Shift getShift(String currentUserId, String shiftId) {
+		Shift shift = null;
 		if (headLibrarianRepo.findById(currentUserId)==null && librarianRepo.findById(currentUserId) == null) {
 			throw new IllegalArgumentException("Only librarians can view shifts");
 		}
-		if (librarianId==null || dayOfWeek==null || startTime==null) {
+		if (currentUserId==null || shiftId==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
-		
-		Shift shift = shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, dayOfWeek, startTime); 
+		shift = shiftRepo.findShiftByTimeSlotId(shiftId); 
 		if (shift==null) throw new IllegalArgumentException("Shift cannot be found"); 
 		return shift; 
 	}
