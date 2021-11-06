@@ -43,7 +43,7 @@ public class RoomBookingController {
 	@GetMapping(value = { "/roomBookings/{timeSlotId}", "/roomBookings/{timeSlotId}/" })
 	public RoomBookingDto getRoomBookingOfTimeSlot(@PathVariable("timeSlotId") String timeSlotId) {
 		System.out.println("Flag Get" + timeSlotId); 
-		return convertToDto(roomBookingService.getRoomBookingsByTimeSLotId(timeSlotId));
+		return convertToDto(roomBookingService.getRoomBookingsByTimeSlotId(timeSlotId));
 	}
 	
 //	@PostMapping(value = {"/roomBookings/returnItem/{itemNumber}", "roomBookings/returnItem/{itemNumber}/"})
@@ -63,21 +63,16 @@ public class RoomBookingController {
 			) {
 		String timeSlotId = "RoomBooking-"+roomBookingService.getAllRoomBookings().size()+startTime+roomNum;
 		System.out.println("Flag Post"); 
-		try {
-			RoomBooking booking = roomBookingService.createRoomBooking(
-					timeSlotId,
-					Date.valueOf(LocalDate.parse(startDate)),
-					Time.valueOf(LocalTime.parse(startTime)),
-					Date.valueOf(LocalDate.parse(endDate)),
-					Time.valueOf(LocalTime.parse(endTime)),
-					idNum,
-					roomNum
-			     );
-			return convertToDto(booking);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
+		RoomBooking booking = roomBookingService.createRoomBooking(
+				timeSlotId,
+				Date.valueOf(LocalDate.parse(startDate)),
+				Time.valueOf(LocalTime.parse(startTime)),
+				Date.valueOf(LocalDate.parse(endDate)),
+				Time.valueOf(LocalTime.parse(endTime)),
+				idNum,
+				roomNum
+		     );
+		return convertToDto(booking);
 		
 	}
 	

@@ -17,7 +17,9 @@ import ca.mcgill.ecse321.librarysystem.model.RoomBooking;
 
 @Service
 public class RoomBookingService {
+	@Autowired
 	RoomService roomService;
+	@Autowired
 	LibraryHourService libraryHourservice;
 	@Autowired 
 	RoomBookingRepository roomBookingRepository; 
@@ -41,9 +43,10 @@ public class RoomBookingService {
 		}
 		else if (isBooked(roomNumber, startDate,startTime,endDate,endTime)) {
 			throw new IllegalArgumentException("Room booking must not overlap with other bookings of the same room");
-		}else if(outsideOfOpeningHours(startDate, startTime, endTime)) {
-			throw new IllegalArgumentException("Room booking must be within library opening hours");
 		}
+//			}else if(outsideOfOpeningHours(startDate, startTime, endTime)) {
+//			throw new IllegalArgumentException("Room booking must be within library opening hours");
+//		}
 		
 		// if no conflict
 		RoomBooking roomBooking = new RoomBooking();
@@ -60,6 +63,7 @@ public class RoomBookingService {
 	
 	// check if the room is booked during the times given
 	public boolean isBooked(String roomNumber, Date startDate, Time startTime, Date endDate, Time endTime) {
+		System.out.println(roomNumber);
 		Room room = roomService.getRoom(roomNumber);
 		for (RoomBooking rb : room.getRoomBookings()) {
 			if (startTime.after(rb.getStartTime()) && startTime.before(rb.getEndTime())) {
@@ -104,7 +108,7 @@ public class RoomBookingService {
 	}
 	
 	@Transactional 
-	public RoomBooking getRoomBookingsByTimeSLotId(String timeSlotId) {
+	public RoomBooking getRoomBookingsByTimeSlotId(String timeSlotId) {
 		return roomBookingRepository.findRoomBookingByTimeSlotId(timeSlotId);
 	}
 	
