@@ -38,19 +38,6 @@ public class LibrarianService {
 	    librarianRepo.save(librarian);
 	    return librarian;		
 	}
-	public Librarian createLibrarian(String idNum) {
-		Librarian librarian = new Librarian(); 
-		librarian.setIdNum(idNum);
-	    librarian.setUsername("UN");
-	    librarian.setPassword("PS");
-	    librarian.setFirstName("FN");
-	    librarian.setLastName("LN");
-	    librarian.setEmail("EM");
-	    librarian.setAddress("AD");
-	    
-		librarianRepo.save(librarian); 
-		return librarian;
-	}
 	
 	// looks for a librarian with the given ID number, returns them if found
 	@Transactional 
