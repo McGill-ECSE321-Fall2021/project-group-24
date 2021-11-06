@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.librarysystem.service;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -87,16 +89,106 @@ public class UserService {
 	}
 	
 	
+	@Transactional
+	public User getUserAccountById(String id) {
+		if(id.length()==0) throw new IllegalArgumentException("Invalid ID entered.");
+		User user = null;
+		if(librarianRepository.findUserByIdNum(id)!=null) {
+			user = librarianRepository.findUserByIdNum(id);
+		}else if(patronRepository.findUserByIdNum(id)!=null) {
+			user = librarianRepository.findUserByIdNum(id);
+		}else if(headLibrarianRepository.findUserByIdNum(id)!=null) {
+			user = headLibrarianRepository.findUserByIdNum(id);
+		}else {
+			throw new IllegalArgumentException("An account with this ID does not exist.");
+		}
+		
+		return user;
+	}
+	
+	
+	@Transactional
+	public User getUserAccountByUsername(String username) {
+		if(username.length()==0) throw new IllegalArgumentException("Invalid ID entered.");
+		User user = null;
+		if(librarianRepository.findUserByUsername(username)!=null) {
+			user = librarianRepository.findUserByUsername(username);
+		}else if(patronRepository.findPatronByUsername(username)!=null) {
+			user = librarianRepository.findUserByUsername(username);
+		}else if(headLibrarianRepository.findUserByUsername(username)!=null) {
+			user = headLibrarianRepository.findUserByUsername(username);
+		}else {
+			throw new IllegalArgumentException("An account with this username does not exist.");
+		}
+		return user;
+	}
+	
+	
+	
+	public User changePassword(String username, String newPass) {
+		
+		User user = null;
+		if(librarianRepository.findUserByUsername(username)!=null) {
+			user = librarianRepository.findUserByUsername(username);
+		}else if(patronRepository.findPatronByUsername(username)!=null) {
+			user = librarianRepository.findUserByUsername(username);
+		}else if(headLibrarianRepository.findUserByUsername(username)!=null) {
+			user = headLibrarianRepository.findUserByUsername(username);
+		}else {
+			throw new IllegalArgumentException("An account with this username does not exist.");
+		}
+		
+		if(user.getPassword().equals(newPass)) {
+			throw new IllegalArgumentException("New password cannot be the same as the old password.");
+		}
+		
+		if(newPass.length()<8) {
+			throw new IllegalArgumentException("Password needs to be at least 6 characters in length.");
+		}
+		
+		
+		user.setPassword(newPass);
+		return user;
+	}
+	
+	
+	
+	
+	@Transactional
+	public List<User> getAllUsers(){
+		List<User> users = new ArrayList<>();
+		List<Patron> patrons = toList(patronRepository.findAll());
+		List<Librarian> librarians = toList(librarianRepository.findAll());
+		List<HeadLibrarian> hl = toList(headLibrarianRepository.findAll());
+		
+		users = Stream.of(hl, librarians, patrons).flatMap(Collection::stream).collect(Collectors.toList());
+		return users;
+	}
+	
+	
+	
+	
 	
 	//helper methods
 	
 	public boolean Authenticate(String username, String password, User user) {
 		if(username.length()==0||password.length()==0) throw new IllegalArgumentException("No password or username entered.");
 		
-		if(user.getPassword()==password && user.getUsername() == username) {
+		if(user.getPassword().equals(password) && user.getUsername().equals(username)) {
 			return true;
 		}else {
-			throw new IllegalArgumentException("Invalid password.");
+			throw new IllegalArgumentException("Invalid password or username.");
 		}
 	}
+	
+	
+	private <T> List<T> toList(Iterable<T> iterable){
+		List<T> resultList = new ArrayList<T>();
+		for(T t: iterable) {
+			resultList.add(t);
+		}
+		return resultList;
+	}
+	
+	
 }

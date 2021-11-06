@@ -31,10 +31,9 @@ public class LibrarySystemRepository {
     String username,
     String email
   ) {
-    Patron p = new Patron();
+	Patron p = new Patron();
     p.setFirstName(firstName);
     p.setLastName(lastName);
-    p.setIdNum(idNum);
     p.setIsResident(isResident);
     p.setIsRegisteredOnline(false);
     p.setEmail(email);

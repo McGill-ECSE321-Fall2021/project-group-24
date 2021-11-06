@@ -26,16 +26,19 @@ public class PatronService {
 	//for accounts created in person by a librarian
 	@Transactional
 	public Patron createPatronIRL(
-		    String idNum,
+			String username,
 		    String firstName,
 		    String lastName,
 		    boolean isResident,
 		    String address,
 		    String email
 		  ) {
-			
 		
+			String idNum = firstName+"Patron-"+toList(patronRepository.findAll()).size();
+			
+			
 		    Patron p = new Patron();
+		    p.setUsername(username);
 		    p.setFirstName(firstName);
 		    p.setLastName(lastName);
 		    p.setIdNum(idNum);
@@ -56,18 +59,18 @@ public class PatronService {
 	//for accounts created online
 	@Transactional
 	public Patron createPatronOnline(
-			String idNum,
+			String username,
+			String password,
 		    String firstName,
 		    String lastName,
 		    boolean isResident,
 		    String address,
-		    String email,
-		    String username,
-		    String password){
+		    String email){
 		
 		if(username==null||username=="")throw new IllegalArgumentException("Username cannot be empty.");
 		if(password==null||password == "") throw new IllegalArgumentException("Password cannot be empty.");
 		
+		String idNum = firstName+"Patron-"+toList(patronRepository.findAll()).size();
 		nameIsValid(firstName, lastName);
 		usernameIsValid(username);
 		idIsValid(idNum);
@@ -83,11 +86,14 @@ public class PatronService {
 		p.setPassword(password);
 		p.setIsRegisteredOnline(true);
 		p.setIsVerified(false);
+		p.setIsResident(isResident);
 		
 		patronRepository.save(p);
 		return p;
 		
 	}
+	
+	
 	
 	
 	//does what method name says
@@ -114,7 +120,8 @@ public class PatronService {
 		return toList(patronRepository.findAll());
 	}
 
-
+	
+	
 	
 
 	
@@ -181,7 +188,7 @@ public class PatronService {
 	}
 	
 	
-	private <T> List<T> toList(Iterable<T> iterable){
+	public <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
 		for(T t: iterable) {
 			resultList.add(t);
