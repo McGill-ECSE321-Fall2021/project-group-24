@@ -1,5 +1,9 @@
 package ca.mcgill.ecse321.librarysystem.dto;
 
+import java.util.Set;
+
+import ca.mcgill.ecse321.librarysystem.model.*;
+
 public class LibrarianDto {
 
   private String idNum;

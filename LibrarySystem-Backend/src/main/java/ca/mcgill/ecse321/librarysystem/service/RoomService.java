@@ -28,24 +28,17 @@ public class RoomService {
 	    roomRepository.save(room);
 	    return room;		
 	}
-	public Room createRoom(String idNum) {
-		Room room = new Room(); 
-		room.setRoomNum("roomNum");
-	    room.setCapacity(0);
-	    
-		roomRepository.save(room); 
-		return room;
-	}
 	
 	// looks for a room with the given ID number, returns them if found
 	@Transactional 
 	public Room getRoom(String roomNum) {
+		System.out.println("ROOOOM" + roomNum);
 		Room room = roomRepository.findRoomByRoomNum(roomNum); 
 		return room;
 	}
 	
 	@Transactional 
-	public List<Room> getAllRoom() {
+	public List<Room> getAllRooms() {
 		return toList(roomRepository.findAll()); 
 	}
 

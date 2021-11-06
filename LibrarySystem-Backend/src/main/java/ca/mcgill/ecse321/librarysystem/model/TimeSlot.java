@@ -3,6 +3,8 @@ package ca.mcgill.ecse321.librarysystem.model;
 import java.sql.Time;
 import javax.persistence.*;
 
+import org.hibernate.annotations.GenericGenerator;
+
 
 
 /* @Arman and Saagar (Del 2)
@@ -15,6 +17,8 @@ import javax.persistence.*;
 public abstract class TimeSlot {
 
   @Id
+  @GeneratedValue(generator="system-uuid")
+  @GenericGenerator(name="system-uuid", strategy = "uuid")
   private String timeSlotId;
   private Time startTime;
   private Time endTime;

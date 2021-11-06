@@ -8,8 +8,9 @@ import javax.persistence.*;
 @DiscriminatorValue("roomBooking")
 public class RoomBooking extends TimeSlot {
   private String roomNum;
+  private String idNum;
   private Date date;
-  
+
   @ManyToOne(optional = false)
   public String getRoomNum() {
     return this.roomNum;
@@ -17,6 +18,15 @@ public class RoomBooking extends TimeSlot {
 
   public void setRoomNum(String roomNum) {
     this.roomNum = roomNum;
+  }
+  
+  @ManyToOne(optional = false)
+  public String getIdNum() {
+    return this.idNum;
+  }
+
+  public void setIdNum(String idNum) {
+    this.idNum = idNum;
   }
   
   public Date getDate() {

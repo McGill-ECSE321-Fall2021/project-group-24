@@ -23,4 +23,9 @@ public class RoomDto {
 	public void setRoomNum(String roomNum) {
 		this.roomNum = roomNum; 
 	}
+	
+	public int getCapacity() {
+		return this.capacity; 
+	}
+	
 }
