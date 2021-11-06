@@ -341,8 +341,7 @@ public class LibrarySystemRepository {
   @Transactional
   //create a new room booking
   public RoomBooking createRoomBooking(
-    Date startDate,
-    Date endDate,
+    TimeSlot.DayOfWeek dayOfWeek,
     Time startTime,
     Time endTime,
     String bookingID,
@@ -350,8 +349,7 @@ public class LibrarySystemRepository {
     String idNum
   ) {
     RoomBooking roombooking = new RoomBooking();
-    roombooking.setStartDate(startDate);
-    roombooking.setEndDate(endDate);
+    roombooking.setDayOfWeek(dayOfWeek);
     roombooking.setStartTime(startTime);
     roombooking.setEndTime(endTime);
     roombooking.setTimeSlotId(bookingID);
@@ -374,16 +372,14 @@ public class LibrarySystemRepository {
     Date endDate,
     Time startTime,
     Time endTime,
-    String timeSlotId,
+    String itemReservationId,
     String itemNumber,
     String idNum
   ) {
     ItemReservation reservation = new ItemReservation();
     reservation.setStartDate(startDate);
     reservation.setEndDate(endDate);
-    reservation.setStartTime(startTime);
-    reservation.setEndTime(endTime);
-    reservation.setIdNum(timeSlotId);
+    reservation.setItemReservationId(itemReservationId);
     reservation.setNumOfRenewalsLeft(2);
     reservation.setIdNum(idNum);
     reservation.setItemNumber(itemNumber);
@@ -404,15 +400,13 @@ public class LibrarySystemRepository {
   @Transactional
   //create a new shift for a librarian 
   public Shift createShift(
-    Date startDate,
-    Date endDate,
+    TimeSlot.DayOfWeek dayOfWeek,
     Time startTime,
     Time endTime,
     String timeSlotId
   ) {
     Shift shift = new Shift();
-    shift.setStartDate(startDate);
-    shift.setEndDate(endDate);
+    shift.setDayOfWeek(dayOfWeek);
     shift.setStartTime(startTime);
     shift.setEndTime(endTime);
     shift.setTimeSlotId(timeSlotId);
@@ -430,16 +424,14 @@ public class LibrarySystemRepository {
   @Transactional
   //create a new library hour
   public LibraryHour createLibraryHour(
-    Date startDate,
-    Date endDate,
+   TimeSlot.DayOfWeek dayOfWeek,
     Time startTime,
     Time endTime,
     String timeSlotId
   ) {
     //add timeSlotID after Arman pushes changes to model
     LibraryHour libHour = new LibraryHour();
-    libHour.setStartDate(startDate);
-    libHour.setEndDate(endDate);
+    libHour.setDayOfWeek(dayOfWeek);
     libHour.setStartTime(startTime);
     libHour.setEndTime(endTime);
     libHour.setTimeSlotId(timeSlotId);

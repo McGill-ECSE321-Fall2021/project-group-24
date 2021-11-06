@@ -40,10 +40,10 @@ public class ItemReservationController {
 		return getItemReservationDtosForItem(itemNumber);
 	}
 	
-	@GetMapping(value = { "/itemReservations/{timeSlotId}", "/itemReservations/{timeSlotId}/" })
-	public ItemReservationDto getItemReservation(@PathVariable("timeSlotId") String timeSlotId) {
-		System.out.println("Flag Get" + timeSlotId); 
-		return convertToDto(itemReservationService.getItemReservation(timeSlotId));
+	@GetMapping(value = { "/itemReservations/{itemReservationId}", "/itemReservations/{itemReservationId}/" })
+	public ItemReservationDto getItemReservation(@PathVariable("itemReservationId") String itemReservationId) {
+		System.out.println("Flag Get" + itemReservationId); 
+		return convertToDto(itemReservationService.getItemReservation(itemReservationId));
 	}
 	
 	@PostMapping(value = {"/itemReservations/returnItem/{itemNumber}", "itemReservations/returnItem/{itemNumber}/"})
@@ -82,14 +82,14 @@ public class ItemReservationController {
 		return convertToDto(reservation);
 	}
 	
-	@PostMapping(value = {"/itemReservations/renew/{timeSlotId}", "/itemReservations/renew/{timeSlotId}/"})
-	public ItemReservationDto renewItemReservation(@PathVariable("timeSlotId") String timeSlotId) {
-		return convertToDto(itemReservationService.renewByTimeSlotId(timeSlotId));
+	@PostMapping(value = {"/itemReservations/renew/{itemReservationId}", "/itemReservations/renew/{itemReservationId}/"})
+	public ItemReservationDto renewItemReservation(@PathVariable("itemReservationId") String itemReservationId) {
+		return convertToDto(itemReservationService.renewByItemReservationId(itemReservationId));
 	}
 	
-	@PostMapping(value = {"/itemReservations/cancel/{timeSlotId}", "/itemReservations/cancel/{timeSlotId}/"})
-	public boolean cancelItemReservation(@PathVariable("timeSlotId") String timeSlotId) {
-		return itemReservationService.cancelItemReservation(timeSlotId);
+	@PostMapping(value = {"/itemReservations/cancel/{itemReservationId}", "/itemReservations/cancel/{itemReservationId}/"})
+	public boolean cancelItemReservation(@PathVariable("itemReservationId") String itemReservationId) {
+		return itemReservationService.cancelItemReservation(itemReservationId);
 	}
 	
 	private List<ItemReservationDto> getItemReservationDtosForPatron(String idNum) {
@@ -112,7 +112,7 @@ public class ItemReservationController {
 	
 	
 	private ItemReservationDto convertToDto(ItemReservation reservation){
-		ItemReservationDto reservationDto = new ItemReservationDto(reservation.getTimeSlotId(), reservation.getStartDate(), reservation.getStartTime(), reservation.getEndDate(), reservation.getEndTime(), reservation.getNumOfRenewalsLeft(), reservation.getIdNum(), reservation.getItemNumber(), reservation.getIsCheckedOut());
+		ItemReservationDto reservationDto = new ItemReservationDto(reservation.getItemReservationId(), reservation.getStartDate(), reservation.getEndDate(), reservation.getNumOfRenewalsLeft(), reservation.getIdNum(), reservation.getItemNumber(), reservation.getIsCheckedOut());
 	
 		return reservationDto;
 	}

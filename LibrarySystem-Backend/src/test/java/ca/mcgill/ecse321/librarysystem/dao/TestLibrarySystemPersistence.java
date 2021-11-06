@@ -7,9 +7,6 @@ import ca.mcgill.ecse321.librarysystem.model.*;
 import java.sql.Date;
 import java.sql.Time;
 
-import java.time.LocalTime;
-
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -82,8 +79,7 @@ public class TestLibrarySystemPersistence {
       Time shiftTime = Time.valueOf("00:00:00");
       String shiftId = "shift id";
       shift.setTimeSlotId(shiftId);
-      shift.setStartDate(shiftDate);
-      shift.setEndDate(shiftDate);
+      shift.setDayOfWeek(TimeSlot.DayOfWeek.Monday);
       shift.setStartTime(shiftTime);
       shift.setEndTime(shiftTime);
 
@@ -96,8 +92,7 @@ public class TestLibrarySystemPersistence {
       assertNotNull(shift);
 
       assertEquals(shiftId, shift.getTimeSlotId());
-      assertEquals(shiftDate, shift.getStartDate());
-      assertEquals(shiftDate, shift.getEndDate());
+      assertEquals(TimeSlot.DayOfWeek.Monday, shift.getDayOfWeek());
       assertEquals(shiftTime, shift.getStartTime());
       assertEquals(shiftTime, shift.getEndTime());
       }
@@ -109,12 +104,10 @@ public class TestLibrarySystemPersistence {
       LibraryHour hour = new LibraryHour();
       
       
-      Date libraryHourDate = Date.valueOf("2021-10-15");
       Time libraryHourTime = Time.valueOf("00:00:00");
       String timeSlotId = "hour id";
       hour.setTimeSlotId(timeSlotId);
-      hour.setStartDate(libraryHourDate);
-      hour.setEndDate(libraryHourDate);
+      hour.setDayOfWeek(TimeSlot.DayOfWeek.Monday);
       hour.setStartTime(libraryHourTime);
       hour.setEndTime(libraryHourTime);
 
@@ -127,8 +120,7 @@ public class TestLibrarySystemPersistence {
       assertNotNull(hour);
 
       assertEquals(timeSlotId, hour.getTimeSlotId());
-      assertEquals(libraryHourDate, hour.getStartDate());
-      assertEquals(libraryHourDate, hour.getEndDate());
+      assertEquals(TimeSlot.DayOfWeek.Monday, hour.getDayOfWeek());
       assertEquals(libraryHourTime, hour.getStartTime());
       assertEquals(libraryHourTime, hour.getEndTime());
       }
@@ -263,38 +255,32 @@ public class TestLibrarySystemPersistence {
     // First example for object save/load
     ItemReservation itemReservation = new ItemReservation();
     // First example for attribute save/load
-    int numOfRenewalsLeft = 0;
+
     String idNum = "Item Reservation ID Number";
     String itemNumber = "Item Reservation Item Number";
     String timeSlotId = "Item Reservation Time Slot ID";
     Date startDate = Date.valueOf("2021-10-15");
     Date endDate = Date.valueOf("2021-10-15");
-    Time startTime = Time.valueOf("00:00:00");
-    Time endTime = Time.valueOf("00:00:00");
     
     
     
     itemReservation.setIdNum(idNum);
     itemReservation.setItemNumber(itemNumber);
-    itemReservation.setTimeSlotId(timeSlotId);
+    itemReservation.setItemReservationId(timeSlotId);
     itemReservation.setStartDate(startDate);
     itemReservation.setEndDate(endDate);
-    itemReservation.setStartTime(startTime);
-    itemReservation.setEndTime(endTime);
 
     itemReservationRepository.save(itemReservation);
 
     itemReservation = null;
 
-    itemReservation = itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId);
+    itemReservation = itemReservationRepository.findItemReservationByItemReservationId(timeSlotId);
     assertNotNull(itemReservation);
 
     assertEquals(idNum, itemReservation.getIdNum());
     assertEquals(itemNumber, itemReservation.getItemNumber());
     assertEquals(startDate, itemReservation.getStartDate());
     assertEquals(endDate, itemReservation.getEndDate());
-    assertEquals(startTime, itemReservation.getStartTime());
-    assertEquals(endTime, itemReservation.getEndTime());
 
   }
   //------------------TESTING LIBRARIAN------------------------//
@@ -376,14 +362,12 @@ public class TestLibrarySystemPersistence {
         
         //set shift attributes
         String roomNum = "Room Number";
-        Date roomBookingDate = Date.valueOf("2021-10-15");
         Time roomBookingTime = Time.valueOf("00:00:00");
         String roomBookingId = "room booking id";
         
         roomBooking.setRoomNum(roomNum);
         roomBooking.setTimeSlotId(roomBookingId);
-        roomBooking.setStartDate(roomBookingDate);
-        roomBooking.setEndDate(roomBookingDate);
+        roomBooking.setDayOfWeek(TimeSlot.DayOfWeek.Monday);
         roomBooking.setStartTime(roomBookingTime);
         roomBooking.setEndTime(roomBookingTime);
 
@@ -398,8 +382,7 @@ public class TestLibrarySystemPersistence {
 
         assertEquals(roomNum, roomBooking.getRoomNum());
         assertEquals(roomBookingId, roomBooking.getTimeSlotId());
-        assertEquals(roomBookingDate, roomBooking.getStartDate());
-        assertEquals(roomBookingDate, roomBooking.getEndDate());
+        assertEquals(TimeSlot.DayOfWeek.Monday, roomBooking.getDayOfWeek());
         assertEquals(roomBookingTime, roomBooking.getStartTime());
         assertEquals(roomBookingTime, roomBooking.getEndTime());
 
@@ -515,7 +498,6 @@ public class TestLibrarySystemPersistence {
       String genre = "Printed Media Genre";
       Date publishDate = Date.valueOf("2021-10-15");
       boolean isReservable = true;
-      boolean isCheckedOut = true;
   
       printedMedia.setIssueNumber(issueNumber);
       printedMedia.setItemTitle(itemTitle);

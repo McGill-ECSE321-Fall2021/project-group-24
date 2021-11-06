@@ -1,14 +1,11 @@
 package ca.mcgill.ecse321.librarysystem.dto;
 
 import java.sql.Date;
-import java.sql.Time;
 
 public class ItemReservationDto {
-	  private String timeSlotId;
+	  private String itemReservationId;
 	  private Date startDate;
-	  private Time startTime;
 	  private Date endDate;
-	  private Time endTime;
 	private int numOfRenewalsLeft;
 	
 	private String idNum;
@@ -19,19 +16,15 @@ public class ItemReservationDto {
 		
 	}
 	
-	public ItemReservationDto( String timeSlotId,
+	public ItemReservationDto( String itemReservationId,
 	   Date startDate,
-	   Time startTime,
 	   Date endDate,
-	   Time endTime,
 	 int numOfRenewalsLeft,
 	 String idNum,
 	 String itemNumber, boolean isCheckedOut) {
-		this.timeSlotId = timeSlotId;
+		this.itemReservationId = itemReservationId;
 		this.startDate = startDate;
-		this.startTime = startTime;
 		this.endDate = endDate;
-		this.endTime = endTime;
 		this.numOfRenewalsLeft = numOfRenewalsLeft;
 		this.idNum = idNum;
 		this.itemNumber = itemNumber;
@@ -39,14 +32,10 @@ public class ItemReservationDto {
 		
 	}
 	
-	public String getTimeSlotId() {
-		return this.timeSlotId; 
+	public String getItemReservationId() {
+		return this.itemReservationId; 
 	}
-	
 
-	public Time getStartTime() {
-		return startTime;
-	}
 
 	public String getItemNumber() {
 		return itemNumber;
@@ -56,9 +45,6 @@ public class ItemReservationDto {
 		return numOfRenewalsLeft;
 	}
 
-	public Time getEndTime() {
-		return endTime;
-	}
 
 	public Date getStartDate() {
 		return startDate;

@@ -42,7 +42,7 @@ public class ItemReservationService {
 				throw new IllegalArgumentException("Book has a future reservation");
 			}
 		}
-		String timeSlotId = "ItemReservation" + startDate.toLocalDate().toString() + itemNumber + idNum;
+		String itemReservationId = startDate.toLocalDate().toString() + itemNumber + idNum;
 		Date endDate = Date.valueOf(startDate.toLocalDate().plusWeeks(2));
 		if (patronRepository.findUserByIdNum(idNum) == null && librarianRepository.findUserByIdNum(idNum) == null) {
 			System.out.println("id num is" + idNum);
@@ -69,11 +69,9 @@ public class ItemReservationService {
 		
 		
 		ItemReservation reservation = new ItemReservation();
-		reservation.setTimeSlotId(timeSlotId);
+		reservation.setItemReservationId(itemReservationId);
 		reservation.setStartDate(startDate);
-		reservation.setStartTime(Time.valueOf(LocalTime.of(0, 0)));
 		reservation.setEndDate(endDate);
-		reservation.setEndTime(Time.valueOf(LocalTime.of(23, 59)));
 		reservation.setIdNum(idNum);
 		reservation.setItemNumber(itemNumber);
 		reservation.setNumOfRenewalsLeft(4);
@@ -83,10 +81,10 @@ public class ItemReservationService {
 	    return reservation;		
 	}
 	
-	// looks for a reservation with the given time slot id, returns them if found
+	// looks for a reservation with the given itemReservationId, returns them if found
 	@Transactional 
-	public ItemReservation getItemReservation(String timeSlotId) {
-		ItemReservation reservation = itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId); 
+	public ItemReservation getItemReservation(String itemReservationId) {
+		ItemReservation reservation = itemReservationRepository.findItemReservationByItemReservationId(itemReservationId); 
 		return reservation;
 	}
 	
@@ -128,15 +126,15 @@ public class ItemReservationService {
 		}
 		currentReservation.setEndDate(Date.valueOf(LocalDate.now().plusWeeks(2)));
 		currentReservation.setIsCheckedOut(true);
-		item.setCurrentReservationId(currentReservation.getTimeSlotId());
+		item.setCurrentReservationId(currentReservation.getItemReservationId());
 		itemRepository.save(item);
 		itemReservationRepository.save(currentReservation);
 		return currentReservation;
 	}
 	
 	@Transactional
-	public boolean cancelItemReservation(String timeSlotId) {
-		ItemReservation reservation = itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId);
+	public boolean cancelItemReservation(String itemReservationId) {
+		ItemReservation reservation = itemReservationRepository.findItemReservationByItemReservationId(itemReservationId);
 		if (reservation.getIsCheckedOut() == false) {
 			itemReservationRepository.delete(reservation);
 			return true;
@@ -147,15 +145,15 @@ public class ItemReservationService {
 	
 	@Transactional
 	public ItemReservation returnItemFromReservation(String itemNumber) {
-		String timeSlotId = null;
+		String itemReservationId = null;
 		Item item = itemRepository.findItemByItemNumber(itemNumber);
 
-		timeSlotId = item.getCurrentReservationId();
+		itemReservationId = item.getCurrentReservationId();
 		
 		item.setCurrentReservationId(null);
 		itemRepository.save(item);
-		if (timeSlotId != null ) {
-			ItemReservation reservation = itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId);
+		if (itemReservationId != null ) {
+			ItemReservation reservation = itemReservationRepository.findItemReservationByItemReservationId(itemReservationId);
 			reservation.setIsCheckedOut(false);
 			reservation.setEndDate(Date.valueOf(LocalDate.now()));
 			
@@ -187,8 +185,8 @@ public class ItemReservationService {
 	}
 	
 	@Transactional
-	public ItemReservation renewByTimeSlotId(String timeSlotId) {
-		ItemReservation reservation = getItemReservation(timeSlotId);
+	public ItemReservation renewByItemReservationId(String itemReservationId) {
+		ItemReservation reservation = getItemReservation(itemReservationId);
 		if (reservation.getNumOfRenewalsLeft() > 0) {
 			Date nextAvailable = findNextAvailabilityForItem(reservation.getItemNumber());
 			//if this is the last reservation
