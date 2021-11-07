@@ -23,8 +23,7 @@ public class ItemService {
 
   // creates book, returns it so we know it's not null
   @Transactional
-  public Book createBook(
-    String idNum,
+  public Book createBook(String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,
@@ -35,8 +34,8 @@ public class ItemService {
     String publisher
   ) {
     if (
-      librarianRepository.findById(idNum) == null &&
-      headLibrarianRepository.findById(idNum) == null
+      librarianRepository.findById(currentUserId) == null &&
+      headLibrarianRepository.findById(currentUserId) == null
     ) {
       throw new IllegalArgumentException(
         "You do not have permission to create an item"
@@ -62,14 +61,21 @@ public class ItemService {
 
   //remove book
   @Transactional
-  public Book deleteBook(Book book) {
+  public Book deleteBook(String currentUserId,Book book) {
+	    if (
+	    	      librarianRepository.findById(currentUserId) == null &&
+	    	      headLibrarianRepository.findById(currentUserId) == null
+	    	    ) {
+	    	      throw new IllegalArgumentException(
+	    	        "You do not have permission to create an item"
+	    	      );
+	    	    }
     itemRepository.delete(book);
     return book;
   }
 
   @Transactional
-  public Archive createArchive(
-    String idNum,
+  public Archive createArchive(String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,
@@ -77,14 +83,14 @@ public class ItemService {
     Date publishDate,
     boolean isReservable
   ) {
-    if (
-      librarianRepository.findById(idNum) == null &&
-      headLibrarianRepository.findById(idNum) == null
-    ) {
-      throw new IllegalArgumentException(
-        "You do not have permission to create an item"
-      );
-    } else if (itemTitle.length() == 0) {
+	    if (
+	    	      librarianRepository.findById(currentUserId) == null &&
+	    	      headLibrarianRepository.findById(currentUserId) == null
+	    	    ) {
+	    	      throw new IllegalArgumentException(
+	    	        "You do not have permission to create an item"
+	    	      );
+	    	    }else if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
     String itemNumber =
@@ -106,14 +112,22 @@ public class ItemService {
 
   //remove archive
   @Transactional
-  public Archive deleteArchive(Archive archive) {
+  public Archive deleteArchive(String currentUserId,Archive archive) {
+	    if (
+	    	      librarianRepository.findById(currentUserId) == null &&
+	    	      headLibrarianRepository.findById(currentUserId) == null
+	    	    ) {
+	    	      throw new IllegalArgumentException(
+	    	        "You do not have permission to create an item"
+	    	      );
+	    	    }
     itemRepository.delete(archive);
     return archive;
   }
 
   @Transactional
-  public MusicAlbum createMusicAlbum(
-    String idNum,
+  public MusicAlbum createMusicAlbum(String currentUserId,
+ 
     String itemTitle,
     String description,
     String imageUrl,
@@ -123,14 +137,14 @@ public class ItemService {
     String artist,
     String recordingLabel
   ) {
-    if (
-      librarianRepository.findById(idNum) == null &&
-      headLibrarianRepository.findById(idNum) == null
-    ) {
-      throw new IllegalArgumentException(
-        "You do not have permission to create an item"
-      );
-    } else if (itemTitle.length() == 0) {
+	    if (
+	    	      librarianRepository.findById(currentUserId) == null &&
+	    	      headLibrarianRepository.findById(currentUserId) == null
+	    	    ) {
+	    	      throw new IllegalArgumentException(
+	    	        "You do not have permission to create an item"
+	    	      );
+	    	    } else if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
     String itemNumber =
@@ -154,14 +168,21 @@ public class ItemService {
 
   //remove music album
   @Transactional
-  public MusicAlbum deleteMusicAlbum(MusicAlbum musicAlbum) {
+  public MusicAlbum deleteMusicAlbum(String currentUserId,MusicAlbum musicAlbum) {
+	    if (
+	    	      librarianRepository.findById(currentUserId) == null &&
+	    	      headLibrarianRepository.findById(currentUserId) == null
+	    	    ) {
+	    	      throw new IllegalArgumentException(
+	    	        "You do not have permission to create an item"
+	    	      );
+	    	    }
     itemRepository.delete(musicAlbum);
     return musicAlbum;
   }
 
   @Transactional
-  public PrintedMedia createPrintedMedia(
-    String idNum,
+  public PrintedMedia createPrintedMedia(String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,
@@ -170,14 +191,14 @@ public class ItemService {
     boolean isReservable,
     String issueNumber
   ) {
-    if (
-      librarianRepository.findById(idNum) == null &&
-      headLibrarianRepository.findById(idNum) == null
-    ) {
-      throw new IllegalArgumentException(
-        "You do not have permission to create an item"
-      );
-    } else if (itemTitle.length() == 0) {
+	    if (
+	    	      librarianRepository.findById(currentUserId) == null &&
+	    	      headLibrarianRepository.findById(currentUserId) == null
+	    	    ) {
+	    	      throw new IllegalArgumentException(
+	    	        "You do not have permission to create an item"
+	    	      );
+	    	    } else if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
     String itemNumber =
@@ -200,14 +221,21 @@ public class ItemService {
 
   //remove printed media
   @Transactional
-  public PrintedMedia deletePrintedMedia(PrintedMedia printedMedia) {
+  public PrintedMedia deletePrintedMedia(String currentUserId,PrintedMedia printedMedia) {
+	    if (
+	    	      librarianRepository.findById(currentUserId) == null &&
+	    	      headLibrarianRepository.findById(currentUserId) == null
+	    	    ) {
+	    	      throw new IllegalArgumentException(
+	    	        "You do not have permission to create an item"
+	    	      );
+	    	    }
     itemRepository.delete(printedMedia);
     return printedMedia;
   }
 
   @Transactional
-  public Movie createMovie(
-    String idNum,
+  public Movie createMovie(String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,
@@ -219,14 +247,14 @@ public class ItemService {
     String director,
     String producer
   ) {
-    if (
-      librarianRepository.findById(idNum) == null &&
-      headLibrarianRepository.findById(idNum) == null
-    ) {
-      throw new IllegalArgumentException(
-        "You do not have permission to create an item"
-      );
-    } else if (itemTitle.length() == 0) {
+	    if (
+	    	      librarianRepository.findById(currentUserId) == null &&
+	    	      headLibrarianRepository.findById(currentUserId) == null
+	    	    ) {
+	    	      throw new IllegalArgumentException(
+	    	        "You do not have permission to create an item"
+	    	      );
+	    	    }else if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
     String itemNumber =
@@ -252,7 +280,15 @@ public class ItemService {
 
   //remove movie
   @Transactional
-  public Movie deleteMovie(Movie movie) {
+  public Movie deleteMovie(String currentUserId,Movie movie) {
+	    if (
+	    	      librarianRepository.findById(currentUserId) == null &&
+	    	      headLibrarianRepository.findById(currentUserId) == null
+	    	    ) {
+	    	      throw new IllegalArgumentException(
+	    	        "You do not have permission to create an item"
+	    	      );
+	    	    }
     itemRepository.delete(movie);
     return movie;
   }

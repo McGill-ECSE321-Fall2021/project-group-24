@@ -25,75 +25,75 @@ public class ItemReservationController {
 	private ItemReservationService itemReservationService;
 	
 	@GetMapping(value = { "/itemReservations", "/itemReservations/" })
-	public List<ItemReservationDto> getAllItemReservations() {
+	public List<ItemReservationDto> getAllItemReservations(@RequestParam String currentUserId) {
 		System.out.println("Flag Get"); 
-		return itemReservationService.getAllItemReservations().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
+		return itemReservationService.getAllItemReservations(currentUserId).stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
 	}
 	
 	@GetMapping(value = { "/itemReservations/patron/{idNum}", "/registrations/patron/{idNum}/" })
-	public List<ItemReservationDto> getItemReservationsOfPatron(@PathVariable("idNum") String idNum) {
-		return getItemReservationDtosForPatron(idNum);
+	public List<ItemReservationDto> getItemReservationsOfPatron(@PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
+		return getItemReservationDtosForPatron(currentUserId,idNum);
 	}
 	
 	@GetMapping(value = { "/itemReservations/item/{itemNumber}", "/registrations/item/{itemNumber}/" })
-	public List<ItemReservationDto> getItemReservationsOfItem(@PathVariable("itemNumber") String itemNumber) {
-		return getItemReservationDtosForItem(itemNumber);
+	public List<ItemReservationDto> getItemReservationsOfItem(@PathVariable("itemNumber") String itemNumber, @RequestParam String currentUserId) {
+		return getItemReservationDtosForItem(currentUserId, itemNumber);
 	}
 	
 	@GetMapping(value = { "/itemReservations/{itemReservationId}", "/itemReservations/{itemReservationId}/" })
-	public ItemReservationDto getItemReservation(@PathVariable("itemReservationId") String itemReservationId) {
+	public ItemReservationDto getItemReservation(@PathVariable("itemReservationId") String itemReservationId, @RequestParam String currentUserId) {
 		System.out.println("Flag Get" + itemReservationId); 
-		return convertToDto(itemReservationService.getItemReservation(itemReservationId));
+		return convertToDto(itemReservationService.getItemReservation(currentUserId, itemReservationId));
 	}
 	
-	@PostMapping(value = {"/itemReservations/returnItem/{itemNumber}", "itemReservations/returnItem/{itemNumber}/"})
-	public ItemReservationDto returnItem(@PathVariable("itemNumber") String itemNumber) {
-		return convertToDto(itemReservationService.returnItemFromReservation(itemNumber));
+	@PostMapping(value = {"/itemReservations/return_item/{itemNumber}", "itemReservations/return_item/{itemNumber}/"})
+	public ItemReservationDto returnItem(@PathVariable("itemNumber") String itemNumber, @RequestParam String currentUserId) {
+		return convertToDto(itemReservationService.returnItemFromReservation(currentUserId, itemNumber));
 		
 	}
 	
-	@PostMapping(value = {"/itemReservations/checkoutItem/{itemNumber}/byPatron/{idNum}", "itemReservations/checkoutItem/{itemNumber}/byPatron/{idNum}"})
-	public ItemReservationDto checkoutItem(@PathVariable("itemNumber") String itemNumber, @PathVariable("idNum") String idNum) {
-		return convertToDto(itemReservationService.checkoutItem(itemNumber, idNum));
+	@PostMapping(value = {"/itemReservations/checkout_item/{itemNumber}/byPatron/{idNum}", "itemReservations/checkout_item/{itemNumber}/byPatron/{idNum}"})
+	public ItemReservationDto checkoutItem(@PathVariable("itemNumber") String itemNumber, @PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
+		return convertToDto(itemReservationService.checkoutItem(currentUserId, itemNumber, idNum));
 		
 	}
 
 	@PostMapping(value = { "/itemReservations/", "/itemReservations" })
-	public ItemReservationDto createItemReservation( @RequestParam String idNum, @RequestParam String itemNumber, @RequestParam boolean isCheckedOut
+	public ItemReservationDto createItemReservation(@RequestParam String currentUserId, @RequestParam String idNum, @RequestParam String itemNumber, @RequestParam boolean isCheckedOut
 			) {
 		System.out.println("Flag Post"); 
-		ItemReservation reservation = itemReservationService.createItemReservation(
+		ItemReservation reservation = itemReservationService.createItemReservation(currentUserId,
 				null, idNum, itemNumber, isCheckedOut
 		     );
 		return convertToDto(reservation);
 	}
 	
 	@PostMapping(value = { "/itemReservations/customDate", "/itemReservations/customDate/" })
-	public ItemReservationDto createItemReservationCustomDate(
+	public ItemReservationDto createItemReservationCustomDate(@RequestParam String currentUserId,
 			 @RequestParam Integer numOfRenewalsLeft,
 			 @RequestParam String idNum,
 			 @RequestParam String itemNumber,
 			 @RequestParam boolean isCheckedOut, @RequestParam String startDate
 			) {
 		System.out.println("Flag Post"); 
-		ItemReservation reservation = itemReservationService.createItemReservation(
+		ItemReservation reservation = itemReservationService.createItemReservation(currentUserId,
 				Date.valueOf(LocalDate.parse(startDate)), idNum, itemNumber, isCheckedOut
 		     );
 		return convertToDto(reservation);
 	}
 	
 	@PostMapping(value = {"/itemReservations/renew/{itemReservationId}", "/itemReservations/renew/{itemReservationId}/"})
-	public ItemReservationDto renewItemReservation(@PathVariable("itemReservationId") String itemReservationId) {
-		return convertToDto(itemReservationService.renewByItemReservationId(itemReservationId));
+	public ItemReservationDto renewItemReservation(@PathVariable("itemReservationId") String itemReservationId,@RequestParam String currentUserId) {
+		return convertToDto(itemReservationService.renewByItemReservationId(currentUserId,itemReservationId));
 	}
 	
 	@PostMapping(value = {"/itemReservations/cancel/{itemReservationId}", "/itemReservations/cancel/{itemReservationId}/"})
-	public boolean cancelItemReservation(@PathVariable("itemReservationId") String itemReservationId) {
-		return itemReservationService.cancelItemReservation(itemReservationId);
+	public boolean cancelItemReservation(@PathVariable("itemReservationId") String itemReservationId,@RequestParam String currentUserId) {
+		return itemReservationService.cancelItemReservation(currentUserId,itemReservationId);
 	}
 	
-	private List<ItemReservationDto> getItemReservationDtosForPatron(String idNum) {
-		List<ItemReservation> itemReservationsForPatron = itemReservationService.getItemReservationsByIdNum(idNum);
+	private List<ItemReservationDto> getItemReservationDtosForPatron(String currentUserId, String idNum) {
+		List<ItemReservation> itemReservationsForPatron = itemReservationService.getItemReservationsByIdNum(currentUserId,idNum);
 		List<ItemReservationDto> reservations = new ArrayList<>();
 		for (ItemReservation reservation : itemReservationsForPatron) {
 			reservations.add(convertToDto(reservation));
@@ -101,8 +101,8 @@ public class ItemReservationController {
 		return reservations;
 	}
 	
-	private List<ItemReservationDto> getItemReservationDtosForItem(String itemNumber) {
-		List<ItemReservation> itemReservationsForItem = itemReservationService.getItemReservationsByItemNumber(itemNumber);
+	private List<ItemReservationDto> getItemReservationDtosForItem(String currentUserId, String itemNumber) {
+		List<ItemReservation> itemReservationsForItem = itemReservationService.getItemReservationsByItemNumber(currentUserId, itemNumber);
 		List<ItemReservationDto> reservations = new ArrayList<>();
 		for (ItemReservation reservation : itemReservationsForItem) {
 			reservations.add(convertToDto(reservation));

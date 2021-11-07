@@ -24,14 +24,17 @@ public class ItemReservationService {
 	PatronRepository patronRepository;
 	@Autowired
 	LibrarianRepository librarianRepository;
+	@Autowired
+	HeadLibrarianRepository headLibrarianRepository;
 		
 	@Transactional 
-	public ItemReservation createItemReservation (
+	public ItemReservation createItemReservation (String currentUserId,
 			   Date startDate,
 		 String idNum,
 		String itemNumber,
 		 boolean isCheckedOut)
 	{
+		
 		if (startDate == null) {
 			startDate = findNextAvailabilityForItem(itemNumber);
 			//if they are at the library rn and the book is available 
@@ -44,11 +47,13 @@ public class ItemReservationService {
 		}
 		String itemReservationId = startDate.toLocalDate().toString() + itemNumber + idNum;
 		Date endDate = Date.valueOf(startDate.toLocalDate().plusWeeks(2));
-		if (patronRepository.findUserByIdNum(idNum) == null && librarianRepository.findUserByIdNum(idNum) == null) {
-			System.out.println("id num is" + idNum);
-			throw new IllegalArgumentException("Invalid idNum");
+		if (isCheckedOut && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+			throw new IllegalArgumentException("Only a librarian can check out a book for a patron");
 		}
-		
+		if (patronRepository.findUserByIdNum(idNum) == null) {
+			System.out.println("id num is" + idNum);
+			throw new IllegalArgumentException("Only patrons can create item reservations");
+		}
 		if (itemRepository.findItemByItemNumber(itemNumber) == null) {
 				throw new IllegalArgumentException("The item does not exist");
 		}
@@ -63,7 +68,7 @@ public class ItemReservationService {
 			}
 		}
 		
-		if (getCurrentReservationsByIdNum(idNum).size() > 9) {
+		if (getCurrentReservationsByIdNum(currentUserId, idNum).size() > 9) {
 			throw new IllegalArgumentException("Patron cannot have more than 10 reservations at a time");
 		}
 		
@@ -83,18 +88,28 @@ public class ItemReservationService {
 	
 	// looks for a reservation with the given itemReservationId, returns them if found
 	@Transactional 
-	public ItemReservation getItemReservation(String itemReservationId) {
-		ItemReservation reservation = itemReservationRepository.findItemReservationByItemReservationId(itemReservationId); 
+	public ItemReservation getItemReservation(String currentUserId,String itemReservationId) {
+		
+		ItemReservation reservation = itemReservationRepository.findItemReservationByItemReservationId(itemReservationId);
+		if (!currentUserId.equals(reservation.getIdNum()) && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+			throw new IllegalArgumentException("Only a librarian or the patron who's reservation it is can view a reservation");
+		}
 		return reservation;
 	}
 	
 	@Transactional 
-	public List<ItemReservation> getAllItemReservations() {
+	public List<ItemReservation> getAllItemReservations(String currentUserId) {
+		if (librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+			throw new IllegalArgumentException("Only a librarian can see all reservations");
+		}
 		return toList(itemReservationRepository.findAll()); 
 	}
 
 	@Transactional
-	public List<ItemReservation> getItemReservationsByIdNum(String idNum) {
+	public List<ItemReservation> getItemReservationsByIdNum(String currentUserId,String idNum) {
+		if (!currentUserId.equals(idNum) && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+			throw new IllegalArgumentException("Only a librarian or the patron who's reservation it is can view a reservation");
+		}
 	    List<ItemReservation> reservationsByIdNum = new ArrayList<>();
 	    for (ItemReservation r : itemReservationRepository.findItemReservationsByIdNum(idNum)) {
 	        reservationsByIdNum.add(r);
@@ -103,10 +118,13 @@ public class ItemReservationService {
 	}
 	
 	@Transactional
-	public ItemReservation checkoutItem(String itemNumber, String idNum) {
+	public ItemReservation checkoutItem(String currentUserId,String itemNumber, String idNum) {
+		if (librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+			throw new IllegalArgumentException("Only a librarian can check out a book for a patron");
+		}
 		ItemReservation currentReservation = null; //find the reservation
 		Date today = Date.valueOf(LocalDate.now());
-		for (ItemReservation r : getItemReservationsByItemNumberAndIdNum(itemNumber, idNum)) {
+		for (ItemReservation r : getItemReservationsByItemNumberAndIdNum(currentUserId, itemNumber, idNum)) {
 			if (r.getStartDate().before(today) && r.getEndDate().after(today) || r.getStartDate().equals(today) && r.getEndDate().after(today) || r.getStartDate().before(today) && r.getEndDate().equals(today)) {
 				currentReservation = r;
 			}
@@ -116,7 +134,7 @@ public class ItemReservationService {
 			throw new IllegalArgumentException("Item does not exist");
 		}
 		if (currentReservation == null) {
-			return createItemReservation(today, idNum, itemNumber, true);
+			return createItemReservation(currentUserId, today, idNum, itemNumber, true);
 		} else if (!currentReservation.getIdNum().equals(idNum)) {
 			throw new IllegalArgumentException("No reservation at this time for this patron");
 		} else if (patronRepository.findUserByIdNum(idNum).getIsVerified()) {
@@ -133,8 +151,11 @@ public class ItemReservationService {
 	}
 	
 	@Transactional
-	public boolean cancelItemReservation(String itemReservationId) {
+	public boolean cancelItemReservation(String currentUserId,String itemReservationId) {
 		ItemReservation reservation = itemReservationRepository.findItemReservationByItemReservationId(itemReservationId);
+		if (!currentUserId.equals(reservation.getIdNum()) && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+			throw new IllegalArgumentException("Only a librarian or the patron who's reservation it is can delete it");
+		}
 		if (reservation.getIsCheckedOut() == false) {
 			itemReservationRepository.delete(reservation);
 			return true;
@@ -144,10 +165,12 @@ public class ItemReservationService {
 	}
 	
 	@Transactional
-	public ItemReservation returnItemFromReservation(String itemNumber) {
+	public ItemReservation returnItemFromReservation(String currentUserId,String itemNumber) {
 		String itemReservationId = null;
 		Item item = itemRepository.findItemByItemNumber(itemNumber);
-
+		if (librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+			throw new IllegalArgumentException("Only a librarian can return an item to the library");
+		}
 		itemReservationId = item.getCurrentReservationId();
 		
 		item.setCurrentReservationId(null);
@@ -166,10 +189,12 @@ public class ItemReservationService {
 	}
 	
 	@Transactional
-	public List<ItemReservation> getItemReservationsByItemNumberAndIdNum(String itemNumber, String idNum) {
+	public List<ItemReservation> getItemReservationsByItemNumberAndIdNum(String currentUserId,String itemNumber, String idNum) {
 		List<ItemReservation> reservations = new ArrayList<ItemReservation>();
-		
-		for (ItemReservation r : getCurrentReservationsByIdNum(idNum)) {
+		if (!currentUserId.equals(idNum) && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+			throw new IllegalArgumentException("Only a librarian or the patron who's reservation they are can see them");
+		}
+		for (ItemReservation r : getCurrentReservationsByIdNum(currentUserId, idNum)) {
 	        if (r.getItemNumber().equals(itemNumber)) {
 	        	reservations.add(r);
 	        }
@@ -180,13 +205,13 @@ public class ItemReservationService {
 	}
 	
 	@Transactional
-	public List<ItemReservation> getItemReservationsByItemNumber(String itemNumber) {
+	public List<ItemReservation> getItemReservationsByItemNumber(String currentUserId,String itemNumber) {
 		return itemReservationRepository.findItemReservationsByItemNumber(itemNumber);
 	}
 	
 	@Transactional
-	public ItemReservation renewByItemReservationId(String itemReservationId) {
-		ItemReservation reservation = getItemReservation(itemReservationId);
+	public ItemReservation renewByItemReservationId(String currentUserId,String itemReservationId) {
+		ItemReservation reservation = getItemReservation(currentUserId, itemReservationId);
 		if (reservation.getNumOfRenewalsLeft() > 0) {
 			Date nextAvailable = findNextAvailabilityForItem(reservation.getItemNumber());
 			//if this is the last reservation
@@ -203,10 +228,13 @@ public class ItemReservationService {
 		}
 	}
 	
-	public List<ItemReservation> getCurrentReservationsByIdNum(String idNum) {
+	public List<ItemReservation> getCurrentReservationsByIdNum(String currentUserId,String idNum) {
 		Date today = Date.valueOf(LocalDate.now());
 		List<ItemReservation> currentReservationsByPatron = new ArrayList<ItemReservation>();
-		for (ItemReservation reservation : getItemReservationsByIdNum(idNum)) {
+		if (!currentUserId.equals(idNum) && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+			throw new IllegalArgumentException("Only a librarian or the patron who's reservation they are can see them");
+		}
+		for (ItemReservation reservation : getItemReservationsByIdNum(currentUserId, idNum)) {
 			if (reservation.getStartDate().after(today) || reservation.getStartDate().equals(today) || reservation.getEndDate().after(today) || (reservation.getIsCheckedOut() == true && reservation.getEndDate().equals(today))) {
 				currentReservationsByPatron.add(reservation);
 			}
