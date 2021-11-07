@@ -19,7 +19,7 @@ public class Movie extends Item {
     this.productionCompany = productionCompany;
   }
 
-  public String getCast() {
+  public String getMovieCast() {
     return this.movieCast;
   }
 

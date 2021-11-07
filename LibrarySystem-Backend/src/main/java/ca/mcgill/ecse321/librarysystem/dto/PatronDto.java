@@ -1,48 +1,97 @@
 package ca.mcgill.ecse321.librarysystem.dto;
 
-public class PatronDto extends UserDto{
-	
-	private boolean isVerified;
-	private boolean isResident;
-	private boolean isRegisteredOnline;
-	
-	
-	public PatronDto() {
-	}
-	
-	public PatronDto(String idNum) {
-		this(idNum, "First Name", "Surname", "Address", "Email", "username", "password", true, true, false); 
-	}
-	
-	public PatronDto(String user, String pass, String id, String mail, String first, String last, String Address, boolean ResidentStatus, boolean Verification, boolean Registration) {
-		super(user, pass, id, mail, first, last, Address);
-		this.isRegisteredOnline = ResidentStatus;
-		this.isVerified = Verification;
-		this.isRegisteredOnline = Registration;
-	}
-	
-	
-	public boolean getIsVerified() {
-	    return this.isVerified;
-	  }
+public class PatronDto {
 
-	  public void setIsVerified(boolean isVerified) {
-	    this.isVerified = isVerified;
-	  }
+  private String idNum;
+  private String firstName;
+  private String lastName;
+  private String address;
+  private String email;
+  private String username;
+  private String password;
 
-	  public boolean getIsResident() {
-	    return this.isResident;
-	  }
+  private boolean isVerified;
+  private boolean isResident;
+  private boolean isRegisteredOnline;
 
-	  public void setIsResident(boolean isResident) {
-	    this.isResident = isResident;
-	  }
+  public PatronDto() {}
 
-	  public boolean getIsRegisteredOnline() {
-	    return this.isRegisteredOnline;
-	  }
+  public PatronDto(String idNum) {
+    this(
+      idNum,
+      "First Name",
+      "Surname",
+      "Address",
+      "Email",
+      "username",
+      "password",
+      true,
+      true,
+      false
+    );
+  }
 
-	  public void setIsRegisteredOnline(boolean isRegisteredOnline) {
-	    this.isRegisteredOnline = isRegisteredOnline;
-	  }
+  public PatronDto(
+    String idNum,
+    String firstName,
+    String lastName,
+    String address,
+    String email,
+    String username,
+    String password,
+    boolean isVerified,
+    boolean isResident,
+    boolean isRegisteredOnline
+  ) {
+    this.idNum = idNum;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.address = address;
+    this.email = email;
+    this.username = username;
+    this.password = password;
+    this.isResident = isResident;
+    this.isRegisteredOnline = isRegisteredOnline;
+    this.isVerified = isVerified;
+  }
+
+  public String getIdNum() {
+    return this.idNum;
+  }
+
+  public String getFirstName() {
+    return this.firstName;
+  }
+
+  public String getLastName() {
+    return this.lastName;
+  }
+
+  public String getAddress() {
+    return this.address;
+  }
+
+  public String getEmail() {
+    return this.email;
+  }
+
+  public String getUsername() {
+    return this.username;
+  }
+
+  public String getPassword() {
+    return this.password;
+  }
+
+  public boolean isVerified() {
+    return this.isVerified;
+  }
+
+  public boolean isResident() {
+    return this.isResident;
+  }
+
+  public boolean isRegisteredOnline() {
+    return this.isRegisteredOnline;
+  }
 }
