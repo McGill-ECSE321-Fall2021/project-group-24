@@ -14,7 +14,7 @@ import ca.mcgill.ecse321.librarysystem.model.Librarian;
 import ca.mcgill.ecse321.librarysystem.model.Patron;
 import ca.mcgill.ecse321.librarysystem.model.User;
 
-
+@Service
 public class UserService {
 	@Autowired
 	PatronRepository patronRepository;
@@ -124,7 +124,7 @@ public class UserService {
 	}
 	
 	
-	
+	@Transactional
 	public User changePassword(String username, String newPass) {
 		
 		User user = null;

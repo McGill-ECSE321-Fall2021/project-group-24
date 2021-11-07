@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,18 +58,23 @@ public class PatronController {
 	
 	
 	
-	@PostMapping(value = { "/patronIRL/{username}", "/patronIRL/{username}/" })
-	public PatronDto createPatronIRL(@PathVariable("username") String username,  
-			@RequestParam String first, 
-			@RequestParam String last, 
-			@RequestParam boolean ResidentStatus,
-			@RequestParam String Address, 
-			@RequestParam String mail
+	@RequestMapping(value = { "/patronIRL", "/patronIRL/" }, method = { RequestMethod.GET, RequestMethod.POST })
+	public ResponseEntity<?> createPatronIRL(@RequestParam("username") String username,  
+			@RequestParam ("first") String first, 
+			@RequestParam ("last") String last, 
+			@RequestParam ("ResidentStatus") boolean ResidentStatus,
+			@RequestParam ("Address") String Address, 
+			@RequestParam ("mail") String mail
 			) throws IllegalArgumentException {
-		String idNum = first+"Patron-"+patronService.toList(patronRepository.findAll()).size();
-		Patron patron = patronService.createPatronIRL(username, first, last, ResidentStatus, Address, mail);	
-		patron.setIdNum(idNum);
-		return convertToDto(patron);
+		
+		Patron patron = null;
+		try {
+			patron = patronService.createPatronIRL(username, first, last, ResidentStatus, Address, mail);
+			return new ResponseEntity<>(patron, HttpStatus.OK);
+		}catch(IllegalArgumentException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	
 	}
 	
 	@PostMapping(value = { "/patron/{username}", "/patron/{username}/" })
