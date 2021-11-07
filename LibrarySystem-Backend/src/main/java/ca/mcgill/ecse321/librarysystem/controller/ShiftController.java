@@ -29,11 +29,12 @@ public class ShiftController {
 	
 	/** Method adds a shift (if startDate is different from endDate then it's an overnight shift)
 	 * @author Arman 
-	 * @param librarianId, dayOfWeek, startTime, endTime 
+	 * @param currentUserId, librarianId, dayOfWeek, startTime, endTime 
 	 * @return Response Entity 
 	 */
-	@PostMapping(value = {"/add_overnight_shift", "/add_overnight_shift/"})
-	public ResponseEntity<?> addShift(@RequestParam String currentUserId, @RequestParam String librarianId, @RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startDate, @RequestParam String startTime, @RequestParam String endDate, @RequestParam String endTime) {
+	@PostMapping(value = {"/add_shift", "/add_shift/"})
+	public ResponseEntity<?> addShift(@RequestParam String currentUserId, @RequestParam String librarianId, @RequestParam TimeSlot.DayOfWeek dayOfWeek, 
+			 @RequestParam String startTime, @RequestParam String endTime) {
 		Shift shift = null; 
 		// request param usernameId, do that in shift methods as well so that we verify that the username is one in headLibrarian Repo
 		try {
