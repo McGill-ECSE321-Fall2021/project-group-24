@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.librarysystem.dto;
 
-import java.sql.Date;
 import java.sql.Time;
 
 import ca.mcgill.ecse321.librarysystem.model.TimeSlot;
@@ -11,10 +10,8 @@ public class ShiftDto {
 	TimeSlot.DayOfWeek dayOfWeek;
 	Time endTime; 
 	
-	public ShiftDto() {
-	}
-	
 	public ShiftDto(String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime) {
+		this.librarianId = librarianId; 
 		this.startTime= startTime; 
 		this.dayOfWeek = dayOfWeek;
 		this.endTime= endTime;
