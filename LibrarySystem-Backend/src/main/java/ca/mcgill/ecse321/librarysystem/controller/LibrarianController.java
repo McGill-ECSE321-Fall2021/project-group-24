@@ -30,12 +30,7 @@ public class LibrarianController {
 		return librarianService.getAllLibrarians().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
 	}
 
-	@PostMapping(value = { "/librarians/{idNum}", "/librarians/{idNum}/" })
-	public LibrarianDto createLibrarian(@PathVariable("idNum") String idNum) {
-		System.out.println("Flag Post"); 
-		Librarian librarian = librarianService.createLibrarian(idNum);
-		return convertToDto(librarian);
-	}
+
 	
 	private LibrarianDto convertToDto(Librarian librarian){
 	//	if (librarian == null) {
