@@ -8,5 +8,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ShiftRepository extends CrudRepository<Shift, String> {
 	Shift findShiftByTimeSlotId(String timeSlotId);
+	Shift findShiftByLibrarianIdAndDayOfWeek(String librarianId, TimeSlot.DayOfWeek dayOfWeek); 
 	Shift findShiftByLibrarianIdAndDayOfWeekAndStartTime(String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time StartTime); 
 }

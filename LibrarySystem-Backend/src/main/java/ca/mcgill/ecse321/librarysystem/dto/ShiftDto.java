@@ -17,6 +17,13 @@ public class ShiftDto {
 		this.endTime= endTime;
 	}
 	
+	public String getLibrarianId() {
+		return this.librarianId; 
+	}
+	public TimeSlot.DayOfWeek getDayOfWeek() {
+		return this.dayOfWeek; 
+	}
+	
 	public Time getStartTime() {
 		return this.startTime;
 	}
@@ -24,5 +31,7 @@ public class ShiftDto {
 	public Time getEndTime() {
 		return this.endTime; 
 	}
+	
+
 	
 }
