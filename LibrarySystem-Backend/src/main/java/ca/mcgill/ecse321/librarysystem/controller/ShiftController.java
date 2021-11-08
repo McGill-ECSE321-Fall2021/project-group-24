@@ -47,15 +47,15 @@ public class ShiftController {
 	
 	/** Method modifies a shift
 	 * @author Arman 
-	 * @param currentUserId, librarianId, shiftId, dayOfWeek, startTime, endTime 
+	 * @param currentUserId, librarianId, timeSlotId, dayOfWeek, startTime, endTime 
 	 * @return Response Entity 
 	 */
 	@PostMapping(value = {"/modify_shift", "/modify_shift/"})
-	public  ResponseEntity<?> modifyShift(@RequestParam String currentUserId, @RequestParam String shiftId, @RequestParam String librarianId, 
+	public  ResponseEntity<?> modifyShift(@RequestParam String currentUserId, @RequestParam String timeSlotId, @RequestParam String librarianId, 
 			@RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime, @RequestParam String endTime) {
 		Shift shift = null; 
 		try {
-			shift =shiftService.modifyShift(currentUserId, shiftId, librarianId, dayOfWeek, Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00")); 
+			shift =shiftService.modifyShift(currentUserId, timeSlotId, librarianId, dayOfWeek, Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00")); 
 			}		
 			catch(IllegalArgumentException e) {
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -65,14 +65,14 @@ public class ShiftController {
 	
 	/** Method removes an existing shift for a librarian
 	 * @author Arman 
-	 * @param currentUserId, shiftId
+	 * @param currentUserId, timeSlotId
 	 * @return true if the shift is successfully deleted 
 	 */
 	@PostMapping(value = {"/remove_shift", "/remove_shift/"}) 
-	public ResponseEntity<?> removeShift(@RequestParam String currentUserId, @RequestParam String shiftId) {
+	public ResponseEntity<?> removeShift(@RequestParam String currentUserId, @RequestParam String timeSlotId) {
 		boolean isDeleted = false; 
 		try {
-			isDeleted = shiftService.removeShift(currentUserId, shiftId);  
+			isDeleted = shiftService.removeShift(currentUserId, timeSlotId);  
 		}
 		catch(IllegalArgumentException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
@@ -99,14 +99,14 @@ public class ShiftController {
 	
 	/** Method returns a specific shift
 	 * @author Arman 
-	 * @param currentUserId, shiftId
+	 * @param currentUserId, timeSlotId
 	 * @return ShiftDto
 	 */
 	@GetMapping(value = {"/view_shift", "/view_shift/"})
-	public ResponseEntity<?> viewShift(@RequestParam String currentUserId, @RequestParam String shiftId){
+	public ResponseEntity<?> viewShift(@RequestParam String currentUserId, @RequestParam String timeSlotId){
 		Shift shift = null; 
 		try {
-			shift = shiftService.getShift(currentUserId, shiftId); 
+			shift = shiftService.getShift(currentUserId, timeSlotId); 
 		}
 		catch (IllegalArgumentException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 

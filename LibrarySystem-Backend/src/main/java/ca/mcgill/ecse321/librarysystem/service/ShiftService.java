@@ -30,7 +30,7 @@ public class ShiftService {
 		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
 		if(librarianRepo.findById(librarianId)==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
 		Shift shift = new Shift(); 
-		String timeSlotId = dayOfWeek.toString() + librarianId + startTime;
+		String timeSlotId = dayOfWeek.toString() + librarianId + startTime.toString();
 		shift.setTimeSlotId(timeSlotId);
 		shift.setStartTime(startTime);
 		shift.setLibrarianId(librarianId);
@@ -41,23 +41,23 @@ public class ShiftService {
 	}
 	/**Method modifies a shift (must be performed by head librarian)
 	 * @author Arman
-	 * @param currentUserId, shiftId, librarianId, dayOfWeek, startTime, endTime
+	 * @param currentUserId, timeSlotId, librarianId, dayOfWeek, startTime, endTime
 	 * @return shift
 	 */
 	
 	@Transactional 
-	public Shift modifyShift(String currentUserId, String shiftId, String librarianId, TimeSlot.DayOfWeek newDayOfWeek, Time startTime, Time endTime) {
+	public Shift modifyShift(String currentUserId, String timeSlotId, String librarianId, TimeSlot.DayOfWeek newDayOfWeek, Time startTime, Time endTime) {
 		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
 		if(librarianRepo.findById(librarianId)==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
-		if (librarianId==null || librarianId == null ||newDayOfWeek == null || startTime==null || endTime ==null) {
+		if (librarianId==null || timeSlotId==null || librarianId == null || newDayOfWeek == null || startTime==null || endTime ==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
 		if (startTime.after(endTime)) throw new IllegalArgumentException("Shift end time cannot be before its start time"); 
 		
-		if(shiftRepo.findShiftByTimeSlotId(shiftId)==null) throw new IllegalArgumentException("Shift does not exist so cannot modify."); 
+		if(shiftRepo.findShiftByTimeSlotId(timeSlotId)==null) throw new IllegalArgumentException("Shift does not exist so cannot modify."); 
 		if(librarianRepo.findUserByIdNum(librarianId)==null) throw new IllegalArgumentException("No Librarian with this ID exists"); 
 		
-		Shift shift = shiftRepo.findShiftByTimeSlotId(shiftId);
+		Shift shift = shiftRepo.findShiftByTimeSlotId(timeSlotId);
 		shift.setDayOfWeek(newDayOfWeek);
 		shift.setStartTime(startTime);
 		shift.setEndTime(endTime);
@@ -68,18 +68,18 @@ public class ShiftService {
 	
 	/**Method removes a certain shift (must be performed by head librarian)
 	 * @author Arman
-	 * @param currentUserId, shiftId
+	 * @param currentUserId, timeSlotId
 	 * @return true if the shift is deleted
 	 */
 	@Transactional 
-	public boolean removeShift(String currentUserId, String shiftId) {
+	public boolean removeShift(String currentUserId, String timeSlotId) {
 		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can remove librarian shifts");
-		if (shiftId==null) {
+		if (currentUserId==null || timeSlotId==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
-		Shift shift = shiftRepo.findShiftByTimeSlotId(shiftId); 
+		Shift shift = shiftRepo.findShiftByTimeSlotId(timeSlotId); 
 		if (shift==null) throw new IllegalArgumentException("Shift cannot be found"); 
-		shiftRepo.delete(shiftRepo.findShiftByTimeSlotId(shiftId)); 
+		shiftRepo.delete(shiftRepo.findShiftByTimeSlotId(timeSlotId)); 
 		return true; 
 	}
 	
@@ -105,19 +105,19 @@ public class ShiftService {
 	
 	/**Method returns a certain shift (can be performed by librarian or head librarian)
 	 *@author Arman
-	 *@param currentUserId, shiftId
+	 *@param currentUserId, timeSlotId
 	 *@return shift
 	 */
 	@Transactional 
-	public Shift getShift(String currentUserId, String shiftId) {
+	public Shift getShift(String currentUserId, String timeSlotId) {
 		Shift shift = null;
 		if (headLibrarianRepo.findById(currentUserId)==null && librarianRepo.findById(currentUserId) == null) {
 			throw new IllegalArgumentException("Only librarians can view shifts");
 		}
-		if (currentUserId==null || shiftId==null) {
+		if (currentUserId==null || timeSlotId==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
-		shift = shiftRepo.findShiftByTimeSlotId(shiftId); 
+		shift = shiftRepo.findShiftByTimeSlotId(timeSlotId); 
 		if (shift==null) throw new IllegalArgumentException("Shift cannot be found"); 
 		return shift; 
 	}
