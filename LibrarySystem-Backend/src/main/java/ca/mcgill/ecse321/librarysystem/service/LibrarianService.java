@@ -24,7 +24,7 @@ public class LibrarianService {
     String username,
     String password
   ) {
-	String idNum = firstName+"Patron-"+toList(librarianRepo.findAll()).size();
+	String idNum = firstName+"Librarian-"+toList(librarianRepo.findAll()).size();
     Librarian librarian = new Librarian();
     librarian.setUsername(username);
     librarian.setPassword(password);
