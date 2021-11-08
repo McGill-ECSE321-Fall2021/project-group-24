@@ -81,7 +81,7 @@ public class ShiftService {
 		}
 		Shift shift = shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, dayOfWeek, startTime); 
 		if (shift==null) throw new IllegalArgumentException("Shift cannot be found"); 
-		shiftRepo.delete(shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, dayOfWeek, startTime));
+		shiftRepo.delete(shift);
 		return true; 
 	}
 	

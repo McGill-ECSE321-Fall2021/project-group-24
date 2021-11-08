@@ -1,14 +1,8 @@
-package ca.mcgill.ecse321.librarysystem.model;
+package ca.mcgill.ecse321.librarysystem.dto;
 
-import javax.persistence.*;
+import javax.persistence.Id;
 
-import org.hibernate.annotations.GenericGenerator;
-
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@DiscriminatorColumn(name = "user")
-public abstract class User {
-
+public class UserDto {
 	private String username;
 	private String password;
 	private String email;
@@ -20,7 +14,22 @@ public abstract class User {
 	private String lastName;
 	private String address;
 	private boolean isLoggedIn;
-
+	
+	
+	public UserDto() {	
+	}
+	
+	public UserDto(String user, String pass, String id, String mail, String first, String last, String Address, boolean isLoggedIn) {
+		this.username = user;
+		this.password = pass;
+		this.email=mail;
+		this.idNum = id;
+		this.firstName = first;
+		this.lastName = last;
+		this.address = Address;
+		this.isLoggedIn = isLoggedIn;
+	}
+	
 	public String getIdNum() {
 		return idNum;
 	}
@@ -28,11 +37,11 @@ public abstract class User {
 	public void setIdNum(String timeSlotId) {
 		this.idNum = timeSlotId;
 	}
-
+	
 	public String getUsername() {
 		return this.username;
 	}
-
+	
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -44,7 +53,7 @@ public abstract class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	
 	public String getEmail() {
 		return this.email;
 	}

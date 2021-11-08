@@ -1,7 +1,9 @@
 package ca.mcgill.ecse321.librarysystem.dto;
 
-public class PatronDto {
+import javax.persistence.Id;
 
+public class PatronDto {
+  @Id
   private String idNum;
   private String firstName;
   private String lastName;

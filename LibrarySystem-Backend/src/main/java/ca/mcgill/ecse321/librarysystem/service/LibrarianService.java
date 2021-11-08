@@ -17,7 +17,6 @@ public class LibrarianService {
   // creates librarian, returns it so we know it's not null
   @Transactional
   public Librarian createLibrarian(
-    String idNum,
     String firstName,
     String lastName,
     String address,
@@ -25,6 +24,7 @@ public class LibrarianService {
     String username,
     String password
   ) {
+	String idNum = firstName+"Patron-"+toList(librarianRepo.findAll()).size();
     Librarian librarian = new Librarian();
     librarian.setUsername(username);
     librarian.setPassword(password);

@@ -58,11 +58,11 @@ public class ItemController {
     @RequestParam String genre,
     @RequestParam String publishDate,
     @RequestParam boolean isReservable,
-    @RequestParam String idNum
+    @RequestParam String currentUserId
   ) {
     System.out.println("Flag Post");
     Book book = itemService.createBook(
-      idNum,
+      currentUserId,
       itemTitle,
       description,
       imageURL,
@@ -90,11 +90,11 @@ public class ItemController {
     @RequestParam String productionCompany,
     @RequestParam String director,
     @RequestParam String producer,
-    @RequestParam String idNum
+    @RequestParam String currentUserId
   ) {
     System.out.println("Flag Post");
     Movie movie = itemService.createMovie(
-      idNum,
+      currentUserId,
       itemTitle,
       description,
       imageURL,
@@ -109,93 +109,103 @@ public class ItemController {
     return convertToMovieDto(movie);
   }
 
-  @PostMapping(
-    value = { "/items/createNewEmptyBook/", "/items/createNewEmptyBook" }
-  )
-  public BookDto createEmptyBook(@RequestParam String idNum) {
-    System.out.println("Flag Post");
-    Book book = itemService.createBook(
-      idNum,
-      "title",
-      "description",
-      "imageURL",
-      "genre",
-      Date.valueOf(LocalDate.now()),
-      true,
-      "author",
-      "publisher"
-    );
-    System.out.println(book.getAuthor());
-    return convertToBookDto(book);
-  }
-
-  @PostMapping(
-    value = { "/items/createEmptyArchive/", "/items/createEmptyArchive" }
-  )
-  public ArchiveDto createEmptyArchive(@RequestParam String idNum) {
+  @PostMapping(value = { "/items/createArchive", "/items/createArchive/" })
+  public ArchiveDto createArchive(
+    @RequestParam String itemTitle,
+    @RequestParam String description,
+    @RequestParam String imageURL,
+    @RequestParam String publisher,
+    @RequestParam String author,
+    @RequestParam String genre,
+    @RequestParam String publishDate,
+    @RequestParam boolean isReservable,
+    @RequestParam String currentUserId
+  ) {
     System.out.println("Flag Post");
     Archive archive = itemService.createArchive(
-      idNum,
-      "title",
-      "description",
-      "imageURL",
-      "genre",
-      Date.valueOf(LocalDate.now()),
-      true
+      currentUserId,
+      itemTitle,
+      description,
+      imageURL,
+      genre,
+      Date.valueOf(LocalDate.parse(publishDate)),
+      isReservable
     );
-
     return convertToArchiveDto(archive);
   }
 
   @PostMapping(
-    value = { "/items/createEmptyMovie/", "/items/createEmptyMovie" }
+    value = { "/items/createMusicAlbum", "/items/createMusicAlbum/" }
   )
-  public MovieDto createEmptyMovie(@RequestParam String idNum) {
+  public MusicAlbumDto createMusicAlbum(
+    @RequestParam String itemTitle,
+    @RequestParam String description,
+    @RequestParam String imageURL,
+    @RequestParam String publisher,
+    @RequestParam String author,
+    @RequestParam String genre,
+    @RequestParam String publishDate,
+    @RequestParam boolean isReservable,
+    @RequestParam String currentUserId,
+    @RequestParam String artist,
+    @RequestParam String recordingLabel
+  ) {
     System.out.println("Flag Post");
-    Movie movie = itemService.createMovie(
-      idNum,
-      "title",
-      "description",
-      "imageURL",
-      "genre",
-      Date.valueOf(LocalDate.now()),
-      true,
-      "production company",
-      "movieCast",
-      "director",
-      "producer"
+    MusicAlbum musicAlbum = itemService.createMusicAlbum(
+      currentUserId,
+      itemTitle,
+      description,
+      imageURL,
+      genre,
+      Date.valueOf(LocalDate.parse(publishDate)),
+      isReservable,
+      artist,
+      recordingLabel
     );
-    return convertToMovieDto(movie);
+    return convertToMusicAlbumDto(musicAlbum);
   }
 
   @PostMapping(
-    value = { "/items/createEmptyMusicAlbum/", "/items/createEmptyMusicAlbum" }
+    value = { "/items/createPrintedMedia", "/items/createPrintedMedia/" }
   )
-  public MusicAlbumDto createEmptyMusicAlbum(@RequestParam String idNum) {
+  public PrintedMediaDto createPrintedMedia(
+    @RequestParam String itemTitle,
+    @RequestParam String description,
+    @RequestParam String imageURL,
+    @RequestParam String publisher,
+    @RequestParam String author,
+    @RequestParam String genre,
+    @RequestParam String publishDate,
+    @RequestParam boolean isReservable,
+    @RequestParam String currentUserId,
+    @RequestParam String issueNumber
+  ) {
     System.out.println("Flag Post");
-    MusicAlbum musicAlbum = itemService.createMusicAlbum(
-      idNum,
-      "title",
-      "description",
-      "imageURL",
-      "genre",
-      Date.valueOf(LocalDate.now()),
-      true,
-      "artist",
-      "recording label"
+    PrintedMedia printedMedia = itemService.createPrintedMedia(
+      currentUserId,
+      itemTitle,
+      description,
+      imageURL,
+      genre,
+      Date.valueOf(LocalDate.parse(publishDate)),
+      isReservable,
+      issueNumber
     );
-    return convertToMusicAlbumDto(musicAlbum);
+    return convertToPrintedMediaDto(printedMedia);
   }
 
   //POST to delete item
   @PostMapping(
     value = { "/items/delete/{itemNumber}", "/items/delete/{itemNumber}/" }
   )
-  public String deleteItem(@PathVariable("itemNumber") String itemNumber) {
+  public String deleteItem(
+    @PathVariable("itemNumber") String itemNumber,
+    @RequestParam String currentUserId
+  ) {
     Item item = itemService.getItem(itemNumber);
     switch (item.getType().toString()) {
       case "Book":
-        itemService.deleteBook(itemNumber);
+        itemService.deleteBook(currentUserId, itemNumber);
         String deletedBook =
           "Deleted item of type " +
           item.getType().toString() +
@@ -203,7 +213,7 @@ public class ItemController {
           itemNumber;
         return deletedBook;
       case "Movie":
-        itemService.deleteMovie(itemNumber);
+        itemService.deleteMovie(currentUserId, itemNumber);
         String deletedMovie =
           "Deleted item of type " +
           item.getType().toString() +
@@ -211,7 +221,7 @@ public class ItemController {
           itemNumber;
         return deletedMovie;
       case "MusicAlbum":
-        itemService.deleteMusicAlbum(itemNumber);
+        itemService.deleteMusicAlbum(currentUserId, itemNumber);
         String deletedMusicAlbum =
           "Deleted item of type " +
           item.getType().toString() +
@@ -219,7 +229,7 @@ public class ItemController {
           itemNumber;
         return deletedMusicAlbum;
       case "Archive":
-        itemService.deleteArchive(itemNumber);
+        itemService.deleteArchive(currentUserId, itemNumber);
         String deletedArchive =
           "Deleted item of type " +
           item.getType().toString() +
@@ -227,7 +237,7 @@ public class ItemController {
           itemNumber;
         return deletedArchive;
       case "PrintedMedia":
-        itemService.deletePrintedMedia(itemNumber);
+        itemService.deletePrintedMedia(currentUserId, itemNumber);
         String deletedPrintedMedia =
           "Deleted item of type " +
           item.getType().toString() +
