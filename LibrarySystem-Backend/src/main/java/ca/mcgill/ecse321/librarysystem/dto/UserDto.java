@@ -19,7 +19,7 @@ public class UserDto {
 	public UserDto() {	
 	}
 	
-	public UserDto(String user, String pass, String id, String mail, String first, String last, String Address) {
+	public UserDto(String user, String pass, String id, String mail, String first, String last, String Address, boolean isLoggedIn) {
 		this.username = user;
 		this.password = pass;
 		this.email=mail;
@@ -27,7 +27,7 @@ public class UserDto {
 		this.firstName = first;
 		this.lastName = last;
 		this.address = Address;
-		this.isLoggedIn = true;
+		this.isLoggedIn = isLoggedIn;
 	}
 	
 	public String getIdNum() {

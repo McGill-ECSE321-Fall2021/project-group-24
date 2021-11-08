@@ -115,7 +115,7 @@ public class UserController {
 	
 	
 	private UserDto convertToDto(User user) {
-		UserDto dto = new UserDto(user.getUsername(), user.getPassword(), user.getIdNum(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getAddress());
+		UserDto dto = new UserDto(user.getUsername(), user.getPassword(), user.getIdNum(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getAddress(), user.getIsLoggedIn());
 		return dto;
 	}
 }
