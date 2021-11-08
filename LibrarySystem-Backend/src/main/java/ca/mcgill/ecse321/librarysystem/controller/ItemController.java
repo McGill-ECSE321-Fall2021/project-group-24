@@ -45,6 +45,7 @@ public class ItemController {
 
 	@PostMapping(value = { "/items/createBook/{", "/items/createBook/" })
 	public BookDto createBook(
+			@RequestParam String currentUserId,
 			@RequestParam String itemTitle,
 			@RequestParam String description,
 			@RequestParam String imageURL,
@@ -56,7 +57,7 @@ public class ItemController {
 			@RequestParam String idNum
 			) {
 		System.out.println("Flag Post"); 
-		Book book = itemService.createBook(idNum, itemTitle,description,imageURL,genre,Date.valueOf(LocalDate.parse(publishDate)),isReservable,author,publisher);
+		Book book = itemService.createBook(currentUserId, itemTitle,description,imageURL,genre,Date.valueOf(LocalDate.parse(publishDate)),isReservable,author,publisher);
 		System.out.println(book.getAuthor());
 		return convertToBookDto(book);
 	}

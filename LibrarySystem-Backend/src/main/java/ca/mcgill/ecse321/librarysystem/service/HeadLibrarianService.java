@@ -18,7 +18,6 @@ public class HeadLibrarianService {
 	// creates head librarian, returns it so we know it's not null 
 	@Transactional 
 	public HeadLibrarian createHeadLibrarian(
-			String idNum,
 		    String firstName,
 		    String lastName,
 		    String address,
@@ -27,6 +26,7 @@ public class HeadLibrarianService {
 		    String password) 
 	{
 		HeadLibrarian headLibrarian = new HeadLibrarian();
+		String idNum = firstName+"HeadLibrarian-"+toList(headLibrarianRepo.findAll()).size();
 	    headLibrarian.setUsername(username);
 	    headLibrarian.setPassword(password);
 	    headLibrarian.setFirstName(firstName);
@@ -64,7 +64,7 @@ public class HeadLibrarianService {
 		return toList(headLibrarianRepo.findAll()); 
 	}
 
-	private <T> List<T> toList(Iterable<T> iterable){
+	public <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
 		for (T t : iterable) {
 			resultList.add(t);
