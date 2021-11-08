@@ -42,24 +42,39 @@ public class PatronController {
 	}
 	
 	@GetMapping(value = {"/patronById/{id}","/patronById/{id}/"})
-	public PatronDto getPatronById(@PathVariable("id") String id){
-		Patron p = patronService.getPatronAccountByID(id);
-		PatronDto output = convertToDto(p);
-		return output;
+	public ResponseEntity<?> getPatronById(@PathVariable("id") String id){
+		try {
+			Patron p = patronService.getPatronAccountByID(id);
+			if(p==null) return new ResponseEntity("Patron does not exist.", HttpStatus.NOT_FOUND);
+			PatronDto output = convertToDto(p);
+			return new ResponseEntity(output, HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	
 	@GetMapping(value = {"/patronByUsername/{username}","/patronByUsername/{username}/"})
-	public PatronDto getPatronByUsername(@PathVariable("username") String username){
-		Patron p = patronService.getPatronAccountByUsername(username);
-		PatronDto output = convertToDto(p);
-		return output;
+	public ResponseEntity<?> getPatronByUsername(@PathVariable("username") String username){
+		try {
+			Patron p = patronService.getPatronAccountByUsername(username);
+		
+			if(p==null) {
+				return new ResponseEntity<>("Patron does not exist.", HttpStatus.NOT_FOUND);
+			}
+		
+			PatronDto output = convertToDto(p);
+			return new ResponseEntity<>(output,HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	
 	
 	@RequestMapping(value = { "/patronIRL", "/patronIRL/" }, method = { RequestMethod.GET, RequestMethod.POST })
-	public ResponseEntity<?> createPatronIRL(@RequestParam("username") String username,  
+	public ResponseEntity<?> createPatronIRL(
+			@RequestParam ("username") String username,  
 			@RequestParam ("first") String first, 
 			@RequestParam ("last") String last, 
 			@RequestParam ("ResidentStatus") boolean ResidentStatus,
@@ -77,44 +92,34 @@ public class PatronController {
 	
 	}
 	
-	@PostMapping(value = { "/patron/{username}", "/patron/{username}/" })
-	public PatronDto createPatron(@PathVariable("username") String username,
-			@RequestParam String password,
-			@RequestParam String firstName,
-			@RequestParam String lastName,
-			@RequestParam boolean isResident,
-			@RequestParam String address,
-			@RequestParam String email
+	@RequestMapping(value = { "/createPatron", "/createPatron/" }, method = {RequestMethod.GET, RequestMethod.POST})
+	public ResponseEntity<?> createPatron(
+			@RequestParam ("username") String username,
+			@RequestParam ("password") String password,
+			@RequestParam ("first") String firstName,
+			@RequestParam ("last") String lastName,
+			@RequestParam ("isResident") boolean isResident,
+			@RequestParam ("address") String address,
+			@RequestParam ("email") String email
 			) throws IllegalArgumentException {
-		String idNum = firstName+"Patron-"+patronService.toList(patronRepository.findAll()).size();
 		
-		Patron patron = patronService.createPatronOnline(username, password, firstName, lastName, isResident, address, email);
-		patron.setIdNum(idNum);
-		return convertToDto(patron);
+		try {
+			Patron patron = patronService.createPatronOnline(username, password, firstName, lastName, isResident, address, email);
+			return new ResponseEntity<>(patron, HttpStatus.OK);
+			
+		}catch(IllegalArgumentException e) {	
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}	
 	}
 	
-	@PostMapping(value = { "/patronChangePassword/{newPass}", "/patronChangePassword/{newPass}/"})
-	public ResponseEntity<?> changePatronPassword(@PathVariable("newPass") String password, @RequestParam String username, @RequestParam String oldPass) {
-		Patron p = patronRepository.findPatronByUsername(username);
-		if(p==null) {
-			return new ResponseEntity<>("Invalid request.", HttpStatus.BAD_REQUEST);
-		}
-		
-		if(!p.getPassword().equals(oldPass)) {
-			return new ResponseEntity<>("Wrong password entered.", HttpStatus.BAD_REQUEST);
-		}
-		
-		userService.changePassword(username, password);
-		PatronDto patronDto = convertToDto(p);
-		return new ResponseEntity<>(patronDto, HttpStatus.OK);
-	}
+	
 	
 	
 	
 	
 	
 	private PatronDto convertToDto(Patron patron) {
-		PatronDto dto = new PatronDto(patron.getUsername(), patron.getPassword(), patron.getIdNum(), patron.getEmail(), patron.getFirstName(), patron.getLastName(), patron.getAddress(), patron.getIsResident(), patron.getIsVerified(), patron.getIsRegisteredOnline());
+		PatronDto dto = new PatronDto(patron.getIdNum(), patron.getFirstName(), patron.getLastName(), patron.getAddress(), patron.getEmail(), patron.getUsername(), patron.getPassword(),  patron.getIsVerified(),patron.getIsResident(), patron.getIsRegisteredOnline());
 		return dto;
 	}
 }

@@ -50,7 +50,7 @@ public class ItemReservationService {
 		if (isCheckedOut && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
 			throw new IllegalArgumentException("Only a librarian can check out a book for a patron");
 		}
-		if (patronRepository.findUserByIdNum(idNum) == null) {
+		if (patronRepository.findPatronByIdNum(idNum) == null) {
 			System.out.println("id num is" + idNum);
 			throw new IllegalArgumentException("Only patrons can create item reservations");
 		}
@@ -137,7 +137,7 @@ public class ItemReservationService {
 			return createItemReservation(currentUserId, today, idNum, itemNumber, true);
 		} else if (!currentReservation.getIdNum().equals(idNum)) {
 			throw new IllegalArgumentException("No reservation at this time for this patron");
-		} else if (patronRepository.findUserByIdNum(idNum).getIsVerified()) {
+		} else if (patronRepository.findPatronByIdNum(idNum).getIsVerified()) {
 			throw new IllegalArgumentException("Must verify patron before checking out books");
 		} else if (currentReservation.getIsCheckedOut()) {
 			throw new IllegalArgumentException("Item is already checked out");

@@ -4,7 +4,7 @@ import ca.mcgill.ecse321.librarysystem.model.Patron;
 import org.springframework.data.repository.CrudRepository;
 
 public interface PatronRepository extends CrudRepository<Patron, String> {
-  Patron findUserByIdNum(String idNum);
+  Patron findPatronByIdNum(String idNum);
   Patron findPatronByUsername(String username); 
   void deletePatronByIdNum(String idNum);
 }

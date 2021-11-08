@@ -152,7 +152,7 @@ public class TestUserPersistence {
   
       patron = null;
   
-      patron = patronRepository.findUserByIdNum(idNum);
+      patron = patronRepository.findPatronByIdNum(idNum);
   
       assertNotNull(patron);
   

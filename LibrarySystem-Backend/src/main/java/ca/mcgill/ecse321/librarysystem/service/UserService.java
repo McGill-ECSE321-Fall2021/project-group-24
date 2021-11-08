@@ -56,7 +56,7 @@ public class UserService {
 	
 	
 	@Transactional
-	public void logOut(String username) {
+	public User logOut(String username) {
 		User user = null;
 		String type="";
 		if(patronRepository.findPatronByUsername(username)!=null) {
@@ -76,16 +76,17 @@ public class UserService {
 		
 		
 		user.setIsLoggedIn(false);
-		if(type=="patron") {
+		if(type.equals("patron")) {
 			Patron p = (Patron) user;
 			patronRepository.save(p);
-		}else if(type == "librarian") {
+		}else if(type.equals("librarian")) {
 			Librarian lib = (Librarian) user;
 			librarianRepository.save(lib);
 		}else {
 			HeadLibrarian h = (HeadLibrarian) user;
 			headLibrarianRepository.save(h);
 		}
+		return user;
 	}
 	
 	
@@ -95,8 +96,8 @@ public class UserService {
 		User user = null;
 		if(librarianRepository.findUserByIdNum(id)!=null) {
 			user = librarianRepository.findUserByIdNum(id);
-		}else if(patronRepository.findUserByIdNum(id)!=null) {
-			user = librarianRepository.findUserByIdNum(id);
+		}else if(patronRepository.findPatronByIdNum(id)!=null) {
+			user = patronRepository.findPatronByIdNum(id);
 		}else if(headLibrarianRepository.findUserByIdNum(id)!=null) {
 			user = headLibrarianRepository.findUserByIdNum(id);
 		}else {
@@ -114,7 +115,7 @@ public class UserService {
 		if(librarianRepository.findUserByUsername(username)!=null) {
 			user = librarianRepository.findUserByUsername(username);
 		}else if(patronRepository.findPatronByUsername(username)!=null) {
-			user = librarianRepository.findUserByUsername(username);
+			user = patronRepository.findPatronByUsername(username);
 		}else if(headLibrarianRepository.findUserByUsername(username)!=null) {
 			user = headLibrarianRepository.findUserByUsername(username);
 		}else {
@@ -125,17 +126,25 @@ public class UserService {
 	
 	
 	@Transactional
-	public User changePassword(String username, String newPass) {
+	public User changePassword(String username, String newPass, String oldPass) {
 		
 		User user = null;
 		if(librarianRepository.findUserByUsername(username)!=null) {
 			user = librarianRepository.findUserByUsername(username);
 		}else if(patronRepository.findPatronByUsername(username)!=null) {
-			user = librarianRepository.findUserByUsername(username);
+			user = patronRepository.findPatronByUsername(username);
 		}else if(headLibrarianRepository.findUserByUsername(username)!=null) {
 			user = headLibrarianRepository.findUserByUsername(username);
 		}else {
 			throw new IllegalArgumentException("An account with this username does not exist.");
+		}
+		
+		if(!user.getPassword().equals(oldPass)){
+			throw new IllegalArgumentException("Incorrect password entered.");
+		}
+		
+		if(user.getIsLoggedIn()==false) {
+			throw new IllegalArgumentException("User must be logged in to change password.");
 		}
 		
 		if(user.getPassword().equals(newPass)) {

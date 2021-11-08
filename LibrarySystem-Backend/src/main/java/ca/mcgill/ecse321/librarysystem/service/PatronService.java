@@ -48,7 +48,6 @@ public class PatronService {
 		    p.setAddress(address);
 		    p.setIsVerified(true);
 		    p.setPassword(null);
-		    p.setUsername(null);
 
 		    patronRepository.save(p);
 		    return p;
@@ -109,7 +108,7 @@ public class PatronService {
 	@Transactional
 	public Patron getPatronAccountByID(String ID) {
 		if(ID.length()==0) throw new IllegalArgumentException("Invalid ID entered.");
-		Patron p = patronRepository.findUserByIdNum(ID);
+		Patron p = patronRepository.findPatronByIdNum(ID);
 		return p;
 	}
 	
@@ -155,7 +154,8 @@ public class PatronService {
 	
 	public boolean idIsValid(String id) {
 		if(id==null || id == "") throw new IllegalArgumentException("ID cannot be empty.");
-		if(patronRepository.findById(id)==null) {
+		Patron p = patronRepository.findPatronByIdNum(id);
+		if(p==null) {
 			return true;
 		}else {
 			throw new IllegalArgumentException("Invalid ID.");
