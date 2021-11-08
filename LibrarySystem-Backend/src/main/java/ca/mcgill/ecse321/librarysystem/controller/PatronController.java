@@ -77,9 +77,9 @@ public class PatronController {
 			@RequestParam ("username") String username,  
 			@RequestParam ("first") String first, 
 			@RequestParam ("last") String last, 
-			@RequestParam ("ResidentStatus") boolean ResidentStatus,
-			@RequestParam ("Address") String Address, 
-			@RequestParam ("mail") String mail
+			@RequestParam ("isResid") boolean ResidentStatus,
+			@RequestParam ("address") String Address, 
+			@RequestParam ("email") String mail
 			) throws IllegalArgumentException {
 		
 		Patron patron = null;

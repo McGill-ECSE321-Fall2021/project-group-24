@@ -37,6 +37,7 @@ public class LibrarySystemApplication {
       return () -> {
           if (service.toList(headLibrarianRepository.findAll()).size()==0) {
           	HeadLibrarian headLibrarian = new HeadLibrarian();
+          	headLibrarian.setIdNum(null);
           	headLibrarianRepository.save(headLibrarian);
           }
       };

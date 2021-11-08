@@ -42,8 +42,14 @@ public class UserController {
 	
 	@GetMapping(value = {"/users","/users/"})
 	public List<UserDto> getAllUsers(){
-		return userService.getAllUsers().stream().map(patron -> 
-		convertToDto(patron)).collect(Collectors.toList());
+		return userService.getAllUsers().stream().map(user -> 
+		convertToDto(user)).collect(Collectors.toList());
+	}
+	
+	
+	@GetMapping(value= {"/usersLoggedIn","/usersLoggedIn/"})
+	public List<UserDto> getAllUsersLoggedIn(){
+		return userService.getListOfUsersLoggedIn().stream().map(user -> convertToDto(user)).collect(Collectors.toList());
 	}
 	
 	
