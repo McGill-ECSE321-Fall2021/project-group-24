@@ -154,7 +154,7 @@ public class ShiftController {
 	 */
 	private ShiftDto convertToDto(Shift shift){
 		if (shift == null) throw new IllegalArgumentException("This shift does not exist");
-		ShiftDto shiftDto = new ShiftDto(shift.getLibrarianId(), shift.getDayOfWeek(), shift.getStartTime(), shift.getStartTime()); 
+		ShiftDto shiftDto = new ShiftDto(shift.getLibrarianId(), shift.getDayOfWeek(), shift.getStartTime(), shift.getEndTime()); 
 		return shiftDto;
 	}
 }

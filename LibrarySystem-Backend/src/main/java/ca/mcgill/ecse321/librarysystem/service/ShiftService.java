@@ -29,13 +29,15 @@ public class ShiftService {
 	public Shift createShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime ) {
 		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
 		if(librarianRepo.findById(librarianId)==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
+		if (startTime.after(endTime)) throw new IllegalArgumentException("Shift end time cannot be before its start time"); 
+
 		Shift shift = new Shift(); 
 		String timeSlotId = dayOfWeek.toString() + librarianId + startTime.toString();
 		shift.setTimeSlotId(timeSlotId);
 		shift.setStartTime(startTime);
 		shift.setLibrarianId(librarianId);
 		shift.setDayOfWeek(dayOfWeek);
-		shift.setEndTime(endTime);
+		shift.setEndTime(endTime); 
 		shiftRepo.save(shift); 
 		return shift;
 	}
