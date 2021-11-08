@@ -53,11 +53,9 @@ public class ItemReservationService {
 		  Patron patron = patronRepository.findUserByIdNum(idNum);
 		  
 			boolean hasPermission = false;
-			if (currentUserId.equals(idNum) && patron.getIsLoggedIn() && !isCheckedOut) {
-				hasPermission = true;
-			} else if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()) {
-				hasPermission = true;
-			} else if (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			if (currentUserId.equals(idNum) && patron.getIsLoggedIn() && !isCheckedOut
+					|| (currentLibrarian != null && currentLibrarian.getIsLoggedIn())
+					|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
 				hasPermission = true;
 			}
 		  if (!hasPermission) {
@@ -110,13 +108,11 @@ public class ItemReservationService {
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		Patron patron = patronRepository.findUserByIdNum(currentUserId);
 		boolean hasPermission = false;
-		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()) {
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()
+				|| currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
 			hasPermission = true;
-		} else if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		} else if (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		}
+		} 
 		
 		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian or the patron who's reservation it is can view a reservation");
@@ -138,13 +134,11 @@ public class ItemReservationService {
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		Patron patron = patronRepository.findUserByIdNum(currentUserId);
 		boolean hasPermission = false;
-		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()) {
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()
+				|| currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
 			hasPermission = true;
-		} else if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		} else if (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		}
+		} 
 		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian or the patron who's reservation it is can view a reservation");
 		}
@@ -160,11 +154,9 @@ public class ItemReservationService {
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		boolean hasPermission = false;
-		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()) {
+		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn() || currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
 			hasPermission = true;
-		} else if (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		}
+		} 
 		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian can check out a book for a patron");
 		}
@@ -204,11 +196,9 @@ public class ItemReservationService {
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		Patron patron = patronRepository.findUserByIdNum(currentUserId);
 		boolean hasPermission = false;
-		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()) {
-			hasPermission = true;
-		} else if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		} else if (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()
+				|| currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
 			hasPermission = true;
 		}
 		if (!hasPermission) {
@@ -229,9 +219,8 @@ public class ItemReservationService {
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		boolean hasPermission = false;
-		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		} else if (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
 			hasPermission = true;
 		}
 		if (!hasPermission) {
@@ -261,13 +250,11 @@ public class ItemReservationService {
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		Patron patron = patronRepository.findUserByIdNum(currentUserId);
 		boolean hasPermission = false;
-		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()) {
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()
+				|| currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
 			hasPermission = true;
-		} else if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		} else if (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		}
+		} 
 		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian or the patron who's reservation they are can see them");
 		}
@@ -286,11 +273,10 @@ public class ItemReservationService {
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		boolean hasPermission = false;
-		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()) {
+		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
 			hasPermission = true;
-		} else if (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		}
+		} 
 		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian or head librarian can get item reservations by itemNumber");
 		}
@@ -305,13 +291,10 @@ public class ItemReservationService {
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		Patron patron = patronRepository.findUserByIdNum(currentUserId);
 		boolean hasPermission = false;
-		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()) {
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn() || currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
 			hasPermission = true;
-		} else if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		} else if (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		}
+		} 
 		if (!hasPermission) {
 			throw new IllegalArgumentException("Patrons cannot renew an item reservation that is not theirs");
 		}
@@ -338,13 +321,10 @@ public class ItemReservationService {
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		Patron patron = patronRepository.findUserByIdNum(currentUserId);
 		boolean hasPermission = false;
-		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()) {
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn() || currentLibrarian != null && currentLibrarian.getIsLoggedIn() ||currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
 			hasPermission = true;
-		} else if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		} else if (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
-			hasPermission = true;
-		}
+		} 
+		
 		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian or the patron who's reservation they are can see them");
 		}
