@@ -62,9 +62,10 @@ public class ItemService {
 
   //remove book
   @Transactional
-  public Book deleteBook(Book book) {
-    itemRepository.delete(book);
-    return book;
+  public Book deleteBook(String idNum) {
+    Book gone = (Book) itemRepository.findItemByItemNumber(idNum);
+    itemRepository.delete(gone);
+    return gone;
   }
 
   @Transactional
@@ -106,9 +107,10 @@ public class ItemService {
 
   //remove archive
   @Transactional
-  public Archive deleteArchive(Archive archive) {
-    itemRepository.delete(archive);
-    return archive;
+  public Archive deleteArchive(String idNum) {
+    Archive gone = (Archive) itemRepository.findItemByItemNumber(idNum);
+    itemRepository.delete(gone);
+    return gone;
   }
 
   @Transactional
@@ -154,9 +156,10 @@ public class ItemService {
 
   //remove music album
   @Transactional
-  public MusicAlbum deleteMusicAlbum(MusicAlbum musicAlbum) {
-    itemRepository.delete(musicAlbum);
-    return musicAlbum;
+  public MusicAlbum deleteMusicAlbum(String idNum) {
+    MusicAlbum gone = (MusicAlbum) itemRepository.findItemByItemNumber(idNum);
+    itemRepository.delete(gone);
+    return gone;
   }
 
   @Transactional
@@ -200,9 +203,12 @@ public class ItemService {
 
   //remove printed media
   @Transactional
-  public PrintedMedia deletePrintedMedia(PrintedMedia printedMedia) {
-    itemRepository.delete(printedMedia);
-    return printedMedia;
+  public PrintedMedia deletePrintedMedia(String idNum) {
+    PrintedMedia gone = (PrintedMedia) itemRepository.findItemByItemNumber(
+      idNum
+    );
+    itemRepository.delete(gone);
+    return gone;
   }
 
   @Transactional
@@ -252,9 +258,10 @@ public class ItemService {
 
   //remove movie
   @Transactional
-  public Movie deleteMovie(Movie movie) {
-    itemRepository.delete(movie);
-    return movie;
+  public Movie deleteMovie(String idNum) {
+    Movie gone = (Movie) itemRepository.findItemByItemNumber(idNum);
+    itemRepository.delete(gone);
+    return gone;
   }
 
   // looks for an item with the given item number, returns them if found

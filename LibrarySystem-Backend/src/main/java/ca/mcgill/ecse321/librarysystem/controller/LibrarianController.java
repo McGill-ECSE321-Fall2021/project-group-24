@@ -19,6 +19,7 @@ public class LibrarianController {
   @Autowired
   private LibrarianService librarianService;
 
+  //GET to get all librarians
   @GetMapping(value = { "/librarians", "/librarians/" })
   public List<LibrarianDto> getAllLibrarians() {
     return librarianService
@@ -28,9 +29,19 @@ public class LibrarianController {
       .collect(Collectors.toList());
   }
 
+  //POST to add a librarian
   @PostMapping(value = { "/librarians/{idNum}", "/librarians/{idNum}/" })
   public LibrarianDto createLibrarian(@PathVariable("idNum") String idNum) {
     Librarian librarian = librarianService.createLibrarian(idNum);
+    return convertToDto(librarian);
+  }
+
+  //POST to delete/fire a librarian
+  @PostMapping(
+    value = { "/librarians/delete/{idNum}", "/librarians/delete/{idNum}/" }
+  )
+  public LibrarianDto deleteLibrarian(@PathVariable("idNum") String idNum) {
+    Librarian librarian = librarianService.deleteLibrarian(idNum);
     return convertToDto(librarian);
   }
 
