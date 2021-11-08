@@ -43,7 +43,7 @@ public class ItemController {
 		return convertToDto(item);
 	}
 
-	@PostMapping(value = { "/items/createBook/{", "/items/createBook/" })
+	@PostMapping(value = { "/items/createBook/", "/items/createBook/" })
 	public BookDto createBook(
 			@RequestParam String currentUserId,
 			@RequestParam String itemTitle,
@@ -83,38 +83,60 @@ public class ItemController {
 		return convertToMovieDto(movie);
 	}
 	
-	@PostMapping(value = { "/items/createNewEmptyBook/", "/items/createNewEmptyBook" })
-	public BookDto createEmptyBook(
+	@PostMapping(value = { "/items/createArchive", "/items/createArchive/" })
+	public ArchiveDto createArchive(
+			@RequestParam String itemTitle,
+			@RequestParam String description,
+			@RequestParam String imageURL,
+			@RequestParam String publisher,
+			@RequestParam String author,
+			@RequestParam String genre,
+			@RequestParam String publishDate,
+			@RequestParam boolean isReservable, 
 			@RequestParam String idNum
 			) {
 		System.out.println("Flag Post"); 
-		Book book = itemService.createBook(idNum, "title","description","imageURL","genre",Date.valueOf(LocalDate.now()),true,"author","publisher");
-		System.out.println(book.getAuthor());
-		return convertToBookDto(book);
-	}
-	
-	@PostMapping(value = { "/items/createEmptyArchive/", "/items/createEmptyArchive" })
-	public ArchiveDto createEmptyArchive(@RequestParam String idNum
-			) {
-		System.out.println("Flag Post"); 
-		Archive archive = itemService.createArchive(idNum, "title","description","imageURL","genre",Date.valueOf(LocalDate.now()),true);
-
+		Archive archive = itemService.createArchive(idNum, itemTitle,description,imageURL,genre,Date.valueOf(LocalDate.parse(publishDate)),isReservable);
 		return convertToArchiveDto(archive);
 	}
 	
-	@PostMapping(value = { "/items/createEmptyMovie/", "/items/createEmptyMovie" })
-	public MovieDto createEmptyMovie(@RequestParam String idNum) {
+	@PostMapping(value = { "/items/createMusicAlbum", "/items/createMusicAlbum/" })
+	public MusicAlbumDto createMusicAlbum(
+			@RequestParam String itemTitle,
+			@RequestParam String description,
+			@RequestParam String imageURL,
+			@RequestParam String publisher,
+			@RequestParam String author,
+			@RequestParam String genre,
+			@RequestParam String publishDate,
+			@RequestParam boolean isReservable, 
+			@RequestParam String idNum,
+			@RequestParam String artist,
+			@RequestParam String recordingLabel
+			) {
 		System.out.println("Flag Post"); 
-		Movie movie = itemService.createMovie(idNum,"title","description","imageURL","genre",Date.valueOf(LocalDate.now()),true,"production company","movieCast","director", "producer");
-		return convertToMovieDto(movie);
-	}
-	
-	@PostMapping(value = { "/items/createEmptyMusicAlbum/", "/items/createEmptyMusicAlbum" })
-	public MusicAlbumDto createEmptyMusicAlbum(@RequestParam String idNum) {
-		System.out.println("Flag Post"); 
-		MusicAlbum musicAlbum = itemService.createMusicAlbum(idNum,"title","description","imageURL","genre",Date.valueOf(LocalDate.now()),true,"artist","recording label");
+		MusicAlbum musicAlbum = itemService.createMusicAlbum(idNum, itemTitle,description,imageURL,genre,Date.valueOf(LocalDate.parse(publishDate)),isReservable, artist, recordingLabel);
 		return convertToMusicAlbumDto(musicAlbum);
 	}
+	
+	@PostMapping(value = { "/items/createPrintedMedia", "/items/createPrintedMedia/" })
+	public PrintedMediaDto createPrintedMedia(
+			@RequestParam String itemTitle,
+			@RequestParam String description,
+			@RequestParam String imageURL,
+			@RequestParam String publisher,
+			@RequestParam String author,
+			@RequestParam String genre,
+			@RequestParam String publishDate,
+			@RequestParam boolean isReservable, 
+			@RequestParam String idNum,
+			@RequestParam String issueNumber
+			) {
+		System.out.println("Flag Post"); 
+		PrintedMedia printedMedia = itemService.createPrintedMedia(idNum, itemTitle,description,imageURL,genre,Date.valueOf(LocalDate.parse(publishDate)),isReservable, issueNumber);
+		return convertToPrintedMediaDto(printedMedia);
+	}
+
 	
 	private ItemDto convertToDto(Item item) {
 		if (item.getType().equals(Item.Type.Book)) {
