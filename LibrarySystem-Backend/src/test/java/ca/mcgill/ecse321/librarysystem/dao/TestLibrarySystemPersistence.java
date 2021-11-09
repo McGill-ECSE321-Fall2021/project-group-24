@@ -1,3 +1,4 @@
+/** 
 package ca.mcgill.ecse321.librarysystem.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -6,9 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import ca.mcgill.ecse321.librarysystem.model.*;
 import java.sql.Date;
 import java.sql.Time;
-
 import java.time.LocalTime;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ public class TestLibrarySystemPersistence {
 
   @Autowired
   private HeadLibrarianRepository headLibrarianRepository;
-  
+
   @Autowired
   private ItemReservationRepository itemReservationRepository;
 
@@ -53,99 +52,95 @@ public class TestLibrarySystemPersistence {
 
   @Autowired
   private RoomRepository roomRepository;
-  
+
   @Autowired
   private ShiftRepository shiftRepository;
- 
+
   @Autowired
   private LibraryHourRepository libraryHourRepository;
-  
+
   @Autowired
   private RoomBookingRepository roomBookingRepository;
 
-    @BeforeEach
-    public void clearDatabase() {
-      // First, we clear registrations to avoid exceptions due to inconsistencies
-//      librarySystemRepository.deleteAll();
-      // Then we can clear the other tables
-    	
-      archiveRepository.deleteAll();
-      bookRepository.deleteAll();
-      headLibrarianRepository.deleteAll();
-      itemReservationRepository.deleteAll();
-      librarianRepository.deleteAll();
-      movieRepository.deleteAll();
-      musicAlbumRepository.deleteAll();
-      patronRepository.deleteAll();
-      printedMediaRepository.deleteAll();
-      roomRepository.deleteAll();
-      roomBookingRepository.deleteAll();
-      shiftRepository.deleteAll();
-    }
+  @BeforeEach
+  public void clearDatabase() {
+    // First, we clear registrations to avoid exceptions due to inconsistencies
+    //      librarySystemRepository.deleteAll();
+    // Then we can clear the other tables
 
-    
+    archiveRepository.deleteAll();
+    bookRepository.deleteAll();
+    headLibrarianRepository.deleteAll();
+    itemReservationRepository.deleteAll();
+    librarianRepository.deleteAll();
+    movieRepository.deleteAll();
+    musicAlbumRepository.deleteAll();
+    patronRepository.deleteAll();
+    printedMediaRepository.deleteAll();
+    roomRepository.deleteAll();
+    roomBookingRepository.deleteAll();
+    shiftRepository.deleteAll();
+  }
+
   //------------------TESTING Shift------------------------//
-    @Test
-    public void testPersistAndLoadShift() {
+  @Test
+  public void testPersistAndLoadShift() {
+    Shift shift = new Shift();
 
-      Shift shift = new Shift();
-      
-      // set shift attributes
-      
-      Date shiftDate = Date.valueOf("2021-10-15");
-      Time shiftTime = Time.valueOf("00:00:00");
-      String shiftId = "shift id";
-      shift.setTimeSlotId(shiftId);
-      shift.setStartDate(shiftDate);
-      shift.setEndDate(shiftDate);
-      shift.setStartTime(shiftTime);
-      shift.setEndTime(shiftTime);
+    // set shift attributes
 
-      shiftRepository.save(shift);
+    Date shiftDate = Date.valueOf("2021-10-15");
+    Time shiftTime = Time.valueOf("00:00:00");
+    String shiftId = "shift id";
+    shift.setTimeSlotId(shiftId);
+    shift.setStartDate(shiftDate);
+    shift.setEndDate(shiftDate);
+    shift.setStartTime(shiftTime);
+    shift.setEndTime(shiftTime);
 
-      shift = null;
+    shiftRepository.save(shift);
 
-      shift = shiftRepository.findShiftByTimeSlotId(shiftId);
+    shift = null;
 
-      assertNotNull(shift);
+    shift = shiftRepository.findShiftByTimeSlotId(shiftId);
 
-      assertEquals(shiftId, shift.getTimeSlotId());
-      assertEquals(shiftDate, shift.getStartDate());
-      assertEquals(shiftDate, shift.getEndDate());
-      assertEquals(shiftTime, shift.getStartTime());
-      assertEquals(shiftTime, shift.getEndTime());
-      }
-    
-    //------------------TESTING Shift------------------------//
-    @Test
-    public void testPersistAndLoadLibraryHour() {
+    assertNotNull(shift);
 
-      LibraryHour hour = new LibraryHour();
-      
-      
-      Date libraryHourDate = Date.valueOf("2021-10-15");
-      Time libraryHourTime = Time.valueOf("00:00:00");
-      String timeSlotId = "hour id";
-      hour.setTimeSlotId(timeSlotId);
-      hour.setStartDate(libraryHourDate);
-      hour.setEndDate(libraryHourDate);
-      hour.setStartTime(libraryHourTime);
-      hour.setEndTime(libraryHourTime);
+    assertEquals(shiftId, shift.getTimeSlotId());
+    assertEquals(shiftDate, shift.getStartDate());
+    assertEquals(shiftDate, shift.getEndDate());
+    assertEquals(shiftTime, shift.getStartTime());
+    assertEquals(shiftTime, shift.getEndTime());
+  }
 
-      libraryHourRepository.save(hour);
+  //------------------TESTING Shift------------------------//
+  @Test
+  public void testPersistAndLoadLibraryHour() {
+    LibraryHour hour = new LibraryHour();
 
-      hour = null;
+    Date libraryHourDate = Date.valueOf("2021-10-15");
+    Time libraryHourTime = Time.valueOf("00:00:00");
+    String timeSlotId = "hour id";
+    hour.setTimeSlotId(timeSlotId);
+    hour.setStartDate(libraryHourDate);
+    hour.setEndDate(libraryHourDate);
+    hour.setStartTime(libraryHourTime);
+    hour.setEndTime(libraryHourTime);
 
-      hour = libraryHourRepository.findHourByTimeSlotId(timeSlotId);
+    libraryHourRepository.save(hour);
 
-      assertNotNull(hour);
+    hour = null;
 
-      assertEquals(timeSlotId, hour.getTimeSlotId());
-      assertEquals(libraryHourDate, hour.getStartDate());
-      assertEquals(libraryHourDate, hour.getEndDate());
-      assertEquals(libraryHourTime, hour.getStartTime());
-      assertEquals(libraryHourTime, hour.getEndTime());
-      }
+    hour = libraryHourRepository.findHourByTimeSlotId(timeSlotId);
+
+    assertNotNull(hour);
+
+    assertEquals(timeSlotId, hour.getTimeSlotId());
+    assertEquals(libraryHourDate, hour.getStartDate());
+    assertEquals(libraryHourDate, hour.getEndDate());
+    assertEquals(libraryHourTime, hour.getStartTime());
+    assertEquals(libraryHourTime, hour.getEndTime());
+  }
 
   //------------------TESTING ARCHIVE------------------------//
   @Test
@@ -272,6 +267,7 @@ public class TestLibrarySystemPersistence {
     assertEquals(firstName, headLibrarian.getFirstName());
     assertEquals(lastName, headLibrarian.getLastName());
   }
+
   //------------------TESTING ITEM RESERVATION------------------------//
   @Test
   public void testPersistAndLoadItemReservation() {
@@ -286,9 +282,7 @@ public class TestLibrarySystemPersistence {
     Date endDate = Date.valueOf("2021-10-15");
     Time startTime = Time.valueOf("00:00:00");
     Time endTime = Time.valueOf("00:00:00");
-    
-    
-    
+
     itemReservation.setIdNum(idNum);
     itemReservation.setItemNumber(itemNumber);
     itemReservation.setTimeSlotId(timeSlotId);
@@ -301,7 +295,8 @@ public class TestLibrarySystemPersistence {
 
     itemReservation = null;
 
-    itemReservation = itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId);
+    itemReservation =
+      itemReservationRepository.findItemReservationByTimeSlotId(timeSlotId);
     assertNotNull(itemReservation);
 
     assertEquals(idNum, itemReservation.getIdNum());
@@ -310,8 +305,8 @@ public class TestLibrarySystemPersistence {
     assertEquals(endDate, itemReservation.getEndDate());
     assertEquals(startTime, itemReservation.getStartTime());
     assertEquals(endTime, itemReservation.getEndTime());
-
   }
+
   //------------------TESTING LIBRARIAN------------------------//
   @Test
   public void testPersistAndLoadLibrarian() {
@@ -381,210 +376,207 @@ public class TestLibrarySystemPersistence {
     movie.setIsCheckedOut(isCheckedOut);
 
     movieRepository.save(movie);
-
-    }
-      
-    //------------------TESTING RoomBooking------------------------//
-      @Test
-      public void testPersistAndLoadRoomBooking() {
-
-        RoomBooking roomBooking = new RoomBooking();
-        
-        //set shift attributes
-        String roomNum = "Room Number";
-        Date roomBookingDate = Date.valueOf("2021-10-15");
-        Time roomBookingTime = Time.valueOf("00:00:00");
-        String roomBookingId = "room booking id";
-        
-        roomBooking.setRoomNum(roomNum);
-        roomBooking.setTimeSlotId(roomBookingId);
-        roomBooking.setStartDate(roomBookingDate);
-        roomBooking.setEndDate(roomBookingDate);
-        roomBooking.setStartTime(roomBookingTime);
-        roomBooking.setEndTime(roomBookingTime);
-
-       
-        roomBookingRepository.save(roomBooking);
-
-        roomBooking = null;
-
-        roomBooking = roomBookingRepository.findRoomBookingByTimeSlotId(roomBookingId);
-
-        assertNotNull(roomBooking);
-
-        assertEquals(roomNum, roomBooking.getRoomNum());
-        assertEquals(roomBookingId, roomBooking.getTimeSlotId());
-        assertEquals(roomBookingDate, roomBooking.getStartDate());
-        assertEquals(roomBookingDate, roomBooking.getEndDate());
-        assertEquals(roomBookingTime, roomBooking.getStartTime());
-        assertEquals(roomBookingTime, roomBooking.getEndTime());
-
   }
-      
-    //------------------TESTING MUSIC ALBUM------------------------//
-    @Test
-    public void testPersistAndLoadMusicAlbum() {
-      // First example for object save/load
-      MusicAlbum musicAlbum = new MusicAlbum();
-      // First example for attribute save/load
-      String artist = "Music Album Artist";
-      String recordingLabel = "Music Album Recording Label";
-      String itemTitle = "Music Album Item Title";
-      String description = "Music Album Description";
-      String imageURL = "Music Album Image URL";
-      String itemNumber = "Music Album Item Number";
-      String genre = "Music Album Genre";
-      Date publishDate = Date.valueOf("2021-10-15");
-      boolean isReservable = true;
-      boolean isCheckedOut = true;
-  
-      musicAlbum.setArtist(artist);
-      musicAlbum.setRecordingLabel(recordingLabel);
-      musicAlbum.setItemTitle(itemTitle);
-      musicAlbum.setDescription(description);
-      musicAlbum.setImageUrl(imageURL);
-      musicAlbum.setItemNumber(itemNumber);
-      musicAlbum.setGenre(genre);
-      musicAlbum.setPublishDate(publishDate);
-      musicAlbum.setIsReservable(isReservable);
-      musicAlbum.setIsCheckedOut(isCheckedOut);
-  
-      musicAlbumRepository.save(musicAlbum);
-  
-      musicAlbum = null;
-  
-      musicAlbum = musicAlbumRepository.findMusicAlbumByItemNumber(itemNumber);
-  
-      assertNotNull(musicAlbum);
-  
-      assertEquals(artist, musicAlbum.getArtist());
-      assertEquals(recordingLabel, musicAlbum.getRecordingLabel());
-      assertEquals(itemTitle, musicAlbum.getItemTitle());
-      assertEquals(description, musicAlbum.getDescription());
-      assertEquals(imageURL, musicAlbum.getImageUrl());
-      assertEquals(itemNumber, musicAlbum.getItemNumber());
-      assertEquals(genre, musicAlbum.getGenre());
-      assertEquals(publishDate, musicAlbum.getPublishDate());
-      assertEquals(isReservable, musicAlbum.getIsReservable());
-      assertEquals(isCheckedOut, musicAlbum.getIsCheckedOut());
-    }
-  
-    //------------------TESTING PATRON------------------------//
-    @Test
-    public void testPersistAndLoadPatron() {
-      // First example for object save/load
-      Patron patron = new Patron();
-      // First example for attribute save/load
-      String address = "Patron Address";
-      boolean isVerified = true;
-      boolean isResident = true;
-      boolean isRegisteredOnline = true;
-      String username = "Patron Username";
-      String password = "Patron Password";
-      String email = "Patron Email";
-      String idNum = "Patron IDNum";
-      String firstName = "Patron First Name";
-      String lastName = "Patron Last Name";
-  
-      patron.setAddress(address);
-      patron.setIsVerified(isVerified);
-      patron.setIsResident(isResident);
-      patron.setIsRegisteredOnline(isRegisteredOnline);
-      patron.setUsername(username);
-      patron.setPassword(password);
-      patron.setEmail(email);
-      patron.setIdNum(idNum);
-      patron.setFirstName(firstName);
-      patron.setLastName(lastName);
-  
-      patronRepository.save(patron);
-  
-      patron = null;
-  
-      patron = patronRepository.findUserByIdNum(idNum);
-  
-      assertNotNull(patron);
-  
-      assertEquals(address, patron.getAddress());
-      assertEquals(isVerified, patron.getIsVerified());
-      assertEquals(isResident, patron.getIsResident());
-      assertEquals(isRegisteredOnline, patron.getIsRegisteredOnline());
-      assertEquals(username, patron.getUsername());
-      assertEquals(password, patron.getPassword());
-      assertEquals(email, patron.getEmail());
-      assertEquals(idNum, patron.getIdNum());
-      assertEquals(firstName, patron.getFirstName());
-      assertEquals(lastName, patron.getLastName());
-    }
-  
-    //------------------TESTING PRINTED MEDIA------------------------//
-    @Test
-    public void testPersistAndLoadPrintedMedia() {
-      // First example for object save/load
-      PrintedMedia printedMedia = new PrintedMedia();
-      // First example for attribute save/load
-      String issueNumber = "Printed Media Issue Number";
-      String itemTitle = "Printed Media Item Title";
-      String description = "Printed Media Description";
-      String imageURL = "Printed Media Image URL";
-      String itemNumber = "Printed Media Item Number";
-      String genre = "Printed Media Genre";
-      Date publishDate = Date.valueOf("2021-10-15");
-      boolean isReservable = true;
-      boolean isCheckedOut = true;
-  
-      printedMedia.setIssueNumber(issueNumber);
-      printedMedia.setItemTitle(itemTitle);
-      printedMedia.setDescription(description);
-      printedMedia.setImageUrl(imageURL);
-      printedMedia.setItemNumber(itemNumber);
-      printedMedia.setGenre(genre);
-      printedMedia.setPublishDate(publishDate);
-      printedMedia.setIsReservable(isReservable);
-      printedMedia.setIsCheckedOut(isCheckedOut);
-  
-      printedMediaRepository.save(printedMedia);
-  
-      printedMedia = null;
-  
-      printedMedia =
-        printedMediaRepository.findPrintedMediaByItemNumber(itemNumber);
-  
-      assertNotNull(printedMedia);
-  
-      assertEquals(issueNumber, printedMedia.getIssueNumber());
-      assertEquals(itemTitle, printedMedia.getItemTitle());
-      assertEquals(description, printedMedia.getDescription());
-      assertEquals(imageURL, printedMedia.getImageUrl());
-      assertEquals(itemNumber, printedMedia.getItemNumber());
-      assertEquals(genre, printedMedia.getGenre());
-      assertEquals(publishDate, printedMedia.getPublishDate());
-      assertEquals(isReservable, printedMedia.getIsReservable());
-      assertEquals(isCheckedOut, printedMedia.getIsCheckedOut());
-    }
-  
-    //------------------TESTING ROOM------------------------//
-    @Test
-    public void testPersistAndLoadRoom() {
-      // First example for object save/load
-      Room room = new Room();
-      // First example for attribute save/load
-      String roomNum = "Room Number";
-      int capacity = 69;
-  
-      room.setRoomNum(roomNum);
-      room.setCapacity(capacity);
-  
-      roomRepository.save(room);
-  
-      room = null;
-  
-      room = roomRepository.findRoomByRoomNum(roomNum);
-  
-      assertNotNull(room);
-  
-      assertEquals(roomNum, room.getRoomNum());
-      assertEquals(capacity, room.getCapacity());
-    }
-  
+
+  //------------------TESTING RoomBooking------------------------//
+  @Test
+  public void testPersistAndLoadRoomBooking() {
+    RoomBooking roomBooking = new RoomBooking();
+
+    //set shift attributes
+    String roomNum = "Room Number";
+    Date roomBookingDate = Date.valueOf("2021-10-15");
+    Time roomBookingTime = Time.valueOf("00:00:00");
+    String roomBookingId = "room booking id";
+
+    roomBooking.setRoomNum(roomNum);
+    roomBooking.setTimeSlotId(roomBookingId);
+    roomBooking.setStartDate(roomBookingDate);
+    roomBooking.setEndDate(roomBookingDate);
+    roomBooking.setStartTime(roomBookingTime);
+    roomBooking.setEndTime(roomBookingTime);
+
+    roomBookingRepository.save(roomBooking);
+
+    roomBooking = null;
+
+    roomBooking =
+      roomBookingRepository.findRoomBookingByTimeSlotId(roomBookingId);
+
+    assertNotNull(roomBooking);
+
+    assertEquals(roomNum, roomBooking.getRoomNum());
+    assertEquals(roomBookingId, roomBooking.getTimeSlotId());
+    assertEquals(roomBookingDate, roomBooking.getStartDate());
+    assertEquals(roomBookingDate, roomBooking.getEndDate());
+    assertEquals(roomBookingTime, roomBooking.getStartTime());
+    assertEquals(roomBookingTime, roomBooking.getEndTime());
+  }
+
+  //------------------TESTING MUSIC ALBUM------------------------//
+  @Test
+  public void testPersistAndLoadMusicAlbum() {
+    // First example for object save/load
+    MusicAlbum musicAlbum = new MusicAlbum();
+    // First example for attribute save/load
+    String artist = "Music Album Artist";
+    String recordingLabel = "Music Album Recording Label";
+    String itemTitle = "Music Album Item Title";
+    String description = "Music Album Description";
+    String imageURL = "Music Album Image URL";
+    String itemNumber = "Music Album Item Number";
+    String genre = "Music Album Genre";
+    Date publishDate = Date.valueOf("2021-10-15");
+    boolean isReservable = true;
+    boolean isCheckedOut = true;
+
+    musicAlbum.setArtist(artist);
+    musicAlbum.setRecordingLabel(recordingLabel);
+    musicAlbum.setItemTitle(itemTitle);
+    musicAlbum.setDescription(description);
+    musicAlbum.setImageUrl(imageURL);
+    musicAlbum.setItemNumber(itemNumber);
+    musicAlbum.setGenre(genre);
+    musicAlbum.setPublishDate(publishDate);
+    musicAlbum.setIsReservable(isReservable);
+    musicAlbum.setIsCheckedOut(isCheckedOut);
+
+    musicAlbumRepository.save(musicAlbum);
+
+    musicAlbum = null;
+
+    musicAlbum = musicAlbumRepository.findMusicAlbumByItemNumber(itemNumber);
+
+    assertNotNull(musicAlbum);
+
+    assertEquals(artist, musicAlbum.getArtist());
+    assertEquals(recordingLabel, musicAlbum.getRecordingLabel());
+    assertEquals(itemTitle, musicAlbum.getItemTitle());
+    assertEquals(description, musicAlbum.getDescription());
+    assertEquals(imageURL, musicAlbum.getImageUrl());
+    assertEquals(itemNumber, musicAlbum.getItemNumber());
+    assertEquals(genre, musicAlbum.getGenre());
+    assertEquals(publishDate, musicAlbum.getPublishDate());
+    assertEquals(isReservable, musicAlbum.getIsReservable());
+    assertEquals(isCheckedOut, musicAlbum.getIsCheckedOut());
+  }
+
+  //------------------TESTING PATRON------------------------//
+  @Test
+  public void testPersistAndLoadPatron() {
+    // First example for object save/load
+    Patron patron = new Patron();
+    // First example for attribute save/load
+    String address = "Patron Address";
+    boolean isVerified = true;
+    boolean isResident = true;
+    boolean isRegisteredOnline = true;
+    String username = "Patron Username";
+    String password = "Patron Password";
+    String email = "Patron Email";
+    String idNum = "Patron IDNum";
+    String firstName = "Patron First Name";
+    String lastName = "Patron Last Name";
+
+    patron.setAddress(address);
+    patron.setIsVerified(isVerified);
+    patron.setIsResident(isResident);
+    patron.setIsRegisteredOnline(isRegisteredOnline);
+    patron.setUsername(username);
+    patron.setPassword(password);
+    patron.setEmail(email);
+    patron.setIdNum(idNum);
+    patron.setFirstName(firstName);
+    patron.setLastName(lastName);
+
+    patronRepository.save(patron);
+
+    patron = null;
+
+    patron = patronRepository.findUserByIdNum(idNum);
+
+    assertNotNull(patron);
+
+    assertEquals(address, patron.getAddress());
+    assertEquals(isVerified, patron.getIsVerified());
+    assertEquals(isResident, patron.getIsResident());
+    assertEquals(isRegisteredOnline, patron.getIsRegisteredOnline());
+    assertEquals(username, patron.getUsername());
+    assertEquals(password, patron.getPassword());
+    assertEquals(email, patron.getEmail());
+    assertEquals(idNum, patron.getIdNum());
+    assertEquals(firstName, patron.getFirstName());
+    assertEquals(lastName, patron.getLastName());
+  }
+
+  //------------------TESTING PRINTED MEDIA------------------------//
+  @Test
+  public void testPersistAndLoadPrintedMedia() {
+    // First example for object save/load
+    PrintedMedia printedMedia = new PrintedMedia();
+    // First example for attribute save/load
+    String issueNumber = "Printed Media Issue Number";
+    String itemTitle = "Printed Media Item Title";
+    String description = "Printed Media Description";
+    String imageURL = "Printed Media Image URL";
+    String itemNumber = "Printed Media Item Number";
+    String genre = "Printed Media Genre";
+    Date publishDate = Date.valueOf("2021-10-15");
+    boolean isReservable = true;
+    boolean isCheckedOut = true;
+
+    printedMedia.setIssueNumber(issueNumber);
+    printedMedia.setItemTitle(itemTitle);
+    printedMedia.setDescription(description);
+    printedMedia.setImageUrl(imageURL);
+    printedMedia.setItemNumber(itemNumber);
+    printedMedia.setGenre(genre);
+    printedMedia.setPublishDate(publishDate);
+    printedMedia.setIsReservable(isReservable);
+    printedMedia.setIsCheckedOut(isCheckedOut);
+
+    printedMediaRepository.save(printedMedia);
+
+    printedMedia = null;
+
+    printedMedia =
+      printedMediaRepository.findPrintedMediaByItemNumber(itemNumber);
+
+    assertNotNull(printedMedia);
+
+    assertEquals(issueNumber, printedMedia.getIssueNumber());
+    assertEquals(itemTitle, printedMedia.getItemTitle());
+    assertEquals(description, printedMedia.getDescription());
+    assertEquals(imageURL, printedMedia.getImageUrl());
+    assertEquals(itemNumber, printedMedia.getItemNumber());
+    assertEquals(genre, printedMedia.getGenre());
+    assertEquals(publishDate, printedMedia.getPublishDate());
+    assertEquals(isReservable, printedMedia.getIsReservable());
+    assertEquals(isCheckedOut, printedMedia.getIsCheckedOut());
+  }
+
+  //------------------TESTING ROOM------------------------//
+  @Test
+  public void testPersistAndLoadRoom() {
+    // First example for object save/load
+    Room room = new Room();
+    // First example for attribute save/load
+    String roomNum = "Room Number";
+    int capacity = 69;
+
+    room.setRoomNum(roomNum);
+    room.setCapacity(capacity);
+
+    roomRepository.save(room);
+
+    room = null;
+
+    room = roomRepository.findRoomByRoomNum(roomNum);
+
+    assertNotNull(room);
+
+    assertEquals(roomNum, room.getRoomNum());
+    assertEquals(capacity, room.getCapacity());
+  }
 }
+ */
