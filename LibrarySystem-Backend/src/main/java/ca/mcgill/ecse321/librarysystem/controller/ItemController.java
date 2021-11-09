@@ -25,6 +25,7 @@ import ca.mcgill.ecse321.librarysystem.service.*;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api/item")
 public class ItemController {
 	@Autowired
 	private ItemService itemService;

@@ -28,8 +28,13 @@ public class ShiftService {
 	@Transactional 
 	public Shift createShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime ) {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
+		Librarian librarian = librarianRepo.findUserByIdNum(librarianId); 
+		//adds shift
+		if (librarian==null) {
+			librarian = headLibrarianRepo.findUserByIdNum(librarianId);
+		}
 		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can create librarian shifts");
-		if (librarianRepo.findById(librarianId)==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
+		if (librarian==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
 		if (startTime.after(endTime)) throw new IllegalArgumentException("Shift end time cannot be before its start time"); 
 	//	if (shiftRepo.findShiftByLibrarianIdAndDayOfWeek(librarianId, dayOfWeek)!=null) throw new IllegalArgumentException("Librarian already has a shift that day"); 
 		

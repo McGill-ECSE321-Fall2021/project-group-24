@@ -25,9 +25,9 @@ import ca.mcgill.ecse321.librarysystem.service.PatronService;
 import ca.mcgill.ecse321.librarysystem.service.UserService;
 
 
-
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api/user")
 public class UserController {
 	
 	@Autowired
@@ -74,7 +74,7 @@ public class UserController {
 	
 	
 	
-	@RequestMapping(value = { "/changePassword", "/changePassword/" }, method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = { "/change_password", "/change_password/" }, method = { RequestMethod.GET, RequestMethod.POST })
 	public ResponseEntity<?> changePassword(@RequestParam("username") String user, @RequestParam("newPass") String newPass, @RequestParam("oldPass") String oldPass) {
 		
 		try {
@@ -88,7 +88,7 @@ public class UserController {
 	}
 	
 	
-	@GetMapping(value= {"getUserById/{Id}", "getUserById/{Id}/"})
+	@GetMapping(value= {"get_user_by_id/{Id}", "get_user_by_id/{Id}/"})
 	public ResponseEntity<?> getUserById(@PathVariable("Id") String Id){
 		try {
 			User user = userService.getUserAccountById(Id);
@@ -100,7 +100,7 @@ public class UserController {
 	}
 	
 	
-	@GetMapping(value= {"getUserByUsername/{username}", "getUserByUsername/{username}/"})
+	@GetMapping(value= {"get_user_by_username/{username}", "get_user_by_username/{username}/"})
 	public ResponseEntity<?> getUserByUsername(@PathVariable("username") String username){
 		try {
 			User user = userService.getUserAccountByUsername(username);

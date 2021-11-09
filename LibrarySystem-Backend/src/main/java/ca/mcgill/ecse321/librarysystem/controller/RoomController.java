@@ -14,28 +14,25 @@ import ca.mcgill.ecse321.librarysystem.service.RoomService;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api/room")
 public class RoomController {
 	@Autowired
 	private RoomService roomService;
 	
 	@GetMapping(value = { "/rooms", "/rooms/" })
 	public List<RoomDto> getAllRooms() {
-		System.out.println("Flag Get"); 
 		return roomService.getAllRooms().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
 	}
 	
 	@GetMapping(value = { "/rooms/{roomNumber}", "/rooms/{roomNumber}/" })
 	public RoomDto getRoom(@PathVariable("roomNumber") String roomNumber) {
-		System.out.println("Flag Get" + roomNumber); 
 		return convertToDto(roomService.getRoom(roomNumber));
 	}
 	
 	@PostMapping(value = { "/rooms/{roomNumber}", "/rooms/{roomNumber}/" })
 	public RoomDto createRoom(@PathVariable("roomNumber") String roomNumber,
-			@RequestParam Integer capacity) {
-		System.out.print("Flag post");
+		@RequestParam Integer capacity) {
 		Room room = roomService.createRoom(roomNumber, capacity);
-		System.out.print(room.getRoomNum());
 		return convertToDto(room);
 	}
 	
