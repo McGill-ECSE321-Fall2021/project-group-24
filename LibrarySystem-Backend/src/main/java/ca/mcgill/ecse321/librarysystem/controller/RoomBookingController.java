@@ -20,39 +20,37 @@ import ca.mcgill.ecse321.librarysystem.service.*;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api/roombookings")
 public class RoomBookingController {
 	@Autowired
 	private RoomBookingService roomBookingService;
 	
-	@GetMapping(value = { "/roomBookings", "/roomBookings/" })
+	@GetMapping(value = { "/view_roombookings", "/view_roombookings/" })
 	public List<RoomBookingDto> getRoomBooking() {
 		System.out.println("Flag Get"); 
 		return roomBookingService.getAllRoomBookings().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
 	}
 	
-	@GetMapping(value = { "/roomBookings/patron/{idNum}", "/roomBookings/patron/{idNum}/" })
+	@GetMapping(value = { "/view_roombookings/patron/{idNum}", "/view_roombookings/patron/{idNum}/" })
 	public List<RoomBookingDto> getRoomBookingOfPatron(@PathVariable("idNum") String idNum) {
 		return getRoomBookingDtosForPatron(idNum);
 	}
 	
-	@GetMapping(value = { "/roomBookings/room/{roomNum}", "/roomBookings/room/{roomNum}/" })
+	@GetMapping(value = { "/view_roombookings/room/{roomNum}", "/view_roombookings/room/{roomNum}/" })
 	public List<RoomBookingDto> getRoomBookingOfRoom(@PathVariable("roomNum") String roomNum) {
 		return getRoomBookingDtosForRoom(roomNum);
 	}
 	
-	@GetMapping(value = { "/roomBookings/{timeSlotId}", "/roomBookings/{timeSlotId}/" })
+	@GetMapping(value = { "/view_roombookings/{timeSlotId}", "/view_roombookings/{timeSlotId}/" })
 	public RoomBookingDto getRoomBookingOfTimeSlot(@PathVariable("timeSlotId") String timeSlotId) {
 		System.out.println("Flag Get" + timeSlotId); 
 		return convertToDto(roomBookingService.getRoomBookingsByTimeSlotId(timeSlotId));
 	}
 	
-//	@PostMapping(value = {"/roomBookings/returnItem/{itemNumber}", "roomBookings/returnItem/{itemNumber}/"})
-//	public RoomBookingService returnItem(@PathVariable("itemNumber") String itemNumber) {
-//		return convertToDto(roomBookingService.returnItemFromReservation(itemNumber));
-//		
-//	}
-
-	@PostMapping(value = { "/roomBookings", "/roomBookings/" })
+	//TODO check who is making the request, if its a librarian, make the roombooking under the idNum provided
+	//if it's a patron, check if idNum (if provided) is the same as their own, if yes, then create the roombooking
+	//else, throw illegalArguementException
+	@PostMapping(value = { "/add_roombookings", "/add_roombookings/" })
 	public RoomBookingDto createRoomBooking(
 			 @RequestParam String startDate,
 			 @RequestParam String startTime,
@@ -74,6 +72,14 @@ public class RoomBookingController {
 		return convertToDto(booking);
 		
 	}
+	
+	//TODO add method for modify room booking
+	//only let patron modify their own bookings
+	//let librarian modify all bookings
+	
+	//TODO add method for delete room booking
+	//only let patron delete their own bookings
+	//let librarian delete all bookings
 	
 	private List<RoomBookingDto> getRoomBookingDtosForPatron(String idNum) {
 		List<RoomBooking> roomBookingForPatron = roomBookingService.getRoomBookingsByIdNum(idNum);

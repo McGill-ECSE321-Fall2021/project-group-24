@@ -14,7 +14,13 @@ public class RoomService {
 	
 	@Autowired 
 	RoomRepository roomRepository; 
-		
+	
+	@Autowired 
+	LibrarianRepository librarianRepository;
+	
+	@Autowired
+	HeadLibrarianRepository headLibrarianRepository;
+	
 	// creates room, returns it so we know it's not null 
 	@Transactional 
 	public Room createRoom(
@@ -42,6 +48,37 @@ public class RoomService {
 		return toList(roomRepository.findAll()); 
 	}
 
+	
+	// TODO add method for modify rooms
+	// only let head librarian modify rooms
+	
+	// TODO add method for delete rooms
+	@Transactional 
+	public Room deleteRoom (String currentUserId, String roomNum) 
+	{
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+			      currentUserId
+			    );
+			    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+			      currentUserId
+			    );
+			    if (
+			      currentLibrarian == null ||
+			      !currentLibrarian.getIsLoggedIn() &&
+			      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+			    ) {
+			      throw new IllegalArgumentException(
+			        "You do not have permission to create an item reservation"
+			      );
+			    }
+			    
+		Room toDelete = roomRepository.findRoomByRoomNum(roomNum);
+		roomRepository.delete(toDelete);
+
+	    return toDelete;		
+	}
+	
+	
 	private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
 		for (T t : iterable) {
@@ -49,4 +86,6 @@ public class RoomService {
 		}
 		return resultList;
 	}
+	
+	
 }

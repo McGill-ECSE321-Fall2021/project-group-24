@@ -40,11 +40,9 @@ public class RoomBookingService {
 		}
 		else if (isBooked(roomNumber, date,startTime,endTime)) {
 			throw new IllegalArgumentException("Room booking must not overlap with other bookings of the same room");
+		}else if(outsideOfOpeningHours(dayOfWeek, startTime, endTime)) {
+			throw new IllegalArgumentException("Room booking must be within library opening hours");
 		}
-		//TODO: Maybe for this method take dayOfWeek as an input instead?
-//			}else if(outsideOfOpeningHours(startDate, startTime, endTime)) {
-//			throw new IllegalArgumentException("Room booking must be within library opening hours");
-//		}
 		// if no conflict
 		RoomBooking roomBooking = new RoomBooking();
 		roomBooking.setTimeSlotId(timeSlotId);
@@ -59,34 +57,26 @@ public class RoomBookingService {
 	}
 	
 	// check if the room is booked during the times given
-	//TODO: @Selena this does not check the date at all
 	public boolean isBooked(String roomNumber, Date date, Time startTime, Time endTime) {
 		System.out.println(roomNumber);
 		Room room = roomService.getRoom(roomNumber);
 		for (RoomBooking rb : room.getRoomBookings()) {
-			if (startTime.after(rb.getStartTime()) && startTime.before(rb.getEndTime())) {
-				return true;
-			}else if (endTime.after(rb.getStartTime()) && endTime.before(rb.getEndTime())) {
-				return true;
+			if (date.equals(rb.getDate())) {
+				if (startTime.after(rb.getStartTime()) && startTime.before(rb.getEndTime())) {
+					return true;
+				}else if (endTime.after(rb.getStartTime()) && endTime.before(rb.getEndTime())) {
+					return true;
+				}
 			}
 		}
 		return false;
 	}
 	
 	// check if the times are during the times given
-	//TODO: Make this use TimeSlot.DayOfWeek as input instead of Date. The 
-	//RoomBooking class now has access to what DayOfWeek it is so does not need to find it
-	public boolean outsideOfOpeningHours(Date date, Time startTime, Time endTime) {
+	public boolean outsideOfOpeningHours(TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime) {
 		// find day of the week from date and convert to DayOfweek
-		String dayString = date.toLocalDate().getDayOfWeek().toString();
-		String lowercase = dayString.substring(1).toLowerCase();
-		String firstletter = dayString.substring(0,1);
-		for (TimeSlot.DayOfWeek day : TimeSlot.DayOfWeek.values()) {
-			if (day.toString().equals(firstletter+lowercase)) {
-				LibraryHour libhour = libraryHourservice.getLibraryHour(day);
-				if (libhour.getStartTime().before(startTime) && libhour.getEndTime().after(endTime)) return false;
-			}
-		}
+		LibraryHour lh = libraryHourservice.getLibraryHour(dayOfWeek);
+		if (lh.getStartTime().before(startTime) && lh.getEndTime().after(endTime)) return false;
 		return true;
 	}
 	
