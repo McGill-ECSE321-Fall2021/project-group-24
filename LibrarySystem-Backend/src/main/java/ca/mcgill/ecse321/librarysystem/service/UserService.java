@@ -175,6 +175,19 @@ public class UserService {
 	}
 	
 	
+	@Transactional
+	public List<User> getListOfUsersLoggedIn(){
+		List<User> output = new ArrayList<User>();
+		List<User> allUsers = getAllUsers();
+		for(User u: allUsers) {
+			if(u.getIsLoggedIn()==true) {
+				output.add(u);
+			}
+		}
+		return output;
+	}
+	
+	
 	
 	
 	

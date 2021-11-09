@@ -26,7 +26,7 @@ public class HeadLibrarianService {
 		    String password) 
 	{
 		HeadLibrarian headLibrarian = new HeadLibrarian();
-		String idNum = firstName+"Patron-"+toList(headLibrarianRepo.findAll()).size();
+		String idNum = firstName+"HeadLibrarian-"+toList(headLibrarianRepo.findAll()).size();
 	    headLibrarian.setUsername(username);
 	    headLibrarian.setPassword(password);
 	    headLibrarian.setFirstName(firstName);
