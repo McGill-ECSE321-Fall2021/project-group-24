@@ -49,7 +49,7 @@ public class UserController {
 	
 	@GetMapping(value= {"/usersLoggedIn","/usersLoggedIn/"})
 	public List<UserDto> getAllUsersLoggedIn(){
-		return userService.getListOfUsersLoggedIn().stream().map(user -> convertToDto(user)).collect(Collectors.toList());
+		return userService.getListOfUsersLoggedIn().stream().map(user -> convertToDto(user)).collect(Collectors.toList()); 
 	}
 	
 	

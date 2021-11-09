@@ -74,17 +74,15 @@ public class PatronController {
 	
 	@RequestMapping(value = { "/patronIRL", "/patronIRL/" }, method = { RequestMethod.GET, RequestMethod.POST })
 	public ResponseEntity<?> createPatronIRL(
-			@RequestParam ("username") String username,  
 			@RequestParam ("first") String first, 
 			@RequestParam ("last") String last, 
-			@RequestParam ("isResid") boolean ResidentStatus,
-			@RequestParam ("address") String Address, 
-			@RequestParam ("email") String mail
+			@RequestParam ("isResident") boolean isResident,
+			@RequestParam ("address") String address
 			) throws IllegalArgumentException {
 		
 		Patron patron = null;
 		try {
-			patron = patronService.createPatronIRL(username, first, last, ResidentStatus, Address, mail);
+			patron = patronService.createPatronIRL(first, last, isResident, address);
 			return new ResponseEntity<>(patron, HttpStatus.OK);
 		}catch(IllegalArgumentException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -105,7 +103,7 @@ public class PatronController {
 		
 		try {
 			Patron patron = patronService.createPatronOnline(username, password, firstName, lastName, isResident, address, email);
-			return new ResponseEntity<>(patron, HttpStatus.OK);
+			return new ResponseEntity<>(convertToDto(patron), HttpStatus.OK);
 			
 		}catch(IllegalArgumentException e) {	
 			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
