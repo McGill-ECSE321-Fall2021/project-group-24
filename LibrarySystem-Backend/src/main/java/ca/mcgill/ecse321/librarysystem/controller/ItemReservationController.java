@@ -29,12 +29,12 @@ public class ItemReservationController {
 		System.out.println("Flag Get"); 
 		return itemReservationService.getAllItemReservations(currentUserId).stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
 	}
-	
+	//get all item reservations by a patron
 	@GetMapping(value = { "/itemReservations/patron/{idNum}", "/registrations/patron/{idNum}/" })
 	public List<ItemReservationDto> getItemReservationsOfPatron(@PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
 		return getItemReservationDtosForPatron(currentUserId,idNum);
 	}
-	
+	//get all item reservations for an item
 	@GetMapping(value = { "/itemReservations/item/{itemNumber}", "/registrations/item/{itemNumber}/" })
 	public List<ItemReservationDto> getItemReservationsOfItem(@PathVariable("itemNumber") String itemNumber, @RequestParam String currentUserId) {
 		return getItemReservationDtosForItem(currentUserId, itemNumber);
@@ -45,20 +45,20 @@ public class ItemReservationController {
 		System.out.println("Flag Get" + itemReservationId); 
 		return convertToDto(itemReservationService.getItemReservation(currentUserId, itemReservationId));
 	}
-	
+	//return an item
 	@PostMapping(value = {"/itemReservations/return_item/{itemNumber}", "itemReservations/return_item/{itemNumber}/"})
 	public ItemReservationDto returnItem(@PathVariable("itemNumber") String itemNumber, @RequestParam String currentUserId) {
 		return convertToDto(itemReservationService.returnItemFromReservation(currentUserId, itemNumber));
 		
 	}
-	
+	//checkout item
 	@PostMapping(value = {"/itemReservations/checkout_item/{itemNumber}/byPatron/{idNum}", "itemReservations/checkout_item/{itemNumber}/byPatron/{idNum}"})
 	public ItemReservationDto checkoutItem(@PathVariable("itemNumber") String itemNumber, @PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
 		return convertToDto(itemReservationService.checkoutItem(currentUserId, itemNumber, idNum));
 		
 	}
-
-	@PostMapping(value = { "/itemReservations/", "/itemReservations" })
+	//createReservation
+	@PostMapping(value = { "/itemReservations/create_reservation", "/itemReservations/create_reservation/" })
 	public ItemReservationDto createItemReservation(@RequestParam String currentUserId, @RequestParam String idNum, @RequestParam String itemNumber, @RequestParam boolean isCheckedOut
 			) {
 		System.out.println("Flag Post"); 
@@ -68,7 +68,7 @@ public class ItemReservationController {
 		return convertToDto(reservation);
 	}
 	
-	@PostMapping(value = { "/itemReservations/customDate", "/itemReservations/customDate/" })
+	@PostMapping(value = { "/itemReservations/create_reservation/customDate", "/itemReservations/create_reservation/customDate/" })
 	public ItemReservationDto createItemReservationCustomDate(@RequestParam String currentUserId,
 			 @RequestParam Integer numOfRenewalsLeft,
 			 @RequestParam String idNum,

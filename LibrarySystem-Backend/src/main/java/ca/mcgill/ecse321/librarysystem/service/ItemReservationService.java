@@ -47,13 +47,25 @@ public class ItemReservationService {
 		}
 		String itemReservationId = startDate.toLocalDate().toString() + itemNumber + idNum;
 		Date endDate = Date.valueOf(startDate.toLocalDate().plusWeeks(2));
-		if (isCheckedOut && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
-			throw new IllegalArgumentException("Only a librarian can check out a book for a patron");
-		}
-		if (patronRepository.findPatronByIdNum(idNum) == null) {
-			System.out.println("id num is" + idNum);
-			throw new IllegalArgumentException("Only patrons can create item reservations");
-		}
+		
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		  HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		  Patron patron = patronRepository.findUserByIdNum(idNum);
+		  
+			boolean hasPermission = false;
+			if (currentUserId.equals(idNum) && patron.getIsLoggedIn() && !isCheckedOut
+					|| (currentLibrarian != null && currentLibrarian.getIsLoggedIn())
+					|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+				hasPermission = true;
+			}
+		  if (!hasPermission) {
+			  throw new IllegalArgumentException(
+				        "You do not have permission to create an item reservation for this patron at this time"
+				      );
+		  }
+	
+		
+
 		if (itemRepository.findItemByItemNumber(itemNumber) == null) {
 				throw new IllegalArgumentException("The item does not exist");
 		}
@@ -91,7 +103,18 @@ public class ItemReservationService {
 	public ItemReservation getItemReservation(String currentUserId,String itemReservationId) {
 		
 		ItemReservation reservation = itemReservationRepository.findItemReservationByItemReservationId(itemReservationId);
-		if (!currentUserId.equals(reservation.getIdNum()) && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+		String idNum = reservation.getIdNum();
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		Patron patron = patronRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()
+				|| currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		} 
+		
+		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian or the patron who's reservation it is can view a reservation");
 		}
 		return reservation;
@@ -107,7 +130,16 @@ public class ItemReservationService {
 
 	@Transactional
 	public List<ItemReservation> getItemReservationsByIdNum(String currentUserId,String idNum) {
-		if (!currentUserId.equals(idNum) && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		Patron patron = patronRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()
+				|| currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		} 
+		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian or the patron who's reservation it is can view a reservation");
 		}
 	    List<ItemReservation> reservationsByIdNum = new ArrayList<>();
@@ -119,7 +151,13 @@ public class ItemReservationService {
 	
 	@Transactional
 	public ItemReservation checkoutItem(String currentUserId,String itemNumber, String idNum) {
-		if (librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn() || currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		} 
+		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian can check out a book for a patron");
 		}
 		ItemReservation currentReservation = null; //find the reservation
@@ -153,7 +191,17 @@ public class ItemReservationService {
 	@Transactional
 	public boolean cancelItemReservation(String currentUserId,String itemReservationId) {
 		ItemReservation reservation = itemReservationRepository.findItemReservationByItemReservationId(itemReservationId);
-		if (!currentUserId.equals(reservation.getIdNum()) && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+		String idNum = reservation.getIdNum();
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		Patron patron = patronRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()
+				|| currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		}
+		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian or the patron who's reservation it is can delete it");
 		}
 		if (reservation.getIsCheckedOut() == false) {
@@ -168,7 +216,14 @@ public class ItemReservationService {
 	public ItemReservation returnItemFromReservation(String currentUserId,String itemNumber) {
 		String itemReservationId = null;
 		Item item = itemRepository.findItemByItemNumber(itemNumber);
-		if (librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		}
+		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian can return an item to the library");
 		}
 		itemReservationId = item.getCurrentReservationId();
@@ -191,7 +246,16 @@ public class ItemReservationService {
 	@Transactional
 	public List<ItemReservation> getItemReservationsByItemNumberAndIdNum(String currentUserId,String itemNumber, String idNum) {
 		List<ItemReservation> reservations = new ArrayList<ItemReservation>();
-		if (!currentUserId.equals(idNum) && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		Patron patron = patronRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn()
+				|| currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		} 
+		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian or the patron who's reservation they are can see them");
 		}
 		for (ItemReservation r : getCurrentReservationsByIdNum(currentUserId, idNum)) {
@@ -206,12 +270,34 @@ public class ItemReservationService {
 	
 	@Transactional
 	public List<ItemReservation> getItemReservationsByItemNumber(String currentUserId,String itemNumber) {
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		} 
+		if (!hasPermission) {
+			throw new IllegalArgumentException("Only a librarian or head librarian can get item reservations by itemNumber");
+		}
 		return itemReservationRepository.findItemReservationsByItemNumber(itemNumber);
 	}
 	
 	@Transactional
 	public ItemReservation renewByItemReservationId(String currentUserId,String itemReservationId) {
 		ItemReservation reservation = getItemReservation(currentUserId, itemReservationId);
+		String idNum = reservation.getIdNum();
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		Patron patron = patronRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn() || currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		} 
+		if (!hasPermission) {
+			throw new IllegalArgumentException("Patrons cannot renew an item reservation that is not theirs");
+		}
 		if (reservation.getNumOfRenewalsLeft() > 0) {
 			Date nextAvailable = findNextAvailabilityForItem(reservation.getItemNumber());
 			//if this is the last reservation
@@ -231,7 +317,15 @@ public class ItemReservationService {
 	public List<ItemReservation> getCurrentReservationsByIdNum(String currentUserId,String idNum) {
 		Date today = Date.valueOf(LocalDate.now());
 		List<ItemReservation> currentReservationsByPatron = new ArrayList<ItemReservation>();
-		if (!currentUserId.equals(idNum) && librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		Patron patron = patronRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentUserId.equals(idNum) && patron.getIsLoggedIn() || currentLibrarian != null && currentLibrarian.getIsLoggedIn() ||currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		} 
+		
+		if (!hasPermission) {
 			throw new IllegalArgumentException("Only a librarian or the patron who's reservation they are can see them");
 		}
 		for (ItemReservation reservation : getItemReservationsByIdNum(currentUserId, idNum)) {

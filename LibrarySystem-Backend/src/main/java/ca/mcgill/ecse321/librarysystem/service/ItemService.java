@@ -23,7 +23,8 @@ public class ItemService {
 
   // creates book, returns it so we know it's not null
   @Transactional
-  public Book createBook(String currentUserId,
+  public Book createBook(
+    String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,
@@ -33,16 +34,26 @@ public class ItemService {
     String author,
     String publisher
   ) {
+    Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+      currentUserId
+    );
     if (
-      librarianRepository.findById(currentUserId) == null &&
-      headLibrarianRepository.findById(currentUserId) == null
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
     ) {
       throw new IllegalArgumentException(
-        "You do not have permission to create an item"
+        "You do not have permission to create an item reservation"
       );
-    } else if (itemTitle.length() == 0) {
+    }
+
+    if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
+
     String itemNumber = "Book-" + getAllBooks().size() + itemTitle.trim();
     Book book = new Book();
     book.setItemTitle(itemTitle);
@@ -61,21 +72,30 @@ public class ItemService {
 
   //remove book
   @Transactional
-  public Book deleteBook(String currentUserId,Book book) {
-	    if (
-	    	      librarianRepository.findById(currentUserId) == null &&
-	    	      headLibrarianRepository.findById(currentUserId) == null
-	    	    ) {
-	    	      throw new IllegalArgumentException(
-	    	        "You do not have permission to create an item"
-	    	      );
-	    	    }
-    itemRepository.delete(book);
-    return book;
+  public Book deleteBook(String currentUserId, String idNum) {
+    Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
+      throw new IllegalArgumentException(
+        "You do not have permission to create an item reservation"
+      );
+    }
+    Book gone = (Book) itemRepository.findItemByItemNumber(idNum);
+    itemRepository.delete(gone);
+    return gone;
   }
 
   @Transactional
-  public Archive createArchive(String currentUserId,
+  public Archive createArchive(
+    String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,
@@ -83,14 +103,23 @@ public class ItemService {
     Date publishDate,
     boolean isReservable
   ) {
-	    if (
-	    	      librarianRepository.findById(currentUserId) == null &&
-	    	      headLibrarianRepository.findById(currentUserId) == null
-	    	    ) {
-	    	      throw new IllegalArgumentException(
-	    	        "You do not have permission to create an item"
-	    	      );
-	    	    }else if (itemTitle.length() == 0) {
+    Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
+      throw new IllegalArgumentException(
+        "You do not have permission to create an item reservation"
+      );
+    }
+
+    if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
     String itemNumber =
@@ -112,22 +141,30 @@ public class ItemService {
 
   //remove archive
   @Transactional
-  public Archive deleteArchive(String currentUserId,Archive archive) {
-	    if (
-	    	      librarianRepository.findById(currentUserId) == null &&
-	    	      headLibrarianRepository.findById(currentUserId) == null
-	    	    ) {
-	    	      throw new IllegalArgumentException(
-	    	        "You do not have permission to create an item"
-	    	      );
-	    	    }
-    itemRepository.delete(archive);
-    return archive;
+  public Archive deleteArchive(String currentUserId, String idNum) {
+    Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
+      throw new IllegalArgumentException(
+        "You do not have permission to create an item reservation"
+      );
+    }
+    Archive gone = (Archive) itemRepository.findItemByItemNumber(idNum);
+    itemRepository.delete(gone);
+    return gone;
   }
 
   @Transactional
-  public MusicAlbum createMusicAlbum(String currentUserId,
- 
+  public MusicAlbum createMusicAlbum(
+    String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,
@@ -137,14 +174,22 @@ public class ItemService {
     String artist,
     String recordingLabel
   ) {
-	    if (
-	    	      librarianRepository.findById(currentUserId) == null &&
-	    	      headLibrarianRepository.findById(currentUserId) == null
-	    	    ) {
-	    	      throw new IllegalArgumentException(
-	    	        "You do not have permission to create an item"
-	    	      );
-	    	    } else if (itemTitle.length() == 0) {
+    Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
+      throw new IllegalArgumentException(
+        "You do not have permission to create an item reservation"
+      );
+    }
+    if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
     String itemNumber =
@@ -168,21 +213,30 @@ public class ItemService {
 
   //remove music album
   @Transactional
-  public MusicAlbum deleteMusicAlbum(String currentUserId,MusicAlbum musicAlbum) {
-	    if (
-	    	      librarianRepository.findById(currentUserId) == null &&
-	    	      headLibrarianRepository.findById(currentUserId) == null
-	    	    ) {
-	    	      throw new IllegalArgumentException(
-	    	        "You do not have permission to create an item"
-	    	      );
-	    	    }
-    itemRepository.delete(musicAlbum);
-    return musicAlbum;
+  public MusicAlbum deleteMusicAlbum(String currentUserId, String idNum) {
+    Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
+      throw new IllegalArgumentException(
+        "You do not have permission to create an item reservation"
+      );
+    }
+    MusicAlbum gone = (MusicAlbum) itemRepository.findItemByItemNumber(idNum);
+    itemRepository.delete(gone);
+    return gone;
   }
 
   @Transactional
-  public PrintedMedia createPrintedMedia(String currentUserId,
+  public PrintedMedia createPrintedMedia(
+    String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,
@@ -191,14 +245,23 @@ public class ItemService {
     boolean isReservable,
     String issueNumber
   ) {
-	    if (
-	    	      librarianRepository.findById(currentUserId) == null &&
-	    	      headLibrarianRepository.findById(currentUserId) == null
-	    	    ) {
-	    	      throw new IllegalArgumentException(
-	    	        "You do not have permission to create an item"
-	    	      );
-	    	    } else if (itemTitle.length() == 0) {
+    Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
+      throw new IllegalArgumentException(
+        "You do not have permission to create an item reservation"
+      );
+    }
+
+    if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
     String itemNumber =
@@ -221,21 +284,32 @@ public class ItemService {
 
   //remove printed media
   @Transactional
-  public PrintedMedia deletePrintedMedia(String currentUserId,PrintedMedia printedMedia) {
-	    if (
-	    	      librarianRepository.findById(currentUserId) == null &&
-	    	      headLibrarianRepository.findById(currentUserId) == null
-	    	    ) {
-	    	      throw new IllegalArgumentException(
-	    	        "You do not have permission to create an item"
-	    	      );
-	    	    }
-    itemRepository.delete(printedMedia);
-    return printedMedia;
+  public PrintedMedia deletePrintedMedia(String currentUserId, String idNum) {
+    Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
+      throw new IllegalArgumentException(
+        "You do not have permission to create an item reservation"
+      );
+    }
+    PrintedMedia gone = (PrintedMedia) itemRepository.findItemByItemNumber(
+      idNum
+    );
+    itemRepository.delete(gone);
+    return gone;
   }
 
   @Transactional
-  public Movie createMovie(String currentUserId,
+  public Movie createMovie(
+    String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,
@@ -247,14 +321,23 @@ public class ItemService {
     String director,
     String producer
   ) {
-	    if (
-	    	      librarianRepository.findById(currentUserId) == null &&
-	    	      headLibrarianRepository.findById(currentUserId) == null
-	    	    ) {
-	    	      throw new IllegalArgumentException(
-	    	        "You do not have permission to create an item"
-	    	      );
-	    	    }else if (itemTitle.length() == 0) {
+    Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
+      throw new IllegalArgumentException(
+        "You do not have permission to create an item reservation"
+      );
+    }
+
+    if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
     String itemNumber =
@@ -280,17 +363,25 @@ public class ItemService {
 
   //remove movie
   @Transactional
-  public Movie deleteMovie(String currentUserId,Movie movie) {
-	    if (
-	    	      librarianRepository.findById(currentUserId) == null &&
-	    	      headLibrarianRepository.findById(currentUserId) == null
-	    	    ) {
-	    	      throw new IllegalArgumentException(
-	    	        "You do not have permission to create an item"
-	    	      );
-	    	    }
-    itemRepository.delete(movie);
-    return movie;
+  public Movie deleteMovie(String currentUserId, String idNum) {
+    Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
+      throw new IllegalArgumentException(
+        "You do not have permission to create an item reservation"
+      );
+    }
+    Movie gone = (Movie) itemRepository.findItemByItemNumber(idNum);
+    itemRepository.delete(gone);
+    return gone;
   }
 
   // looks for an item with the given item number, returns them if found

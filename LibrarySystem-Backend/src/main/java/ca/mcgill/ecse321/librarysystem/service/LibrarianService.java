@@ -50,9 +50,10 @@ public class LibrarianService {
 
   //fire librarian
   @Transactional
-  public Librarian deleteLibrarian(Librarian librarian) {
-    librarianRepo.delete(librarian);
-    return librarian;
+  public Librarian deleteLibrarian(String idNum) {
+    Librarian bye = librarianRepo.findUserByIdNum(idNum);
+    librarianRepo.delete(bye);
+    return bye;
   }
 
   // looks for a librarian with the given ID number, returns them if found
