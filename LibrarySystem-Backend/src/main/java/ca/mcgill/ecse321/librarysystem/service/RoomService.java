@@ -38,7 +38,6 @@ public class RoomService {
 	// looks for a room with the given ID number, returns them if found
 	@Transactional 
 	public Room getRoom(String roomNum) {
-		System.out.println("ROOOOM" + roomNum);
 		Room room = roomRepository.findRoomByRoomNum(roomNum); 
 		return room;
 	}

@@ -23,7 +23,7 @@ import ca.mcgill.ecse321.librarysystem.service.UserService;
 
 @CrossOrigin(origins = "*")
 @RestController
-
+@RequestMapping("/api/patron")
 public class PatronController {
 	
 	@Autowired
