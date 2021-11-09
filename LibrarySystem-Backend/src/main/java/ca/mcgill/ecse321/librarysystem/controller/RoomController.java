@@ -32,22 +32,42 @@ public class RoomController {
 		return convertToDto(roomService.getRoom(roomNumber));
 	}
 	
-	// TODO only let head librarian create rooms
+	
 	@PostMapping(value = { "/create_rooms/{roomNumber}", "/create_rooms/{roomNumber}/" })
 	public RoomDto createRoom(@PathVariable("roomNumber") String roomNumber,
+			@RequestParam String currentUserId,
 			@RequestParam Integer capacity) {
 		System.out.print("Flag post");
-		Room room = roomService.createRoom(roomNumber, capacity);
+		Room room = roomService.createRoom(currentUserId, roomNumber, capacity);
 		System.out.print(room.getRoomNum());
 		return convertToDto(room);
 	}
 	
 	
-	// TODO add method for modify rooms
+	// method for modify rooms
 	// only let head librarian modify rooms
+	@PutMapping(value = { "/update_rooms/{oldRoomNumber}", "/update_rooms/{oldRoomNumber}/" })
+	public RoomDto updateRoom(@PathVariable("oldRoomNumber") String oldRoomNumber,
+			@RequestParam String currentUserId,
+			@RequestParam Integer capacity,
+			@RequestParam String newRoomNum) {
+		
+		System.out.print("Flag put");
+		Room room = roomService.updateRoom(currentUserId, oldRoomNumber, newRoomNum, capacity);
+		System.out.print(room.getRoomNum());
+		return convertToDto(room);
+	}
 	
-	// TODO add method for delete rooms
+	// method for delete rooms
 	// only let head librarian delete rooms
+	@DeleteMapping(value = { "/delete_rooms/{roomNum}", "/delete_rooms/{roomNum}/" })
+	public RoomDto deleteRoom(@PathVariable("oldRoomNumber") String roomNum,
+			@RequestParam String currentUserId) {
+		System.out.print("Flag delete");
+		Room room = roomService.deleteRoom(currentUserId, roomNum);
+		System.out.print(room.getRoomNum());
+		return convertToDto(room);
+	}
 	
 	private RoomDto convertToDto(Room room){
 		RoomDto roomDto = new RoomDto(room.getRoomNum(), room.getCapacity());
