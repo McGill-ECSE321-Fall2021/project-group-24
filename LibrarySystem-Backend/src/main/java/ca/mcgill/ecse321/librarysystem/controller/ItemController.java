@@ -196,50 +196,15 @@ public class ItemController {
     @RequestParam String currentUserId
   ) {
     Item item = itemService.getItem(itemNumber);
-    switch (item.getType().toString()) {
-      case "Book":
-        itemService.deleteBook(currentUserId, itemNumber);
-        String deletedBook =
+        itemService.deleteItem(currentUserId, itemNumber);
+        String deletedItem =
           "Deleted item of type " +
           item.getType().toString() +
           " with itemNumber " +
           itemNumber;
-        return deletedBook;
-      case "Movie":
-        itemService.deleteMovie(currentUserId, itemNumber);
-        String deletedMovie =
-          "Deleted item of type " +
-          item.getType().toString() +
-          " with itemNumber " +
-          itemNumber;
-        return deletedMovie;
-      case "MusicAlbum":
-        itemService.deleteMusicAlbum(currentUserId, itemNumber);
-        String deletedMusicAlbum =
-          "Deleted item of type " +
-          item.getType().toString() +
-          " with itemNumber " +
-          itemNumber;
-        return deletedMusicAlbum;
-      case "Archive":
-        itemService.deleteArchive(currentUserId, itemNumber);
-        String deletedArchive =
-          "Deleted item of type " +
-          item.getType().toString() +
-          " with itemNumber " +
-          itemNumber;
-        return deletedArchive;
-      case "PrintedMedia":
-        itemService.deletePrintedMedia(currentUserId, itemNumber);
-        String deletedPrintedMedia =
-          "Deleted item of type " +
-          item.getType().toString() +
-          " with itemNumber " +
-          itemNumber;
-        return deletedPrintedMedia;
-      default:
-        return "Item not found";
-    }
+        return deletedItem;
+
+    
   }
 
   private ItemDto convertToDto(Item item) {
