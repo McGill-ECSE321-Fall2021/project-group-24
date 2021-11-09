@@ -18,6 +18,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import org.hibernate.annotations.SourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,6 +75,29 @@ public class TestLibrarianService {
           return null;
         }
       });
+    lenient()
+      .when(librarianDao.findAll())
+      .thenAnswer((InvocationOnMock invocation) -> {
+        Librarian librarian = new Librarian();
+        librarian.setFirstName(testFirstName);
+        librarian.setLastName(testLastName);
+        librarian.setAddress(testAddress);
+        librarian.setEmail(testEmail);
+        librarian.setUsername(testUsername);
+        librarian.setPassword(testPassword);
+        Librarian librarian2 = new Librarian();
+        librarian2.setFirstName(testFirstName + "2");
+        librarian2.setLastName(testLastName + "2");
+        librarian2.setAddress(testAddress + "2");
+        librarian2.setEmail(testEmail + "2");
+        librarian2.setUsername(testUsername + "2");
+        librarian2.setPassword(testPassword + "2");
+        ArrayList<Librarian> list = new ArrayList<>();
+        list.add(librarian);
+        list.add(librarian2);
+
+        return list;
+      });
     Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
       return invocation.getArgument(0);
     };
@@ -104,19 +129,24 @@ public class TestLibrarianService {
     assertEquals(testEmail, librarian.getEmail());
     assertEquals(testUsername, librarian.getUsername());
     assertEquals(testPassword, librarian.getPassword());
+    System.out.println(librarian.getFirstName());
   }
 
   @Test
   public void testGetAllLibrarians() {
     ArrayList<Librarian> librarians = null;
+
     try {
       librarians =
         new ArrayList<Librarian>(librarianService.getAllLibrarians());
     } catch (IllegalArgumentException e) {
       fail();
     }
+    for (Librarian librarian : librarians) {
+      System.out.println(librarian.getFirstName());
+    }
     assertNotNull(librarians);
-    assertEquals(1, librarians.size());
+    assertEquals(2, librarians.size());
     assertEquals(testFirstName, librarians.get(0).getFirstName());
     assertEquals(testLastName, librarians.get(0).getLastName());
     assertEquals(testAddress, librarians.get(0).getAddress());

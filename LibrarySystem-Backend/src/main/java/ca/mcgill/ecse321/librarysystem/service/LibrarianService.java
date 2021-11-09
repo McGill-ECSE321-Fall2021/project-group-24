@@ -24,7 +24,8 @@ public class LibrarianService {
     String username,
     String password
   ) {
-	String idNum = firstName+"Librarian-"+toList(librarianRepo.findAll()).size();
+    String idNum =
+      firstName + "Librarian-" + toList(librarianRepo.findAll()).size();
     Librarian librarian = new Librarian();
     librarian.setUsername(username);
     librarian.setPassword(password);
@@ -38,15 +39,15 @@ public class LibrarianService {
     return librarian;
   }
 
-  @Transactional
-  public Librarian createLibrarian(String idNum) {
-    Librarian librarian = new Librarian();
+  // @Transactional
+  // public Librarian createLibrarian(String idNum) {
+  //   Librarian librarian = new Librarian();
 
-    librarian.setIdNum(idNum);
+  //   librarian.setIdNum(idNum);
 
-    librarianRepo.save(librarian);
-    return librarian;
-  }
+  //   librarianRepo.save(librarian);
+  //   return librarian;
+  // }
 
   //fire librarian
   @Transactional
@@ -68,7 +69,7 @@ public class LibrarianService {
     return toList(librarianRepo.findAll());
   }
 
-  private <T> List<T> toList(Iterable<T> iterable) {
+  public static <T> List<T> toList(Iterable<T> iterable) {
     List<T> resultList = new ArrayList<T>();
     for (T t : iterable) {
       resultList.add(t);
