@@ -29,7 +29,7 @@ public class ShiftService {
 	public Shift createShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime ) {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
 		Librarian librarian = librarianRepo.findUserByIdNum(librarianId); 
-		//adds shift
+		//checks if the shift is for a regular librarian or the head librarian
 		if (librarian==null) {
 			librarian = headLibrarianRepo.findUserByIdNum(librarianId);
 		}
@@ -57,8 +57,13 @@ public class ShiftService {
 	@Transactional 
 	public Shift modifyShift(String currentUserId, String timeSlotId, String librarianId, TimeSlot.DayOfWeek newDayOfWeek, Time startTime, Time endTime) {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
+		Librarian librarian = librarianRepo.findUserByIdNum(librarianId); 
+		//checks if the shift is for a regular librarian or the head librarian
+		if (librarian==null) {
+			librarian = headLibrarianRepo.findUserByIdNum(librarianId);
+		}
 		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
-		if(librarianRepo.findById(librarianId)==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
+		if (librarian==null) throw new IllegalArgumentException ("No librarian with this ID exists");
 		if (librarianId==null || timeSlotId==null || librarianId == null || newDayOfWeek == null || startTime==null || endTime ==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
@@ -103,8 +108,14 @@ public class ShiftService {
 	@Transactional 
 	public boolean removeLibrarianShifts(String currentUserId, String librarianId) {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
+		Librarian librarian = librarianRepo.findUserByIdNum(librarianId); 
 		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can remove all of a librarian's shifts");		
 		if (librarianId == null) throw new IllegalArgumentException("librarian ID cannot be blank"); 
+		//checks if the shift is for a regular librarian or the head librarian
+		if (librarian==null) {
+			librarian = headLibrarianRepo.findUserByIdNum(librarianId);
+		}
+		if (librarian==null) throw new IllegalArgumentException ("No librarian with this ID exists");
 		
 		// Searches through all the shifts, deleting the ones associated with a certain librarian
 		List<Shift> allShifts = toList(shiftRepo.findAll()); 
@@ -145,11 +156,15 @@ public class ShiftService {
 	public List<Shift> getAllShiftsForLibrarian(String currentUserId, String librarianId) {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
 		User user1 = librarianRepo.findUserByIdNum(currentUserId); 
+		Librarian librarian = librarianRepo.findUserByIdNum(librarianId); 
 		if ((!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) && (!(user1 instanceof HeadLibrarian) || !(user1.getIsLoggedIn()))) {
 			 throw new IllegalArgumentException("Only librarians can view shifts");		
 		}
 		if (librarianId==null) throw new IllegalArgumentException("Librarian ID cannot be blank"); 
-		
+		if (librarian==null) {
+			librarian = headLibrarianRepo.findUserByIdNum(librarianId);
+		}
+		if (librarian==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
 		// This searches through all shifts, add the ones with desired librarianId to a list then return the list. 
 		List<Shift> allShifts = toList(shiftRepo.findAll()); 
 		ArrayList<Shift> desiredShifts = new ArrayList<Shift>(); 
