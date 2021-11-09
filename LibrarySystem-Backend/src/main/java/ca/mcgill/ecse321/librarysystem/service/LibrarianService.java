@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.librarysystem.service;
 
+import static ca.mcgill.ecse321.librarysystem.service.SystemServiceHelpers.validInput;
+
 import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class LibrarianService {
     String username,
     String password
   ) {
+    validInput(firstName, lastName, address, email, username, password);
     String idNum =
       firstName + "Librarian-" + toList(librarianRepo.findAll()).size();
     Librarian librarian = new Librarian();

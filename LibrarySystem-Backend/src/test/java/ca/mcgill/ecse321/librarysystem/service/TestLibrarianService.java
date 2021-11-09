@@ -107,6 +107,7 @@ public class TestLibrarianService {
   }
 
   @Test
+  //Create a librarian
   public void testCreateLibrarian() {
     Librarian librarian = null;
     try {
@@ -129,10 +130,34 @@ public class TestLibrarianService {
     assertEquals(testEmail, librarian.getEmail());
     assertEquals(testUsername, librarian.getUsername());
     assertEquals(testPassword, librarian.getPassword());
-    System.out.println(librarian.getFirstName());
+    System.out.println("Librarian account created!");
   }
 
   @Test
+  //Create a librarian with empty username
+  public void testCreateLibrarianWithEmptyUsername() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          testLastName,
+          testAddress,
+          testEmail,
+          emptyString,
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter a valid username.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Get all librarians
   public void testGetAllLibrarians() {
     ArrayList<Librarian> librarians = null;
 
