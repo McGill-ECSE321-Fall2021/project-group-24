@@ -5,4 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface LibrarianRepository extends CrudRepository<Librarian, String> {
   Librarian findUserByIdNum(String idNum);
+  Librarian findUserByUsername(String username);
 }
