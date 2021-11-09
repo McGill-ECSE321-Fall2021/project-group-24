@@ -1,24 +1,17 @@
 package ca.mcgill.ecse321.librarysystem.controller;
 
-import ca.mcgill.ecse321.librarysystem.LibrarySystemApplication;
 import ca.mcgill.ecse321.librarysystem.dto.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 import ca.mcgill.ecse321.librarysystem.service.*;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,7 +41,7 @@ public class ItemController {
     return convertToDto(item);
   }
 
-  @PostMapping(value = { "/items/createBook/{", "/items/createBook/" })
+  @PostMapping(value = { "/items/createBook/{", "/items/createBook" })
   public BookDto createBook(
     @RequestParam String itemTitle,
     @RequestParam String description,
