@@ -136,7 +136,7 @@ public class ShiftController {
 	 * @return List of type ShiftDto 
 	 */
 	@GetMapping(value = {"/view_all_shifts", "/view_all_shifts/"})
-	public ResponseEntity<?> viewAllShifts(@RequestParam String currentUserId, @RequestParam String librarianId){
+	public ResponseEntity<?> viewAllShifts(@RequestParam String currentUserId){
 		List<ShiftDto> shifts = new ArrayList<ShiftDto>(); 
 		try {
 			shifts = shiftService.getAllShifts(currentUserId).stream().map(lh -> convertToDto(lh)).collect(Collectors.toList());
@@ -154,7 +154,7 @@ public class ShiftController {
 	 */
 	private ShiftDto convertToDto(Shift shift){
 		if (shift == null) throw new IllegalArgumentException("This shift does not exist");
-		ShiftDto shiftDto = new ShiftDto(shift.getLibrarianId(), shift.getDayOfWeek(), shift.getStartTime(), shift.getEndTime()); 
+		ShiftDto shiftDto = new ShiftDto(shift.getTimeSlotId(), shift.getLibrarianId(), shift.getDayOfWeek(), shift.getStartTime(), shift.getEndTime()); 
 		return shiftDto;
 	}
 }

@@ -20,6 +20,7 @@ public class ShiftService {
 	HeadLibrarianRepository headLibrarianRepo; 
 
 	/**Method creates a new shift (must be performed by head librarian)
+	 * Allows multiple shifts per day (as long as they do not overlap)
 	 * @author Arman
 	 * @param currentUserId, librarianId, dayOfWeek, startTime, endTime
 	 * @return shift 
@@ -36,8 +37,14 @@ public class ShiftService {
 		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can create librarian shifts");
 		if (librarian==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
 		if (startTime.after(endTime)) throw new IllegalArgumentException("Shift end time cannot be before its start time"); 
-	//	if (shiftRepo.findShiftByLibrarianIdAndDayOfWeek(librarianId, dayOfWeek)!=null) throw new IllegalArgumentException("Librarian already has a shift that day"); 
-		
+		Shift oldShift = shiftRepo.findShiftByLibrarianIdAndDayOfWeek(librarianId, dayOfWeek); 
+		// checks that shifts do not overlap
+		if (oldShift!=null) {
+			if ((oldShift.getEndTime().after(startTime) && oldShift.getEndTime().before(endTime)) ||
+				(oldShift.getStartTime().before(endTime) && oldShift.getStartTime().after(startTime))) {
+				throw new IllegalArgumentException("Librarian cannot have overlapping shifts");
+			}
+		}
 		Shift shift = new Shift(); 
 		String timeSlotId = dayOfWeek.toString() + librarianId + startTime.toString();
 		shift.setTimeSlotId(timeSlotId);
@@ -68,9 +75,15 @@ public class ShiftService {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
 		if (startTime.after(endTime)) throw new IllegalArgumentException("Shift end time cannot be before its start time"); 
-	//	if (shiftRepo.findShiftByLibrarianIdAndDayOfWeek(librarianId, newDayOfWeek)!=null) throw new IllegalArgumentException("Librarian already has a shift that day"); 
-		
-		if(shiftRepo.findShiftByTimeSlotId(timeSlotId)==null) throw new IllegalArgumentException("Shift does not exist so cannot modify"); 
+		Shift oldShift = shiftRepo.findShiftByLibrarianIdAndDayOfWeek(librarianId, newDayOfWeek); 
+		// checks that shifts do not overlap 
+		if (oldShift!=null) {
+			if ((oldShift.getEndTime().after(startTime) && oldShift.getEndTime().before(endTime)) ||
+				(oldShift.getStartTime().before(endTime) && oldShift.getStartTime().after(startTime))) {
+				throw new IllegalArgumentException("Librarian cannot have overlapping shifts");
+			}
+		}
+		if(shiftRepo.findShiftByTimeSlotId(timeSlotId)==null) throw new IllegalArgumentException("Old shift does not exist so cannot modify"); 
 		if(librarianRepo.findUserByIdNum(librarianId)==null) throw new IllegalArgumentException("No Librarian with this ID exists"); 
 		
 		Shift shift = shiftRepo.findShiftByTimeSlotId(timeSlotId);
