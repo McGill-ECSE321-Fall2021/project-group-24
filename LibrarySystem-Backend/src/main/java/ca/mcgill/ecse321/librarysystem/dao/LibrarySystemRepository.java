@@ -28,19 +28,19 @@ public class LibrarySystemRepository {
     String lastName,
     boolean isResident,
     String address,
+    String username,
     String email
   ) {
-    Patron p = new Patron();
+	Patron p = new Patron();
     p.setFirstName(firstName);
     p.setLastName(lastName);
-    p.setIdNum(idNum);
     p.setIsResident(isResident);
     p.setIsRegisteredOnline(false);
     p.setEmail(email);
     p.setAddress(address);
     p.setIsVerified(true);
     p.setPassword(null);
-    p.setUsername(null);
+    p.setUsername(username);
 
     entityManager.persist(p);
     return p;
