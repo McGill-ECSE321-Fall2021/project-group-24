@@ -19,7 +19,7 @@ public class LibrarianService {
   // creates librarian, returns it so we know it's not null
   @Transactional
   public Librarian createLibrarian(
-    String currentUserId,
+    // String currentUserId,
     String firstName,
     String lastName,
     String address,
@@ -28,25 +28,25 @@ public class LibrarianService {
     String password
   ) {
     validInput(firstName, lastName, address, email, username, password);
-    if (isHeadLibrarian(currentUserId)) {
-      String idNum =
-        firstName + "Librarian-" + toList(librarianRepo.findAll()).size();
-      Librarian librarian = new Librarian();
-      librarian.setUsername(username);
-      librarian.setPassword(password);
-      librarian.setFirstName(firstName);
-      librarian.setLastName(lastName);
-      librarian.setEmail(email);
-      librarian.setIdNum(idNum);
-      librarian.setAddress(address);
+    // if (isHeadLibrarian(currentUserId)) {
+    String idNum =
+      firstName + "Librarian-" + toList(librarianRepo.findAll()).size();
+    Librarian librarian = new Librarian();
+    librarian.setUsername(username);
+    librarian.setPassword(password);
+    librarian.setFirstName(firstName);
+    librarian.setLastName(lastName);
+    librarian.setEmail(email);
+    librarian.setIdNum(idNum);
+    librarian.setAddress(address);
 
-      librarianRepo.save(librarian);
-      return librarian;
-    } else {
-      throw new IllegalArgumentException(
-        "You do not have permission to create a librarian."
-      );
-    }
+    librarianRepo.save(librarian);
+    return librarian;
+    // } else {
+    // throw new IllegalArgumentException(
+    //   "You do not have permission to create a librarian."
+    // );
+    // }
   }
 
   // @Transactional

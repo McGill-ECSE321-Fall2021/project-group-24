@@ -103,11 +103,23 @@ public class TestLibrarianService {
 
         return list;
       });
+    lenient()
+      .when(headLibrarianDao.findUserByIdNum("admin"))
+      .thenAnswer((InvocationOnMock invocation) -> {
+        HeadLibrarian headLibrarian = new HeadLibrarian();
+        headLibrarian.setIdNum("admin");
+
+        return headLibrarian;
+      });
     Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
       return invocation.getArgument(0);
     };
     lenient()
       .when(librarianDao.save(any(Librarian.class)))
+      .thenAnswer(returnParameterAsAnswer);
+
+    lenient()
+      .when(headLibrarianDao.save(any(HeadLibrarian.class)))
       .thenAnswer(returnParameterAsAnswer);
   }
 
@@ -115,19 +127,12 @@ public class TestLibrarianService {
   //Create a librarian
   public void testCreateLibrarian() {
     Librarian librarian = null;
-    HeadLibrarian headLibrarian = new HeadLibrarian();
-    headLibrarian.setIdNum("admin");
-    headLibrarian.setUsername("admin");
-    headLibrarian.setPassword("admin");
-    headLibrarianDao.save(headLibrarian);
-    HeadLibrarian currentHeadLibrarian = headLibrarianDao.findUserByIdNum(
-      "admin"
-    );
-    System.out.println("here: " + currentHeadLibrarian);
+    HeadLibrarian headLibrarian = headLibrarianDao.findUserByIdNum("admin");
+    System.out.println("Head lib: " + headLibrarian.getIdNum());
     try {
       librarian =
         librarianService.createLibrarian(
-          "admin",
+          // headLibrarian.getIdNum(),
           testFirstName,
           testLastName,
           testAddress,

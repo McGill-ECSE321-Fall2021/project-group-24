@@ -2,11 +2,13 @@ package ca.mcgill.ecse321.librarysystem.service;
 
 import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
+import ca.mcgill.ecse321.librarysystem.service.HeadLibrarianService;
 
 public class SystemServiceHelpers {
 
   static LibrarianRepository librarianRepository;
   static HeadLibrarianRepository headLibrarianRepository;
+  static HeadLibrarianService headLibrarianService;
 
   public static void validInput(
     String firstName,
@@ -47,8 +49,10 @@ public class SystemServiceHelpers {
   }
 
   public static boolean isHeadLibrarian(String currentUserId) {
+    System.out.println("Current User ID: " + currentUserId);
+
     System.out.println("HERE");
-    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+    HeadLibrarian currentHeadLibrarian = headLibrarianService.getHeadLibrarian(
       currentUserId
     );
     System.out.println("HERE2");
