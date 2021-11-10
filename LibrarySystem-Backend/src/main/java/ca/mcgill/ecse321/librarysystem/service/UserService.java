@@ -140,7 +140,7 @@ public class UserService {
 		}
 		
 		if(!user.getPassword().equals(oldPass)){
-			throw new IllegalArgumentException("Incorrect password entered.");
+			throw new IllegalArgumentException("Incorrect old password entered.");
 		}
 		
 		if(user.getIsLoggedIn()==false) {
@@ -159,7 +159,93 @@ public class UserService {
 		user.setPassword(newPass);
 		return user;
 	}
+	/**Method changes a user's real life name (Must be performed by the user)
+	 * @author Arman
+	 * @param username, firstName, lastName
+	 * @return User
+	 */
+	@Transactional
+	public User changeName(String username, String firstName, String lastName) {
+		User user = null; 
+		if(librarianRepository.findUserByUsername(username)!=null) {
+			user = librarianRepository.findUserByUsername(username);
+		}else if(patronRepository.findPatronByUsername(username)!=null) {
+			user = patronRepository.findPatronByUsername(username);
+		}else if(headLibrarianRepository.findUserByUsername(username)!=null) {
+			user = headLibrarianRepository.findUserByUsername(username);
+		}else {
+			throw new IllegalArgumentException("An account with this username does not exist.");
+		}
+		
+		if(user.getIsLoggedIn()==false) {
+			throw new IllegalArgumentException("User must be logged in to change password.");
+		}
+		if (firstName.length()==0 || lastName.length()==0) {
+			throw new IllegalArgumentException("First and last name must not be blank"); 
+		}
+		
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		return user; 
+	}
 	
+	/**Method changes a user's email (Must be performed by the user)
+	 * @author Arman
+	 * @param username, email
+	 * @return User
+	 */
+	@Transactional
+	public User changeEmail(String username, String email) {
+		User user = null; 
+		if(librarianRepository.findUserByUsername(username)!=null) {
+			user = librarianRepository.findUserByUsername(username);
+		}else if(patronRepository.findPatronByUsername(username)!=null) {
+			user = patronRepository.findPatronByUsername(username);
+		}else if(headLibrarianRepository.findUserByUsername(username)!=null) {
+			user = headLibrarianRepository.findUserByUsername(username);
+		}else {
+			throw new IllegalArgumentException("An account with this username does not exist.");
+		}
+		
+		if(user.getIsLoggedIn()==false) {
+			throw new IllegalArgumentException("User must be logged in to change password.");
+		}
+		if (email.length()==0 || !(email.contains("@")) || !(email.contains("."))) {
+			throw new IllegalArgumentException("Email must contain '@' and '.' and must not be blank"); 
+		}
+		
+		user.setEmail(email);
+		return user; 
+	}
+	
+	/**Method changes a user's physical address (Must be performed by the user)
+	 * @author Arman
+	 * @param username, address
+	 * @return User
+	 */
+	@Transactional
+	public User changeAddress(String username, String address) {
+		User user = null; 
+		if(librarianRepository.findUserByUsername(username)!=null) {
+			user = librarianRepository.findUserByUsername(username);
+		}else if(patronRepository.findPatronByUsername(username)!=null) {
+			user = patronRepository.findPatronByUsername(username);
+		}else if(headLibrarianRepository.findUserByUsername(username)!=null) {
+			user = headLibrarianRepository.findUserByUsername(username);
+		}else {
+			throw new IllegalArgumentException("An account with this username does not exist.");
+		}
+		
+		if(user.getIsLoggedIn()==false) {
+			throw new IllegalArgumentException("User must be logged in to change password.");
+		}
+		if (address.length()==0) {
+			throw new IllegalArgumentException("Address cannot be blank"); 
+		}
+		
+		user.setAddress(address);
+		return user; 
+	}
 	
 	
 	
