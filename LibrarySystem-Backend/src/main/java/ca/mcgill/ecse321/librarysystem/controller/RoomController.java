@@ -41,7 +41,6 @@ public class RoomController {
 	public RoomDto createRoom(@PathVariable("roomNumber") String roomNumber,
 			@RequestParam String currentUserId,
 			@RequestParam Integer capacity) {
-		System.out.print("Flag post");
 		Room room = null;
 		try {
 			room = roomService.createRoom(currentUserId, roomNumber, capacity);
@@ -60,16 +59,16 @@ public class RoomController {
 	 * 
 	 * only librarians have permission to update room
 	 */
-	@PutMapping(value = { "/update_rooms/{oldRoomNumber}", "/update_rooms/{oldRoomNumber}/" })
+	@PostMapping(value = { "/update_rooms/{oldRoomNumber}", "/update_rooms/{oldRoomNumber}/" })
 	public RoomDto updateRoom(@PathVariable("oldRoomNumber") String oldRoomNumber,
 			@RequestParam String currentUserId,
-			@RequestParam Integer capacity,
+			@RequestParam Integer newCapacity,
 			@RequestParam String newRoomNum) {
 		
 		System.out.print("Flag put");
 		Room room = null;
 		try {
-			room = roomService.updateRoom(currentUserId, oldRoomNumber, newRoomNum, capacity);
+			room = roomService.updateRoom(currentUserId, oldRoomNumber, newRoomNum, newCapacity);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -77,14 +76,14 @@ public class RoomController {
 		return convertToDto(room);
 	}
 	
-	/** Method update room using room number
+	/** Method delete room using room number
 	 * @author Selena 
 	 * @param oldRoomNumber, currentUserId, capacity, newRoomNum
 	 * @return room if successfully deleted
 	 * 
 	 * only librarians have permission to update room
 	 */
-	@DeleteMapping(value = { "/delete_rooms/{roomNum}", "/delete_rooms/{roomNum}/" })
+	@PostMapping(value = { "/delete_rooms/{roomNum}", "/delete_rooms/{roomNum}/" })
 	public RoomDto deleteRoom(@PathVariable("oldRoomNumber") String roomNum,
 			@RequestParam String currentUserId) {
 		System.out.print("Flag delete");

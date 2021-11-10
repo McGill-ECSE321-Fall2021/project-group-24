@@ -103,15 +103,14 @@ public class RoomBookingController {
 	 * 
 	 * librarian are allowed to update any roombooking, patron can only update their own roombookings
 	 */
-	@PutMapping(value = { "/update_roombookings", "/update_roombookings/" })
+	@PostMapping(value = { "/update_roombookings", "/update_roombookings/" })
 	public RoomBookingDto updateRoomBooking(
 			 @RequestParam String currentUserId,
 			 @RequestParam String timeSlotId,
-			 @RequestParam String date,
-			 @RequestParam String startTime,
-			 @RequestParam String endTime,
-			 @RequestParam String idNum,
-			 @RequestParam String roomNum
+			 @RequestParam String newDate,
+			 @RequestParam String newStartTime,
+			 @RequestParam String newEndTime,
+			 @RequestParam String newRoomNum
 			) {
 		System.out.println("Flag Put"); 
 		RoomBooking booking = null;
@@ -119,10 +118,10 @@ public class RoomBookingController {
 			booking = roomBookingService.updateRoomBooking(
 					currentUserId,
 					timeSlotId,
-					Date.valueOf(LocalDate.parse(date)),
-					Time.valueOf(LocalTime.parse(startTime)),
-					Time.valueOf(LocalTime.parse(endTime)),
-					roomNum
+					Date.valueOf(LocalDate.parse(newDate)),
+					Time.valueOf(LocalTime.parse(newStartTime)),
+					Time.valueOf(LocalTime.parse(newEndTime)),
+					newRoomNum
 			     );
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -138,7 +137,7 @@ public class RoomBookingController {
 	 * 
 	 * librarian are allowed to delete any roombooking, patron can only delete their own roombookings
 	 */
-	@DeleteMapping(value = { "/delete_roombookings", "/delete_roombookings/" })
+	@PostMapping(value = { "/delete_roombookings", "/delete_roombookings/" })
 	public RoomBookingDto deleteRoomBooking(
 			@RequestParam String currentUserId, 
 			@RequestParam String timeSlotId) {

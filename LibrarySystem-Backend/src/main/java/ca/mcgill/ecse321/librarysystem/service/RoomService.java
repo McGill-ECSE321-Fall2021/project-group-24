@@ -32,6 +32,9 @@ public class RoomService {
 		// check capacity 
 		if (capacity<1) throw new IllegalArgumentException("Capacity must be at least 1");
 		
+		// check room number
+		if (!inputIsValid(roomNum)) throw new IllegalArgumentException("Room number cannot be null or empty");
+		
 		// check permission: only librarians have permission to create the rooms
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
@@ -45,18 +48,27 @@ public class RoomService {
 	    		      );
 	    }
 	    
-	    // check if newRoomNum is available
+	    // check if roomNum is available
 	    for (Room room: toList(roomRepository.findAll()) )  {
 	    	if ( room.getRoomNum().equalsIgnoreCase(roomNum) ) throw new IllegalArgumentException("The room number already exists");
 	    }
 	    
 	    
 		Room room = new Room();
-	    room.setRoomNum(roomNum);
-	    room.setCapacity(capacity);
+		room.setRoomNum(roomNum);
+		room.setCapacity(capacity);
 
 	    roomRepository.save(room);
 	    return room;		
+	}
+	
+	// helper method: check if the input is null or empty
+	private boolean inputIsValid(String string) {
+		if (string == null || string.length()==0) {
+			return false;
+		}
+		return true;
+		
 	}
 	
 	// looks for a room with the given ID number, returns them if found
@@ -80,6 +92,9 @@ public class RoomService {
 		// check capacity 
 		if (newCapacity<1) throw new IllegalArgumentException("Capacity must be at least 1");
 		
+		// check new room number
+		if (!inputIsValid(newRoomNum)) throw new IllegalArgumentException("Room number cannot be null or empty");
+		
 		// check permission: only librarians have permission to update the rooms
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
@@ -100,7 +115,8 @@ public class RoomService {
 	    
 	    
 		Room toUpdate = roomRepository.findRoomByRoomNum(oldRoomNum);
-		toUpdate.setCapacity(newCapacity);
+		if (toUpdate == null) throw new IllegalArgumentException("Old room number is invalid");
+		toUpdate.setCapacity(newCapacity);		
 		toUpdate.setRoomNum(newRoomNum);
 		
 
