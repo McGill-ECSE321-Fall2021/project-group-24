@@ -1,15 +1,21 @@
 package ca.mcgill.ecse321.librarysystem.service;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ca.mcgill.ecse321.librarysystem.dao.HeadLibrarianRepository;
+import ca.mcgill.ecse321.librarysystem.dao.LibrarianRepository;
 import ca.mcgill.ecse321.librarysystem.dao.PatronRepository;
-import ca.mcgill.ecse321.librarysystem.model.LibrarySystem;
+import ca.mcgill.ecse321.librarysystem.model.HeadLibrarian;
+import ca.mcgill.ecse321.librarysystem.model.ItemReservation;
+import ca.mcgill.ecse321.librarysystem.model.Librarian;
 import ca.mcgill.ecse321.librarysystem.model.Patron;
-import ca.mcgill.ecse321.librarysystem.model.User;
+import ca.mcgill.ecse321.librarysystem.model.RoomBooking;
 
 
 @Service
@@ -17,10 +23,16 @@ public class PatronService {
 //written by Nafis
 	
 	
-	
-	
+	@Autowired
+	LibrarianRepository librarianRepository;
+	@Autowired
+	HeadLibrarianRepository headLibrarianRepository;
 	@Autowired
 	PatronRepository patronRepository;
+	@Autowired
+	ItemReservationService itemReservationService;
+	@Autowired
+	RoomBookingService roomBookingService;
 	
 	
 	//for accounts created in person by a librarian
@@ -88,6 +100,47 @@ public class PatronService {
 		patronRepository.save(p);
 		return p;
 		
+	}
+	/***
+	 * @author Saagar
+	 * deletes a patron by idNum
+	 * @param idNum
+	 * @param currentUserId
+	 * @return
+	 */
+	@Transactional
+	public boolean deletePatron(String idNum, String currentUserId) {
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		Patron patron = patronRepository.findUserByIdNum(idNum);
+		if (currentUserId.equals(idNum) && !patron.getIsLoggedIn()
+				|| currentLibrarian != null && !currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && !currentHeadLibrarian.getIsLoggedIn()) {
+			throw new IllegalArgumentException("Only a librarian or the patron themselves can delete a patron account");
+		} 
+		if (librarianRepository.findUserByIdNum(idNum) != null || headLibrarianRepository.findUserByIdNum(idNum) != null) {
+			throw new IllegalArgumentException("Cannot delete a librarian this way");
+		}
+		List<ItemReservation> reservations = itemReservationService.getItemReservationsByIdNum(currentUserId, idNum);
+		//check to see if there are any checked out items
+		for (ItemReservation reservation : reservations) {
+			if (reservation.getIsCheckedOut()) {
+				throw new IllegalArgumentException("Cannot delete account until item" + reservation.getItemNumber() + "is returned");
+			}
+		}
+		Date today = Date.valueOf(LocalDate.now());
+		for (ItemReservation reservation : reservations) {
+			if (reservation.getStartDate().after(today) || reservation.getStartDate().equals(today)) {
+				itemReservationService.cancelItemReservation(currentUserId, reservation.getItemReservationId());
+			}
+		}
+		for (RoomBooking booking : roomBookingService.getRoomBookingsByIdNum(idNum)) {
+			if (booking.getDate().after(today) || booking.getDate().equals(today)) {
+				roomBookingService.deleteRoomBooking(currentUserId, booking.getTimeSlotId());
+			}
+		}
+		patronRepository.delete(patron);
+		return true;
 	}
 	
 	
