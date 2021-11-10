@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 
 import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
-import ca.mcgill.ecse321.librarysystem.service.UserService;
+import ca.mcgill.ecse321.librarysystem.service.HeadLibrarianService;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalTime;
@@ -28,19 +28,24 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
 @ExtendWith(MockitoExtension.class)
 public class TestLibrarianService {
 
+  private HeadLibrarianService headLibrarianService;
+
   @Mock
   private LibrarianRepository librarianDao;
+
+  @Mock
+  private HeadLibrarianRepository headLibrarianDao;
 
   @InjectMocks
   // private UserService userService;
   private LibrarianService librarianService;
 
+  private static final String nullString = null;
   private static final String emptyString = "";
   // private static final String testIdNum = "bobLibrarian-0";
   // private static final String wrongIdNum = "jeffLibrarian-0";
@@ -92,7 +97,7 @@ public class TestLibrarianService {
         librarian2.setEmail(testEmail + "2");
         librarian2.setUsername(testUsername + "2");
         librarian2.setPassword(testPassword + "2");
-        ArrayList<Librarian> list = new ArrayList<>();
+        ArrayList<Librarian> list = new ArrayList<Librarian>();
         list.add(librarian);
         list.add(librarian2);
 
@@ -110,9 +115,19 @@ public class TestLibrarianService {
   //Create a librarian
   public void testCreateLibrarian() {
     Librarian librarian = null;
+    HeadLibrarian headLibrarian = new HeadLibrarian();
+    headLibrarian.setIdNum("admin");
+    headLibrarian.setUsername("admin");
+    headLibrarian.setPassword("admin");
+    headLibrarianDao.save(headLibrarian);
+    HeadLibrarian currentHeadLibrarian = headLibrarianDao.findUserByIdNum(
+      "admin"
+    );
+    System.out.println("here: " + currentHeadLibrarian);
     try {
       librarian =
         librarianService.createLibrarian(
+          "admin",
           testFirstName,
           testLastName,
           testAddress,
@@ -130,11 +145,12 @@ public class TestLibrarianService {
     assertEquals(testEmail, librarian.getEmail());
     assertEquals(testUsername, librarian.getUsername());
     assertEquals(testPassword, librarian.getPassword());
+    System.out.println(librarian.getIdNum());
     System.out.println("Librarian account created!");
   }
 
   @Test
-  //Create a librarian with empty username
+  //Create a librarian with empty username (empty string)
   public void testCreateLibrarianWithEmptyUsername() {
     String error = null;
     Librarian librarian = null;
@@ -152,7 +168,329 @@ public class TestLibrarianService {
       error = e.getMessage();
     }
     assertNull(librarian);
-    assertEquals("Please enter a valid username.", error);
+    assertEquals("Please enter your username.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with empty username (null)
+  public void testCreateLibrarianWithNullUsername() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          testLastName,
+          testAddress,
+          testEmail,
+          nullString,
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter your username.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with space in username
+  public void testCreateLibrarianWithUsernameSpace() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          testLastName,
+          testAddress,
+          testEmail,
+          "User Name",
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter a username without spaces.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with empty password (empty string)
+  public void testCreateLibrarianWithEmptyPassword() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          testLastName,
+          testAddress,
+          testEmail,
+          testUsername,
+          emptyString
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter your password.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with empty password (null)
+  public void testCreateLibrarianWithNullPassword() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          testLastName,
+          testAddress,
+          testEmail,
+          testUsername,
+          nullString
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter your password.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with space in password
+  public void testCreateLibrarianWithPasswordSpace() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          testLastName,
+          testAddress,
+          testEmail,
+          testUsername,
+          "Pass Word"
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter a password without spaces.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with empty first name (empty string)
+  public void testCreateLibrarianWithEmptyFirstName() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          emptyString,
+          testLastName,
+          testAddress,
+          testEmail,
+          testUsername,
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter your first name.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with empty first name (null)
+  public void testCreateLibrarianWithNullFirstName() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          nullString,
+          testLastName,
+          testAddress,
+          testEmail,
+          testUsername,
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter your first name.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with empty last name (empty string)
+  public void testCreateLibrarianWithEmptyLastName() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          emptyString,
+          testAddress,
+          testEmail,
+          testUsername,
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter your last name.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with empty last name (null)
+  public void testCreateLibrarianWithNullLastName() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          nullString,
+          testAddress,
+          testEmail,
+          testUsername,
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter your last name.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with empty email (empty string)
+  public void testCreateLibrarianWithEmptyEmail() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          testLastName,
+          testAddress,
+          emptyString,
+          testUsername,
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter your email.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with empty email (null)
+  public void testCreateLibrarianWithNullEmail() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          testLastName,
+          testAddress,
+          nullString,
+          testUsername,
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter your email.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with space in email
+  public void testCreateLibrarianWithEmailSpace() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          testLastName,
+          testAddress,
+          "test@test .ca",
+          testUsername,
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter an email without spaces.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with empty address (empty string)
+  public void testCreateLibrarianWithEmptyAddress() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          testLastName,
+          emptyString,
+          testEmail,
+          testUsername,
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter your address.", error);
+    System.out.println(error);
+  }
+
+  @Test
+  //Create a librarian with empty address (null)
+  public void testCreateLibrarianWithNullAddress() {
+    String error = null;
+    Librarian librarian = null;
+    try {
+      librarian =
+        librarianService.createLibrarian(
+          testFirstName,
+          testLastName,
+          nullString,
+          testEmail,
+          testUsername,
+          testPassword
+        );
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(librarian);
+    assertEquals("Please enter your address.", error);
     System.out.println(error);
   }
 
@@ -167,9 +505,6 @@ public class TestLibrarianService {
     } catch (IllegalArgumentException e) {
       fail();
     }
-    for (Librarian librarian : librarians) {
-      System.out.println(librarian.getFirstName());
-    }
     assertNotNull(librarians);
     assertEquals(2, librarians.size());
     assertEquals(testFirstName, librarians.get(0).getFirstName());
@@ -178,5 +513,15 @@ public class TestLibrarianService {
     assertEquals(testEmail, librarians.get(0).getEmail());
     assertEquals(testUsername, librarians.get(0).getUsername());
     assertEquals(testPassword, librarians.get(0).getPassword());
+    assertEquals(testFirstName + "2", librarians.get(1).getFirstName());
+    assertEquals(testLastName + "2", librarians.get(1).getLastName());
+    assertEquals(testAddress + "2", librarians.get(1).getAddress());
+    assertEquals(testEmail + "2", librarians.get(1).getEmail());
+    assertEquals(testUsername + "2", librarians.get(1).getUsername());
+    assertEquals(testPassword + "2", librarians.get(1).getPassword());
+
+    for (Librarian librarian : librarians) {
+      System.out.println(librarian.getFirstName());
+    }
   }
 }
