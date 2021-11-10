@@ -135,7 +135,7 @@ public class UserController {
 	 * @param address
 	 * @return userDto
 	 */
-	@PostMapping(value = {"/change_email", "/change_email/"})
+	@PostMapping(value = {"/change_address", "/change_address/"})
 	public ResponseEntity<?> changeAddress(@RequestParam String username, @RequestParam String address) {
 		User user = null; 
 		try {
