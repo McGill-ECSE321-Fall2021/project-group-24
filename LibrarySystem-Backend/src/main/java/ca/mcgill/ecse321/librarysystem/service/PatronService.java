@@ -178,8 +178,8 @@ public class PatronService {
 	
 	
 	public boolean emailIsValid(String email) {
-		if (email == null||email == "") {
-			throw new IllegalArgumentException("Email cannot be empty.");
+		if (email == null||email == "" || !(email.contains("@")) || !(email.contains(".")) ) {
+			throw new IllegalArgumentException("Email cannot be empty and it must include '@' and '.' symbols.");
 		}else {
 			return true;
 		}
