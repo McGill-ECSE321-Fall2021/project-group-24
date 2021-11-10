@@ -21,6 +21,7 @@ public class RoomService {
 	@Autowired
 	HeadLibrarianRepository headLibrarianRepository;
 	
+	
 	// creates room, returns it so we know it's not null 
 	@Transactional 
 	public Room createRoom(
@@ -28,14 +29,20 @@ public class RoomService {
 			String roomNum,
 		    Integer capacity)  throws Exception
 	{
-		// check permission: only head librarian have permission to modify the rooms
+		// check capacity 
+		if (capacity<1) throw new IllegalArgumentException("Capacity must be at least 1");
+		
+		// check permission: only librarians have permission to create the rooms
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
 	    if (
-	      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+	      (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn() ) || ( currentLibrarian != null && currentLibrarian.getIsLoggedIn() )
 	    ) {
-	      throw new IllegalArgumentException(
-	        "You do not have permission to create a room"
-	      );
+	    
+	    }else {
+	    	 throw new IllegalArgumentException(
+	    		        "You do not have permission to create a room"
+	    		      );
 	    }
 	    
 	    // check if newRoomNum is available
@@ -55,7 +62,6 @@ public class RoomService {
 	// looks for a room with the given ID number, returns them if found
 	@Transactional 
 	public Room getRoom(String roomNum) {
-		System.out.println("ROOOOM" + roomNum);
 		Room room = roomRepository.findRoomByRoomNum(roomNum); 
 		return room;
 	}
@@ -71,20 +77,28 @@ public class RoomService {
 	@Transactional 
 	public Room updateRoom (String currentUserId, String oldRoomNum, String newRoomNum, int newCapacity) throws Exception
 	{
-		// check permission: only head librarian have permission to modify the rooms
+		// check capacity 
+		if (newCapacity<1) throw new IllegalArgumentException("Capacity must be at least 1");
+		
+		// check permission: only librarians have permission to update the rooms
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
 	    if (
-	      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+	      (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn() ) || ( currentLibrarian != null && currentLibrarian.getIsLoggedIn() )
 	    ) {
-	      throw new IllegalArgumentException(
-	        "You do not have permission to update a room"
-	      );
+	    
+	    }else {
+	    	 throw new IllegalArgumentException(
+	    		        "You do not have permission to update a room"
+	    		      );
 	    }
 		
 	    // check if newRoomNum is available
 	    for (Room room: toList(roomRepository.findAll()) )  {
 	    	if ( room.getRoomNum().equalsIgnoreCase(newRoomNum) ) throw new IllegalArgumentException("The new room number already exists");
 	    }
+	    
+	    
 		Room toUpdate = roomRepository.findRoomByRoomNum(oldRoomNum);
 		toUpdate.setCapacity(newCapacity);
 		toUpdate.setRoomNum(newRoomNum);
@@ -97,13 +111,17 @@ public class RoomService {
 	@Transactional 
 	public Room deleteRoom (String currentUserId, String roomNum) throws Exception
 	{
+		// check permission: only librarians have permission to delete rooms
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
 	    if (
-	      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+	      (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn() ) || ( currentLibrarian != null && currentLibrarian.getIsLoggedIn() )
 	    ) {
-	      throw new IllegalArgumentException(
-	        "You do not have permission to delete a room"
-	      );
+	    
+	    }else {
+	    	 throw new IllegalArgumentException(
+	    		        "You do not have permission to delete a room"
+	    		      );
 	    }
 			    
 		Room toDelete = roomRepository.findRoomByRoomNum(roomNum);

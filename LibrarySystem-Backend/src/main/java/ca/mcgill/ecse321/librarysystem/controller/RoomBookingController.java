@@ -25,31 +25,54 @@ public class RoomBookingController {
 	@Autowired
 	private RoomBookingService roomBookingService;
 	
+	/** Method get all roombookings
+	 * @author Selena 
+	 * @return all roombookings
+	 */
 	@GetMapping(value = { "/view_roombookings", "/view_roombookings/" })
 	public List<RoomBookingDto> getRoomBooking() {
 		System.out.println("Flag Get"); 
 		return roomBookingService.getAllRoomBookings().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
 	}
 	
+	/** Method get all roombookings of a patron provided idNum
+	 * @author Selena 
+	 * @param idNum
+	 * @return all roombookings of a patron
+	 */
 	@GetMapping(value = { "/view_roombookings/patron/{idNum}", "/view_roombookings/patron/{idNum}/" })
 	public List<RoomBookingDto> getRoomBookingOfPatron(@PathVariable("idNum") String idNum) {
 		return getRoomBookingDtosForPatron(idNum);
 	}
 	
+	/** Method get all roombookings of a room
+	 * @author Selena 
+	 * @param roomNum
+	 * @return all roombookings of a room
+	 */
 	@GetMapping(value = { "/view_roombookings/room/{roomNum}", "/view_roombookings/room/{roomNum}/" })
 	public List<RoomBookingDto> getRoomBookingOfRoom(@PathVariable("roomNum") String roomNum) {
 		return getRoomBookingDtosForRoom(roomNum);
 	}
 	
+	/** Method get the roombooking with timeSlotId
+	 * @author Selena 
+	 * @param timeSlotId
+	 * @return roombooking with timeSlotId
+	 */
 	@GetMapping(value = { "/view_roombookings/{timeSlotId}", "/view_roombookings/{timeSlotId}/" })
 	public RoomBookingDto getRoomBookingOfTimeSlot(@PathVariable("timeSlotId") String timeSlotId) {
 		System.out.println("Flag Get" + timeSlotId); 
 		return convertToDto(roomBookingService.getRoomBookingsByTimeSlotId(timeSlotId));
 	}
 	
-	//TODO check who is making the request, if its a librarian, make the roombooking under the idNum provided
-	//if it's a patron, check if idNum (if provided) is the same as their own, if yes, then create the roombooking
-	//else, throw illegalArguementException
+	/** Method create roombooking, timeSlotId is automatically generated
+	 * @author Selena 
+	 * @param currentUserId, date, startTime, endTime, idNum, roomNum
+	 * @return roombooking if successfully created
+	 * 
+	 * librarian are allowed to create roombookings for a patron, patron can only create roombookings for themselves
+	 */
 	@PostMapping(value = { "/add_roombookings", "/add_roombookings/" })
 	public RoomBookingDto createRoomBooking(
 			 @RequestParam String currentUserId,
@@ -73,8 +96,13 @@ public class RoomBookingController {
 		return convertToDto(booking);
 		
 	}
-	
-	// method for modify room booking
+	/** Method update roombooking using timeSlotId
+	 * @author Selena 
+	 * @param currentUserId, date, startTime, endTime, idNum, roomNum
+	 * @return roombooking if successfully updated
+	 * 
+	 * librarian are allowed to update any roombooking, patron can only update their own roombookings
+	 */
 	@PutMapping(value = { "/update_roombookings", "/update_roombookings/" })
 	public RoomBookingDto updateRoomBooking(
 			 @RequestParam String currentUserId,
@@ -103,9 +131,17 @@ public class RoomBookingController {
 		
 	}
 	
-	// method for delete room booking
+	/** Method delete roombooking using timeSlotId
+	 * @author Selena 
+	 * @param currentUserId, timeSlotId
+	 * @return roombooking if successfully deleted
+	 * 
+	 * librarian are allowed to delete any roombooking, patron can only delete their own roombookings
+	 */
 	@DeleteMapping(value = { "/delete_roombookings", "/delete_roombookings/" })
-	public RoomBookingDto deleteRoomBooking(String currentUserId, String timeSlotId) {
+	public RoomBookingDto deleteRoomBooking(
+			@RequestParam String currentUserId, 
+			@RequestParam String timeSlotId) {
 		RoomBooking booking = null;
 		try {
 			booking = roomBookingService.deleteRoomBooking(
