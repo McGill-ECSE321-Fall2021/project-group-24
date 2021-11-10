@@ -82,15 +82,69 @@ public class UserController {
 	
 	@RequestMapping(value = { "/change_password", "/change_password/" }, method = { RequestMethod.GET, RequestMethod.POST })
 	public ResponseEntity<?> changePassword(@RequestParam("username") String user, @RequestParam("newPass") String newPass, @RequestParam("oldPass") String oldPass) {
-		
 		try {
 			User u = userService.changePassword(user, newPass, oldPass);
-			UserDto UserDto = convertToDto(u);
-			return new ResponseEntity<>(u, HttpStatus.OK);
+			UserDto userDto = convertToDto(u);
+			return new ResponseEntity<>(userDto, HttpStatus.OK);
 		}catch(Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
+	}
+	
+	/**Method changes the user's name 
+	 * @author Arman
+	 * @param username
+	 * @param firstName
+	 * @param lastName
+	 * @return userDto
+	 */
+	@PostMapping(value = {"/change_name", "/change_name/"})
+	public ResponseEntity<?> changeName(@RequestParam String username, @RequestParam String firstName, @RequestParam String lastName) {
+		User user = null; 
+		try {
+			user = userService.changeName(username, firstName, lastName); 
+			}		
+			catch(IllegalArgumentException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		return new ResponseEntity<>(convertToDto(user), HttpStatus.CREATED);
+	}
+	
+	/**Method changes the user's email 
+	 * @author Arman
+	 * @param username
+	 * @param email
+	 * @return userDto
+	 */
+	@PostMapping(value = {"/change_email", "/change_email/"})
+	public ResponseEntity<?> changeEmail(@RequestParam String username, @RequestParam String email) {
+		User user = null; 
+		try {
+			user = userService.changeEmail(username, email);  
+			}		
+			catch(IllegalArgumentException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		return new ResponseEntity<>(convertToDto(user), HttpStatus.CREATED);
+	}
+	
+	/**Method changes the user's physical address 
+	 * @author Arman
+	 * @param username
+	 * @param address
+	 * @return userDto
+	 */
+	@PostMapping(value = {"/change_email", "/change_email/"})
+	public ResponseEntity<?> changeAddress(@RequestParam String username, @RequestParam String address) {
+		User user = null; 
+		try {
+			user = userService.changeAddress(username, address); 
+			}		
+			catch(IllegalArgumentException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		return new ResponseEntity<>(convertToDto(user), HttpStatus.CREATED);
 	}
 	
 	
