@@ -40,7 +40,7 @@ public class UserController {
 	UserService userService;
 	
 	
-	@GetMapping(value = {"/users","/users/"})
+	@GetMapping(value = {"/all","/all/"})
 	public List<UserDto> getAllUsers(){
 		return userService.getAllUsers().stream().map(user -> 
 		convertToDto(user)).collect(Collectors.toList());
@@ -148,10 +148,10 @@ public class UserController {
 	}
 	
 	
-	@GetMapping(value= {"get_user_by_id/{Id}", "get_user_by_id/{Id}/"})
-	public ResponseEntity<?> getUserById(@PathVariable("Id") String Id){
+	@GetMapping(value= {"get_user_by_id/{idNum}", "get_user_by_id/{idNum}/"})
+	public ResponseEntity<?> getUserById(@PathVariable String idNum){
 		try {
-			User user = userService.getUserAccountById(Id);
+			User user = userService.getUserAccountById(idNum);
 			UserDto dto = convertToDto(user);
 			return new ResponseEntity(dto, HttpStatus.OK);
 		}catch (Exception e) {

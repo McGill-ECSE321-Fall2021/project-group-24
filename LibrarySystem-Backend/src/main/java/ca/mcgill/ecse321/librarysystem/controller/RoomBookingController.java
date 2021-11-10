@@ -60,7 +60,7 @@ public class RoomBookingController {
 	 * @param timeSlotId
 	 * @return roombooking with timeSlotId
 	 */
-	@GetMapping(value = { "/view_roombookings/{timeSlotId}", "/view_roombookings/{timeSlotId}/" })
+	@GetMapping(value = { "/view_roombooking/{timeSlotId}", "/view_roombooking/{timeSlotId}/" })
 	public RoomBookingDto getRoomBookingOfTimeSlot(@PathVariable("timeSlotId") String timeSlotId) {
 		System.out.println("Flag Get" + timeSlotId); 
 		return convertToDto(roomBookingService.getRoomBookingsByTimeSlotId(timeSlotId));
@@ -73,7 +73,7 @@ public class RoomBookingController {
 	 * 
 	 * librarian are allowed to create roombookings for a patron, patron can only create roombookings for themselves
 	 */
-	@PostMapping(value = { "/add_roombookings", "/add_roombookings/" })
+	@PostMapping(value = { "/add_roombooking", "/add_roombooking/" })
 	public RoomBookingDto createRoomBooking(
 			 @RequestParam String currentUserId,
 			 @RequestParam String date,
@@ -103,7 +103,7 @@ public class RoomBookingController {
 	 * 
 	 * librarian are allowed to update any roombooking, patron can only update their own roombookings
 	 */
-	@PostMapping(value = { "/update_roombookings", "/update_roombookings/" })
+	@PostMapping(value = { "/update_roombooking", "/update_roombooking/" })
 	public RoomBookingDto updateRoomBooking(
 			 @RequestParam String currentUserId,
 			 @RequestParam String timeSlotId,
@@ -137,7 +137,7 @@ public class RoomBookingController {
 	 * 
 	 * librarian are allowed to delete any roombooking, patron can only delete their own roombookings
 	 */
-	@PostMapping(value = { "/delete_roombookings", "/delete_roombookings/" })
+	@PostMapping(value = { "/delete_roombooking", "/delete_roombooking/" })
 	public RoomBookingDto deleteRoomBooking(
 			@RequestParam String currentUserId, 
 			@RequestParam String timeSlotId) {

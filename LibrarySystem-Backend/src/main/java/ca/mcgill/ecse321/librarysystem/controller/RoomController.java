@@ -37,7 +37,7 @@ public class RoomController {
 	 * 
 	 * only librarians have permission to update room
 	 */
-	@PostMapping(value = { "/create_rooms/{roomNumber}", "/create_rooms/{roomNumber}/" })
+	@PostMapping(value = { "/create_room/{roomNumber}", "/create_room/{roomNumber}/" })
 	public RoomDto createRoom(@PathVariable("roomNumber") String roomNumber,
 			@RequestParam String currentUserId,
 			@RequestParam Integer capacity) {
@@ -59,7 +59,7 @@ public class RoomController {
 	 * 
 	 * only librarians have permission to update room
 	 */
-	@PostMapping(value = { "/update_rooms/{oldRoomNumber}", "/update_rooms/{oldRoomNumber}/" })
+	@PostMapping(value = { "/update_room/{oldRoomNumber}", "/update_room/{oldRoomNumber}/" })
 	public RoomDto updateRoom(@PathVariable("oldRoomNumber") String oldRoomNumber,
 			@RequestParam String currentUserId,
 			@RequestParam Integer newCapacity,
@@ -83,7 +83,7 @@ public class RoomController {
 	 * 
 	 * only librarians have permission to update room
 	 */
-	@PostMapping(value = { "/delete_rooms/{roomNum}", "/delete_rooms/{roomNum}/" })
+	@PostMapping(value = { "/delete_room/{roomNum}", "/delete_room/{roomNum}/" })
 	public RoomDto deleteRoom(@PathVariable("oldRoomNumber") String roomNum,
 			@RequestParam String currentUserId) {
 		System.out.print("Flag delete");

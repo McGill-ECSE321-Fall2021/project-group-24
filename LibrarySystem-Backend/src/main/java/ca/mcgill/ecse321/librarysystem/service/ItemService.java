@@ -26,7 +26,7 @@ public class ItemService {
   // creates book, returns it so we know it's not null
   @Transactional
   public Book createBook(
-    // String currentUserId,
+     String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,
@@ -46,21 +46,21 @@ public class ItemService {
     isReservable,
     author,
     publisher);
-    // Librarian currentLibrarian = librarianRepository.findUserByIdNum(
-    //   currentUserId
-    // );
-    // HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
-    //   currentUserId
-    // );
-    // if (
-    //   currentLibrarian == null ||
-    //   !currentLibrarian.getIsLoggedIn() &&
-    //   (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
-    // ) {
-    //   throw new IllegalArgumentException(
-    //     "You do not have permission to create an item reservation"
-    //   );
-    // }
+     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+       currentUserId
+     );
+     HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+       currentUserId
+     );
+     if (
+       currentLibrarian == null ||
+       !currentLibrarian.getIsLoggedIn() &&
+       (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+     ) {
+       throw new IllegalArgumentException(
+         "You do not have permission to create an item reservation"
+       );
+     }
 
     if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");

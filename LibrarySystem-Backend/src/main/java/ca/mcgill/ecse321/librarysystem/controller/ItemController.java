@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/item")
+@RequestMapping("/api/items")
 public class ItemController {
 
   @Autowired
   private ItemService itemService;
 
   //GET to get all items
-  @GetMapping(value = { "/items/", "/items" })
+  @GetMapping(value = { "/all/", "/all" })
   public List<ItemDto> getAllItems() {
     System.out.println("Flag Get");
     return itemService
@@ -35,7 +35,7 @@ public class ItemController {
       .collect(Collectors.toList());
   }
 
-  @GetMapping(value = { "/items/{itemNumber}", "/items/{itemNumber}/" })
+  @GetMapping(value = { "/{itemNumber}", "/{itemNumber}/" })
   public ItemDto getItem(@PathVariable("itemNumber") String itemNumber) {
     System.out.println("Flag Get" + itemNumber);
     Item item = itemService.getItem(itemNumber);
@@ -43,7 +43,7 @@ public class ItemController {
     return convertToDto(item);
   }
 
-  @PostMapping(value = { "/items/createBook/{", "/items/createBook" })
+  @PostMapping(value = { "/create_book/{", "/create_book" })
   public BookDto createBook(
     @RequestParam String itemTitle,
     @RequestParam String description,
@@ -71,7 +71,7 @@ public class ItemController {
     return convertToBookDto(book);
   }
 
-  @PostMapping(value = { "/items/createMovie", "/items/createMovie/" })
+  @PostMapping(value = { "/create_movie", "/create_movie/" })
   public MovieDto createMovie(
     @RequestParam String itemTitle,
     @RequestParam String description,
@@ -104,7 +104,7 @@ public class ItemController {
     return convertToMovieDto(movie);
   }
 
-  @PostMapping(value = { "/items/createArchive", "/items/createArchive/" })
+  @PostMapping(value = { "/create_archive", "/create_archive/" })
   public ArchiveDto createArchive(
     @RequestParam String itemTitle,
     @RequestParam String description,
@@ -130,7 +130,7 @@ public class ItemController {
   }
 
   @PostMapping(
-    value = { "/items/createMusicAlbum", "/items/createMusicAlbum/" }
+    value = { "/create_musicAlbum", "/create_musicAlbum/" }
   )
   public MusicAlbumDto createMusicAlbum(
     @RequestParam String itemTitle,
@@ -161,7 +161,7 @@ public class ItemController {
   }
 
   @PostMapping(
-    value = { "/items/createPrintedMedia", "/items/createPrintedMedia/" }
+    value = { "/create_printedMedia", "/create_printedMedia/" }
   )
   public PrintedMediaDto createPrintedMedia(
     @RequestParam String itemTitle,
@@ -191,7 +191,7 @@ public class ItemController {
 
   //POST to delete item
   @PostMapping(
-    value = { "/items/delete/{itemNumber}", "/items/delete/{itemNumber}/" }
+    value = { "/delete/{itemNumber}", "/delete/{itemNumber}/" }
   )
   public String deleteItem(
     @PathVariable("itemNumber") String itemNumber,

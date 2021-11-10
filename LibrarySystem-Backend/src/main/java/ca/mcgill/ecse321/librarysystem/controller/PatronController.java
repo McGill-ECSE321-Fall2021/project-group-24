@@ -41,10 +41,10 @@ public class PatronController {
 		convertToDto(patron)).collect(Collectors.toList());
 	}
 	
-	@GetMapping(value = {"/patronById/{id}","/patronById/{id}/"})
-	public ResponseEntity<?> getPatronById(@PathVariable("id") String id){
+	@GetMapping(value = {"/patronById/{idNum}","/patronById/{idNum}/"})
+	public ResponseEntity<?> getPatronById(@PathVariable String idNum){
 		try {
-			Patron p = patronService.getPatronAccountByID(id);
+			Patron p = patronService.getPatronAccountByID(idNum);
 			if(p==null) return new ResponseEntity("Patron does not exist.", HttpStatus.NOT_FOUND);
 			PatronDto output = convertToDto(p);
 			return new ResponseEntity(output, HttpStatus.OK);
