@@ -38,7 +38,12 @@ public class RoomController {
 			@RequestParam String currentUserId,
 			@RequestParam Integer capacity) {
 		System.out.print("Flag post");
-		Room room = roomService.createRoom(currentUserId, roomNumber, capacity);
+		Room room = null;
+		try {
+			room = roomService.createRoom(currentUserId, roomNumber, capacity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.out.print(room.getRoomNum());
 		return convertToDto(room);
 	}
@@ -53,7 +58,12 @@ public class RoomController {
 			@RequestParam String newRoomNum) {
 		
 		System.out.print("Flag put");
-		Room room = roomService.updateRoom(currentUserId, oldRoomNumber, newRoomNum, capacity);
+		Room room = null;
+		try {
+			room = roomService.updateRoom(currentUserId, oldRoomNumber, newRoomNum, capacity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.out.print(room.getRoomNum());
 		return convertToDto(room);
 	}
@@ -64,7 +74,12 @@ public class RoomController {
 	public RoomDto deleteRoom(@PathVariable("oldRoomNumber") String roomNum,
 			@RequestParam String currentUserId) {
 		System.out.print("Flag delete");
-		Room room = roomService.deleteRoom(currentUserId, roomNum);
+		Room room = null;
+		try {
+			room = roomService.deleteRoom(currentUserId, roomNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.out.print(room.getRoomNum());
 		return convertToDto(room);
 	}

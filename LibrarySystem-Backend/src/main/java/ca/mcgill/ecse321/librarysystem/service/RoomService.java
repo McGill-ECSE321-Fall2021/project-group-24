@@ -26,7 +26,7 @@ public class RoomService {
 	public Room createRoom(
 			String currentUserId,
 			String roomNum,
-		    Integer capacity) 
+		    Integer capacity)  throws Exception
 	{
 		// check permission: only head librarian have permission to modify the rooms
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
@@ -69,7 +69,7 @@ public class RoomService {
 	// method for modify rooms
 	// only head librarian have permission to modify the rooms, they can modify the room number and the capacity, but the room numbers must be unique
 	@Transactional 
-	public Room updateRoom (String currentUserId, String oldRoomNum, String newRoomNum, int newCapacity) 
+	public Room updateRoom (String currentUserId, String oldRoomNum, String newRoomNum, int newCapacity) throws Exception
 	{
 		// check permission: only head librarian have permission to modify the rooms
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
@@ -95,7 +95,7 @@ public class RoomService {
 	
 	// method for delete rooms
 	@Transactional 
-	public Room deleteRoom (String currentUserId, String roomNum) 
+	public Room deleteRoom (String currentUserId, String roomNum) throws Exception
 	{
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 	    if (

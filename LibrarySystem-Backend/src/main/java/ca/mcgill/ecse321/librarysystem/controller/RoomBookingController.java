@@ -52,9 +52,9 @@ public class RoomBookingController {
 	//else, throw illegalArguementException
 	@PostMapping(value = { "/add_roombookings", "/add_roombookings/" })
 	public RoomBookingDto createRoomBooking(
-			 @RequestParam String startDate,
+			 @RequestParam String currentUserId,
+			 @RequestParam String date,
 			 @RequestParam String startTime,
-			 @RequestParam String endDate,
 			 @RequestParam String endTime,
 			 @RequestParam String idNum,
 			 @RequestParam String roomNum
@@ -62,8 +62,9 @@ public class RoomBookingController {
 		String timeSlotId = "RoomBooking-"+roomBookingService.getAllRoomBookings().size()+startTime+roomNum;
 		System.out.println("Flag Post"); 
 		RoomBooking booking = roomBookingService.createRoomBooking(
+				currentUserId,
 				timeSlotId,
-				Date.valueOf(LocalDate.parse(startDate)),
+				Date.valueOf(LocalDate.parse(date)),
 				Time.valueOf(LocalTime.parse(startTime)),
 				Time.valueOf(LocalTime.parse(endTime)),
 				idNum,
@@ -73,13 +74,49 @@ public class RoomBookingController {
 		
 	}
 	
-	//TODO add method for modify room booking
-	//only let patron modify their own bookings
-	//let librarian modify all bookings
+	// method for modify room booking
+	@PutMapping(value = { "/update_roombookings", "/update_roombookings/" })
+	public RoomBookingDto updateRoomBooking(
+			 @RequestParam String currentUserId,
+			 @RequestParam String timeSlotId,
+			 @RequestParam String date,
+			 @RequestParam String startTime,
+			 @RequestParam String endTime,
+			 @RequestParam String idNum,
+			 @RequestParam String roomNum
+			) {
+		System.out.println("Flag Put"); 
+		RoomBooking booking = null;
+		try {
+			booking = roomBookingService.updateRoomBooking(
+					currentUserId,
+					timeSlotId,
+					Date.valueOf(LocalDate.parse(date)),
+					Time.valueOf(LocalTime.parse(startTime)),
+					Time.valueOf(LocalTime.parse(endTime)),
+					roomNum
+			     );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return convertToDto(booking);
+		
+	}
 	
-	//TODO add method for delete room booking
-	//only let patron delete their own bookings
-	//let librarian delete all bookings
+	// method for delete room booking
+	@DeleteMapping(value = { "/delete_roombookings", "/delete_roombookings/" })
+	public RoomBookingDto deleteRoomBooking(String currentUserId, String timeSlotId) {
+		RoomBooking booking = null;
+		try {
+			booking = roomBookingService.deleteRoomBooking(
+					currentUserId,
+					timeSlotId
+			     );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return convertToDto(booking);
+	}
 	
 	private List<RoomBookingDto> getRoomBookingDtosForPatron(String idNum) {
 		List<RoomBooking> roomBookingForPatron = roomBookingService.getRoomBookingsByIdNum(idNum);
