@@ -3,7 +3,7 @@ package ca.mcgill.ecse321.librarysystem.service;
 import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 import ca.mcgill.ecse321.librarysystem.service.HeadLibrarianService;
-
+import java.sql.Date;
 public class SystemServiceHelpers {
 
   static LibrarianRepository librarianRepository;
@@ -46,6 +46,22 @@ public class SystemServiceHelpers {
     if (email.contains(" ")) throw new IllegalArgumentException(
       "Please enter an email without spaces."
     );
+  }
+
+  public static void validBookInput(
+    // String currentUserId,
+    String itemTitle,
+    String description,
+    String imageUrl,
+    String genre,
+    Date publishDate,
+    boolean isReservable,
+    String author,
+    String publisher
+  ) {
+    if (
+      itemTitle == null || itemTitle.trim().length() == 0
+    ) throw new IllegalArgumentException("Item must have a title");
   }
 
   public static boolean isHeadLibrarian(String currentUserId) {

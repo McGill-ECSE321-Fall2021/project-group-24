@@ -2,6 +2,8 @@ package ca.mcgill.ecse321.librarysystem.service;
 
 import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
+
+import static ca.mcgill.ecse321.librarysystem.service.SystemServiceHelpers.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ public class ItemService {
   // creates book, returns it so we know it's not null
   @Transactional
   public Book createBook(
-    String currentUserId,
+    // String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,
@@ -34,21 +36,31 @@ public class ItemService {
     String author,
     String publisher
   ) {
-    Librarian currentLibrarian = librarianRepository.findUserByIdNum(
-      currentUserId
-    );
-    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
-      currentUserId
-    );
-    if (
-      currentLibrarian == null ||
-      !currentLibrarian.getIsLoggedIn() &&
-      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
-    ) {
-      throw new IllegalArgumentException(
-        "You do not have permission to create an item reservation"
-      );
-    }
+    validBookInput(
+    // String currentUserId,
+    itemTitle,
+    description,
+    imageUrl,
+    genre,
+    publishDate,
+    isReservable,
+    author,
+    publisher);
+    // Librarian currentLibrarian = librarianRepository.findUserByIdNum(
+    //   currentUserId
+    // );
+    // HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+    //   currentUserId
+    // );
+    // if (
+    //   currentLibrarian == null ||
+    //   !currentLibrarian.getIsLoggedIn() &&
+    //   (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    // ) {
+    //   throw new IllegalArgumentException(
+    //     "You do not have permission to create an item reservation"
+    //   );
+    // }
 
     if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
