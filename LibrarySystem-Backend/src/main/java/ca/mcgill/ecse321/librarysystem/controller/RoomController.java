@@ -22,13 +22,11 @@ public class RoomController {
 	
 	@GetMapping(value = { "/view_all_rooms", "/view_all_rooms/" })
 	public List<RoomDto> getAllRooms() {
-		System.out.println("Flag Get"); 
 		return roomService.getAllRooms().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
 	}
 	
 	@GetMapping(value = { "/view_rooms/{roomNumber}", "/view_rooms/{roomNumber}/" })
 	public RoomDto getRoom(@PathVariable("roomNumber") String roomNumber) {
-		System.out.println("Flag Get" + roomNumber); 
 		return convertToDto(roomService.getRoom(roomNumber));
 	}
 	

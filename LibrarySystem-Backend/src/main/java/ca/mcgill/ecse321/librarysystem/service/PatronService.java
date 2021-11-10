@@ -26,25 +26,23 @@ public class PatronService {
 	//for accounts created in person by a librarian
 	@Transactional
 	public Patron createPatronIRL(
-			String username,
 		    String firstName,
 		    String lastName,
 		    boolean isResident,
-		    String address,
-		    String email
+		    String address
 		  ) {
 		
 			String idNum = firstName+"Patron-"+toList(patronRepository.findAll()).size();
 			
 			
 		    Patron p = new Patron();
-		    p.setUsername(username);
+		    p.setUsername(null);
 		    p.setFirstName(firstName);
 		    p.setLastName(lastName);
 		    p.setIdNum(idNum);
 		    p.setIsResident(isResident);
 		    p.setIsRegisteredOnline(false);
-		    p.setEmail(email);
+		    p.setEmail(null);
 		    p.setAddress(address);
 		    p.setIsVerified(true);
 		    p.setPassword(null);
@@ -180,8 +178,8 @@ public class PatronService {
 	
 	
 	public boolean emailIsValid(String email) {
-		if (email == null||email == "") {
-			throw new IllegalArgumentException("Email cannot be empty.");
+		if (email == null||email == "" || !(email.contains("@")) || !(email.contains(".")) ) {
+			throw new IllegalArgumentException("Email cannot be empty and it must include '@' and '.' symbols.");
 		}else {
 			return true;
 		}

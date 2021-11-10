@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api/librarian")
 public class LibrarianController {
 
   @Autowired
@@ -30,11 +32,11 @@ public class LibrarianController {
   }
 
   //POST to add a librarian
-  @PostMapping(value = { "/librarians/{idNum}", "/librarians/{idNum}/" })
-  public LibrarianDto createLibrarian(@PathVariable("idNum") String idNum) {
-    Librarian librarian = librarianService.createLibrarian(idNum);
-    return convertToDto(librarian);
-  }
+  // @PostMapping(value = { "/librarians/{idNum}", "/librarians/{idNum}/" })
+  // public LibrarianDto createLibrarian(@PathVariable("idNum") String idNum) {
+  //   Librarian librarian = librarianService.createLibrarian(idNum);
+  //   return convertToDto(librarian);
+  // }
 
   //POST to delete/fire a librarian
   @PostMapping(

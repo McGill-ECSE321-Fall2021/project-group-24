@@ -1,5 +1,4 @@
 package ca.mcgill.ecse321.librarysystem.service;
-import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,67 +20,96 @@ public class ShiftService {
 	HeadLibrarianRepository headLibrarianRepo; 
 
 	/**Method creates a new shift (must be performed by head librarian)
+	 * Allows multiple shifts per day (as long as they do not overlap)
 	 * @author Arman
-	 * @param currentUserId, librarianId, startDate, endDate, startTime, endTime
+	 * @param currentUserId, librarianId, dayOfWeek, startTime, endTime
 	 * @return shift 
 	 * Note that there is a start and an end date to account for overnight shifts
 	 */
 	@Transactional 
 	public Shift createShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime ) {
-		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
+		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
+		Librarian librarian = librarianRepo.findUserByIdNum(librarianId); 
+		//checks if the shift is for a regular librarian or the head librarian
+		if (librarian==null) {
+			librarian = headLibrarianRepo.findUserByIdNum(librarianId);
+		}
+		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can create librarian shifts");
+		if (librarian==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
+		if (startTime.after(endTime)) throw new IllegalArgumentException("Shift end time cannot be before its start time"); 
+		Shift oldShift = shiftRepo.findShiftByLibrarianIdAndDayOfWeek(librarianId, dayOfWeek); 
+		// checks that shifts do not overlap
+		if (oldShift!=null) {
+			if ((oldShift.getEndTime().after(startTime) && oldShift.getEndTime().before(endTime)) ||
+				(oldShift.getStartTime().before(endTime) && oldShift.getStartTime().after(startTime))) {
+				throw new IllegalArgumentException("Librarian cannot have overlapping shifts");
+			}
+		}
 		Shift shift = new Shift(); 
-		String timeSlotId = dayOfWeek.toString() + librarianId + startTime;
+		String timeSlotId = dayOfWeek.toString() + librarianId + startTime.toString();
 		shift.setTimeSlotId(timeSlotId);
 		shift.setStartTime(startTime);
 		shift.setLibrarianId(librarianId);
 		shift.setDayOfWeek(dayOfWeek);
-		shift.setEndTime(endTime);
+		shift.setEndTime(endTime); 
 		shiftRepo.save(shift); 
 		return shift;
 	}
 	/**Method modifies a shift (must be performed by head librarian)
 	 * @author Arman
-	 * @param currentUserId, librarianId, oldStartDate, oldStartTime, startDate, endDate, startTime, endTime
+	 * @param currentUserId, timeSlotId, librarianId, dayOfWeek, startTime, endTime
 	 * @return shift
 	 */
 	
 	@Transactional 
-	public Shift modifyShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek oldDayOfWeek,TimeSlot.DayOfWeek newDayOfWeek, Time oldStartTime, Time startTime, Time endTime) {
-		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
-
-		if (librarianId==null || oldDayOfWeek == null || oldStartTime==null || newDayOfWeek == null || startTime==null || endTime ==null) {
+	public Shift modifyShift(String currentUserId, String timeSlotId, String librarianId, TimeSlot.DayOfWeek newDayOfWeek, Time startTime, Time endTime) {
+		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
+		Librarian librarian = librarianRepo.findUserByIdNum(librarianId); 
+		//checks if the shift is for a regular librarian or the head librarian
+		if (librarian==null) {
+			librarian = headLibrarianRepo.findUserByIdNum(librarianId);
+		}
+		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can modify librarian shifts");
+		if (librarian==null) throw new IllegalArgumentException ("No librarian with this ID exists");
+		if (librarianId==null || timeSlotId==null || librarianId == null || newDayOfWeek == null || startTime==null || endTime ==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
-//		if (startDate.after(endDate)) throw new IllegalArgumentException("Shift end date cannot be before start date"); 
 		if (startTime.after(endTime)) throw new IllegalArgumentException("Shift end time cannot be before its start time"); 
-		
-		if(shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, oldDayOfWeek, oldStartTime)==null) throw new IllegalArgumentException("Shift does not exist so cannot modify."); 
+		Shift oldShift = shiftRepo.findShiftByLibrarianIdAndDayOfWeek(librarianId, newDayOfWeek); 
+		// checks that shifts do not overlap 
+		if (oldShift!=null) {
+			if ((oldShift.getEndTime().after(startTime) && oldShift.getEndTime().before(endTime)) ||
+				(oldShift.getStartTime().before(endTime) && oldShift.getStartTime().after(startTime))) {
+				throw new IllegalArgumentException("Librarian cannot have overlapping shifts");
+			}
+		}
+		if(shiftRepo.findShiftByTimeSlotId(timeSlotId)==null) throw new IllegalArgumentException("Old shift does not exist so cannot modify"); 
 		if(librarianRepo.findUserByIdNum(librarianId)==null) throw new IllegalArgumentException("No Librarian with this ID exists"); 
 		
-		Shift shift = shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, oldDayOfWeek, oldStartTime);
+		Shift shift = shiftRepo.findShiftByTimeSlotId(timeSlotId);
 		shift.setDayOfWeek(newDayOfWeek);
 		shift.setStartTime(startTime);
 		shift.setEndTime(endTime);
-		
+		shift.setTimeSlotId(newDayOfWeek.toString() + librarianId + startTime.toString());
 		shiftRepo.save(shift); 
 		return shift; 
 	}
 	
 	/**Method removes a certain shift (must be performed by head librarian)
 	 * @author Arman
-	 * @param currentUserId, librarianId, startTime, endTime
+	 * @param currentUserId, timeSlotId
 	 * @return true if the shift is deleted
 	 */
 	@Transactional 
-	public boolean removeShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime) {
-		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can remove librarian shifts");
-
-		if (librarianId==null || dayOfWeek==null || startTime==null) {
+	public boolean removeShift(String currentUserId, String timeSlotId) {
+		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
+		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can remove librarian shifts");		
+		if (currentUserId==null || timeSlotId==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
-		Shift shift = shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, dayOfWeek, startTime); 
+		Shift shift = shiftRepo.findShiftByTimeSlotId(timeSlotId); 
 		if (shift==null) throw new IllegalArgumentException("Shift cannot be found"); 
-		shiftRepo.delete(shift);
+		shiftRepo.delete(shiftRepo.findShiftByTimeSlotId(timeSlotId)); 
 		return true; 
 	}
 	
@@ -92,8 +120,15 @@ public class ShiftService {
 	 */
 	@Transactional 
 	public boolean removeLibrarianShifts(String currentUserId, String librarianId) {
-		if (headLibrarianRepo.findById(currentUserId)==null) throw new IllegalArgumentException("Only the Head Librarian can remove librarian shifts");
+		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
+		Librarian librarian = librarianRepo.findUserByIdNum(librarianId); 
+		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can remove all of a librarian's shifts");		
 		if (librarianId == null) throw new IllegalArgumentException("librarian ID cannot be blank"); 
+		//checks if the shift is for a regular librarian or the head librarian
+		if (librarian==null) {
+			librarian = headLibrarianRepo.findUserByIdNum(librarianId);
+		}
+		if (librarian==null) throw new IllegalArgumentException ("No librarian with this ID exists");
 		
 		// Searches through all the shifts, deleting the ones associated with a certain librarian
 		List<Shift> allShifts = toList(shiftRepo.findAll()); 
@@ -107,19 +142,21 @@ public class ShiftService {
 	
 	/**Method returns a certain shift (can be performed by librarian or head librarian)
 	 *@author Arman
-	 *@param currentUserId, librarianId, startTime, endTime
+	 *@param currentUserId, timeSlotId
 	 *@return shift
 	 */
 	@Transactional 
-	public Shift getShift(String currentUserId, String librarianId, TimeSlot.DayOfWeek dayOfWeek, Time startTime) {
-		if (headLibrarianRepo.findById(currentUserId)==null && librarianRepo.findById(currentUserId) == null) {
-			throw new IllegalArgumentException("Only librarians can view shifts");
+	public Shift getShift(String currentUserId, String timeSlotId) {
+		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
+		User user1 = librarianRepo.findUserByIdNum(currentUserId); 
+		if ((!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) && (!(user1 instanceof HeadLibrarian) || !(user1.getIsLoggedIn()))) {
+			 throw new IllegalArgumentException("Only librarians can view shifts");		
 		}
-		if (librarianId==null || dayOfWeek==null || startTime==null) {
+		Shift shift = null;
+		if (currentUserId==null || timeSlotId==null) {
 			throw new IllegalArgumentException("Fields cannot be blank"); 
 		}
-		
-		Shift shift = shiftRepo.findShiftByLibrarianIdAndDayOfWeekAndStartTime(librarianId, dayOfWeek, startTime); 
+		shift = shiftRepo.findShiftByTimeSlotId(timeSlotId); 
 		if (shift==null) throw new IllegalArgumentException("Shift cannot be found"); 
 		return shift; 
 	}
@@ -130,11 +167,17 @@ public class ShiftService {
 	 */
 	@Transactional 
 	public List<Shift> getAllShiftsForLibrarian(String currentUserId, String librarianId) {
-		if (headLibrarianRepo.findById(currentUserId)==null && librarianRepo.findById(currentUserId) == null) {
-			throw new IllegalArgumentException("Only librarians can view shifts");
+		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
+		User user1 = librarianRepo.findUserByIdNum(currentUserId); 
+		Librarian librarian = librarianRepo.findUserByIdNum(librarianId); 
+		if ((!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) && (!(user1 instanceof HeadLibrarian) || !(user1.getIsLoggedIn()))) {
+			 throw new IllegalArgumentException("Only librarians can view shifts");		
 		}
 		if (librarianId==null) throw new IllegalArgumentException("Librarian ID cannot be blank"); 
-		
+		if (librarian==null) {
+			librarian = headLibrarianRepo.findUserByIdNum(librarianId);
+		}
+		if (librarian==null) throw new IllegalArgumentException("No librarian with this ID exists"); 
 		// This searches through all shifts, add the ones with desired librarianId to a list then return the list. 
 		List<Shift> allShifts = toList(shiftRepo.findAll()); 
 		ArrayList<Shift> desiredShifts = new ArrayList<Shift>(); 
@@ -153,8 +196,10 @@ public class ShiftService {
 	 */
 	@Transactional 
 	public List<Shift> getAllShifts(String currentUserId) {
-		if (headLibrarianRepo.findById(currentUserId)==null && librarianRepo.findById(currentUserId) == null) {
-			throw new IllegalArgumentException("Only librarians can view shifts");
+		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
+		User user1 = librarianRepo.findUserByIdNum(currentUserId); 
+		if ((!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) && (!(user1 instanceof HeadLibrarian) || !(user1.getIsLoggedIn()))) {
+			 throw new IllegalArgumentException("Only librarians can view shifts");		
 		}		
 		return toList(shiftRepo.findAll()); 
 	}
