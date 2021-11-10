@@ -46,6 +46,7 @@ public class RoomBookingService {
 		String idNum,
 		String roomNumber
 	) {
+		
 		// check idNum
 		if (!inputIsValid("idNum")) throw new IllegalArgumentException("IdNum cannot be null or empty");
 		Patron p = patronService.getPatronAccountByID(idNum);
@@ -68,8 +69,6 @@ public class RoomBookingService {
 		
 		// check if date is in the past
 	    if (date.before(Calendar.getInstance().getTime())) throw new IllegalArgumentException("date must be in the future");
-	    
-	    
 		// check if the reservation has any conflicts
 		TimeSlot.DayOfWeek dayOfWeek =TimeSlot.DayOfWeek.valueOf(date.toLocalDate().getDayOfWeek().toString());
 		if (startTime.after(endTime) || startTime.equals(endTime)  ) {
@@ -166,6 +165,7 @@ public class RoomBookingService {
 	    rb.setRoomNum(newRoomNumber);
 	    rb.setStartTime(newStartTime);
 	    rb.setEndTime(newEndTime);
+	    roomBookingRepository.save(rb);
 		return rb;
 	}
 	

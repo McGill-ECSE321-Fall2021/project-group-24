@@ -23,7 +23,7 @@ public abstract class TimeSlot {
   private Time startTime;
   private Time endTime;
   
-	 public enum DayOfWeek { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday }
+	 public enum DayOfWeek { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY }
 	 private DayOfWeek dayOfWeek; 
 	 
 	 public DayOfWeek getDayOfWeek() {
