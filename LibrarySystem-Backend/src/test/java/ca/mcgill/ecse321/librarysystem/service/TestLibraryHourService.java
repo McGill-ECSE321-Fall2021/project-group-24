@@ -69,6 +69,15 @@ public class TestLibraryHourService {
 		      libraryHour.setEndTime(END_TIME);
 		      return libraryHour; 
 	      });
+	    lenient() 
+	      .when(libraryHourRepo.findHourByDayOfWeek(DAY_OF_WEEK))
+	      .thenAnswer((InvocationOnMock invocation) -> {
+		      LibraryHour libraryHour = new LibraryHour(); 
+			  libraryHour.setDayOfWeek(DAY_OF_WEEK); 
+		      libraryHour.setStartTime(START_TIME);
+		      libraryHour.setEndTime(END_TIME);
+		      return libraryHour; 
+	      });
 
 	    lenient()
 	      .when(headLibrarianRepo.findUserByIdNum(HEAD_LIBRARIAN_ID))

@@ -31,6 +31,8 @@ public class LibraryHourService {
 		}
 		if(startTime.after(endTime)) throw new IllegalArgumentException ("Start time cannot be after end time");
 		
+		System.out.print(dayOfWeek);
+		System.out.print(libraryHourRepo.findHourByDayOfWeek(dayOfWeek));
 		if (libraryHourRepo.findHourByDayOfWeek(dayOfWeek)!=null) throw new IllegalArgumentException("There's already a library hour for that day"); 
 		
 		LibraryHour libraryHour = new LibraryHour(); 

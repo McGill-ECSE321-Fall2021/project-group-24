@@ -59,7 +59,6 @@ public class TestRoomService {
 	private static final int invalidCapacity = -5;
 	private static final String repeatedRoomNum = "room1";
 	private static final String testRoomNum = "room2";
-	private static final String updatedRoomNum = "updatedRoom";
 	private static final int updatedCapacity = 15;
 	@BeforeEach
 	  public void setMockOutput() {
@@ -291,14 +290,14 @@ public class TestRoomService {
 		Room r = null;
 		try {
 
-			r = roomService.updateRoom("librarian1", repeatedRoomNum, updatedRoomNum, updatedCapacity);
+			r = roomService.updateRoom("librarian1", repeatedRoomNum, updatedCapacity);
 			
 		} catch (Exception e) {
 			fail();
 		}
 		
 		assertNotNull(r);
-		assertEquals(updatedRoomNum, r.getRoomNum());
+		assertEquals(repeatedRoomNum, r.getRoomNum());
 		assertEquals(updatedCapacity, r.getCapacity());
 	
 	}
@@ -312,7 +311,7 @@ public class TestRoomService {
 		String actualErrorMsg = null;
 		try {
 
-			r = roomService.updateRoom("librarian1", repeatedRoomNum, updatedRoomNum, invalidCapacity);
+			r = roomService.updateRoom("librarian1", repeatedRoomNum, invalidCapacity);
 			
 		} catch (Exception e) {
 			actualErrorMsg = e.getMessage();
@@ -332,7 +331,7 @@ public class TestRoomService {
 		String actualErrorMsg = null;
 		try {
 
-			r = roomService.updateRoom("patron1", repeatedRoomNum, updatedRoomNum, updatedCapacity);
+			r = roomService.updateRoom("patron1", repeatedRoomNum, updatedCapacity);
 			
 		} catch (Exception e) {
 			actualErrorMsg = e.getMessage();
