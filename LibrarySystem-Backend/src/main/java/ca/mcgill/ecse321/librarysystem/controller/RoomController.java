@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -21,13 +23,21 @@ public class RoomController {
 	private RoomService roomService;
 	
 	@GetMapping(value = { "/view_all_rooms", "/view_all_rooms/" })
-	public List<RoomDto> getAllRooms() {
-		return roomService.getAllRooms().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
+	public ResponseEntity<?> getAllRooms() {
+		try {
+			return new ResponseEntity<Object>(roomService.getAllRooms().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList()), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	@GetMapping(value = { "/view_rooms/{roomNumber}", "/view_rooms/{roomNumber}/" })
-	public RoomDto getRoom(@PathVariable("roomNumber") String roomNumber) {
-		return convertToDto(roomService.getRoom(roomNumber));
+	public ResponseEntity<?> getRoom(@PathVariable("roomNumber") String roomNumber) {
+		try {
+			return new ResponseEntity<Object>(convertToDto(roomService.getRoom(roomNumber)), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	/** Method create room using room number
@@ -38,17 +48,16 @@ public class RoomController {
 	 * only librarians have permission to update room
 	 */
 	@PostMapping(value = { "/create_room/{roomNumber}", "/create_room/{roomNumber}/" })
-	public RoomDto createRoom(@PathVariable("roomNumber") String roomNumber,
+	public ResponseEntity<?> createRoom(@PathVariable("roomNumber") String roomNumber,
 			@RequestParam String currentUserId,
 			@RequestParam Integer capacity) {
 		Room room = null;
 		try {
 			room = roomService.createRoom(currentUserId, roomNumber, capacity);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.print(room.getRoomNum());
-		return convertToDto(room);
+			return new ResponseEntity<Object>(convertToDto(room), HttpStatus.OK);
+	    } catch (Exception e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	
@@ -60,20 +69,20 @@ public class RoomController {
 	 * only librarians have permission to update room
 	 */
 	@PostMapping(value = { "/update_room/{oldRoomNumber}", "/update_room/{oldRoomNumber}/" })
-	public RoomDto updateRoom(@PathVariable("oldRoomNumber") String oldRoomNumber,
+	public ResponseEntity<?> updateRoom(@PathVariable("oldRoomNumber") String oldRoomNumber,
 			@RequestParam String currentUserId,
 			@RequestParam Integer newCapacity,
 			@RequestParam String newRoomNum) {
 		
 		System.out.print("Flag put");
 		Room room = null;
+	
 		try {
 			room = roomService.updateRoom(currentUserId, oldRoomNumber, newRoomNum, newCapacity);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.print(room.getRoomNum());
-		return convertToDto(room);
+			return new ResponseEntity<Object>(convertToDto(room), HttpStatus.OK);
+	    } catch (Exception e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	/** Method delete room using room number
@@ -84,17 +93,16 @@ public class RoomController {
 	 * only librarians have permission to update room
 	 */
 	@PostMapping(value = { "/delete_room/{roomNum}", "/delete_room/{roomNum}/" })
-	public RoomDto deleteRoom(@PathVariable("oldRoomNumber") String roomNum,
+	public ResponseEntity<?> deleteRoom(@PathVariable("oldRoomNumber") String roomNum,
 			@RequestParam String currentUserId) {
 		System.out.print("Flag delete");
 		Room room = null;
 		try {
 			room = roomService.deleteRoom(currentUserId, roomNum);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.print(room.getRoomNum());
-		return convertToDto(room);
+			return new ResponseEntity<Object>(convertToDto(room), HttpStatus.OK);
+	    } catch (Exception e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	private RoomDto convertToDto(Room room){

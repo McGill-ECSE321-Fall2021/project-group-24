@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -30,9 +32,12 @@ public class RoomBookingController {
 	 * @return all roombookings
 	 */
 	@GetMapping(value = { "/view_roombookings", "/view_roombookings/" })
-	public List<RoomBookingDto> getRoomBooking() {
-		System.out.println("Flag Get"); 
-		return roomBookingService.getAllRoomBookings().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
+	public ResponseEntity<?> getRoomBooking() {
+		try {
+			return new ResponseEntity<Object>(roomBookingService.getAllRoomBookings().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList()), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	/** Method get all roombookings of a patron provided idNum
@@ -41,8 +46,13 @@ public class RoomBookingController {
 	 * @return all roombookings of a patron
 	 */
 	@GetMapping(value = { "/view_roombookings/patron/{idNum}", "/view_roombookings/patron/{idNum}/" })
-	public List<RoomBookingDto> getRoomBookingOfPatron(@PathVariable("idNum") String idNum) {
-		return getRoomBookingDtosForPatron(idNum);
+	public ResponseEntity<?> getRoomBookingOfPatron(@PathVariable("idNum") String idNum) {
+		try {
+			return new ResponseEntity<Object>(getRoomBookingDtosForPatron(idNum), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
+
 	}
 	
 	/** Method get all roombookings of a room
@@ -51,8 +61,12 @@ public class RoomBookingController {
 	 * @return all roombookings of a room
 	 */
 	@GetMapping(value = { "/view_roombookings/room/{roomNum}", "/view_roombookings/room/{roomNum}/" })
-	public List<RoomBookingDto> getRoomBookingOfRoom(@PathVariable("roomNum") String roomNum) {
-		return getRoomBookingDtosForRoom(roomNum);
+	public ResponseEntity<?> getRoomBookingOfRoom(@PathVariable("roomNum") String roomNum) {
+		try {
+			return new ResponseEntity<Object>(getRoomBookingDtosForRoom(roomNum), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	/** Method get the roombooking with timeSlotId
@@ -61,9 +75,13 @@ public class RoomBookingController {
 	 * @return roombooking with timeSlotId
 	 */
 	@GetMapping(value = { "/view_roombooking/{timeSlotId}", "/view_roombooking/{timeSlotId}/" })
-	public RoomBookingDto getRoomBookingOfTimeSlot(@PathVariable("timeSlotId") String timeSlotId) {
-		System.out.println("Flag Get" + timeSlotId); 
-		return convertToDto(roomBookingService.getRoomBookingsByTimeSlotId(timeSlotId));
+	public ResponseEntity<?> getRoomBookingOfTimeSlot(@PathVariable("timeSlotId") String timeSlotId) { 
+		try {
+			return new ResponseEntity<Object>(convertToDto(roomBookingService.getRoomBookingsByTimeSlotId(timeSlotId)), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
+
 	}
 	
 	/** Method create roombooking, timeSlotId is automatically generated
@@ -74,7 +92,7 @@ public class RoomBookingController {
 	 * librarian are allowed to create roombookings for a patron, patron can only create roombookings for themselves
 	 */
 	@PostMapping(value = { "/add_roombooking", "/add_roombooking/" })
-	public RoomBookingDto createRoomBooking(
+	public ResponseEntity<?> createRoomBooking(
 			 @RequestParam String currentUserId,
 			 @RequestParam String date,
 			 @RequestParam String startTime,
@@ -82,9 +100,10 @@ public class RoomBookingController {
 			 @RequestParam String idNum,
 			 @RequestParam String roomNum
 			) {
-		String timeSlotId = "RoomBooking-"+roomBookingService.getAllRoomBookings().size()+startTime+roomNum;
-		System.out.println("Flag Post"); 
-		RoomBooking booking = roomBookingService.createRoomBooking(
+	
+		try {
+			String timeSlotId = "RoomBooking-"+roomBookingService.getAllRoomBookings().size()+startTime+roomNum; 
+			RoomBooking booking = roomBookingService.createRoomBooking(
 				currentUserId,
 				timeSlotId,
 				Date.valueOf(LocalDate.parse(date)),
@@ -93,7 +112,10 @@ public class RoomBookingController {
 				idNum,
 				roomNum
 		     );
-		return convertToDto(booking);
+			return new ResponseEntity<Object>(convertToDto(booking), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 		
 	}
 	/** Method update roombooking using timeSlotId
@@ -104,7 +126,7 @@ public class RoomBookingController {
 	 * librarian are allowed to update any roombooking, patron can only update their own roombookings
 	 */
 	@PostMapping(value = { "/update_roombooking", "/update_roombooking/" })
-	public RoomBookingDto updateRoomBooking(
+	public ResponseEntity<?> updateRoomBooking(
 			 @RequestParam String currentUserId,
 			 @RequestParam String timeSlotId,
 			 @RequestParam String newDate,
@@ -123,10 +145,10 @@ public class RoomBookingController {
 					Time.valueOf(LocalTime.parse(newEndTime)),
 					newRoomNum
 			     );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return convertToDto(booking);
+			return new ResponseEntity<Object>(convertToDto(booking), HttpStatus.OK);
+	    } catch (Exception e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 		
 	}
 	
@@ -138,7 +160,7 @@ public class RoomBookingController {
 	 * librarian are allowed to delete any roombooking, patron can only delete their own roombookings
 	 */
 	@PostMapping(value = { "/delete_roombooking", "/delete_roombooking/" })
-	public RoomBookingDto deleteRoomBooking(
+	public ResponseEntity<?> deleteRoomBooking(
 			@RequestParam String currentUserId, 
 			@RequestParam String timeSlotId) {
 		RoomBooking booking = null;
@@ -147,10 +169,10 @@ public class RoomBookingController {
 					currentUserId,
 					timeSlotId
 			     );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return convertToDto(booking);
+			return new ResponseEntity<Object>(convertToDto(booking), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	private List<RoomBookingDto> getRoomBookingDtosForPatron(String idNum) {

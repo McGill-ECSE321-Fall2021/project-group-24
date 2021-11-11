@@ -31,9 +31,6 @@ import ca.mcgill.ecse321.librarysystem.service.UserService;
 public class UserController {
 	
 	@Autowired
-	private PatronService patronService;
-	
-	@Autowired
 	PatronRepository patronRepository;
 	
 	@Autowired
@@ -57,11 +54,11 @@ public class UserController {
 	public ResponseEntity<?> login(@RequestParam("username") String user, @RequestParam("password") String pass){
 		try {
 			User u = userService.logIn(user, pass);
-			if(u==null) return new ResponseEntity("User does not exist.", HttpStatus.BAD_REQUEST);
-			return new ResponseEntity(convertToDto(u), HttpStatus.OK);
+			if(u==null) return new ResponseEntity<Object>("User does not exist.", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(convertToDto(u), HttpStatus.OK);
 			
 		}catch(Exception e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 	
@@ -69,10 +66,10 @@ public class UserController {
 	public ResponseEntity<?> logout(@PathVariable("username") String username){
 		try {
 			User u = userService.logOut(username);
-			if(u==null) return new ResponseEntity("User does not exist.", HttpStatus.BAD_REQUEST);
-			return new ResponseEntity(convertToDto(u), HttpStatus.OK);
+			if(u==null) return new ResponseEntity<Object>("User does not exist.", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(convertToDto(u), HttpStatus.OK);
 		}catch(Exception e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -153,9 +150,9 @@ public class UserController {
 		try {
 			User user = userService.getUserAccountById(idNum);
 			UserDto dto = convertToDto(user);
-			return new ResponseEntity(dto, HttpStatus.OK);
+			return new ResponseEntity<Object>(dto, HttpStatus.OK);
 		}catch (Exception e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 	
@@ -165,9 +162,9 @@ public class UserController {
 		try {
 			User user = userService.getUserAccountByUsername(username);
 			UserDto dto = convertToDto(user);
-			return new ResponseEntity(dto, HttpStatus.OK);
+			return new ResponseEntity<Object>(dto, HttpStatus.OK);
 		}catch (Exception e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 	
