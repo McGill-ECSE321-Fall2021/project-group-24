@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,15 +38,18 @@ public class ItemController {
   }
 
   @GetMapping(value = { "/{itemNumber}", "/{itemNumber}/" })
-  public ItemDto getItem(@PathVariable("itemNumber") String itemNumber) {
-    System.out.println("Flag Get" + itemNumber);
+  public ResponseEntity<?> getItem(@PathVariable("itemNumber") String itemNumber) {
     Item item = itemService.getItem(itemNumber);
+	try {
+		return new ResponseEntity<Object>(convertToDto(item), HttpStatus.OK);
+	} catch (IllegalArgumentException e) {
+		return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
 
-    return convertToDto(item);
   }
 
-  @PostMapping(value = { "/create_book/{", "/create_book" })
-  public BookDto createBook(
+@PostMapping(value = { "/create_book/{", "/create_book" })
+  public ResponseEntity<?> createBook(
     @RequestParam String itemTitle,
     @RequestParam String description,
     @RequestParam String imageURL,
@@ -55,24 +60,28 @@ public class ItemController {
     @RequestParam boolean isReservable,
     @RequestParam String currentUserId
   ) {
-    System.out.println("Flag Post");
-    Book book = itemService.createBook(
-      currentUserId,
-      itemTitle,
-      description,
-      imageURL,
-      genre,
-      Date.valueOf(LocalDate.parse(publishDate)),
-      isReservable,
-      author,
-      publisher
-    );
-    System.out.println(book.getAuthor());
-    return convertToBookDto(book);
+
+    try {
+    	 Book book = itemService.createBook(
+    		      currentUserId,
+    		      itemTitle,
+    		      description,
+    		      imageURL,
+    		      genre,
+    		      Date.valueOf(LocalDate.parse(publishDate)),
+    		      isReservable,
+    		      author,
+    		      publisher
+    		    );
+    	return new ResponseEntity<Object>(convertToBookDto(book), HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    
   }
 
   @PostMapping(value = { "/create_movie", "/create_movie/" })
-  public MovieDto createMovie(
+  public ResponseEntity<?> createMovie(
     @RequestParam String itemTitle,
     @RequestParam String description,
     @RequestParam String imageURL,
@@ -87,25 +96,29 @@ public class ItemController {
     @RequestParam String producer,
     @RequestParam String currentUserId
   ) {
-    System.out.println("Flag Post");
-    Movie movie = itemService.createMovie(
-      currentUserId,
-      itemTitle,
-      description,
-      imageURL,
-      genre,
-      Date.valueOf(LocalDate.parse(publishDate)),
-      isReservable,
-      productionCompany,
-      movieCast,
-      director,
-      producer
-    );
-    return convertToMovieDto(movie);
+   
+    try {
+    	 Movie movie = itemService.createMovie(
+    		      currentUserId,
+    		      itemTitle,
+    		      description,
+    		      imageURL,
+    		      genre,
+    		      Date.valueOf(LocalDate.parse(publishDate)),
+    		      isReservable,
+    		      productionCompany,
+    		      movieCast,
+    		      director,
+    		      producer
+    		    );
+    	return new ResponseEntity<Object>(convertToMovieDto(movie), HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   @PostMapping(value = { "/create_archive", "/create_archive/" })
-  public ArchiveDto createArchive(
+  public ResponseEntity<?> createArchive(
     @RequestParam String itemTitle,
     @RequestParam String description,
     @RequestParam String imageURL,
@@ -117,22 +130,27 @@ public class ItemController {
     @RequestParam String currentUserId
   ) {
     System.out.println("Flag Post");
-    Archive archive = itemService.createArchive(
-      currentUserId,
-      itemTitle,
-      description,
-      imageURL,
-      genre,
-      Date.valueOf(LocalDate.parse(publishDate)),
-      isReservable
-    );
-    return convertToArchiveDto(archive);
+
+    try {
+        Archive archive = itemService.createArchive(
+        	      currentUserId,
+        	      itemTitle,
+        	      description,
+        	      imageURL,
+        	      genre,
+        	      Date.valueOf(LocalDate.parse(publishDate)),
+        	      isReservable
+        	    );
+    	return new ResponseEntity<Object>(convertToArchiveDto(archive), HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   @PostMapping(
     value = { "/create_musicAlbum", "/create_musicAlbum/" }
   )
-  public MusicAlbumDto createMusicAlbum(
+  public ResponseEntity<?> createMusicAlbum(
     @RequestParam String itemTitle,
     @RequestParam String description,
     @RequestParam String imageURL,
@@ -146,24 +164,29 @@ public class ItemController {
     @RequestParam String recordingLabel
   ) {
     System.out.println("Flag Post");
-    MusicAlbum musicAlbum = itemService.createMusicAlbum(
-      currentUserId,
-      itemTitle,
-      description,
-      imageURL,
-      genre,
-      Date.valueOf(LocalDate.parse(publishDate)),
-      isReservable,
-      artist,
-      recordingLabel
-    );
-    return convertToMusicAlbumDto(musicAlbum);
+  
+    try {
+    	  MusicAlbum musicAlbum = itemService.createMusicAlbum(
+    		      currentUserId,
+    		      itemTitle,
+    		      description,
+    		      imageURL,
+    		      genre,
+    		      Date.valueOf(LocalDate.parse(publishDate)),
+    		      isReservable,
+    		      artist,
+    		      recordingLabel
+    		    );
+    	return new ResponseEntity<Object>(convertToMusicAlbumDto(musicAlbum), HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   @PostMapping(
     value = { "/create_printedMedia", "/create_printedMedia/" }
   )
-  public PrintedMediaDto createPrintedMedia(
+  public ResponseEntity<?> createPrintedMedia(
     @RequestParam String itemTitle,
     @RequestParam String description,
     @RequestParam String imageURL,
@@ -176,37 +199,44 @@ public class ItemController {
     @RequestParam String issueNumber
   ) {
     System.out.println("Flag Post");
-    PrintedMedia printedMedia = itemService.createPrintedMedia(
-      currentUserId,
-      itemTitle,
-      description,
-      imageURL,
-      genre,
-      Date.valueOf(LocalDate.parse(publishDate)),
-      isReservable,
-      issueNumber
-    );
-    return convertToPrintedMediaDto(printedMedia);
+
+    try {
+        PrintedMedia printedMedia = itemService.createPrintedMedia(
+        	      currentUserId,
+        	      itemTitle,
+        	      description,
+        	      imageURL,
+        	      genre,
+        	      Date.valueOf(LocalDate.parse(publishDate)),
+        	      isReservable,
+        	      issueNumber
+        	    );
+    	return new ResponseEntity<Object>(convertToPrintedMediaDto(printedMedia), HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   //POST to delete item
   @PostMapping(
     value = { "/delete/{itemNumber}", "/delete/{itemNumber}/" }
   )
-  public String deleteItem(
+  public ResponseEntity<?> deleteItem(
     @PathVariable("itemNumber") String itemNumber,
     @RequestParam String currentUserId
   ) {
     Item item = itemService.getItem(itemNumber);
-        itemService.deleteItem(currentUserId, itemNumber);
-        String deletedItem =
-          "Deleted item of type " +
-          item.getType().toString() +
-          " with itemNumber " +
-          itemNumber;
-        return deletedItem;
-
-    
+        try {
+        	 itemService.deleteItem(currentUserId, itemNumber);
+             String deletedItem =
+               "Deleted item of type " +
+               item.getType().toString() +
+               " with itemNumber " +
+               itemNumber;
+    	return new ResponseEntity<Object>(deletedItem, HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   private ItemDto convertToDto(Item item) {

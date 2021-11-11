@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,71 +29,111 @@ public class ItemReservationController {
 	private ItemReservationService itemReservationService;
 	
 	@GetMapping(value = { "/all", "/all/" })
-	public List<ItemReservationDto> getAllItemReservations(@RequestParam String currentUserId) {
-		System.out.println("Flag Get"); 
-		return itemReservationService.getAllItemReservations(currentUserId).stream().map(lib -> convertToDto(lib)).collect(Collectors.toList());
+	public ResponseEntity<?> getAllItemReservations(@RequestParam String currentUserId) {
+		try {
+			return new ResponseEntity<Object>(itemReservationService.getAllItemReservations(currentUserId).stream().map(lib -> convertToDto(lib)).collect(Collectors.toList()), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
+
 	}
 	//get all item reservations by a patron
 	@GetMapping(value = { "/patron/{idNum}", "/patron/{idNum}/" })
-	public List<ItemReservationDto> getItemReservationsOfPatron(@PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
-		return getItemReservationDtosForPatron(currentUserId,idNum);
+	public ResponseEntity<?> getItemReservationsOfPatron(@PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
+	try {
+			return new ResponseEntity<Object>(getItemReservationDtosForPatron(currentUserId,idNum), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	//get all item reservations for an item
 	@GetMapping(value = { "/item/{itemNumber}", "/item/{itemNumber}/" })
-	public List<ItemReservationDto> getItemReservationsOfItem(@PathVariable("itemNumber") String itemNumber, @RequestParam String currentUserId) {
-		return getItemReservationDtosForItem(currentUserId, itemNumber);
+	public ResponseEntity<?> getItemReservationsOfItem(@PathVariable("itemNumber") String itemNumber, @RequestParam String currentUserId) {
+		try {
+			return new ResponseEntity<Object>(getItemReservationDtosForItem(currentUserId, itemNumber), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	@GetMapping(value = { "/{itemReservationId}", "/{itemReservationId}/" })
-	public ItemReservationDto getItemReservation(@PathVariable("itemReservationId") String itemReservationId, @RequestParam String currentUserId) {
-		System.out.println("Flag Get" + itemReservationId); 
-		return convertToDto(itemReservationService.getItemReservation(currentUserId, itemReservationId));
+	public ResponseEntity<?> getItemReservation(@PathVariable("itemReservationId") String itemReservationId, @RequestParam String currentUserId) {
+		try {
+			return new ResponseEntity<Object>(convertToDto(itemReservationService.getItemReservation(currentUserId, itemReservationId)), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	//return an item
 	@PostMapping(value = {"/return_item/{itemNumber}", "/return_item/{itemNumber}/"})
-	public ItemReservationDto returnItem(@PathVariable("itemNumber") String itemNumber, @RequestParam String currentUserId) {
-		return convertToDto(itemReservationService.returnItemFromReservation(currentUserId, itemNumber));
+	public ResponseEntity<?> returnItem(@PathVariable("itemNumber") String itemNumber, @RequestParam String currentUserId) {
+		try {
+			return new ResponseEntity<Object>(convertToDto(itemReservationService.returnItemFromReservation(currentUserId, itemNumber)), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 		
 	}
 	//checkout item
 	@PostMapping(value = {"/checkout_item/{itemNumber}/byPatron/{idNum}", "/checkout_item/{itemNumber}/byPatron/{idNum}"})
-	public ItemReservationDto checkoutItem(@PathVariable("itemNumber") String itemNumber, @PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
-		return convertToDto(itemReservationService.checkoutItem(currentUserId, itemNumber, idNum));
+	public ResponseEntity<?> checkoutItem(@PathVariable("itemNumber") String itemNumber, @PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
+		try {
+			return new ResponseEntity<Object>(convertToDto(itemReservationService.checkoutItem(currentUserId, itemNumber, idNum)), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 		
 	}
 	//createReservation
 	@PostMapping(value = { "/create_reservation", "/create_reservation/" })
-	public ItemReservationDto createItemReservation(@RequestParam String currentUserId, @RequestParam String idNum, @RequestParam String itemNumber, @RequestParam boolean isCheckedOut
+	public ResponseEntity<?> createItemReservation(@RequestParam String currentUserId, @RequestParam String idNum, @RequestParam String itemNumber, @RequestParam boolean isCheckedOut
 			) {
-		System.out.println("Flag Post"); 
-		ItemReservation reservation = itemReservationService.createItemReservation(currentUserId,
+		
+		try {
+			ItemReservation reservation = itemReservationService.createItemReservation(currentUserId,
 				null, idNum, itemNumber, isCheckedOut
 		     );
-		return convertToDto(reservation);
+			return new ResponseEntity<Object>(convertToDto(reservation), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	@PostMapping(value = { "/create_reservation/customDate", "/create_reservation/customDate/" })
-	public ItemReservationDto createItemReservationCustomDate(@RequestParam String currentUserId,
+	public ResponseEntity<?> createItemReservationCustomDate(@RequestParam String currentUserId,
 			 @RequestParam Integer numOfRenewalsLeft,
 			 @RequestParam String idNum,
 			 @RequestParam String itemNumber,
 			 @RequestParam boolean isCheckedOut, @RequestParam String startDate
 			) {
-		System.out.println("Flag Post"); 
-		ItemReservation reservation = itemReservationService.createItemReservation(currentUserId,
+		try {
+			ItemReservation reservation = itemReservationService.createItemReservation(currentUserId,
 				Date.valueOf(LocalDate.parse(startDate)), idNum, itemNumber, isCheckedOut
 		     );
-		return convertToDto(reservation);
+			return new ResponseEntity<Object>(convertToDto(reservation), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
+	
 	}
 	
 	@PostMapping(value = {"/renew/{itemReservationId}", "/renew/{itemReservationId}/"})
-	public ItemReservationDto renewItemReservation(@PathVariable("itemReservationId") String itemReservationId,@RequestParam String currentUserId) {
-		return convertToDto(itemReservationService.renewByItemReservationId(currentUserId,itemReservationId));
+	public ResponseEntity<?> renewItemReservation(@PathVariable("itemReservationId") String itemReservationId,@RequestParam String currentUserId) {
+		
+		try {
+			return new ResponseEntity<Object>(convertToDto(itemReservationService.renewByItemReservationId(currentUserId,itemReservationId)), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	@PostMapping(value = {"/cancel/{itemReservationId}", "/cancel/{itemReservationId}/"})
-	public boolean cancelItemReservation(@PathVariable("itemReservationId") String itemReservationId,@RequestParam String currentUserId) {
-		return itemReservationService.cancelItemReservation(currentUserId,itemReservationId);
+	public ResponseEntity<?> cancelItemReservation(@PathVariable("itemReservationId") String itemReservationId,@RequestParam String currentUserId) {
+		try {
+			return new ResponseEntity<Object>(itemReservationService.cancelItemReservation(currentUserId,itemReservationId), HttpStatus.OK);
+	    } catch (IllegalArgumentException e) {
+	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
 	}
 	
 	private List<ItemReservationDto> getItemReservationDtosForPatron(String currentUserId, String idNum) {
