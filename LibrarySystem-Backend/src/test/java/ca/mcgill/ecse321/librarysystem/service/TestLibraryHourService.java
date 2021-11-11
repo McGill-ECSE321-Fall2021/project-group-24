@@ -119,14 +119,14 @@ public class TestLibraryHourService {
 		LibraryHour libraryHour = null; 
 		
 		try {
-			libraryHour = libraryHourService.createLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK, START_TIME, END_TIME);
+			libraryHour = libraryHourService.createLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK_2, START_TIME, END_TIME);
 		} catch (Exception e) {
             fail(e.getMessage());
 		}
 		assertNotNull(libraryHour); 
 		assertEquals(START_TIME, libraryHour.getStartTime()); 
 		assertEquals(END_TIME, libraryHour.getEndTime());
-		assertEquals(DAY_OF_WEEK, libraryHour.getDayOfWeek());
+		assertEquals(DAY_OF_WEEK_2, libraryHour.getDayOfWeek());
 
 	}
 	
@@ -164,13 +164,13 @@ public class TestLibraryHourService {
 			libraryHour = libraryHourService.createLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK, START_TIME, END_TIME);
 			fail(); 
 		} catch (Exception e) {
-			assertEquals("There's alreadry a library hour on that day", e.getMessage());
+			assertEquals("There's already a library hour for that day", e.getMessage());
 		}
 		assertNull(libraryHour); 
 
 	}
 	
-	@Test // create a library hour on a day that already has one
+	@Test // modify a library hour on a day that already has one with valid parameters
 	public void testModifyLibraryHours() {
 		LibraryHour libraryHour = null; 
 
@@ -184,6 +184,48 @@ public class TestLibraryHourService {
 		assertEquals(START_TIME_2, libraryHour.getStartTime()); 
 		assertEquals(END_TIME_2, libraryHour.getEndTime());
 		assertEquals(DAY_OF_WEEK, libraryHour.getDayOfWeek());
+	}
+	
+	@Test // modify a library hour on a day that doesn't have one
+	public void testModifyLibraryHoursInvalidDay() {
+		LibraryHour libraryHour = null; 
+
+		try {
+			libraryHour = libraryHourService.modifyLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK_2, START_TIME_2, END_TIME_2); 
+			fail();
+		} catch (Exception e) {
+			assertEquals("There's no library hour for that day to modify. Create one instead.", e.getMessage()); 
+		}
+		
+		assertNull(libraryHour); 
+	}
+	
+	@Test // modify a library hour with new start time after new end time
+	public void testModifyLibraryHoursInvalidStartTime() {
+		LibraryHour libraryHour = null; 
+
+		try {
+			libraryHour = libraryHourService.modifyLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK, END_TIME_2, START_TIME_2); 
+			fail();
+		} catch (Exception e) {
+			assertEquals("Start time cannot be after end time", e.getMessage()); 
+		}
+		
+		assertNull(libraryHour); 
+	}
+	
+	@Test //  modify a library hour as a librarian
+	public void testModifylibraryHourLibrarian() {
+		LibraryHour libraryHour = null; 
+
+		try {
+			libraryHour = libraryHourService.modifyLibraryHour(LIBRARIAN_ID, DAY_OF_WEEK, START_TIME_2, END_TIME_2); 
+			fail();
+		} catch (Exception e) {
+			assertEquals("Only the Head Librarian can modify library hours", e.getMessage()); 
+		}
+		
+		assertNull(libraryHour); 
 	}
 	
 	
