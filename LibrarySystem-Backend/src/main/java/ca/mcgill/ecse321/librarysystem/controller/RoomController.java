@@ -89,7 +89,7 @@ public class RoomController {
 	 * only librarians have permission to update room
 	 */
 	@DeleteMapping(value = { "/delete_room/{roomNum}", "/delete_room/{roomNum}/" })
-	public ResponseEntity<?> deleteRoom(@PathVariable("oldRoomNumber") String roomNum,
+	public ResponseEntity<?> deleteRoom(@PathVariable String roomNum,
 			@RequestParam String currentUserId) {
 		System.out.print("Flag delete");
 		Room room = null;

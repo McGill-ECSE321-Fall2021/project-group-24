@@ -61,7 +61,7 @@ public class LibrarianService {
   //fire librarian
   @Transactional
   public Librarian deleteLibrarian(
-    // String currentUserId,
+     String currentUserId,
     String idNum
   ) {
     if (shiftRepo.findShiftByLibrarianId(idNum).size() > 0) {
@@ -69,15 +69,15 @@ public class LibrarianService {
         "Delete failed, this librarian has shifts assigned to them."
       );
     }
-    // if (isHeadLibrarian(currentUserId)) {
+     if (isHeadLibrarian(currentUserId)) {
     Librarian bye = librarianRepo.findUserByIdNum(idNum);
     librarianRepo.delete(bye);
     return bye;
-    // } else {
-    //   throw new IllegalArgumentException(
-    //     "You do not have permission to update the librarian information."
-    //   );
-    // }
+     } else {
+       throw new IllegalArgumentException(
+         "You do not have permission to update the librarian information."
+       );
+     }
   }
 
   // looks for a librarian with the given ID number, returns them if found

@@ -71,9 +71,9 @@ public class LibrarianController {
   @DeleteMapping(
     value = { "/delete/{idNum}", "/delete/{idNum}/" }
   )
-  public ResponseEntity<?> deleteLibrarian(@PathVariable("idNum") String idNum) {
+  public ResponseEntity<?> deleteLibrarian(@PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
 	  try { 
-		  Librarian librarian = librarianService.deleteLibrarian(idNum);
+		  Librarian librarian = librarianService.deleteLibrarian(currentUserId, idNum);
 			return new ResponseEntity<Object>(convertToDto(librarian), HttpStatus.OK);
 	    } catch (IllegalArgumentException e) {
 	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
