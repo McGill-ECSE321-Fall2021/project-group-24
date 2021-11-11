@@ -34,31 +34,33 @@ public class RoomService {
 			String roomNum,
 		    Integer capacity)  throws Exception
 	{
+
 		// check capacity 
 		if (capacity<1) throw new IllegalArgumentException("Capacity must be at least 1");
-		
+
 		// check room number
 		if (!inputIsValid(roomNum)) throw new IllegalArgumentException("Room number cannot be null or empty");
-		
+
 		// check permission: only librarians have permission to create the rooms
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		System.out.print(headLibrarianRepository);
 	    if (
 	      (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn() ) || ( currentLibrarian != null && currentLibrarian.getIsLoggedIn() )
 	    ) {
-	    
+	    	
 	    }else {
 	    	 throw new IllegalArgumentException(
 	    		        "You do not have permission to create a room"
 	    		      );
 	    }
-	    
+
 	    // check if roomNum is available
-	    for (Room room: toList(roomRepository.findAll()) )  {
-	    	if ( room.getRoomNum().equalsIgnoreCase(roomNum) ) throw new IllegalArgumentException("The room number already exists");
-	    }
+//	    for (Room room: toList(roomRepository.findAll()) )  {
+//	    	if ( room.getRoomNum().equalsIgnoreCase(roomNum) ) throw new IllegalArgumentException("The room number already exists");
+//	    }
 	    
-	    
+	    System.out.print("hello 4");
 		Room room = new Room();
 		room.setRoomNum(roomNum);
 		room.setCapacity(capacity);
@@ -147,13 +149,13 @@ public class RoomService {
 	    }
 			    
 		Room toDelete = roomRepository.findRoomByRoomNum(roomNum);
-		
+		if (toDelete == null) throw new IllegalArgumentException("The room number is invalid");
 		// check if there is future room bookings, if there is, you cannot delete the room
 		for (RoomBooking rb : toList(toDelete.getRoomBookings())) {
 			if (rb.getDate().equals(Date.valueOf(LocalDate.now())) && rb.getEndTime().after(Time.valueOf(LocalTime.now())) || rb.getDate().after(Date.valueOf(LocalDate.now()))) throw new IllegalArgumentException("The room number has bookings in the future, cannot delete");
 	
 		}
-		if (toDelete == null) throw new IllegalArgumentException("The room number is invalid");
+		
 		roomRepository.delete(toDelete);
 	    return toDelete;		
 	}

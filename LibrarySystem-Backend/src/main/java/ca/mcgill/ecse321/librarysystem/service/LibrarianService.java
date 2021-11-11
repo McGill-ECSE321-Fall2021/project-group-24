@@ -15,11 +15,14 @@ public class LibrarianService {
 
   @Autowired
   LibrarianRepository librarianRepo;
+  
+	@Autowired
+	HeadLibrarianRepository headLibrarianRepository;
 
   // creates librarian, returns it so we know it's not null
   @Transactional
   public Librarian createLibrarian(
-    // String currentUserId,
+    String currentUserId,
     String firstName,
     String lastName,
     String address,
@@ -28,7 +31,10 @@ public class LibrarianService {
     String password
   ) {
     validInput(firstName, lastName, address, email, username, password);
-    // if (isHeadLibrarian(currentUserId)) {
+    System.out.print(headLibrarianRepository);
+    
+    
+    if (isHeadLibrarian(currentUserId)) {
     String idNum =
       firstName + "Librarian-" + toList(librarianRepo.findAll()).size();
     Librarian librarian = new Librarian();
@@ -42,11 +48,11 @@ public class LibrarianService {
 
     librarianRepo.save(librarian);
     return librarian;
-    // } else {
-    // throw new IllegalArgumentException(
-    //   "You do not have permission to create a librarian."
-    // );
-    // }
+     } else {
+     throw new IllegalArgumentException(
+       "You do not have permission to create a librarian."
+     );
+     }
   }
 
   // @Transactional
@@ -110,6 +116,19 @@ public class LibrarianService {
   public List<Librarian> getAllLibrarians() {
     return toList(librarianRepo.findAll());
   }
+  
+  private boolean isHeadLibrarian(String currentUserId) {
+	    System.out.println("Current User ID: " + currentUserId);
+	    System.out.println("HERE");
+	    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+	    System.out.println("HERE2");
+	    if (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn()) {
+	      throw new IllegalArgumentException(
+	        "You are not authorized to do this. Only the Head Librarian can."
+	      );
+	    }
+	    return true;
+	  }
 
   public static <T> List<T> toList(Iterable<T> iterable) {
     List<T> resultList = new ArrayList<T>();

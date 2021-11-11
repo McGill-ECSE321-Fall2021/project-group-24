@@ -4,11 +4,10 @@ import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 import ca.mcgill.ecse321.librarysystem.service.HeadLibrarianService;
 import java.sql.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
 public class SystemServiceHelpers {
 
-  static LibrarianRepository librarianRepository;
-  static HeadLibrarianRepository headLibrarianRepository;
-  static HeadLibrarianService headLibrarianService;
 
   public static void validInput(
     String firstName,
@@ -64,19 +63,5 @@ public class SystemServiceHelpers {
     ) throw new IllegalArgumentException("Item must have a title");
   }
 
-  public static boolean isHeadLibrarian(String currentUserId) {
-    System.out.println("Current User ID: " + currentUserId);
 
-    System.out.println("HERE");
-    HeadLibrarian currentHeadLibrarian = headLibrarianService.getHeadLibrarian(
-      currentUserId
-    );
-    System.out.println("HERE2");
-    if (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn()) {
-      throw new IllegalArgumentException(
-        "You are not authorized to do this. Only the Head Librarian can."
-      );
-    }
-    return true;
-  }
 }
