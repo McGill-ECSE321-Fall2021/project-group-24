@@ -27,6 +27,15 @@ public class ItemReservationService {
 	@Autowired
 	HeadLibrarianRepository headLibrarianRepository;
 		
+	/***
+	 * @author saagararya
+	 * @param currentUserId
+	 * @param startDate
+	 * @param idNum
+	 * @param itemNumber
+	 * @param isCheckedOut
+	 * @return
+	 */
 	@Transactional 
 	public ItemReservation createItemReservation (String currentUserId,
 			   Date startDate,
@@ -45,7 +54,7 @@ public class ItemReservationService {
 				throw new IllegalArgumentException("Book has a future reservation");
 			}
 		}
-		String itemReservationId = startDate.toLocalDate().toString() + itemNumber + idNum;
+		String itemReservationId = itemNumber + idNum + itemReservationRepository.count();
 		Date endDate = Date.valueOf(startDate.toLocalDate().plusWeeks(2));
 		
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
@@ -98,7 +107,13 @@ public class ItemReservationService {
 	    return reservation;		
 	}
 	
-	// looks for a reservation with the given itemReservationId, returns them if found
+	/***
+	 * @author saagararya
+	 * looks for a reservation with the given itemReservationId, returns them if found
+	 * @param currentUserId
+	 * @param itemReservationId
+	 * @return
+	 */
 	@Transactional 
 	public ItemReservation getItemReservation(String currentUserId,String itemReservationId) {
 		
@@ -120,6 +135,11 @@ public class ItemReservationService {
 		return reservation;
 	}
 	
+	/***
+	 * @author saagararya
+	 * @param currentUserId
+	 * @return
+	 */
 	@Transactional 
 	public List<ItemReservation> getAllItemReservations(String currentUserId) {
 		if (librarianRepository.findUserByIdNum(currentUserId) == null && headLibrarianRepository.findUserByIdNum(currentUserId) == null) {
@@ -128,6 +148,12 @@ public class ItemReservationService {
 		return toList(itemReservationRepository.findAll()); 
 	}
 
+	/***
+	 * @author saagararya
+	 * @param currentUserId
+	 * @param idNum
+	 * @return
+	 */
 	@Transactional
 	public List<ItemReservation> getItemReservationsByIdNum(String currentUserId,String idNum) {
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
@@ -149,6 +175,13 @@ public class ItemReservationService {
 	    return reservationsByIdNum;
 	}
 	
+	/***
+	 * @author saagararya
+	 * @param currentUserId
+	 * @param itemNumber
+	 * @param idNum
+	 * @return
+	 */
 	@Transactional
 	public ItemReservation checkoutItem(String currentUserId,String itemNumber, String idNum) {
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
@@ -188,6 +221,12 @@ public class ItemReservationService {
 		return currentReservation;
 	}
 	
+	/***
+	 * @author saagararya
+	 * @param currentUserId
+	 * @param itemReservationId
+	 * @return
+	 */
 	@Transactional
 	public boolean cancelItemReservation(String currentUserId,String itemReservationId) {
 		ItemReservation reservation = itemReservationRepository.findItemReservationByItemReservationId(itemReservationId);
@@ -212,6 +251,13 @@ public class ItemReservationService {
 		}
 	}
 	
+	
+	/***
+	 * @author saagararya
+	 * @param currentUserId
+	 * @param itemNumber
+	 * @return
+	 */
 	@Transactional
 	public ItemReservation returnItemFromReservation(String currentUserId,String itemNumber) {
 		String itemReservationId = null;
@@ -243,6 +289,13 @@ public class ItemReservationService {
 		
 	}
 	
+	/***
+	 * @author saagararya
+	 * @param currentUserId
+	 * @param itemNumber
+	 * @param idNum
+	 * @return
+	 */
 	@Transactional
 	public List<ItemReservation> getItemReservationsByItemNumberAndIdNum(String currentUserId,String itemNumber, String idNum) {
 		List<ItemReservation> reservations = new ArrayList<ItemReservation>();
@@ -268,6 +321,12 @@ public class ItemReservationService {
 
 	}
 	
+	/***
+	 * @author saagararya
+	 * @param currentUserId
+	 * @param itemNumber
+	 * @return
+	 */
 	@Transactional
 	public List<ItemReservation> getItemReservationsByItemNumber(String currentUserId,String itemNumber) {
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
@@ -283,6 +342,12 @@ public class ItemReservationService {
 		return itemReservationRepository.findItemReservationsByItemNumber(itemNumber);
 	}
 	
+	/***
+	 * @author saagararya
+	 * @param currentUserId
+	 * @param itemReservationId
+	 * @return
+	 */
 	@Transactional
 	public ItemReservation renewByItemReservationId(String currentUserId,String itemReservationId) {
 		ItemReservation reservation = getItemReservation(currentUserId, itemReservationId);
@@ -301,7 +366,7 @@ public class ItemReservationService {
 		if (reservation.getNumOfRenewalsLeft() > 0) {
 			Date nextAvailable = findNextAvailabilityForItem(reservation.getItemNumber());
 			//if this is the last reservation
-			if (Date.valueOf(nextAvailable.toLocalDate().minusDays(1)).equals(reservation.getEndDate())) {
+			if (Date.valueOf(nextAvailable.toLocalDate()).equals(reservation.getEndDate())) {
 				reservation.setNumOfRenewalsLeft(reservation.getNumOfRenewalsLeft() - 1);
 				reservation.setEndDate(Date.valueOf(reservation.getEndDate().toLocalDate().plusWeeks(2)));
 				itemReservationRepository.save(reservation);
@@ -314,6 +379,12 @@ public class ItemReservationService {
 		}
 	}
 	
+	/***
+	 * @author saagararya
+	 * @param currentUserId
+	 * @param idNum
+	 * @return
+	 */
 	public List<ItemReservation> getCurrentReservationsByIdNum(String currentUserId,String idNum) {
 		Date today = Date.valueOf(LocalDate.now());
 		List<ItemReservation> currentReservationsByPatron = new ArrayList<ItemReservation>();
@@ -336,6 +407,12 @@ public class ItemReservationService {
 		return currentReservationsByPatron;
 	}
 	
+	/***
+	 * Creates an item reservation for TODAY
+	 * @author saagararya
+	 * @param itemNumber
+	 * @return
+	 */
 	@Transactional
 	public Date findNextAvailabilityForItem(String itemNumber) {
 		List<ItemReservation> reservationsByItemNumber = itemReservationRepository.findItemReservationsByItemNumber(itemNumber);
@@ -348,9 +425,9 @@ public class ItemReservationService {
 			}
 		}
 		if (latestReservation == null) {
-			return Date.valueOf(LocalDate.now().plusDays(1));
+			return Date.valueOf(LocalDate.now());
 		} else {
-			return Date.valueOf(latestReservation.getEndDate().toLocalDate().plusDays(1));
+			return Date.valueOf(latestReservation.getEndDate().toLocalDate());
 		}
 	}
 

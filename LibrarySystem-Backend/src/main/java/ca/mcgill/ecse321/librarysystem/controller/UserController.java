@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -77,7 +78,7 @@ public class UserController {
 	
 	
 	
-	@RequestMapping(value = { "/change_password", "/change_password/" }, method = { RequestMethod.GET, RequestMethod.POST })
+	@PutMapping(value = { "/change_password", "/change_password/" })
 	public ResponseEntity<?> changePassword(@RequestParam("username") String user, @RequestParam("newPass") String newPass, @RequestParam("oldPass") String oldPass) {
 		try {
 			User u = userService.changePassword(user, newPass, oldPass);
@@ -114,7 +115,7 @@ public class UserController {
 	 * @param email
 	 * @return userDto
 	 */
-	@PostMapping(value = {"/change_email", "/change_email/"})
+	@PutMapping(value = {"/change_email", "/change_email/"})
 	public ResponseEntity<?> changeEmail(@RequestParam String username, @RequestParam String email) {
 		User user = null; 
 		try {
@@ -132,7 +133,7 @@ public class UserController {
 	 * @param address
 	 * @return userDto
 	 */
-	@PostMapping(value = {"/change_address", "/change_address/"})
+	@PutMapping(value = {"/change_address", "/change_address/"})
 	public ResponseEntity<?> changeAddress(@RequestParam String username, @RequestParam String address) {
 		User user = null; 
 		try {

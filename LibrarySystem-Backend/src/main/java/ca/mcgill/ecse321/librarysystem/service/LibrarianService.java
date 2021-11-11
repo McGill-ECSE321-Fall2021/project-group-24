@@ -61,7 +61,7 @@ public class LibrarianService {
   //fire librarian
   @Transactional
   public Librarian deleteLibrarian(
-    // String currentUserId,
+     String currentUserId,
     String idNum
   ) {
     if (shiftRepo.findShiftByLibrarianId(idNum).size() > 0) {
@@ -69,67 +69,10 @@ public class LibrarianService {
         "Delete failed, this librarian has shifts assigned to them."
       );
     }
-    // if (isHeadLibrarian(currentUserId)) {
+     if (isHeadLibrarian(currentUserId)) {
     Librarian bye = librarianRepo.findUserByIdNum(idNum);
     librarianRepo.delete(bye);
     return bye;
-    // } else {
-    //   throw new IllegalArgumentException(
-    //     "You do not have permission to update the librarian information."
-    //   );
-    // }
-  }
-
-  // updates librarian, returns it so we know it's not null
-  //enter the fields you want to update. if you dont want to update, enter null
-  @Transactional
-  public Librarian updateLibrarian(
-    // String currentUserId,
-    String idNumOfAccountToUpdate,
-    String firstName,
-    String lastName,
-    String address,
-    String email,
-    String username,
-    String password
-  ) {
-    validUpdateInput(firstName, lastName, address, email, username, password);
-     if (isHeadLibrarian(idNumOfAccountToUpdate)) {
-	    Librarian librarianToUpdate = librarianRepo.findUserByIdNum(
-	      idNumOfAccountToUpdate
-	    );
-	    if (firstName != "none") {
-	      librarianToUpdate.setFirstName(firstName);
-	    } else {
-	      System.out.println("First Name will not change.");
-	    }
-	    if (lastName != "none") {
-	      librarianToUpdate.setLastName(lastName);
-	    } else {
-	      System.out.println("Last Name will not change.");
-	    }
-	    if (address != "none") {
-	      librarianToUpdate.setAddress(address);
-	    } else {
-	      System.out.println("Address will not change.");
-	    }
-	    if (email != "none") {
-	      librarianToUpdate.setEmail(email);
-	    } else {
-	      System.out.println("Email will not change.");
-	    }
-	    if (username != "none") {
-	      librarianToUpdate.setUsername(username);
-	    } else {
-	      System.out.println("Username will not change.");
-	    }
-	    if (password != "none") {
-	      librarianToUpdate.setPassword(password);
-	    } else {
-	      System.out.println("Password will not change.");
-	    }
-	    librarianRepo.save(librarianToUpdate);
-	    return librarianToUpdate;
      } else {
        throw new IllegalArgumentException(
          "You do not have permission to update the librarian information."

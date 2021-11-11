@@ -160,8 +160,6 @@ public class ItemController {
    * @param itemTitle
    * @param description
    * @param imageURL
-   * @param publisher
-   * @param author
    * @param genre
    * @param publishDate
    * @param isReservable
@@ -173,8 +171,6 @@ public class ItemController {
     @RequestParam String itemTitle,
     @RequestParam String description,
     @RequestParam String imageURL,
-    @RequestParam String publisher,
-    @RequestParam String author,
     @RequestParam String genre,
     @RequestParam String publishDate,
     @RequestParam boolean isReservable,
@@ -203,8 +199,6 @@ public class ItemController {
    * @param itemTitle
    * @param description
    * @param imageURL
-   * @param publisher
-   * @param author
    * @param genre
    * @param publishDate
    * @param isReservable
@@ -220,8 +214,6 @@ public class ItemController {
     @RequestParam String itemTitle,
     @RequestParam String description,
     @RequestParam String imageURL,
-    @RequestParam String publisher,
-    @RequestParam String author,
     @RequestParam String genre,
     @RequestParam String publishDate,
     @RequestParam boolean isReservable,
@@ -254,8 +246,6 @@ public class ItemController {
    * @param itemTitle
    * @param description
    * @param imageURL
-   * @param publisher
-   * @param author
    * @param genre
    * @param publishDate
    * @param isReservable
@@ -270,8 +260,6 @@ public class ItemController {
     @RequestParam String itemTitle,
     @RequestParam String description,
     @RequestParam String imageURL,
-    @RequestParam String publisher,
-    @RequestParam String author,
     @RequestParam String genre,
     @RequestParam String publishDate,
     @RequestParam boolean isReservable,

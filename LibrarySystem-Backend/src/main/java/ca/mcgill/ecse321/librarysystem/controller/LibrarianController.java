@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +27,7 @@ public class LibrarianController {
   private LibrarianService librarianService;
 
   //GET to get all librarians
-  @GetMapping(value = { "/librarians", "/librarians/" })
+  @GetMapping(value = { "/all", "/all/" })
   public ResponseEntity<?> getAllLibrarians() {
 	  try {
 			return new ResponseEntity<Object>(librarianService
@@ -65,46 +67,13 @@ public class LibrarianController {
 	    }
   }
 
-  //update librarian
-  @PostMapping(
-    value = {
-      "/update/{idNumOfAccountToUpdate}/",
-      "/update/{idNumOfAccountToUpdate}",
-    }
-  )
-  public ResponseEntity<?> updateLibrarian(
-    @PathVariable("idNumOfAccountToUpdate") String idNumOfAccountToUpdate,
-    @RequestParam String firstName,
-    @RequestParam String lastName,
-    @RequestParam String address,
-    @RequestParam String email,
-    @RequestParam String username,
-    @RequestParam String password
-  ) {
-	  try { 
-		  Librarian updatedLibrarian = librarianService.updateLibrarian(
-      idNumOfAccountToUpdate,
-      firstName,
-      lastName,
-      address,
-      email,
-      username,
-      password
-    );
-			return new ResponseEntity<Object>(convertToDto(updatedLibrarian), HttpStatus.OK);
-	    } catch (IllegalArgumentException e) {
-	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-	    }
-
-  }
-
   //POST to delete/fire a librarian
-  @PostMapping(
+  @DeleteMapping(
     value = { "/delete/{idNum}", "/delete/{idNum}/" }
   )
-  public ResponseEntity<?> deleteLibrarian(@PathVariable("idNum") String idNum) {
+  public ResponseEntity<?> deleteLibrarian(@PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
 	  try { 
-		  Librarian librarian = librarianService.deleteLibrarian(idNum);
+		  Librarian librarian = librarianService.deleteLibrarian(currentUserId, idNum);
 			return new ResponseEntity<Object>(convertToDto(librarian), HttpStatus.OK);
 	    } catch (IllegalArgumentException e) {
 	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);

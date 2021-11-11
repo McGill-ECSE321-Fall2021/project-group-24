@@ -94,13 +94,10 @@ public class RoomService {
 	// method for modify rooms
 	// only head librarian have permission to modify the rooms, they can modify the room number and the capacity, but the room numbers must be unique
 	@Transactional 
-	public Room updateRoom (String currentUserId, String oldRoomNum, String newRoomNum, int newCapacity) throws Exception
+	public Room updateRoom (String currentUserId, String roomNum, int newCapacity) throws Exception
 	{
 		// check capacity 
 		if (newCapacity<1) throw new IllegalArgumentException("Capacity must be at least 1");
-		
-		// check new room number
-		if (!inputIsValid(newRoomNum)) throw new IllegalArgumentException("Room number cannot be null or empty");
 		
 		// check permission: only librarians have permission to update the rooms
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
@@ -115,16 +112,11 @@ public class RoomService {
 	    		      );
 	    }
 		
-	    // check if newRoomNum is available
-	    for (Room room: toList(roomRepository.findAll()) )  {
-	    	if ( room.getRoomNum().equalsIgnoreCase(newRoomNum) ) throw new IllegalArgumentException("The new room number already exists");
-	    }
 	    
 	    
-		Room toUpdate = roomRepository.findRoomByRoomNum(oldRoomNum);
-		if (toUpdate == null) throw new IllegalArgumentException("Old room number is invalid");
+		Room toUpdate = roomRepository.findRoomByRoomNum(roomNum);
+		if (toUpdate == null) throw new IllegalArgumentException("Room number is invalid");
 		toUpdate.setCapacity(newCapacity);		
-		toUpdate.setRoomNum(newRoomNum);
 		
 
 	    return toUpdate;		
