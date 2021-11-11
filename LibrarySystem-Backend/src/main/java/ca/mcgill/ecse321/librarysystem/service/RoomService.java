@@ -146,7 +146,7 @@ public class RoomService {
 		// check if there is future room bookings, if there is, you cannot delete the room
 		if (toDelete.getRoomBookings() != null ) {
 			for (RoomBooking rb : toList(toDelete.getRoomBookings())) {
-				if (rb.getDate().equals(Date.valueOf(LocalDate.now())) && rb.getEndTime().after(Time.valueOf(LocalTime.now())) || rb.getDate().after(Date.valueOf(LocalDate.now()))) throw new IllegalArgumentException("The room number has bookings in the future, cannot delete");
+				if (rb.getDate().equals(Date.valueOf(LocalDate.now())) && rb.getEndTime().after(Time.valueOf(LocalTime.now())) || rb.getDate().after(Date.valueOf(LocalDate.now()))) throw new IllegalArgumentException("The room has bookings in the future, cannot delete");
 			}
 		}
 		roomRepository.delete(toDelete);

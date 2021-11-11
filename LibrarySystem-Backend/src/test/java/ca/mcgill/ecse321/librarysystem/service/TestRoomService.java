@@ -60,28 +60,49 @@ public class TestRoomService {
 	private static final String repeatedRoomNum = "room1";
 	private static final String testRoomNum = "room2";
 	private static final int updatedCapacity = 15;
+	private static final String roomWithbookings = "roomWithbookings";
 	@BeforeEach
 	  public void setMockOutput() {
 	    lenient()
 	      .when(roomDao.findAll())
 	      .thenAnswer((InvocationOnMock invocation) -> {
 	    	  List<Room> allRooms  = new ArrayList<Room>(); 
-		       Room room = new Room();
+		       
+	    	   Room room = new Room();
 		       room.setCapacity(testCapacity);
 		       room.setRoomBookings(null);
 		       room.setRoomNum(repeatedRoomNum);
 		       allRooms.add(room);
+		       
 		       Room roomWithBookings = new Room();
 		       roomWithBookings.setCapacity(testCapacity);
+		       
 		       List<RoomBooking> list = new ArrayList<RoomBooking>();
 		       RoomBooking rb = new RoomBooking();
 		       rb.setDate(Date.valueOf(LocalDate.now().plusDays(1)));
 		       list.add(rb);
 		       Set<RoomBooking> set = new HashSet<>(list);
+		       
 		       roomWithBookings.setRoomBookings(set);
-		       roomWithBookings.setRoomNum(repeatedRoomNum);
+		       roomWithBookings.setRoomNum(roomWithbookings);
 		       allRooms.add(roomWithBookings);
 		       return allRooms;
+	      });
+	    lenient()
+	      .when(roomDao.findRoomByRoomNum(roomWithbookings))
+	      .thenAnswer((InvocationOnMock invocation) -> {
+	    	  Room roomWithBookings = new Room();
+		       roomWithBookings.setCapacity(testCapacity);
+		       
+		       List<RoomBooking> list = new ArrayList<RoomBooking>();
+		       RoomBooking rb = new RoomBooking();
+		       rb.setDate(Date.valueOf(LocalDate.now().plusDays(1)));
+		       list.add(rb);
+		       Set<RoomBooking> set = new HashSet<>(list);
+		       
+		       roomWithBookings.setRoomBookings(set);
+		       roomWithBookings.setRoomNum(roomWithbookings);
+		       return roomWithBookings;
 	      });
 	    lenient()
 	      .when(roomDao.findRoomByRoomNum(repeatedRoomNum))
@@ -228,7 +249,7 @@ public class TestRoomService {
 			 fail();
 		}
 		
-		assertEquals(1, r.size());
+		assertEquals(2, r.size());
 	    assertEquals(testCapacity, r.get(0).getCapacity());		
 	    assertEquals(repeatedRoomNum, r.get(0).getRoomNum());	
 	}
@@ -362,18 +383,32 @@ public class TestRoomService {
 	
 	}
 	// test case 13: Delete Room Successfully 
-	// expected outcome: Error message: Capacity must be at least 1
+	// expected outcome: Room deleted
 	@Test
-	public void DeleteRoomWithInvalidRoomNum() {
+	public void DeleteRoomSuccessfully() {
 		Room r = null;
 		try {
 			r = roomService.deleteRoom("librarian1", repeatedRoomNum);	
 		} catch (Exception e) {
-			//System.out.print(e.getMessage());
 			fail();
-		}
-		
+		}	
 		assertNotNull(r);
+		assertEquals(repeatedRoomNum, r.getRoomNum());
 	
+	}
+	// test case 14: Delete Room with future RoomBookings  
+	// expected outcome: Error message: The room has bookings in the future, cannot delete
+	@Test
+	public void DeleteRoomWithRoombookings() {
+		Room r = null;
+		String expectedErrorMsg =  "The room has bookings in the future, cannot delete";
+		String actualErrorMsg = null;
+		try {
+			r = roomService.deleteRoom("librarian1", roomWithbookings);	
+		} catch (Exception e) {
+			actualErrorMsg=e.getMessage();
+		}
+		assertNull(r);
+		assertEquals(expectedErrorMsg, actualErrorMsg);
 	}
 }
