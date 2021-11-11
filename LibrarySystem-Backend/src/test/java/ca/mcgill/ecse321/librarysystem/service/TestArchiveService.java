@@ -61,7 +61,7 @@ public class TestArchiveService {
   @BeforeEach
   public void setMockOutput() {
     lenient()
-      .when(librarianDao.findUserByIdNum(anyString()))
+      .when(librarianDao.findUserByIdNum("librarian"))
       .thenAnswer((InvocationOnMock invocation) -> {
         Librarian librarian = new Librarian();
         librarian.setIdNum("librarian");
@@ -71,7 +71,7 @@ public class TestArchiveService {
         
       });
     lenient()
-    .when(headLibrarianDao.findUserByIdNum(anyString()))
+    .when(headLibrarianDao.findUserByIdNum("admin"))
     .thenAnswer((InvocationOnMock invocation) -> {
       HeadLibrarian headLibrarian = new HeadLibrarian();
       headLibrarian.setIdNum("admin");
@@ -81,7 +81,7 @@ public class TestArchiveService {
       
     });
     lenient()
-      .when(patronDao.findUserByIdNum(anyString()))
+      .when(patronDao.findUserByIdNum("patron"))
       .thenAnswer((InvocationOnMock invocation) -> {
         Patron patron = new Patron();
         patron.setIdNum("patron");
