@@ -60,10 +60,7 @@ public class RoomService {
 	    }
 
 	    // check if roomNum is available
-//	    for (Room room: toList(roomRepository.findAll()) )  {
-//	    	if ( room.getRoomNum().equalsIgnoreCase(roomNum) ) throw new IllegalArgumentException("Room numbers must be unique");
-//	    }
-	    
+	    //if ( roomRepository.findRoomByRoomNum(roomNum) != null ) throw new IllegalArgumentException("Room numbers must be unique");
 		Room room = new Room();
 		room.setRoomNum(roomNum);
 		room.setCapacity(capacity);
@@ -90,7 +87,6 @@ public class RoomService {
 	
 	@Transactional 
 	public List<Room> getAllRooms() {
-		System.out.println("Hllo");
 		return (List<Room>) roomRepository.findAll(); 
 	}
 

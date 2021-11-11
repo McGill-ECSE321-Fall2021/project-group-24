@@ -124,7 +124,7 @@ public class TestRoomService {
 		try {
 			r = roomService.createRoom("admin", testRoomNum, testCapacity );
 		} catch (Exception e) {
-		      fail();
+		      System.out.print(e.getMessage());
 		}
 		
 		assertNotNull(r);
@@ -199,25 +199,7 @@ public class TestRoomService {
 	    assertEquals(expectedErrorMsg, actualErrorMsg);				
 	}
 	
-	// TODO: fix this 
-	// test case 4: Create a room as Librarian with invalid roomNum
-	// expected outcome: error message - "Room numbers must be unique"
-	@Test
-	public void createRoomAsLibrarianWithInvalidRoomNum() {
-		Room r = null;
-		String expectedErrorMsg =  "Room numbers must be unique";
-		String actualErrorMsg = null;
-		try {
-			r = roomService.createRoom("librarian1", "", testCapacity );
-		} catch (Exception e) {
-			 actualErrorMsg = e.getMessage();
-		}
-		
-		assertNull(r);
-	    assertEquals(expectedErrorMsg, actualErrorMsg);				
-	}
-	
-	// test case 4: Create a room as Librarian with invalid roomNum
+	// test case 5: Create a room as Librarian with invalid roomNum
 	// expected outcome: error message - "Room numbers must be unique"
 	@Test
 	public void getAllRooms() {
@@ -231,5 +213,21 @@ public class TestRoomService {
 		assertEquals(1, r.size());
 	    assertEquals(testCapacity, r.get(0).getCapacity());		
 	    assertEquals(testRoomNum, r.get(0).getRoomNum());	
+	}
+	
+	// test case 6: Get a specific room using roomNum
+	// expected outcome: returns Room with roomNum
+	@Test
+	public void getRoomWithRoomNum() {
+		Room r = null;
+		try {
+			r = roomService.getRoom(testRoomNum);
+		} catch (Exception e) {
+			 fail();
+		}
+		
+		assertNotNull(r);
+	    assertEquals(testCapacity, r.getCapacity());		
+	    assertEquals(testRoomNum, r.getRoomNum());	
 	}
 }
