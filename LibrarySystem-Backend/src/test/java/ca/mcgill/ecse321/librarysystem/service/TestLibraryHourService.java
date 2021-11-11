@@ -49,6 +49,7 @@ public class TestLibraryHourService {
 	private static final String HEAD_LIBRARIAN_ID = "admin"; 
 	private static final String LIBRARIAN_ID = "randomId"; 
 	private static final TimeSlot.DayOfWeek DAY_OF_WEEK = TimeSlot.DayOfWeek.MONDAY;  
+	private static final TimeSlot.DayOfWeek DAY_OF_WEEK_2 = TimeSlot.DayOfWeek.TUESDAY;  
 	
 	private static final Time START_TIME = Time.valueOf("9:00:00");  
 	private static final Time END_TIME = Time.valueOf("17:00:00");  
@@ -56,23 +57,21 @@ public class TestLibraryHourService {
 	private static final Time START_TIME_2 = Time.valueOf("10:00:00");  
 	private static final Time END_TIME_2 = Time.valueOf("19:00:00");  
 
-
+	// adds a library hour, a librarian, and a head librarian and saves them to their respective repo's 
 	@BeforeEach
 	  public void setMockOutput() {
 	    lenient() 
 	      .when(libraryHourRepo.findAll())
 	      .thenAnswer((InvocationOnMock invocation) -> {
-	    	  List<LibraryHour> libraryHours  = new ArrayList<LibraryHour>(); 
 		      LibraryHour libraryHour = new LibraryHour(); 
 			  libraryHour.setDayOfWeek(DAY_OF_WEEK); 
 		      libraryHour.setStartTime(START_TIME);
 		      libraryHour.setEndTime(END_TIME);
-		      libraryHours.add(libraryHour); 
-		      return libraryHours;
+		      return libraryHour; 
 	      });
 
 	    lenient()
-	      .when(headLibrarianRepo.findUserByIdNum(anyString()))
+	      .when(headLibrarianRepo.findUserByIdNum(HEAD_LIBRARIAN_ID))
 	      .thenAnswer((InvocationOnMock invocation) -> {
 		       HeadLibrarian headlibriarian = new HeadLibrarian();
 		       headlibriarian.setIdNum(HEAD_LIBRARIAN_ID);
@@ -81,13 +80,29 @@ public class TestLibraryHourService {
 	      });
 	    
 	    lenient()
-	      .when(librarianRepo.findUserByIdNum(anyString()))
+	      .when(librarianRepo.findUserByIdNum(LIBRARIAN_ID))
 	      .thenAnswer((InvocationOnMock invocation) -> {
 		       Librarian librarian = new Librarian();
 		       librarian.setIdNum(LIBRARIAN_ID);
 		       librarian.setIsLoggedIn(true);
 		       return librarian;
 	      });
+	    Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
+	        return invocation.getArgument(0);
+	      };
+	      
+        lenient()
+        .when(librarianRepo.save(any(Librarian.class)))
+        .thenAnswer(returnParameterAsAnswer);
+
+	    lenient()
+	      .when(headLibrarianRepo.save(any(HeadLibrarian.class)))
+	      .thenAnswer(returnParameterAsAnswer);
+	    
+	    lenient()
+	      .when(libraryHourRepo.save(any(LibraryHour.class)))
+	      .thenAnswer(returnParameterAsAnswer);
+	    
 	}
 	
 	@Test // create a library hour with valid parameters
@@ -111,11 +126,12 @@ public class TestLibraryHourService {
 		LibraryHour libraryHour = null; 
 		
 		try {
-			libraryHour = libraryHourService.createLibraryHour(LIBRARIAN_ID, DAY_OF_WEEK, START_TIME, END_TIME);
+			libraryHour = libraryHourService.createLibraryHour(LIBRARIAN_ID, DAY_OF_WEEK_2, START_TIME, END_TIME);
+			fail(); 
 		} catch (Exception e) {
 			assertEquals("Only the Head Librarian can create library hours", e.getMessage());
 		}
-		assertNotNull(libraryHour); 
+		assertNull(libraryHour);
 	}
 	
 	@Test // create a library hour with start time after end time
@@ -123,21 +139,26 @@ public class TestLibraryHourService {
 		LibraryHour libraryHour = null; 
 		
 		try {
-			libraryHour = libraryHourService.createLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK, END_TIME, START_TIME);
+			libraryHour = libraryHourService.createLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK_2, END_TIME, START_TIME);
+			fail(); 
 		} catch (Exception e) {
 			assertEquals("Start time cannot be after end time", e.getMessage());
 		}
+		assertNull(libraryHour); 
 	}
 	
 	@Test // create a library hour on a day that already has one
 	public void testCreateLibraryHourSameDay() {
 		LibraryHour libraryHour = null; 
-		
+
 		try {
 			libraryHour = libraryHourService.createLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK, START_TIME, END_TIME);
+			fail(); 
 		} catch (Exception e) {
 			assertEquals("There's alreadry a library hour on that day", e.getMessage());
 		}
+		assertNull(libraryHour); 
+
 	}
 	
 	@Test // create a library hour on a day that already has one
@@ -145,7 +166,6 @@ public class TestLibraryHourService {
 		LibraryHour libraryHour = null; 
 
 		try {
-			libraryHourService.createLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK, START_TIME, END_TIME);
 			libraryHour = libraryHourService.modifyLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK, START_TIME_2, END_TIME_2); 
 		} catch (Exception e) {
 			fail(e.getMessage()); 
