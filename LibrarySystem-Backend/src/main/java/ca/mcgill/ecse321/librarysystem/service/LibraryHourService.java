@@ -20,7 +20,7 @@ public class LibraryHourService {
 	/**Method creates a new operating hour (called "libraryHour") for the library. User must be head-librarian and logged-in  
 	 * @author Arman
 	 * @param currentUserId, dayOfWeek, startTime, endTime
-	 * @return the new libraryHour
+	 * @return the new libraryHour 
 	 */
 	@Transactional 
 	public LibraryHour createLibraryHour(String currentUserId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime) {
