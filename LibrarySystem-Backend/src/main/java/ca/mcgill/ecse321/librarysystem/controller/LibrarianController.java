@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
@@ -31,12 +32,60 @@ public class LibrarianController {
       .collect(Collectors.toList());
   }
 
-  //POST to add a librarian
-  // @PostMapping(value = { "/librarians/{idNum}", "/librarians/{idNum}/" })
-  // public LibrarianDto createLibrarian(@PathVariable("idNum") String idNum) {
-  //   Librarian librarian = librarianService.createLibrarian(idNum);
-  //   return convertToDto(librarian);
-  // }
+  //create a librarian
+  @PostMapping(value = { "/librarians/create/", "/librarians/create" })
+  public LibrarianDto createLibrarian(
+    @RequestParam String firstName,
+    @RequestParam String lastName,
+    @RequestParam String address,
+    @RequestParam String email,
+    @RequestParam String username,
+    @RequestParam String password
+  ) {
+    Librarian librarian = librarianService.createLibrarian(
+      firstName,
+      lastName,
+      address,
+      email,
+      username,
+      password
+    );
+    System.out.println("Successfully created " + librarian.getIdNum() + "!");
+    return convertToDto(librarian);
+  }
+
+  //update librarian
+  @PostMapping(
+    value = {
+      "/librarians/update/{idNumOfAccountToUpdate}/",
+      "/librarians/update/{idNumOfAccountToUpdate}",
+    }
+  )
+  public LibrarianDto updateLibrarian(
+    @PathVariable("idNumOfAccountToUpdate") String idNumOfAccountToUpdate,
+    @RequestParam String firstName,
+    @RequestParam String lastName,
+    @RequestParam String address,
+    @RequestParam String email,
+    @RequestParam String username,
+    @RequestParam String password
+  ) {
+    Librarian updatedLibrarian = librarianService.updateLibrarian(
+      idNumOfAccountToUpdate,
+      firstName,
+      lastName,
+      address,
+      email,
+      username,
+      password
+    );
+    System.out.println(
+      "Successfully updated the librarian information for: " +
+      updatedLibrarian.getIdNum() +
+      "!"
+    );
+    return convertToDto(updatedLibrarian);
+  }
 
   //POST to delete/fire a librarian
   @PostMapping(

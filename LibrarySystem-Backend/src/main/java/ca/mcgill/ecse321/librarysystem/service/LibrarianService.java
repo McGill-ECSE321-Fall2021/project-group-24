@@ -92,23 +92,36 @@ public class LibrarianService {
     Librarian librarianToUpdate = librarianRepo.findUserByIdNum(
       idNumOfAccountToUpdate
     );
-    if (firstName != null) {
+    // System.out.println("NAME: " + librarianToUpdate.getFirstName());
+    if (firstName != "none") {
       librarianToUpdate.setFirstName(firstName);
+    } else {
+      System.out.println("First Name will not change.");
     }
-    if (lastName != null) {
+    if (lastName != "none") {
       librarianToUpdate.setLastName(lastName);
+    } else {
+      System.out.println("Last Name will not change.");
     }
-    if (address != null) {
+    if (address != "none") {
       librarianToUpdate.setAddress(address);
+    } else {
+      System.out.println("Address will not change.");
     }
-    if (email != null) {
+    if (email != "none") {
       librarianToUpdate.setEmail(email);
+    } else {
+      System.out.println("Email will not change.");
     }
-    if (username != null) {
+    if (username != "none") {
       librarianToUpdate.setUsername(username);
+    } else {
+      System.out.println("Username will not change.");
     }
-    if (password != null) {
+    if (password != "none") {
       librarianToUpdate.setPassword(password);
+    } else {
+      System.out.println("Password will not change.");
     }
     librarianRepo.save(librarianToUpdate);
     return librarianToUpdate;

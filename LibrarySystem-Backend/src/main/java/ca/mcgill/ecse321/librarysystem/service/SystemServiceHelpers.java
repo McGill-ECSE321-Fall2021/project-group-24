@@ -57,25 +57,36 @@ public class SystemServiceHelpers {
     String username,
     String password
   ) {
-    if (firstName.trim().length() == 0) throw new IllegalArgumentException(
-      "Please enter your first name."
+    if (
+      firstName == null || firstName.trim().length() == 0
+    ) throw new IllegalArgumentException(
+      "Please enter your updated first name or type none."
     );
-    if (lastName.trim().length() == 0) throw new IllegalArgumentException(
-      "Please enter your last name."
+    if (
+      lastName == null || lastName.trim().length() == 0
+    ) throw new IllegalArgumentException(
+      "Please enter your updated last name or type none."
     );
-    if (address.trim().length() == 0) throw new IllegalArgumentException(
-      "Please enter your address."
+    if (
+      address == null || address.trim().length() == 0
+    ) throw new IllegalArgumentException(
+      "Please enter your updated address or type none."
     );
-    if (email.trim().length() == 0) throw new IllegalArgumentException(
-      "Please enter your email."
+    if (
+      email == null || email.trim().length() == 0
+    ) throw new IllegalArgumentException(
+      "Please enter your updated email or type none."
     );
-    if (username.trim().length() == 0) throw new IllegalArgumentException(
-      "Please enter your username."
+    if (
+      username == null || username.trim().length() == 0
+    ) throw new IllegalArgumentException(
+      "Please enter your updated username or type none."
     );
-    if (password.trim().length() == 0) throw new IllegalArgumentException(
-      "Please enter your password."
+    if (
+      password == null || password.trim().length() == 0
+    ) throw new IllegalArgumentException(
+      "Please enter your updated password or type none."
     );
-
     if (username.contains(" ")) throw new IllegalArgumentException(
       "Please enter a username without spaces."
     );
