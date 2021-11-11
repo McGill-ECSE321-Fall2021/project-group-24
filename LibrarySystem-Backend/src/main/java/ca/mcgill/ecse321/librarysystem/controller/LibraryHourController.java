@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -68,7 +69,7 @@ public class LibraryHourController {
 	 * @param currentUserId, dayOfWeek
 	 * @return true if the hour is successfully deleted 
 	 */
-	@PostMapping(value = {"/remove_library_hour", "/remove_library_hour/"}) 
+	@DeleteMapping(value = {"/remove_library_hour", "/remove_library_hour/"}) 
 	public ResponseEntity<?> removeLibraryHour(@RequestParam String currentUserId, @RequestParam TimeSlot.DayOfWeek dayOfWeek) {
 		boolean isDeleted = false;
 		try {

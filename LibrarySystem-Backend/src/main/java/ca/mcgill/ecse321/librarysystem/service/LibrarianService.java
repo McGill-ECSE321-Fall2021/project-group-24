@@ -80,63 +80,6 @@ public class LibrarianService {
     // }
   }
 
-  // updates librarian, returns it so we know it's not null
-  //enter the fields you want to update. if you dont want to update, enter null
-  @Transactional
-  public Librarian updateLibrarian(
-    // String currentUserId,
-    String idNumOfAccountToUpdate,
-    String firstName,
-    String lastName,
-    String address,
-    String email,
-    String username,
-    String password
-  ) {
-    validUpdateInput(firstName, lastName, address, email, username, password);
-     if (isHeadLibrarian(idNumOfAccountToUpdate)) {
-	    Librarian librarianToUpdate = librarianRepo.findUserByIdNum(
-	      idNumOfAccountToUpdate
-	    );
-	    if (firstName != "none") {
-	      librarianToUpdate.setFirstName(firstName);
-	    } else {
-	      System.out.println("First Name will not change.");
-	    }
-	    if (lastName != "none") {
-	      librarianToUpdate.setLastName(lastName);
-	    } else {
-	      System.out.println("Last Name will not change.");
-	    }
-	    if (address != "none") {
-	      librarianToUpdate.setAddress(address);
-	    } else {
-	      System.out.println("Address will not change.");
-	    }
-	    if (email != "none") {
-	      librarianToUpdate.setEmail(email);
-	    } else {
-	      System.out.println("Email will not change.");
-	    }
-	    if (username != "none") {
-	      librarianToUpdate.setUsername(username);
-	    } else {
-	      System.out.println("Username will not change.");
-	    }
-	    if (password != "none") {
-	      librarianToUpdate.setPassword(password);
-	    } else {
-	      System.out.println("Password will not change.");
-	    }
-	    librarianRepo.save(librarianToUpdate);
-	    return librarianToUpdate;
-     } else {
-       throw new IllegalArgumentException(
-         "You do not have permission to update the librarian information."
-       );
-     }
-  }
-
   // looks for a librarian with the given ID number, returns them if found
   @Transactional
   public Librarian getLibrarian(String idNum) {
