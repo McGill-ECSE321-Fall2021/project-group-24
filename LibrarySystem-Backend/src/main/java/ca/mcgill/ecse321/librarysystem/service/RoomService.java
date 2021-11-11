@@ -50,9 +50,7 @@ public class RoomService {
 	
 	    if (
 	      (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn() ) || ( currentLibrarian != null && currentLibrarian.getIsLoggedIn() )
-	    ) {
-	    
-	    	
+	    ) {	
 	    }else {
 	    	 throw new IllegalArgumentException(
 	    		        "You do not have permission to create a room"
