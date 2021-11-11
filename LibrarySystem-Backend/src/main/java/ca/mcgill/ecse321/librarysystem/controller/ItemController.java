@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,10 @@ public class ItemController {
   @Autowired
   private ItemService itemService;
 
-  //GET to get all items
+  /***
+   * 
+   * @return list of all items
+   */
   @GetMapping(value = { "/all/", "/all" })
   public List<ItemDto> getAllItems() {
     System.out.println("Flag Get");
@@ -37,6 +41,10 @@ public class ItemController {
       .collect(Collectors.toList());
   }
 
+  /***
+   * @param itemNumber
+   * @return get single item
+   */
   @GetMapping(value = { "/{itemNumber}", "/{itemNumber}/" })
   public ResponseEntity<?> getItem(@PathVariable("itemNumber") String itemNumber) {
     Item item = itemService.getItem(itemNumber);
@@ -48,6 +56,19 @@ public class ItemController {
 
   }
 
+/***
+ * 
+ * @param itemTitle
+ * @param description
+ * @param imageURL
+ * @param publisher
+ * @param author
+ * @param genre
+ * @param publishDate
+ * @param isReservable
+ * @param currentUserId
+ * @return
+ */
 @PostMapping(value = { "/create_book/{", "/create_book" })
   public ResponseEntity<?> createBook(
     @RequestParam String itemTitle,
@@ -80,6 +101,23 @@ public class ItemController {
     
   }
 
+/***
+ * 
+ * @param itemTitle
+ * @param description
+ * @param imageURL
+ * @param publisher
+ * @param author
+ * @param genre
+ * @param publishDate
+ * @param isReservable
+ * @param movieCast
+ * @param productionCompany
+ * @param director
+ * @param producer
+ * @param currentUserId
+ * @return
+ */
   @PostMapping(value = { "/create_movie", "/create_movie/" })
   public ResponseEntity<?> createMovie(
     @RequestParam String itemTitle,
@@ -117,6 +155,19 @@ public class ItemController {
     }
   }
 
+  /***
+   * 
+   * @param itemTitle
+   * @param description
+   * @param imageURL
+   * @param publisher
+   * @param author
+   * @param genre
+   * @param publishDate
+   * @param isReservable
+   * @param currentUserId
+   * @return
+   */
   @PostMapping(value = { "/create_archive", "/create_archive/" })
   public ResponseEntity<?> createArchive(
     @RequestParam String itemTitle,
@@ -147,6 +198,21 @@ public class ItemController {
     }
   }
 
+  /***
+   * 
+   * @param itemTitle
+   * @param description
+   * @param imageURL
+   * @param publisher
+   * @param author
+   * @param genre
+   * @param publishDate
+   * @param isReservable
+   * @param currentUserId
+   * @param artist
+   * @param recordingLabel
+   * @return
+   */
   @PostMapping(
     value = { "/create_musicAlbum", "/create_musicAlbum/" }
   )
@@ -183,6 +249,20 @@ public class ItemController {
     }
   }
 
+  /***
+   * 
+   * @param itemTitle
+   * @param description
+   * @param imageURL
+   * @param publisher
+   * @param author
+   * @param genre
+   * @param publishDate
+   * @param isReservable
+   * @param currentUserId
+   * @param issueNumber
+   * @return
+   */
   @PostMapping(
     value = { "/create_printedMedia", "/create_printedMedia/" }
   )
@@ -217,8 +297,13 @@ public class ItemController {
     }
   }
 
-  //POST to delete item
-  @PostMapping(
+/***
+ * 
+ * @param itemNumber
+ * @param currentUserId
+ * @return
+ */
+  @DeleteMapping(
     value = { "/delete/{itemNumber}", "/delete/{itemNumber}/" }
   )
   public ResponseEntity<?> deleteItem(

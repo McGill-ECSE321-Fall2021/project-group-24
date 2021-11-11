@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,7 +66,7 @@ public class ItemReservationController {
 	    }
 	}
 	//return an item
-	@PostMapping(value = {"/return_item/{itemNumber}", "/return_item/{itemNumber}/"})
+	@PutMapping(value = {"/return_item/{itemNumber}", "/return_item/{itemNumber}/"})
 	public ResponseEntity<?> returnItem(@PathVariable("itemNumber") String itemNumber, @RequestParam String currentUserId) {
 		try {
 			return new ResponseEntity<Object>(convertToDto(itemReservationService.returnItemFromReservation(currentUserId, itemNumber)), HttpStatus.OK);
@@ -75,7 +76,7 @@ public class ItemReservationController {
 		
 	}
 	//checkout item
-	@PostMapping(value = {"/checkout_item/{itemNumber}/byPatron/{idNum}", "/checkout_item/{itemNumber}/byPatron/{idNum}"})
+	@PutMapping(value = {"/checkout_item/{itemNumber}/byPatron/{idNum}", "/checkout_item/{itemNumber}/byPatron/{idNum}"})
 	public ResponseEntity<?> checkoutItem(@PathVariable("itemNumber") String itemNumber, @PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
 		try {
 			return new ResponseEntity<Object>(convertToDto(itemReservationService.checkoutItem(currentUserId, itemNumber, idNum)), HttpStatus.OK);
@@ -117,7 +118,7 @@ public class ItemReservationController {
 	
 	}
 	
-	@PostMapping(value = {"/renew/{itemReservationId}", "/renew/{itemReservationId}/"})
+	@PutMapping(value = {"/renew/{itemReservationId}", "/renew/{itemReservationId}/"})
 	public ResponseEntity<?> renewItemReservation(@PathVariable("itemReservationId") String itemReservationId,@RequestParam String currentUserId) {
 		
 		try {
