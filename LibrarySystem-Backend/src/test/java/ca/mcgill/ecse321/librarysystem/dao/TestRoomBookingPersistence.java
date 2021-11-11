@@ -42,7 +42,7 @@ public class TestRoomBookingPersistence {
 	        
 	        roomBooking.setRoomNum(roomNum);
 	        roomBooking.setTimeSlotId(roomBookingId);
-	        roomBooking.setDayOfWeek(TimeSlot.DayOfWeek.Monday);
+	        roomBooking.setDayOfWeek(TimeSlot.DayOfWeek.MONDAY);
 	        roomBooking.setStartTime(roomBookingTime);
 	        roomBooking.setEndTime(roomBookingTime);
 
@@ -57,7 +57,7 @@ public class TestRoomBookingPersistence {
 
 	        assertEquals(roomNum, roomBooking.getRoomNum());
 	        assertEquals(roomBookingId, roomBooking.getTimeSlotId());
-	        assertEquals(TimeSlot.DayOfWeek.Monday, roomBooking.getDayOfWeek());
+	        assertEquals(TimeSlot.DayOfWeek.MONDAY, roomBooking.getDayOfWeek());
 	        assertEquals(roomBookingTime, roomBooking.getStartTime());
 	        assertEquals(roomBookingTime, roomBooking.getEndTime());
 
