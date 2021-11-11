@@ -16,6 +16,9 @@ public class LibrarianService {
   @Autowired
   LibrarianRepository librarianRepo;
 
+  @Autowired
+  ShiftRepository shiftRepo;
+
   // creates librarian, returns it so we know it's not null
   @Transactional
   public Librarian createLibrarian(
@@ -49,28 +52,33 @@ public class LibrarianService {
     // }
   }
 
-  // @Transactional
-  // public Librarian createLibrarian(String idNum) {
-  //   Librarian librarian = new Librarian();
-
-  //   librarian.setIdNum(idNum);
-
-  //   librarianRepo.save(librarian);
-  //   return librarian;
-  // }
-
   //fire librarian
   @Transactional
-  public Librarian deleteLibrarian(String idNum) {
+  public Librarian deleteLibrarian(
+    // String currentUserId,
+    String idNum
+  ) {
+    if (shiftRepo.findShiftByLibrarianId(idNum).size() > 0) {
+      throw new IllegalArgumentException(
+        "Delete failed, this librarian has shifts assigned to them."
+      );
+    }
+    // if (isHeadLibrarian(currentUserId)) {
     Librarian bye = librarianRepo.findUserByIdNum(idNum);
     librarianRepo.delete(bye);
     return bye;
+    // } else {
+    //   throw new IllegalArgumentException(
+    //     "You do not have permission to update the librarian information."
+    //   );
+    // }
   }
 
   // updates librarian, returns it so we know it's not null
+  //enter the fields you want to update. if you dont want to update, enter null
   @Transactional
   public Librarian updateLibrarian(
-    String currentUserId,
+    // String currentUserId,
     String idNumOfAccountToUpdate,
     String firstName,
     String lastName,
@@ -79,24 +87,36 @@ public class LibrarianService {
     String username,
     String password
   ) {
-    if (isHeadLibrarian(currentUserId)) {
-      Librarian librarian = librarianRepo.findUserByIdNum(
-        idNumOfAccountToUpdate
-      );
-      librarian.setUsername(username);
-      librarian.setPassword(password);
-      librarian.setFirstName(firstName);
-      librarian.setLastName(lastName);
-      librarian.setEmail(email);
-      librarian.setAddress(address);
-
-      librarianRepo.save(librarian);
-      return librarian;
-    } else {
-      throw new IllegalArgumentException(
-        "You do not have permission to update the librarian information."
-      );
+    validUpdateInput(firstName, lastName, address, email, username, password);
+    // if (isHeadLibrarian(currentUserId)) {
+    Librarian librarianToUpdate = librarianRepo.findUserByIdNum(
+      idNumOfAccountToUpdate
+    );
+    if (firstName != null) {
+      librarianToUpdate.setFirstName(firstName);
     }
+    if (lastName != null) {
+      librarianToUpdate.setLastName(lastName);
+    }
+    if (address != null) {
+      librarianToUpdate.setAddress(address);
+    }
+    if (email != null) {
+      librarianToUpdate.setEmail(email);
+    }
+    if (username != null) {
+      librarianToUpdate.setUsername(username);
+    }
+    if (password != null) {
+      librarianToUpdate.setPassword(password);
+    }
+    librarianRepo.save(librarianToUpdate);
+    return librarianToUpdate;
+    // } else {
+    //   throw new IllegalArgumentException(
+    //     "You do not have permission to update the librarian information."
+    //   );
+    // }
   }
 
   // looks for a librarian with the given ID number, returns them if found
