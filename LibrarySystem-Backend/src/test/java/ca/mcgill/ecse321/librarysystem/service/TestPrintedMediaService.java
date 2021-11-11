@@ -32,10 +32,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
 @ExtendWith(MockitoExtension.class)
-public class TestBookService {
+public class TestPrintedMediaService {
 
   @Mock
-  private ItemRepository bookDao;
+  private ItemRepository printedMediaDao;
 
   @Mock
   private LibrarianRepository librarianDao;
@@ -47,7 +47,7 @@ public class TestBookService {
   private HeadLibrarianRepository headLibrarianDao;
 
   @InjectMocks
-  private ItemService bookService;
+  private ItemService printedMediaService;
 
   
   private static final String correctString = "test";
@@ -91,54 +91,51 @@ public class TestBookService {
         
       });
     lenient()
-      .when(bookDao.findItemByItemNumber(anyString()))
+      .when(printedMediaDao.findItemByItemNumber(anyString()))
       .thenAnswer((InvocationOnMock invocation) -> {
         if (invocation.getArgument(0).equals(correctString)) {
-          Book book = new Book();
-          book.setItemTitle(correctString);
-          book.setDescription(correctString);
-          book.setImageUrl(correctString);
-          book.setItemNumber(correctString);
-          book.setGenre(correctString);
-          book.setPublishDate(correctDate);
-          book.setIsReservable(true);
-          book.setAuthor(correctString);
-          book.setPublisher(correctString);
-          book.setType(Item.Type.Book);
-          return book;
+          PrintedMedia printedMedia = new PrintedMedia();
+          printedMedia.setItemTitle(correctString);
+          printedMedia.setDescription(correctString);
+          printedMedia.setImageUrl(correctString);
+          printedMedia.setItemNumber(correctString);
+          printedMedia.setGenre(correctString);
+          printedMedia.setPublishDate(correctDate);
+          printedMedia.setIsReservable(true);
+          printedMedia.setIssueNumber(correctString);
+          printedMedia.setType(Item.Type.PrintedMedia);
+          return printedMedia;
         } else {
           return null;
         }
       });
     lenient()
-      .when(bookDao.findAll())
+      .when(printedMediaDao.findAll())
       .thenAnswer((InvocationOnMock invocation) -> {
-        Book book1 = new Book();
-        book1.setItemTitle(correctString);
-        book1.setDescription(correctString);
-        book1.setImageUrl(correctString);
-        book1.setItemNumber(correctString);
-        book1.setGenre(correctString);
-        book1.setPublishDate(correctDate);
-        book1.setIsReservable(true);
-        book1.setAuthor(correctString);
-        book1.setPublisher(correctString);
-        book1.setType(Item.Type.Book);
+        PrintedMedia printedMedia1 = new PrintedMedia();
+        printedMedia1.setItemTitle(correctString);
+        printedMedia1.setDescription(correctString);
+        printedMedia1.setImageUrl(correctString);
+        printedMedia1.setItemNumber(correctString);
+        printedMedia1.setGenre(correctString);
+        printedMedia1.setPublishDate(correctDate);
+        printedMedia1.setIsReservable(true);
+        printedMedia1.setIssueNumber(correctString);
+        printedMedia1.setType(Item.Type.PrintedMedia);
 
-        Book book2 = new Book();
-        book2.setItemTitle(correctString + "2");
-        book2.setDescription(correctString + "2");
-        book2.setImageUrl(correctString + "2");
-        book2.setItemNumber(correctString + "2");
-        book2.setGenre(correctString + "2");
-        book2.setPublishDate(correctDate);
-        book2.setIsReservable(false);
-        book2.setAuthor(correctString + "2");
-        book2.setPublisher(correctString + "2");
-        book2.setType(Item.Type.Book);
+        PrintedMedia printedMedia2 = new PrintedMedia();
+        printedMedia2.setItemTitle(correctString + "2");
+        printedMedia2.setDescription(correctString + "2");
+        printedMedia2.setImageUrl(correctString + "2");
+        printedMedia2.setItemNumber(correctString + "2");
+        printedMedia2.setGenre(correctString + "2");
+        printedMedia2.setPublishDate(correctDate);
+        printedMedia2.setIsReservable(false);
+        printedMedia2.setIssueNumber(correctString);
+        printedMedia2.setType(Item.Type.PrintedMedia);
         List<Item> list = new ArrayList<Item>();
-        list.add(book1);
-        list.add(book2);
+        list.add(printedMedia1);
+        list.add(printedMedia2);
 
         return list;
       });
@@ -146,7 +143,7 @@ public class TestBookService {
       return invocation.getArgument(0);
     };
     lenient()
-      .when(bookDao.save(any(Book.class)))
+      .when(printedMediaDao.save(any(PrintedMedia.class)))
       .thenAnswer(returnParameterAsAnswer);
     lenient()
       .when(librarianDao.save(any(Librarian.class)))
@@ -157,12 +154,12 @@ public class TestBookService {
   }
 
   @Test
-  //Create a book
-  public void testCreateBook() {
-    Book book = null;
+  //Create printed media
+  public void testCreatePrintedMedia() {
+    PrintedMedia printedMedia = null;
     try {
-      book =
-        bookService.createBook(
+      printedMedia =
+      printedMediaService.createPrintedMedia(
           "librarian",
           correctString,
           correctString,
@@ -170,33 +167,30 @@ public class TestBookService {
           correctString,
           correctDate,
           true,
-          correctString,
           correctString
         );
     } catch (IllegalArgumentException e) {
       fail();
     }
-    assertNotNull(book);
-    assertEquals(correctString, book.getItemTitle());
-    assertEquals(correctString, book.getDescription());
-    assertEquals(correctString, book.getImageUrl());
-    assertEquals(correctString, book.getGenre());
-    assertEquals(correctDate, book.getPublishDate());
-    assertEquals(true, book.getIsReservable());
-    assertEquals(correctString, book.getAuthor());
-    assertEquals(correctString, book.getPublisher());
-    System.out.println(book.getItemNumber());
-    System.out.println("Book created!");
+    assertNotNull(printedMedia);
+    assertEquals(correctString, printedMedia.getItemTitle());
+    assertEquals(correctString, printedMedia.getDescription());
+    assertEquals(correctString, printedMedia.getImageUrl());
+    assertEquals(correctString, printedMedia.getGenre());
+    assertEquals(correctDate, printedMedia.getPublishDate());
+    assertEquals(true, printedMedia.getIsReservable());
+    System.out.println(printedMedia.getItemNumber());
+    System.out.println("Printed media created!");
   }
 
   @Test
-  //Create a book as a patron
-  public void testCreateBookAsPatron() {
+  //Create printed media as a patron
+  public void testCreatePrintedMediaAsPatron() {
     String error = null;
-    Book book = null;
+    PrintedMedia printedMedia = null;
     try {
-      book =
-        bookService.createBook(
+      printedMedia =
+      printedMediaService.createPrintedMedia(
           "patron",
           correctString,
           correctString,
@@ -204,7 +198,6 @@ public class TestBookService {
           correctString,
           correctDate,
           true,
-          correctString,
           correctString
         );
     } catch (IllegalArgumentException e) {
@@ -216,13 +209,13 @@ public class TestBookService {
   }
 
   @Test
-  //Create a book with no title
-  public void testCreateBookWithNoItemTitle() {
+  //Create printed media with no title
+  public void testCreatePrintedMediaWithNoItemTitle() {
     String error = null;
-    Book book = null;
+    PrintedMedia printedMedia = null;
     try {
-      book =
-        bookService.createBook(
+      printedMedia =
+        printedMediaService.createPrintedMedia(
           "librarian",
           emptyString,
           correctString,
@@ -230,7 +223,6 @@ public class TestBookService {
           correctString,
           correctDate,
           true,
-          correctString,
           correctString
         );
     } catch (IllegalArgumentException e) {
@@ -241,13 +233,13 @@ public class TestBookService {
   }
 
   @Test
-  //Create a book with no description
-  public void testCreateBookWithNoItemDescription() {
+  //Create printed media with no description
+  public void testCreatePrintedMediaWithNoItemDescription() {
     String error = null;
-    Book book = null;
+    PrintedMedia printedMedia = null;
     try {
-      book =
-        bookService.createBook(
+      printedMedia =
+        printedMediaService.createPrintedMedia(
           "librarian",
           correctString,
           emptyString,
@@ -255,57 +247,49 @@ public class TestBookService {
           correctString,
           correctDate,
           true,
-          correctString,
           correctString
         );
     } catch (IllegalArgumentException e) {
       error = e.getMessage();
     }
-    assertNotNull(book);
-    assertEquals(correctString, book.getItemTitle());
-    assertEquals(emptyString, book.getDescription());
-    assertEquals(correctString, book.getImageUrl());
-    assertEquals(correctString, book.getGenre());
-    assertEquals(correctDate, book.getPublishDate());
-    assertEquals(true, book.getIsReservable());
-    assertEquals(correctString, book.getAuthor());
-    assertEquals(correctString, book.getPublisher());
-    System.out.println(book.getItemNumber());
-    System.out.println("Book created!");
+    assertNotNull(printedMedia);
+    assertEquals(correctString, printedMedia.getItemTitle());
+    assertEquals(emptyString, printedMedia.getDescription());
+    assertEquals(correctString, printedMedia.getImageUrl());
+    assertEquals(correctString, printedMedia.getGenre());
+    assertEquals(correctDate, printedMedia.getPublishDate());
+    assertEquals(true, printedMedia.getIsReservable());
+    System.out.println(printedMedia.getItemNumber());
+    System.out.println("Printed media created!");
   }
 
   @Test
-  //Get all librarians
-  public void testGetAllBooks() {
-    ArrayList<Item> books = null;
+  //Get all printedMedia
+  public void testGetAllPrintedMedias() {
+    ArrayList<Item> printedMedias = null;
 
     try {
-      books = new ArrayList<Item>(bookService.getAllBooks());;
+      printedMedias = new ArrayList<Item>(printedMediaService.getAllPrintedMedias());;
     } catch (IllegalArgumentException e) {
       fail();
     }
-    assertNotNull(books);
-    assertEquals(2, books.size());
-    assertEquals(correctString, books.get(0).getItemTitle());
-    assertEquals(correctString, books.get(0).getDescription());
-    assertEquals(correctString, books.get(0).getImageUrl());
-    assertEquals(correctString, books.get(0).getGenre());
-    assertEquals(correctDate, books.get(0).getPublishDate());
-    assertEquals(true, books.get(0).getIsReservable());
-    assertEquals(correctString,  ((Book) books.get(0)).getAuthor());
-    assertEquals(correctString, ((Book) books.get(0)).getPublisher());
+    assertNotNull(printedMedias);
+    assertEquals(2, printedMedias.size());
+    assertEquals(correctString, printedMedias.get(0).getItemTitle());
+    assertEquals(correctString, printedMedias.get(0).getDescription());
+    assertEquals(correctString, printedMedias.get(0).getImageUrl());
+    assertEquals(correctString, printedMedias.get(0).getGenre());
+    assertEquals(correctDate, printedMedias.get(0).getPublishDate());
+    assertEquals(true, printedMedias.get(0).getIsReservable());
+    assertEquals(correctString, printedMedias.get(1).getItemTitle());
+    assertEquals(correctString, printedMedias.get(1).getDescription());
+    assertEquals(correctString, printedMedias.get(1).getImageUrl());
+    assertEquals(correctString, printedMedias.get(1).getGenre());
+    assertEquals(correctDate, printedMedias.get(1).getPublishDate());
+    assertEquals(true, printedMedias.get(1).getIsReservable());
 
-    assertEquals(correctString, books.get(1).getItemTitle());
-    assertEquals(correctString, books.get(1).getDescription());
-    assertEquals(correctString, books.get(1).getImageUrl());
-    assertEquals(correctString, books.get(1).getGenre());
-    assertEquals(correctDate, books.get(1).getPublishDate());
-    assertEquals(true, books.get(1).getIsReservable());
-    assertEquals(correctString, ((Book) books.get(1)).getAuthor());
-    assertEquals(correctString, ((Book) books.get(1)).getPublisher());
-
-    for (Item book : books) {
-      System.out.println(book.getItemTitle());
+    for (Item printedMedia : printedMedias) {
+      System.out.println(printedMedia.getItemTitle());
     }
   }
 }

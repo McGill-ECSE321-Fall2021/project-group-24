@@ -37,7 +37,7 @@ public class ItemService {
     String publisher
   ) {
     validBookInput(
-      // String currentUserId,
+      currentUserId,
       itemTitle,
       description,
       imageUrl,

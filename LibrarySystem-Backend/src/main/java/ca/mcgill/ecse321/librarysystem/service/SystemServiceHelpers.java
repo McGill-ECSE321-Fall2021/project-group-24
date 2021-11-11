@@ -96,7 +96,7 @@ public class SystemServiceHelpers {
   }
 
   public static void validBookInput(
-    // String currentUserId,
+    String currentUserId,
     String itemTitle,
     String description,
     String imageUrl,

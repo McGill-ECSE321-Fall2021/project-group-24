@@ -32,10 +32,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
 @ExtendWith(MockitoExtension.class)
-public class TestBookService {
+public class TestArchiveService {
 
   @Mock
-  private ItemRepository bookDao;
+  private ItemRepository archiveDao;
 
   @Mock
   private LibrarianRepository librarianDao;
@@ -47,7 +47,7 @@ public class TestBookService {
   private HeadLibrarianRepository headLibrarianDao;
 
   @InjectMocks
-  private ItemService bookService;
+  private ItemService archiveService;
 
   
   private static final String correctString = "test";
@@ -91,54 +91,48 @@ public class TestBookService {
         
       });
     lenient()
-      .when(bookDao.findItemByItemNumber(anyString()))
+      .when(archiveDao.findItemByItemNumber(anyString()))
       .thenAnswer((InvocationOnMock invocation) -> {
         if (invocation.getArgument(0).equals(correctString)) {
-          Book book = new Book();
-          book.setItemTitle(correctString);
-          book.setDescription(correctString);
-          book.setImageUrl(correctString);
-          book.setItemNumber(correctString);
-          book.setGenre(correctString);
-          book.setPublishDate(correctDate);
-          book.setIsReservable(true);
-          book.setAuthor(correctString);
-          book.setPublisher(correctString);
-          book.setType(Item.Type.Book);
-          return book;
+          Archive archive = new Archive();
+          archive.setItemTitle(correctString);
+          archive.setDescription(correctString);
+          archive.setImageUrl(correctString);
+          archive.setItemNumber(correctString);
+          archive.setGenre(correctString);
+          archive.setPublishDate(correctDate);
+          archive.setIsReservable(true);
+          archive.setType(Item.Type.Archive);
+          return archive;
         } else {
           return null;
         }
       });
     lenient()
-      .when(bookDao.findAll())
+      .when(archiveDao.findAll())
       .thenAnswer((InvocationOnMock invocation) -> {
-        Book book1 = new Book();
-        book1.setItemTitle(correctString);
-        book1.setDescription(correctString);
-        book1.setImageUrl(correctString);
-        book1.setItemNumber(correctString);
-        book1.setGenre(correctString);
-        book1.setPublishDate(correctDate);
-        book1.setIsReservable(true);
-        book1.setAuthor(correctString);
-        book1.setPublisher(correctString);
-        book1.setType(Item.Type.Book);
+        Archive archive1 = new Archive();
+        archive1.setItemTitle(correctString);
+        archive1.setDescription(correctString);
+        archive1.setImageUrl(correctString);
+        archive1.setItemNumber(correctString);
+        archive1.setGenre(correctString);
+        archive1.setPublishDate(correctDate);
+        archive1.setIsReservable(true);
+        archive1.setType(Item.Type.Archive);
 
-        Book book2 = new Book();
-        book2.setItemTitle(correctString + "2");
-        book2.setDescription(correctString + "2");
-        book2.setImageUrl(correctString + "2");
-        book2.setItemNumber(correctString + "2");
-        book2.setGenre(correctString + "2");
-        book2.setPublishDate(correctDate);
-        book2.setIsReservable(false);
-        book2.setAuthor(correctString + "2");
-        book2.setPublisher(correctString + "2");
-        book2.setType(Item.Type.Book);
+        Archive archive2 = new Archive();
+        archive2.setItemTitle(correctString + "2");
+        archive2.setDescription(correctString + "2");
+        archive2.setImageUrl(correctString + "2");
+        archive2.setItemNumber(correctString + "2");
+        archive2.setGenre(correctString + "2");
+        archive2.setPublishDate(correctDate);
+        archive2.setIsReservable(false);
+        archive2.setType(Item.Type.Archive);
         List<Item> list = new ArrayList<Item>();
-        list.add(book1);
-        list.add(book2);
+        list.add(archive1);
+        list.add(archive2);
 
         return list;
       });
@@ -146,7 +140,7 @@ public class TestBookService {
       return invocation.getArgument(0);
     };
     lenient()
-      .when(bookDao.save(any(Book.class)))
+      .when(archiveDao.save(any(Archive.class)))
       .thenAnswer(returnParameterAsAnswer);
     lenient()
       .when(librarianDao.save(any(Librarian.class)))
@@ -157,55 +151,49 @@ public class TestBookService {
   }
 
   @Test
-  //Create a book
-  public void testCreateBook() {
-    Book book = null;
+  //Create an archive
+  public void testCreateArchive() {
+    Archive archive = null;
     try {
-      book =
-        bookService.createBook(
+      archive =
+        archiveService.createArchive(
           "librarian",
           correctString,
           correctString,
           correctString,
           correctString,
           correctDate,
-          true,
-          correctString,
-          correctString
+          true
         );
     } catch (IllegalArgumentException e) {
       fail();
     }
-    assertNotNull(book);
-    assertEquals(correctString, book.getItemTitle());
-    assertEquals(correctString, book.getDescription());
-    assertEquals(correctString, book.getImageUrl());
-    assertEquals(correctString, book.getGenre());
-    assertEquals(correctDate, book.getPublishDate());
-    assertEquals(true, book.getIsReservable());
-    assertEquals(correctString, book.getAuthor());
-    assertEquals(correctString, book.getPublisher());
-    System.out.println(book.getItemNumber());
-    System.out.println("Book created!");
+    assertNotNull(archive);
+    assertEquals(correctString, archive.getItemTitle());
+    assertEquals(correctString, archive.getDescription());
+    assertEquals(correctString, archive.getImageUrl());
+    assertEquals(correctString, archive.getGenre());
+    assertEquals(correctDate, archive.getPublishDate());
+    assertEquals(true, archive.getIsReservable());
+    System.out.println(archive.getItemNumber());
+    System.out.println("Archive created!");
   }
 
   @Test
-  //Create a book as a patron
-  public void testCreateBookAsPatron() {
+  //Create an archive as a patron
+  public void testCreateArchiveAsPatron() {
     String error = null;
-    Book book = null;
+    Archive archive = null;
     try {
-      book =
-        bookService.createBook(
+      archive =
+        archiveService.createArchive(
           "patron",
           correctString,
           correctString,
           correctString,
           correctString,
           correctDate,
-          true,
-          correctString,
-          correctString
+          true
         );
     } catch (IllegalArgumentException e) {
       error = e.getMessage();
@@ -216,22 +204,20 @@ public class TestBookService {
   }
 
   @Test
-  //Create a book with no title
-  public void testCreateBookWithNoItemTitle() {
+  //Create an archive with no title
+  public void testCreateArchiveWithNoItemTitle() {
     String error = null;
-    Book book = null;
+    Archive archive = null;
     try {
-      book =
-        bookService.createBook(
+      archive =
+        archiveService.createArchive(
           "librarian",
           emptyString,
           correctString,
           correctString,
           correctString,
           correctDate,
-          true,
-          correctString,
-          correctString
+          true
         );
     } catch (IllegalArgumentException e) {
       error = e.getMessage();
@@ -241,71 +227,62 @@ public class TestBookService {
   }
 
   @Test
-  //Create a book with no description
-  public void testCreateBookWithNoItemDescription() {
+  //Create an archive with no description
+  public void testCreateArchiveWithNoItemDescription() {
     String error = null;
-    Book book = null;
+    Archive archive = null;
     try {
-      book =
-        bookService.createBook(
+      archive =
+        archiveService.createArchive(
           "librarian",
           correctString,
           emptyString,
           correctString,
           correctString,
           correctDate,
-          true,
-          correctString,
-          correctString
+          true
         );
     } catch (IllegalArgumentException e) {
       error = e.getMessage();
     }
-    assertNotNull(book);
-    assertEquals(correctString, book.getItemTitle());
-    assertEquals(emptyString, book.getDescription());
-    assertEquals(correctString, book.getImageUrl());
-    assertEquals(correctString, book.getGenre());
-    assertEquals(correctDate, book.getPublishDate());
-    assertEquals(true, book.getIsReservable());
-    assertEquals(correctString, book.getAuthor());
-    assertEquals(correctString, book.getPublisher());
-    System.out.println(book.getItemNumber());
-    System.out.println("Book created!");
+    assertNotNull(archive);
+    assertEquals(correctString, archive.getItemTitle());
+    assertEquals(emptyString, archive.getDescription());
+    assertEquals(correctString, archive.getImageUrl());
+    assertEquals(correctString, archive.getGenre());
+    assertEquals(correctDate, archive.getPublishDate());
+    assertEquals(true, archive.getIsReservable());
+    System.out.println(archive.getItemNumber());
+    System.out.println("Archive created!");
   }
 
   @Test
-  //Get all librarians
-  public void testGetAllBooks() {
-    ArrayList<Item> books = null;
+  //Get all archives
+  public void testGetAllArchives() {
+    ArrayList<Item> archives = null;
 
     try {
-      books = new ArrayList<Item>(bookService.getAllBooks());;
+      archives = new ArrayList<Item>(archiveService.getAllArchives());;
     } catch (IllegalArgumentException e) {
       fail();
     }
-    assertNotNull(books);
-    assertEquals(2, books.size());
-    assertEquals(correctString, books.get(0).getItemTitle());
-    assertEquals(correctString, books.get(0).getDescription());
-    assertEquals(correctString, books.get(0).getImageUrl());
-    assertEquals(correctString, books.get(0).getGenre());
-    assertEquals(correctDate, books.get(0).getPublishDate());
-    assertEquals(true, books.get(0).getIsReservable());
-    assertEquals(correctString,  ((Book) books.get(0)).getAuthor());
-    assertEquals(correctString, ((Book) books.get(0)).getPublisher());
+    assertNotNull(archives);
+    assertEquals(2, archives.size());
+    assertEquals(correctString, archives.get(0).getItemTitle());
+    assertEquals(correctString, archives.get(0).getDescription());
+    assertEquals(correctString, archives.get(0).getImageUrl());
+    assertEquals(correctString, archives.get(0).getGenre());
+    assertEquals(correctDate, archives.get(0).getPublishDate());
+    assertEquals(true, archives.get(0).getIsReservable());
+    assertEquals(correctString, archives.get(1).getItemTitle());
+    assertEquals(correctString, archives.get(1).getDescription());
+    assertEquals(correctString, archives.get(1).getImageUrl());
+    assertEquals(correctString, archives.get(1).getGenre());
+    assertEquals(correctDate, archives.get(1).getPublishDate());
+    assertEquals(true, archives.get(1).getIsReservable());
 
-    assertEquals(correctString, books.get(1).getItemTitle());
-    assertEquals(correctString, books.get(1).getDescription());
-    assertEquals(correctString, books.get(1).getImageUrl());
-    assertEquals(correctString, books.get(1).getGenre());
-    assertEquals(correctDate, books.get(1).getPublishDate());
-    assertEquals(true, books.get(1).getIsReservable());
-    assertEquals(correctString, ((Book) books.get(1)).getAuthor());
-    assertEquals(correctString, ((Book) books.get(1)).getPublisher());
-
-    for (Item book : books) {
-      System.out.println(book.getItemTitle());
+    for (Item archive : archives) {
+      System.out.println(archive.getItemTitle());
     }
   }
 }
