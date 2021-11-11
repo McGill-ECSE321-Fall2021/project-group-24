@@ -1,19 +1,18 @@
 package ca.mcgill.ecse321.librarysystem.service;
 
+import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.sql.Date;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ca.mcgill.ecse321.librarysystem.dao.HeadLibrarianRepository;
 import ca.mcgill.ecse321.librarysystem.dao.RoomBookingRepository;
-import ca.mcgill.ecse321.librarysystem.model.HeadLibrarian;
-import ca.mcgill.ecse321.librarysystem.model.Librarian;
 import ca.mcgill.ecse321.librarysystem.model.LibraryHour;
 import ca.mcgill.ecse321.librarysystem.model.Patron;
 import ca.mcgill.ecse321.librarysystem.model.Room;
@@ -68,7 +67,7 @@ public class RoomBookingService {
 		// (head) librarians are able to create room bookings for everyone - no need check 
 		
 		// check if date is in the past
-	    if (date.before(Calendar.getInstance().getTime())) throw new IllegalArgumentException("date must be in the future");
+	    if (date.before(Date.valueOf(LocalDate.now()))) throw new IllegalArgumentException("date must be in the future");
 		// check if the reservation has any conflicts
 		TimeSlot.DayOfWeek dayOfWeek =TimeSlot.DayOfWeek.valueOf(date.toLocalDate().getDayOfWeek().toString());
 		if (startTime.after(endTime) || startTime.equals(endTime)  ) {

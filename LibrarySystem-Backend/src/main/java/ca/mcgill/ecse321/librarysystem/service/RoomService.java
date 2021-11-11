@@ -1,5 +1,10 @@
 package ca.mcgill.ecse321.librarysystem.service;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,6 +132,7 @@ public class RoomService {
 	@Transactional 
 	public Room deleteRoom (String currentUserId, String roomNum) throws Exception
 	{
+		
 		// check permission: only librarians have permission to delete rooms
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
@@ -141,6 +147,12 @@ public class RoomService {
 	    }
 			    
 		Room toDelete = roomRepository.findRoomByRoomNum(roomNum);
+		
+		// check if there is future room bookings, if there is, you cannot delete the room
+		for (RoomBooking rb : toList(toDelete.getRoomBookings())) {
+			if (rb.getDate().equals(Date.valueOf(LocalDate.now())) && rb.getEndTime().after(Time.valueOf(LocalTime.now())) || rb.getDate().after(Date.valueOf(LocalDate.now()))) throw new IllegalArgumentException("The room number has bookings in the future, cannot delete");
+	
+		}
 		if (toDelete == null) throw new IllegalArgumentException("The room number is invalid");
 		roomRepository.delete(toDelete);
 	    return toDelete;		
