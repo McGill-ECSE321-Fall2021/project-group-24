@@ -125,7 +125,7 @@ public class RoomBookingController {
 	 * 
 	 * librarian are allowed to update any roombooking, patron can only update their own roombookings
 	 */
-	@PostMapping(value = { "/update_roombooking", "/update_roombooking/" })
+	@PutMapping(value = { "/update_roombooking", "/update_roombooking/" })
 	public ResponseEntity<?> updateRoomBooking(
 			 @RequestParam String currentUserId,
 			 @RequestParam String timeSlotId,
@@ -159,7 +159,7 @@ public class RoomBookingController {
 	 * 
 	 * librarian are allowed to delete any roombooking, patron can only delete their own roombookings
 	 */
-	@PostMapping(value = { "/delete_roombooking", "/delete_roombooking/" })
+	@DeleteMapping(value = { "/delete_roombooking", "/delete_roombooking/" })
 	public ResponseEntity<?> deleteRoomBooking(
 			@RequestParam String currentUserId, 
 			@RequestParam String timeSlotId) {

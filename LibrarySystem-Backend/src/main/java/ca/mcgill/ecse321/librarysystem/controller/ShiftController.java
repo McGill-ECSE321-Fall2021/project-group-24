@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,7 +51,7 @@ public class ShiftController {
 	 * @param currentUserId, librarianId, timeSlotId, dayOfWeek, startTime, endTime 
 	 * @return Response Entity 
 	 */
-	@PostMapping(value = {"/modify_shift", "/modify_shift/"})
+	@PutMapping(value = {"/modify_shift", "/modify_shift/"})
 	public  ResponseEntity<?> modifyShift(@RequestParam String currentUserId, @RequestParam String timeSlotId, @RequestParam String librarianId, 
 			@RequestParam TimeSlot.DayOfWeek dayOfWeek, @RequestParam String startTime, @RequestParam String endTime) {
 		Shift shift = null; 

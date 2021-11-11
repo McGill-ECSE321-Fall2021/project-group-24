@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -71,7 +73,7 @@ public class PatronController {
 	
 	
 	
-	@RequestMapping(value = { "/create_patron_irl", "/create_patron_irl/" }, method = { RequestMethod.GET, RequestMethod.POST })
+	@PostMapping(value = { "/create_patron_irl", "/create_patron_irl/" })
 	public ResponseEntity<?> createPatronIRL(
 			@RequestParam ("first") String first, 
 			@RequestParam ("last") String last, 
@@ -89,7 +91,7 @@ public class PatronController {
 	
 	}
 	
-	@RequestMapping(value = { "/create_patron_online", "/create_patron_online/" }, method = {RequestMethod.GET, RequestMethod.POST})
+	@PostMapping(value = { "/create_patron_online", "/create_patron_online/" })
 	public ResponseEntity<?> createPatron(
 			@RequestParam ("username") String username,
 			@RequestParam ("password") String password,
@@ -109,7 +111,7 @@ public class PatronController {
 		}	
 	}
 	
-	@RequestMapping(value = { "/delete_patron/{idNum}", "/delete_patron/{idNum}/" }, method = {RequestMethod.GET, RequestMethod.POST})
+	@DeleteMapping(value = { "/delete_patron/{idNum}", "/delete_patron/{idNum}/" })
 	public ResponseEntity<?> deletePatron(@PathVariable String idNum, @RequestParam String currentUserId) throws IllegalArgumentException {
 		try {
 			return new ResponseEntity<>(patronService.deletePatron(idNum, currentUserId), HttpStatus.OK);

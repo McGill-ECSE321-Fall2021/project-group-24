@@ -1,6 +1,4 @@
 package ca.mcgill.ecse321.librarysystem.controller;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import ca.mcgill.ecse321.librarysystem.dto.LibrarianDto;
 import ca.mcgill.ecse321.librarysystem.dto.RoomDto;
 import ca.mcgill.ecse321.librarysystem.model.Room;
-import ca.mcgill.ecse321.librarysystem.service.LibraryHourService;
+
 import ca.mcgill.ecse321.librarysystem.service.RoomService;
 
 @CrossOrigin(origins = "*")
@@ -68,7 +65,7 @@ public class RoomController {
 	 * 
 	 * only librarians have permission to update room
 	 */
-	@PostMapping(value = { "/update_room/{oldRoomNumber}", "/update_room/{oldRoomNumber}/" })
+	@PutMapping(value = { "/update_room/{oldRoomNumber}", "/update_room/{oldRoomNumber}/" })
 	public ResponseEntity<?> updateRoom(@PathVariable("oldRoomNumber") String oldRoomNumber,
 			@RequestParam String currentUserId,
 			@RequestParam Integer newCapacity,
@@ -92,7 +89,7 @@ public class RoomController {
 	 * 
 	 * only librarians have permission to update room
 	 */
-	@PostMapping(value = { "/delete_room/{roomNum}", "/delete_room/{roomNum}/" })
+	@DeleteMapping(value = { "/delete_room/{roomNum}", "/delete_room/{roomNum}/" })
 	public ResponseEntity<?> deleteRoom(@PathVariable("oldRoomNumber") String roomNum,
 			@RequestParam String currentUserId) {
 		System.out.print("Flag delete");
