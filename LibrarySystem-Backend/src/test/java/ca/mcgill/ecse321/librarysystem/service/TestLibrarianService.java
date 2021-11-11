@@ -68,7 +68,6 @@ public class TestLibrarianService {
         HeadLibrarian headLibrarian = new HeadLibrarian();
         headLibrarian.setIdNum("admin");
         headLibrarian.setIsLoggedIn(true);
-        System.out.print("KKOOOL?");
         return headLibrarian;
         
       });

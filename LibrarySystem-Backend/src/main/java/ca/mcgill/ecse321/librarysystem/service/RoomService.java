@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import ca.mcgill.ecse321.librarysystem.model.*;
 @Service
 public class RoomService {
 	
+	
 	@Autowired 
 	RoomRepository roomRepository; 
 	
@@ -25,6 +27,7 @@ public class RoomService {
 	
 	@Autowired
 	HeadLibrarianRepository headLibrarianRepository;
+	
 	
 	
 	// creates room, returns it so we know it's not null 
@@ -40,14 +43,15 @@ public class RoomService {
 
 		// check room number
 		if (!inputIsValid(roomNum)) throw new IllegalArgumentException("Room number cannot be null or empty");
-
+		
 		// check permission: only librarians have permission to create the rooms
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
-		System.out.print(headLibrarianRepository);
+	
 	    if (
 	      (currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn() ) || ( currentLibrarian != null && currentLibrarian.getIsLoggedIn() )
 	    ) {
+	    
 	    	
 	    }else {
 	    	 throw new IllegalArgumentException(
@@ -57,10 +61,9 @@ public class RoomService {
 
 	    // check if roomNum is available
 //	    for (Room room: toList(roomRepository.findAll()) )  {
-//	    	if ( room.getRoomNum().equalsIgnoreCase(roomNum) ) throw new IllegalArgumentException("The room number already exists");
+//	    	if ( room.getRoomNum().equalsIgnoreCase(roomNum) ) throw new IllegalArgumentException("Room numbers must be unique");
 //	    }
 	    
-	    System.out.print("hello 4");
 		Room room = new Room();
 		room.setRoomNum(roomNum);
 		room.setCapacity(capacity);
@@ -87,7 +90,8 @@ public class RoomService {
 	
 	@Transactional 
 	public List<Room> getAllRooms() {
-		return toList(roomRepository.findAll()); 
+		System.out.println("Hllo");
+		return (List<Room>) roomRepository.findAll(); 
 	}
 
 	

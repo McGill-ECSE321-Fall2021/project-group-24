@@ -30,6 +30,9 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
+/** 
+ * @author Selena 
+ */
 @ExtendWith(MockitoExtension.class)
 public class TestRoomService {
 	@Mock 
@@ -43,22 +46,24 @@ public class TestRoomService {
 
 	@Mock
 	private LibrarianRepository librarianDao;
+
 	
 	private static final int testCapacity = 10;
+	private static final int invalidCapacity = -5;
 	private static final String testRoomNum = "room1";
 	
-	
-
 	@BeforeEach
 	  public void setMockOutput() {
 	    lenient()
 	      .when(roomDao.findAll())
 	      .thenAnswer((InvocationOnMock invocation) -> {
-	       Room room = new Room();
-	       room.setCapacity(testCapacity);
-	       room.setRoomBookings(null);
-	       room.setRoomNum(testRoomNum);
-	       return room;
+	    	  List<Room> allRooms  = new ArrayList<Room>(); 
+		       Room room = new Room();
+		       room.setCapacity(testCapacity);
+		       room.setRoomBookings(null);
+		       room.setRoomNum(testRoomNum);
+		       allRooms.add(room);
+		       return allRooms;
 	      });
 	    lenient()
 	      .when(roomDao.findById(anyString()))
@@ -90,10 +95,12 @@ public class TestRoomService {
 	      .when(librarianDao.findUserByIdNum(anyString()))
 	      .thenAnswer((InvocationOnMock invocation) -> {
 		       Librarian libriarian = new Librarian();
-		       libriarian.setIdNum("admin");
+		       libriarian.setIdNum("librarian1");
 		       libriarian.setIsLoggedIn(true);
+		       
 		       return libriarian;
 	      });
+	    
 	    
 	    Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
 	      return invocation.getArgument(0);
@@ -109,8 +116,10 @@ public class TestRoomService {
 	      .thenAnswer(returnParameterAsAnswer);
 	  }
 	
+	// test case 0: Create a room as HeadLibrarian with valid parameters 
+	// expected outcome: Room created
 	@Test
-	public void createRoom() {
+	public void createRoomAsHeadLibrarianSuccessfully() {
 		Room r = null;
 		try {
 			r = roomService.createRoom("admin", testRoomNum, testCapacity );
@@ -120,8 +129,107 @@ public class TestRoomService {
 		
 		assertNotNull(r);
 	    assertEquals(testRoomNum, r.getRoomNum());
-	    assertEquals(testCapacity, r.getCapacity());
+	    assertEquals(testCapacity, r.getCapacity());		
+	}
+	
+	// test case 1: Create a room as HeadLibrarian with invalid capacity
+	// expected outcome: error message --  Capacity must be at least 1
+	@Test
+	public void createRoomWithInvalidCapcity() {
+		Room r = null;
+		String expectedErrorMsg =  "Capacity must be at least 1";
+		String actualErrorMsg = null;
+		try {
+			r = roomService.createRoom("librarian1", testRoomNum, invalidCapacity );
+		} catch (Exception e) {
+		      actualErrorMsg = e.getMessage();
+		}
 		
+		assertNull(r);
+	    assertEquals(expectedErrorMsg, actualErrorMsg);		
+	}
+	
+	// test case 2: Create a room as Librarian with valid parameters
+	// expected outcome: room
+	@Test
+	public void createRoomAsLibrarianSuccessfully() {
+		Room r = null;
+		try {
+			r = roomService.createRoom("librarian1", testRoomNum, testCapacity );
+		} catch (Exception e) {
+		      fail();
+		}
 		
+		assertNotNull(r);
+	    assertEquals(testRoomNum, r.getRoomNum());
+	    assertEquals(testCapacity, r.getCapacity());			
+	}
+	
+	// test case 3: Create a room as Librarian with null roomNum
+	// expected outcome: error message - "Room number cannot be null or empty"
+	@Test
+	public void createRoomAsLibrarianWithNullRoomNum() {
+		Room r = null;
+		String expectedErrorMsg =  "Room number cannot be null or empty";
+		String actualErrorMsg = null;
+		try {
+			r = roomService.createRoom("librarian1", null, testCapacity );
+		} catch (Exception e) {
+			 actualErrorMsg = e.getMessage();
+		}
+		
+		assertNull(r);
+	    assertEquals(expectedErrorMsg, actualErrorMsg);				
+	}
+	
+	// test case 4: Create a room as Librarian with empty roomNum
+	// expected outcome: error message - "Room number cannot be null or empty"
+	@Test
+	public void createRoomAsLibrarianWithEmptyRoomNum() {
+		Room r = null;
+		String expectedErrorMsg =  "Room number cannot be null or empty";
+		String actualErrorMsg = null;
+		try {
+			r = roomService.createRoom("librarian1", "", testCapacity );
+		} catch (Exception e) {
+			 actualErrorMsg = e.getMessage();
+		}
+		
+		assertNull(r);
+	    assertEquals(expectedErrorMsg, actualErrorMsg);				
+	}
+	
+	// TODO: fix this 
+	// test case 4: Create a room as Librarian with invalid roomNum
+	// expected outcome: error message - "Room numbers must be unique"
+	@Test
+	public void createRoomAsLibrarianWithInvalidRoomNum() {
+		Room r = null;
+		String expectedErrorMsg =  "Room numbers must be unique";
+		String actualErrorMsg = null;
+		try {
+			r = roomService.createRoom("librarian1", "", testCapacity );
+		} catch (Exception e) {
+			 actualErrorMsg = e.getMessage();
+		}
+		
+		assertNull(r);
+	    assertEquals(expectedErrorMsg, actualErrorMsg);				
+	}
+	
+	// test case 4: Create a room as Librarian with invalid roomNum
+	// expected outcome: error message - "Room numbers must be unique"
+	@Test
+	public void getAllRooms() {
+		List<Room> r = null;
+		try {
+			r = roomService.getAllRooms();
+		} catch (Exception e) {
+			 fail();
+		}
+		
+		assertEquals(1, r.size());
+	    assertEquals(testCapacity, r.get(0).getCapacity());		
+	    assertEquals(testRoomNum, r.get(0).getRoomNum());	
 	}
 }
