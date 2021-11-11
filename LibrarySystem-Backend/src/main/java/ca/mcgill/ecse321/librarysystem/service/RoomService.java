@@ -58,7 +58,7 @@ public class RoomService {
 	    }
 
 	    // check if roomNum is available
-	    //if ( roomRepository.findRoomByRoomNum(roomNum) != null ) throw new IllegalArgumentException("Room numbers must be unique");
+	    if ( roomRepository.findRoomByRoomNum(roomNum) != null ) throw new IllegalArgumentException("Room numbers must be unique");
 		Room room = new Room();
 		room.setRoomNum(roomNum);
 		room.setCapacity(capacity);
@@ -140,12 +140,13 @@ public class RoomService {
 			    
 		Room toDelete = roomRepository.findRoomByRoomNum(roomNum);
 		if (toDelete == null) throw new IllegalArgumentException("The room number is invalid");
-		// check if there is future room bookings, if there is, you cannot delete the room
-		for (RoomBooking rb : toList(toDelete.getRoomBookings())) {
-			if (rb.getDate().equals(Date.valueOf(LocalDate.now())) && rb.getEndTime().after(Time.valueOf(LocalTime.now())) || rb.getDate().after(Date.valueOf(LocalDate.now()))) throw new IllegalArgumentException("The room number has bookings in the future, cannot delete");
-	
-		}
 		
+		// check if there is future room bookings, if there is, you cannot delete the room
+		if (toDelete.getRoomBookings() != null ) {
+			for (RoomBooking rb : toList(toDelete.getRoomBookings())) {
+				if (rb.getDate().equals(Date.valueOf(LocalDate.now())) && rb.getEndTime().after(Time.valueOf(LocalTime.now())) || rb.getDate().after(Date.valueOf(LocalDate.now()))) throw new IllegalArgumentException("The room number has bookings in the future, cannot delete");
+			}
+		}
 		roomRepository.delete(toDelete);
 	    return toDelete;		
 	}

@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.librarysystem.service;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -31,23 +32,33 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
 @ExtendWith(MockitoExtension.class)
-public class TestLibraryHourService {
 
+public class TestShiftService {
 	@Mock
-	private LibraryHourRepository libraryHourRepo; 
+	private ShiftRepository shiftRepo; 
 	@Mock
 	private LibrarianRepository librarianRepo;
 	@Mock
 	private HeadLibrarianRepository headLibrarianRepo; 
+	@Mock
+	private PatronRepository patronRepo; 
 	
 	
 	@InjectMocks
-	private LibraryHourService libraryHourService; 
+	private ShiftService shiftService; 
 	
 	
 	
 	private static final String HEAD_LIBRARIAN_ID = "admin"; 
-	private static final String LIBRARIAN_ID = "randomId"; 
+	private static final String LIBRARIAN_ID = "librarianId"; 
+	private static final String LIBRARIAN_ID2 = "librarianId"; 
+
+	private static final String PATRON_ID = "patronId"; 
+	
+	private static final String TIME_SLOT_ID = "timeSlotId"; 
+	private static final String TIME_SLOT_ID_2 = "timeSlotId2"; 
+
+	
 	private static final TimeSlot.DayOfWeek DAY_OF_WEEK = TimeSlot.DayOfWeek.MONDAY;  
 	private static final TimeSlot.DayOfWeek DAY_OF_WEEK_2 = TimeSlot.DayOfWeek.TUESDAY;  
 	
@@ -56,27 +67,22 @@ public class TestLibraryHourService {
 	
 	private static final Time START_TIME_2 = Time.valueOf("10:00:00");  
 	private static final Time END_TIME_2 = Time.valueOf("19:00:00");  
+	
 
 	// adds a library hour, a librarian, and a head librarian and saves them to their respective repo's 
 	@BeforeEach
 	  public void setMockOutput() {
 	    lenient() 
-	      .when(libraryHourRepo.findAll())
+	      .when(shiftRepo.findAll())
 	      .thenAnswer((InvocationOnMock invocation) -> {
-		      LibraryHour libraryHour = new LibraryHour(); 
-			  libraryHour.setDayOfWeek(DAY_OF_WEEK); 
-		      libraryHour.setStartTime(START_TIME);
-		      libraryHour.setEndTime(END_TIME);
-		      return libraryHour; 
-	      });
-	    lenient() 
-	      .when(libraryHourRepo.findHourByDayOfWeek(DAY_OF_WEEK))
-	      .thenAnswer((InvocationOnMock invocation) -> {
-		      LibraryHour libraryHour = new LibraryHour(); 
-			  libraryHour.setDayOfWeek(DAY_OF_WEEK); 
-		      libraryHour.setStartTime(START_TIME);
-		      libraryHour.setEndTime(END_TIME);
-		      return libraryHour; 
+		     Shift shift = new Shift(); 
+		     shift.setDayOfWeek(DAY_OF_WEEK); 
+		     shift.setStartTime(START_TIME);
+		     shift.setEndTime(END_TIME);
+		     shift.setLibrarianId(LIBRARIAN_ID); 
+		     shift.setTimeSlotId(TIME_SLOT_ID);
+		     return shift;
+		     
 	      });
 
 	    lenient()
@@ -109,82 +115,9 @@ public class TestLibraryHourService {
 	      .thenAnswer(returnParameterAsAnswer);
 	    
 	    lenient()
-	      .when(libraryHourRepo.save(any(LibraryHour.class)))
+	      .when(shiftRepo.save(any(Shift.class)))
 	      .thenAnswer(returnParameterAsAnswer);
 	    
 	}
-	
-	@Test // create a library hour with valid parameters
-	public void testCreateLibraryHour() {
-		LibraryHour libraryHour = null; 
-		
-		try {
-			libraryHour = libraryHourService.createLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK, START_TIME, END_TIME);
-		} catch (Exception e) {
-            fail(e.getMessage());
-		}
-		assertNotNull(libraryHour); 
-		assertEquals(START_TIME, libraryHour.getStartTime()); 
-		assertEquals(END_TIME, libraryHour.getEndTime());
-		assertEquals(DAY_OF_WEEK, libraryHour.getDayOfWeek());
-
-	}
-	
-	@Test // create a library hour with as a librarian 
-	public void testCreateLibraryHourAsLibrarian() {
-		LibraryHour libraryHour = null; 
-		
-		try {
-			libraryHour = libraryHourService.createLibraryHour(LIBRARIAN_ID, DAY_OF_WEEK_2, START_TIME, END_TIME);
-			fail(); 
-		} catch (Exception e) {
-			assertEquals("Only the Head Librarian can create library hours", e.getMessage());
-		}
-		assertNull(libraryHour);
-	}
-	
-	@Test // create a library hour with start time after end time
-	public void testCreateLibraryHourInvalidStartTime() {
-		LibraryHour libraryHour = null; 
-		
-		try {
-			libraryHour = libraryHourService.createLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK_2, END_TIME, START_TIME);
-			fail(); 
-		} catch (Exception e) {
-			assertEquals("Start time cannot be after end time", e.getMessage());
-		}
-		assertNull(libraryHour); 
-	}
-	
-	@Test // create a library hour on a day that already has one
-	public void testCreateLibraryHourSameDay() {
-		LibraryHour libraryHour = null; 
-
-		try {
-			libraryHour = libraryHourService.createLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK, START_TIME, END_TIME);
-			fail(); 
-		} catch (Exception e) {
-			assertEquals("There's alreadry a library hour on that day", e.getMessage());
-		}
-		assertNull(libraryHour); 
-
-	}
-	
-	@Test // create a library hour on a day that already has one
-	public void testModifyLibraryHours() {
-		LibraryHour libraryHour = null; 
-
-		try {
-			libraryHour = libraryHourService.modifyLibraryHour(HEAD_LIBRARIAN_ID, DAY_OF_WEEK, START_TIME_2, END_TIME_2); 
-		} catch (Exception e) {
-			fail(e.getMessage()); 
-		}
-		
-		assertNotNull(libraryHour); 
-		assertEquals(START_TIME_2, libraryHour.getStartTime()); 
-		assertEquals(END_TIME_2, libraryHour.getEndTime());
-		assertEquals(DAY_OF_WEEK, libraryHour.getDayOfWeek());
-	}
-	
 	
 }

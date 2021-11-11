@@ -20,7 +20,7 @@ public class LibraryHourService {
 	/**Method creates a new operating hour (called "libraryHour") for the library. User must be head-librarian and logged-in  
 	 * @author Arman
 	 * @param currentUserId, dayOfWeek, startTime, endTime
-	 * @return the new libraryHour
+	 * @return the new libraryHour 
 	 */
 	@Transactional 
 	public LibraryHour createLibraryHour(String currentUserId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime) {
@@ -31,6 +31,8 @@ public class LibraryHourService {
 		}
 		if(startTime.after(endTime)) throw new IllegalArgumentException ("Start time cannot be after end time");
 		
+		System.out.print(dayOfWeek);
+		System.out.print(libraryHourRepo.findHourByDayOfWeek(dayOfWeek));
 		if (libraryHourRepo.findHourByDayOfWeek(dayOfWeek)!=null) throw new IllegalArgumentException("There's already a library hour for that day"); 
 		
 		LibraryHour libraryHour = new LibraryHour(); 
