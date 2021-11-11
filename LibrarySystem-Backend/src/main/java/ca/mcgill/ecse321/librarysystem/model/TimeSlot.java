@@ -17,8 +17,8 @@ import org.hibernate.annotations.GenericGenerator;
 public abstract class TimeSlot {
 
   @Id
-  @GeneratedValue(generator="system-uuid")
-  @GenericGenerator(name="system-uuid", strategy = "uuid")
+//  @GeneratedValue(generator="system-uuid")
+//  @GenericGenerator(name="system-uuid", strategy = "uuid")
   private String timeSlotId;
   private Time startTime;
   private Time endTime;

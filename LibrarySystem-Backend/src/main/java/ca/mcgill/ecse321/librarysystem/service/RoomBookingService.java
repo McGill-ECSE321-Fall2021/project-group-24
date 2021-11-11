@@ -104,7 +104,6 @@ public class RoomBookingService {
 	// helper method
 	// check if the room is booked during the times given
 	public boolean isBooked(String roomNumber, Date date, Time startTime, Time endTime, String timeSlotIdToIgnore) {
-		System.out.println(roomNumber);
 		Room room = roomService.getRoom(roomNumber);
 		for (RoomBooking rb : room.getRoomBookings()) {
 			if (date.equals(rb.getDate())) {
@@ -130,13 +129,15 @@ public class RoomBookingService {
 	}
 	
 	@Transactional
-	public RoomBooking updateRoomBooking(String currentUserId, String timeSlotId,
+	public RoomBooking updateRoomBooking(
+			String currentUserId,
+			String timeSlotId,
 			Date newDate,
 			Time newStartTime,
 			Time newEndTime,
 			String newRoomNumber) throws Exception {
-		
 		// check if room booking with timeSlotId exists
+		
 		RoomBooking rb = roomBookingRepository.findRoomBookingByTimeSlotId(timeSlotId);
 		if (rb == null) throw new IllegalArgumentException("Room booking does not exist");
 
@@ -147,7 +148,7 @@ public class RoomBookingService {
 	    		throw new IllegalArgumentException("You do not have permission to modify this room booking");
 	    	}
 	    }
-
+	 
 		// check if the new date and time has any conflicts
 	 		TimeSlot.DayOfWeek dayOfWeek =TimeSlot.DayOfWeek.valueOf(newDate.toLocalDate().getDayOfWeek().toString());
 	 		if (newStartTime.after(newEndTime) || newStartTime.equals(newEndTime)  ) {
@@ -161,7 +162,7 @@ public class RoomBookingService {
 	    
 		// modify roombooking attributes
 	    rb.setDate(newDate);
-	    rb.setDayOfWeek(DayOfWeek.valueOf(newDate.toString()));
+	    rb.setDayOfWeek(DayOfWeek.valueOf(newDate.toLocalDate().getDayOfWeek().toString()));
 	    rb.setRoomNum(newRoomNumber);
 	    rb.setStartTime(newStartTime);
 	    rb.setEndTime(newEndTime);

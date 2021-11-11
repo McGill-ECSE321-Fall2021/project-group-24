@@ -26,7 +26,6 @@ public class LibraryHourService {
 	public LibraryHour createLibraryHour(String currentUserId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime) {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
 		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can create library hours");
-
 		if (dayOfWeek==null || startTime ==null || endTime ==null) {
 			throw new IllegalArgumentException ("Fields cannot be blank"); 
 		}
@@ -38,6 +37,7 @@ public class LibraryHourService {
 		libraryHour.setDayOfWeek(dayOfWeek);
 		libraryHour.setStartTime(startTime);
 		libraryHour.setEndTime(endTime);
+		libraryHour.setTimeSlotId(dayOfWeek.toString());
 		
 		libraryHourRepo.save(libraryHour); 
 		return libraryHour; 
@@ -61,6 +61,7 @@ public class LibraryHourService {
 		libraryHour.setDayOfWeek(dayOfWeek);
 		libraryHour.setStartTime(startTime);
 		libraryHour.setEndTime(endTime);
+		libraryHour.setTimeSlotId(dayOfWeek.toString());
 		
 		libraryHourRepo.save(libraryHour); 
 		return libraryHour; 

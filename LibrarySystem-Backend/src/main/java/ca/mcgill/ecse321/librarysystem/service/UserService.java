@@ -178,7 +178,7 @@ public class UserService {
 		}
 		
 		if(user.getIsLoggedIn()==false) {
-			throw new IllegalArgumentException("User must be logged in to change password.");
+			throw new IllegalArgumentException("User must be logged in to change name.");
 		}
 		if (firstName.length()==0 || lastName.length()==0) {
 			throw new IllegalArgumentException("First and last name must not be blank"); 

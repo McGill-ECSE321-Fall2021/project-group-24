@@ -26,7 +26,7 @@ public class ShiftController {
 	@Autowired 
 	ShiftService shiftService; 
 	
-	/** Method adds a shift (if startDate is different from endDate then it's an overnight shift)
+	/** Method adds a shift
 	 * @author Arman 
 	 * @param currentUserId, librarianId, dayOfWeek, startTime, endTime 
 	 * @return Response Entity 
