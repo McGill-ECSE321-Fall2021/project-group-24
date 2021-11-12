@@ -47,7 +47,7 @@ public class ItemReservationService {
 		if (startDate == null) {
 			startDate = findNextAvailabilityForItem(itemNumber);
 			//if they are at the library rn and the book is available 
-			if (isCheckedOut && startDate.equals(Date.valueOf(LocalDate.now().plusDays(1))) ) {
+			if (isCheckedOut && startDate.equals(Date.valueOf(LocalDate.now()))) {
 				startDate = Date.valueOf(LocalDate.now());
 			//if they are at the library rn but the book should not be available
 			} else if (isCheckedOut) {
@@ -102,7 +102,7 @@ public class ItemReservationService {
 		reservation.setItemNumber(itemNumber);
 		reservation.setNumOfRenewalsLeft(4);
 		reservation.setIsCheckedOut(isCheckedOut);
-
+		System.out.println(idNum);
 		itemReservationRepository.save(reservation);
 	    return reservation;		
 	}
@@ -366,7 +366,7 @@ public class ItemReservationService {
 		if (reservation.getNumOfRenewalsLeft() > 0) {
 			Date nextAvailable = findNextAvailabilityForItem(reservation.getItemNumber());
 			//if this is the last reservation
-			if (Date.valueOf(nextAvailable.toLocalDate()).equals(reservation.getEndDate())) {
+			if (nextAvailable.equals(reservation.getEndDate())) {
 				reservation.setNumOfRenewalsLeft(reservation.getNumOfRenewalsLeft() - 1);
 				reservation.setEndDate(Date.valueOf(reservation.getEndDate().toLocalDate().plusWeeks(2)));
 				itemReservationRepository.save(reservation);
