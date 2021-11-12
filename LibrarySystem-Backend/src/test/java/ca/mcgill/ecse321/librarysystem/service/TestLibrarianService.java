@@ -7,19 +7,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
 
 import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
-import ca.mcgill.ecse321.librarysystem.service.HeadLibrarianService;
-import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.List;
-import org.hibernate.annotations.SourceType;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,17 +47,17 @@ public class TestLibrarianService {
   // private static final String testIdNum = "bobLibrarian-0";
   // private static final String wrongIdNum = "jeffLibrarian-0";
   private static final String testFirstName = "bobFirstName";
-  private static final String wrongFirstName = "jeffFirstName";
+
   private static final String testLastName = "bobLastName";
-  private static final String wrongLastName = "jeffLastName";
+
   private static final String testAddress = "bob st";
-  private static final String wrongAddress = "jeff st";
+
   private static final String testEmail = "bob@bob.ca";
-  private static final String wrongEmail = "jeff@jeff.ca";
+
   private static final String testUsername = "bobUsername";
-  private static final String wrongUsername = "jeffUsername";
+
   private static final String testPassword = "bobPassword";
-  private static final String wrongPassword = "bobPassword";
+
 
   @BeforeEach
   public void setMockOutput() {
