@@ -6,5 +6,5 @@ import java.util.List;
 public interface RoomBookingRepository extends CrudRepository<RoomBooking, String> {
 	RoomBooking findRoomBookingByTimeSlotId(String timeSlotId);
 	List<RoomBooking> findRoomBookingByRoomNum(String roomNum);
-	List<RoomBooking> findRoomBookingByIdNum(String idNum);
+	List<RoomBooking> findRoomBookingsByIdNum(String idNum);
 }

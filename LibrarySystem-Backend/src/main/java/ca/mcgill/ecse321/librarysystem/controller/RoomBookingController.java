@@ -32,9 +32,9 @@ public class RoomBookingController {
 	 * @return all roombookings
 	 */
 	@GetMapping(value = { "/view_roombookings", "/view_roombookings/" })
-	public ResponseEntity<?> getRoomBooking() {
+	public ResponseEntity<?> getRoomBooking( @RequestParam String currentUserId) {
 		try {
-			return new ResponseEntity<Object>(roomBookingService.getAllRoomBookings().stream().map(lib -> convertToDto(lib)).collect(Collectors.toList()), HttpStatus.OK);
+			return new ResponseEntity<Object>(roomBookingService.getAllRoomBookings(currentUserId).stream().map(lib -> convertToDto(lib)).collect(Collectors.toList()), HttpStatus.OK);
 	    } catch (IllegalArgumentException e) {
 	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	    }
@@ -46,12 +46,13 @@ public class RoomBookingController {
 	 * @return all roombookings of a patron
 	 */
 	@GetMapping(value = { "/view_roombookings/patron/{idNum}", "/view_roombookings/patron/{idNum}/" })
-	public ResponseEntity<?> getRoomBookingOfPatron(@PathVariable("idNum") String idNum) {
+	public ResponseEntity<?> getRoomBookingOfPatron(@PathVariable("idNum") String idNum,  @RequestParam String currentUserId) {
 		try {
-			return new ResponseEntity<Object>(getRoomBookingDtosForPatron(idNum), HttpStatus.OK);
+			return new ResponseEntity<Object>(getRoomBookingDtosForPatron(currentUserId, idNum), HttpStatus.OK);
 	    } catch (IllegalArgumentException e) {
 	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	    }
+		
 
 	}
 	
@@ -61,9 +62,9 @@ public class RoomBookingController {
 	 * @return all roombookings of a room
 	 */
 	@GetMapping(value = { "/view_roombookings/room/{roomNum}", "/view_roombookings/room/{roomNum}/" })
-	public ResponseEntity<?> getRoomBookingOfRoom(@PathVariable("roomNum") String roomNum) {
+	public ResponseEntity<?> getRoomBookingOfRoom(@PathVariable("roomNum") String roomNum,  @RequestParam String currentUserId) {
 		try {
-			return new ResponseEntity<Object>(getRoomBookingDtosForRoom(roomNum), HttpStatus.OK);
+			return new ResponseEntity<Object>(getRoomBookingDtosForRoom(currentUserId, roomNum), HttpStatus.OK);
 	    } catch (IllegalArgumentException e) {
 	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	    }
@@ -75,9 +76,9 @@ public class RoomBookingController {
 	 * @return roombooking with timeSlotId
 	 */
 	@GetMapping(value = { "/view_roombooking/{timeSlotId}", "/view_roombooking/{timeSlotId}/" })
-	public ResponseEntity<?> getRoomBookingOfTimeSlot(@PathVariable("timeSlotId") String timeSlotId) { 
+	public ResponseEntity<?> getRoomBookingOfTimeSlot(@PathVariable("timeSlotId") String timeSlotId,  @RequestParam String currentUserId) { 
 		try {
-			return new ResponseEntity<Object>(convertToDto(roomBookingService.getRoomBookingsByTimeSlotId(timeSlotId)), HttpStatus.OK);
+			return new ResponseEntity<Object>(convertToDto(roomBookingService.getRoomBookingsByTimeSlotId(currentUserId, timeSlotId)), HttpStatus.OK);
 	    } catch (IllegalArgumentException e) {
 	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	    }
@@ -102,6 +103,7 @@ public class RoomBookingController {
 			) {
 	
 		try {
+			
 			RoomBooking booking = roomBookingService.createRoomBooking(
 				currentUserId,
 				Date.valueOf(LocalDate.parse(date)),
@@ -173,8 +175,8 @@ public class RoomBookingController {
 	    }
 	}
 	
-	private List<RoomBookingDto> getRoomBookingDtosForPatron(String idNum) {
-		List<RoomBooking> roomBookingForPatron = roomBookingService.getRoomBookingsByIdNum(idNum);
+	private List<RoomBookingDto> getRoomBookingDtosForPatron(String currentUserId, String idNum) {
+		List<RoomBooking> roomBookingForPatron = roomBookingService.getRoomBookingsByIdNum(currentUserId, idNum);
 		List<RoomBookingDto> bookings = new ArrayList<>();
 		for (RoomBooking booking : roomBookingForPatron) {
 			bookings.add(convertToDto(booking));
@@ -182,8 +184,8 @@ public class RoomBookingController {
 		return bookings;
 	}
 	
-	private List<RoomBookingDto> getRoomBookingDtosForRoom(String roomNum) {
-		List<RoomBooking> roomBookingsForRoomNum = roomBookingService.getRoomBookingsByRoomNum(roomNum);
+	private List<RoomBookingDto> getRoomBookingDtosForRoom(String currentUserId, String roomNum) {
+		List<RoomBooking> roomBookingsForRoomNum = roomBookingService.getRoomBookingsByRoomNum(currentUserId, roomNum);
 		List<RoomBookingDto> roomBooking = new ArrayList<>();
 		for (RoomBooking booking : roomBookingsForRoomNum) {
 			roomBooking.add(convertToDto(booking));
