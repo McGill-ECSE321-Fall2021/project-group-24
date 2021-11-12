@@ -97,7 +97,7 @@ public class UserController {
 	 * @param lastName
 	 * @return userDto
 	 */
-	@PostMapping(value = {"/change_name", "/change_name/"})
+	@PutMapping(value = {"/change_name", "/change_name/"})
 	public ResponseEntity<?> changeName(@RequestParam String username, @RequestParam String firstName, @RequestParam String lastName) {
 		User user = null; 
 		try {
