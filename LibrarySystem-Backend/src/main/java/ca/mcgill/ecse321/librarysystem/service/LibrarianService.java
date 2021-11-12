@@ -14,10 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class LibrarianService {
 
   @Autowired
+  PatronRepository patronRepo;
+
+  @Autowired
   LibrarianRepository librarianRepo;
-  
-	@Autowired
-	HeadLibrarianRepository headLibrarianRepository;
+
+  @Autowired
+  HeadLibrarianRepository headLibrarianRepository;
 
   @Autowired
   ShiftRepository shiftRepo;
@@ -35,72 +38,99 @@ public class LibrarianService {
   ) {
     validInput(firstName, lastName, address, email, username, password);
     System.out.print(headLibrarianRepository);
-    
-    
-    if (isHeadLibrarian(currentUserId)) {
-    String idNum =
-      firstName + "Librarian-" + toList(librarianRepo.findAll()).size();
-    Librarian librarian = new Librarian();
-    librarian.setUsername(username);
-    librarian.setPassword(password);
-    librarian.setFirstName(firstName);
-    librarian.setLastName(lastName);
-    librarian.setEmail(email);
-    librarian.setIdNum(idNum);
-    librarian.setAddress(address);
 
-    librarianRepo.save(librarian);
-    return librarian;
-     } else {
-     throw new IllegalArgumentException(
-       "You do not have permission to create a librarian."
-     );
-     }
+    if (isHeadLibrarian(currentUserId)) {
+      String idNum =
+        firstName + "Librarian-" + toList(librarianRepo.findAll()).size();
+
+      Librarian librarian = new Librarian();
+      librarian.setUsername(username);
+      librarian.setPassword(password);
+      librarian.setFirstName(firstName);
+      librarian.setLastName(lastName);
+      librarian.setEmail(email);
+      librarian.setIdNum(idNum);
+      librarian.setAddress(address);
+      librarianRepo.save(librarian);
+      System.out.print("LIST OF LIB" + toList(librarianRepo.findAll()));
+      System.out.print("--------------------------------------------");
+      for (Librarian l : toList(librarianRepo.findAll())) {
+        System.out.println("GETTING THE FIRST NAME: " + l.getIdNum());
+      }
+      System.out.print("--------------------------------------------");
+      return librarian;
+    } else {
+      throw new IllegalArgumentException(
+        "You do not have permission to create a librarian."
+      );
+    }
   }
 
   //fire librarian
   @Transactional
-  public Librarian deleteLibrarian(
-     String currentUserId,
-    String idNum
-  ) {
+  public Librarian deleteLibrarian(String currentUserId, String idNum) {
     if (shiftRepo.findShiftByLibrarianId(idNum).size() > 0) {
       throw new IllegalArgumentException(
         "Delete failed, this librarian has shifts assigned to them."
       );
     }
-     if (isHeadLibrarian(currentUserId)) {
-    Librarian bye = librarianRepo.findUserByIdNum(idNum);
-    librarianRepo.delete(bye);
-    return bye;
-     } else {
-       throw new IllegalArgumentException(
-         "You do not have permission to update the librarian information."
-       );
-     }
+    if (isHeadLibrarian(currentUserId)) {
+      Librarian bye = librarianRepo.findUserByIdNum(idNum);
+      librarianRepo.delete(bye);
+      return bye;
+    } else {
+      throw new IllegalArgumentException(
+        "You do not have permission to update the librarian information."
+      );
+    }
   }
 
   // looks for a librarian with the given ID number, returns them if found
   @Transactional
-  public Librarian getLibrarian(String idNum) {
-    Librarian librarian = librarianRepo.findUserByIdNum(idNum);
-    return librarian;
+  public Librarian getLibrarian(
+    String currentUserId,
+    String idNumOfLibrarianToGet
+  ) {
+    if (isHeadLibrarian(currentUserId)) {
+      Librarian librarian = librarianRepo.findUserByIdNum(
+        idNumOfLibrarianToGet
+      );
+      if (librarian == null) {
+        throw new IllegalArgumentException("Librarian not found.");
+      } else {
+        return librarian;
+      }
+    } else {
+      throw new IllegalArgumentException(
+        "You do not have permission to view the librarian information."
+      );
+    }
   }
 
   @Transactional
-  public List<Librarian> getAllLibrarians() {
-    return toList(librarianRepo.findAll());
+  public List<Librarian> getAllLibrarians(String userId) {
+    if (isHeadLibrarian(userId)) {
+      return toList(librarianRepo.findAll());
+    } else {
+      throw new IllegalArgumentException(
+        "You do not have permission to view the librarian information."
+      );
+    }
   }
-  
+
   private boolean isHeadLibrarian(String currentUserId) {
-	    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
-	    if (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn()) {
-	      throw new IllegalArgumentException(
-	        "You are not authorized to do this. Only the Head Librarian can."
-	      );
-	    }
-	    return true;
-	  }
+    System.out.println("Current User ID: " + currentUserId);
+    HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
+      currentUserId
+    );
+
+    if (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn()) {
+      throw new IllegalArgumentException(
+        "You are not authorized to do this. Only the Head Librarian can."
+      );
+    }
+    return true;
+  }
 
   public static <T> List<T> toList(Iterable<T> iterable) {
     List<T> resultList = new ArrayList<T>();

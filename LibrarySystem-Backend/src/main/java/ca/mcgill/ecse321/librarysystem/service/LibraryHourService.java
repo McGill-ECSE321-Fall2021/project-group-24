@@ -31,8 +31,6 @@ public class LibraryHourService {
 		}
 		if(startTime.after(endTime)) throw new IllegalArgumentException ("Start time cannot be after end time");
 		
-		System.out.print(dayOfWeek);
-		System.out.print(libraryHourRepo.findHourByDayOfWeek(dayOfWeek));
 		if (libraryHourRepo.findHourByDayOfWeek(dayOfWeek)!=null) throw new IllegalArgumentException("There's already a library hour for that day"); 
 		
 		LibraryHour libraryHour = new LibraryHour(); 
@@ -52,7 +50,7 @@ public class LibraryHourService {
 	 */
 	public LibraryHour modifyLibraryHour (String currentUserId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime) {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
-		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian modify library hours");
+		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can modify library hours");
 		if (dayOfWeek==null || startTime ==null || endTime ==null) {
 			throw new IllegalArgumentException ("Fields cannot be blank"); 
 		}
@@ -108,8 +106,9 @@ public class LibraryHourService {
 	 */
 	@Transactional 
 	public List<LibraryHour> getAllLibraryHours() {
-		if(libraryHourRepo.count()==0) throw new IllegalArgumentException("No library hours exist"); 
-		return toList(libraryHourRepo.findAll()); 
+		List<LibraryHour> libraryHours = toList(libraryHourRepo.findAll()); 
+		if(libraryHours.size()==0) throw new IllegalArgumentException("No library hours exist"); 
+		return libraryHours;
 	}
 	
 	

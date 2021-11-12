@@ -28,22 +28,27 @@ public class LibrarianController {
 
   //GET to get all librarians
   @GetMapping(value = { "/all", "/all/" })
-  public ResponseEntity<?> getAllLibrarians() {
-	  try {
-			return new ResponseEntity<Object>(librarianService
-      .getAllLibrarians()
-      .stream()
-      .map(lib -> convertToDto(lib))
-      .collect(Collectors.toList()), HttpStatus.OK);
-	    } catch (IllegalArgumentException e) {
-	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-	    }
+  public ResponseEntity<?> getAllLibrarians(
+    @RequestParam String currentUserId
+  ) {
+    try {
+      return new ResponseEntity<Object>(
+        librarianService
+          .getAllLibrarians(currentUserId)
+          .stream()
+          .map(lib -> convertToDto(lib))
+          .collect(Collectors.toList()),
+        HttpStatus.OK
+      );
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   //create a librarian
   @PostMapping(value = { "/create/", "/create" })
   public ResponseEntity<?> createLibrarian(
-	@RequestParam String currentUserId,
+    @RequestParam String currentUserId,
     @RequestParam String firstName,
     @RequestParam String lastName,
     @RequestParam String address,
@@ -51,33 +56,37 @@ public class LibrarianController {
     @RequestParam String username,
     @RequestParam String password
   ) {
-	  try {
-		  Librarian librarian = librarianService.createLibrarian(
-      currentUserId,
-      firstName,
-      lastName,
-      address,
-      email,
-      username,
-      password
-    );
-			return new ResponseEntity<Object>(convertToDto(librarian), HttpStatus.OK);
-	    } catch (IllegalArgumentException e) {
-	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-	    }
+    try {
+      Librarian librarian = librarianService.createLibrarian(
+        currentUserId,
+        firstName,
+        lastName,
+        address,
+        email,
+        username,
+        password
+      );
+      return new ResponseEntity<Object>(convertToDto(librarian), HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
-  //POST to delete/fire a librarian
-  @DeleteMapping(
-    value = { "/delete/{idNum}", "/delete/{idNum}/" }
-  )
-  public ResponseEntity<?> deleteLibrarian(@PathVariable("idNum") String idNum, @RequestParam String currentUserId) {
-	  try { 
-		  Librarian librarian = librarianService.deleteLibrarian(currentUserId, idNum);
-			return new ResponseEntity<Object>(convertToDto(librarian), HttpStatus.OK);
-	    } catch (IllegalArgumentException e) {
-	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-	    }
+  //delete to delete/fire a librarian
+  @DeleteMapping(value = { "/delete/{idNum}", "/delete/{idNum}/" })
+  public ResponseEntity<?> deleteLibrarian(
+    @PathVariable("idNum") String idNum,
+    @RequestParam String currentUserId
+  ) {
+    try {
+      Librarian librarian = librarianService.deleteLibrarian(
+        currentUserId,
+        idNum
+      );
+      return new ResponseEntity<Object>(convertToDto(librarian), HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   private LibrarianDto convertToDto(Librarian librarian) {
