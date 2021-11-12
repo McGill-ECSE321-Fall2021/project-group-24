@@ -134,7 +134,7 @@ public class PatronService {
 				itemReservationService.cancelItemReservation(currentUserId, reservation.getItemReservationId());
 			}
 		}
-		for (RoomBooking booking : roomBookingService.getRoomBookingsByIdNum(idNum)) {
+		for (RoomBooking booking : roomBookingService.getRoomBookingsByIdNum(currentUserId, idNum)) {
 			if (booking.getDate().after(today) || booking.getDate().equals(today)) {
 				roomBookingService.deleteRoomBooking(currentUserId, booking.getTimeSlotId());
 			}
