@@ -5,6 +5,7 @@ import static ca.mcgill.ecse321.librarysystem.service.SystemServiceHelpers.*;
 import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class ItemService {
 
   @Autowired
   ItemRepository itemRepository;
+  @Autowired
+  ItemReservationRepository itemReservationRepository;
 
   @Autowired
   LibrarianRepository librarianRepository;
@@ -85,7 +88,7 @@ public class ItemService {
 
   //remove item
   @Transactional
-  public Item deleteItem(String currentUserId, String idNum) {
+  public Item deleteItem(String currentUserId, String itemNumber) {
     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
       currentUserId
     );
@@ -101,7 +104,13 @@ public class ItemService {
         "You do not have permission to delete this item"
       );
     }
-    Item gone = itemRepository.findItemByItemNumber(idNum);
+    Item gone = itemRepository.findItemByItemNumber(itemNumber);
+    Date today = Date.valueOf(LocalDate.now());
+    for (ItemReservation reservation : itemReservationRepository.findItemReservationsByItemNumber(itemNumber)) {
+    	if (reservation.getStartDate().after(today) || reservation.getEndDate().after(today)) {
+    		throw new IllegalArgumentException("Item has future reservations, cannot delete");
+    	}
+    }
     itemRepository.delete(gone);
     return gone;
   }
@@ -317,7 +326,8 @@ public class ItemService {
 
   @Transactional
   public List<Item> getAllBooks() {
-    return toList(itemRepository.findItemsByType(Item.Type.Book));
+	  List<Item> items = itemRepository.findItemsByType(Item.Type.Book);
+    return toList(items);
   }
 
   @Transactional

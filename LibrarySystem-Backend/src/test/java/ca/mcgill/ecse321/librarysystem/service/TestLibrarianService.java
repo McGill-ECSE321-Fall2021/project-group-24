@@ -33,6 +33,9 @@ import org.mockito.stubbing.Answer;
 public class TestLibrarianService {
 
   @Mock
+  private ShiftRepository shiftDao;
+
+  @Mock
   private PatronRepository patronDao;
 
   @Mock
@@ -93,6 +96,28 @@ public class TestLibrarianService {
         return librarian;
       });
     lenient()
+      .when(shiftDao.findShiftByLibrarianId("bobFirstNameLibrarian-1"))
+      .thenAnswer((InvocationOnMock invocation) -> {
+        Shift shift = new Shift();
+        List<Shift> shiftList = new ArrayList<>();
+        shift.setLibrarianId("bobFirstNameLibrarian-1");
+        shiftList.add(shift);
+        return shiftList;
+      });
+    lenient()
+      .when(librarianDao.findUserByIdNum("bobFirstNameLibrarian-3"))
+      .thenAnswer((InvocationOnMock invocation) -> {
+        Librarian librarian = new Librarian();
+        librarian.setIdNum("bobFirstNameLibrarian-3");
+        librarian.setFirstName(testFirstName);
+        librarian.setLastName(testLastName);
+        librarian.setAddress(testAddress);
+        librarian.setEmail(testEmail);
+        librarian.setUsername(testUsername);
+        librarian.setPassword(testPassword);
+        return librarian;
+      });
+    lenient()
       .when(librarianDao.findUserByUsername(anyString()))
       .thenAnswer((InvocationOnMock invocation) -> {
         if (invocation.getArgument(0).equals(testUsername)) {
@@ -144,6 +169,10 @@ public class TestLibrarianService {
 
     lenient()
       .when(patronDao.save(any(Patron.class)))
+      .thenAnswer(returnParameterAsAnswer);
+
+    lenient()
+      .when(shiftDao.save(any(Shift.class)))
       .thenAnswer(returnParameterAsAnswer);
   }
 
@@ -589,14 +618,13 @@ public class TestLibrarianService {
   @Test
   //GET librarian account successfully using idNum
   public void testGetLibrarian() {
-    String error = null;
     Librarian librarian = null;
 
     try {
       librarian =
         librarianService.getLibrarian("admin", "bobFirstNameLibrarian-1");
     } catch (IllegalArgumentException e) {
-      error = e.getMessage();
+      fail();
     }
     assertNotNull(librarian);
     assertEquals("bobFirstNameLibrarian-1", librarian.getIdNum());
@@ -635,5 +663,58 @@ public class TestLibrarianService {
     }
     assertNull(librarian);
     assertEquals("Librarian not found.", error);
+  }
+
+  @Test
+  //Delete a librarian with a valid IdNum and shift as an admin
+  public void testDeleteLibrarianWithShift() {
+    String error = null;
+    Librarian deletedLibrarian = null;
+
+    try {
+      deletedLibrarian =
+        librarianService.deleteLibrarian("admin", "bobFirstNameLibrarian-1");
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(deletedLibrarian);
+    assertEquals(
+      "Delete failed, this librarian has shifts assigned to them.",
+      error
+    );
+  }
+
+  @Test
+  //Delete a librarian as not a head librarian
+  public void testDeleteLibrarianAsNotHeadLibrarian() {
+    String error = null;
+    Librarian deletedLibrarian = null;
+
+    try {
+      deletedLibrarian =
+        librarianService.deleteLibrarian("patron", "bobFirstNameLibrarian-3");
+    } catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertNull(deletedLibrarian);
+    assertEquals(
+      "You are not authorized to do this. Only the Head Librarian can.",
+      error
+    );
+  }
+
+  @Test
+  //Delete a valid librarian with no shift as a head librarian
+  public void testDeleteLibrarian() {
+    Librarian deletedLibrarian = null;
+
+    try {
+      deletedLibrarian =
+        librarianService.deleteLibrarian("admin", "bobFirstNameLibrarian-3");
+    } catch (IllegalArgumentException e) {
+      fail();
+    }
+    assertNotNull(deletedLibrarian);
+    assertEquals("bobFirstNameLibrarian-3", deletedLibrarian.getIdNum());
   }
 }

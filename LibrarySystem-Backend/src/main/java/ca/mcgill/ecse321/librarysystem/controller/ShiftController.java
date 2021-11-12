@@ -40,11 +40,12 @@ public class ShiftController {
 		// request param usernameId, do that in shift methods as well so that we verify that the username is one in headLibrarian Repo
 		try {
 			shift =shiftService.createShift(currentUserId, librarianId, dayOfWeek, Time.valueOf(startTime + ":00"),  Time.valueOf(endTime+":00")); 
+			return new ResponseEntity<Object>(convertToDto(shift), HttpStatus.CREATED);
 			}		
 			catch(IllegalArgumentException e) {
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-		return new ResponseEntity<>(convertToDto(shift), HttpStatus.CREATED);
+		
 	}
 	
 	/** Method modifies a shift
@@ -58,11 +59,13 @@ public class ShiftController {
 		Shift shift = null; 
 		try {
 			shift =shiftService.modifyShift(currentUserId, timeSlotId, librarianId, dayOfWeek, Time.valueOf(startTime+":00"), Time.valueOf(endTime+":00")); 
-			}		
+			System.out.println(shift.getTimeSlotId());
+			return new ResponseEntity<Object>(convertToDto(shift), HttpStatus.CREATED);	
+		}		
 			catch(IllegalArgumentException e) {
-				return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-		return new ResponseEntity<>(convertToDto(shift), HttpStatus.CREATED);
+		
 	}
 	
 	/** Method removes an existing shift for a librarian

@@ -1,0 +1,2305 @@
+{
+	"info": {
+		"_postman_id": "530f9953-e7a6-40e9-96e9-ff0fff1d13b2",
+		"name": "Group 24 Integration Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login as admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({\"username\":\"admin\",\"password\":\"admin\",\"email\":null,\"idNum\":\"admin\",\"firstName\":null,\"lastName\":null,\"address\":null,\"isLoggedIn\":true});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/user/login?username=admin&password=admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "admin"
+						},
+						{
+							"key": "password",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change admin password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({\"username\":\"admin\",\"password\":\"administrator\",\"email\":null,\"idNum\":\"admin\",\"firstName\":null,\"lastName\":null,\"address\":null,\"isLoggedIn\":true});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/user/change_password/?username=admin&oldPass=admin&newPass=administrator",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"change_password",
+						""
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "admin"
+						},
+						{
+							"key": "oldPass",
+							"value": "admin"
+						},
+						{
+							"key": "newPass",
+							"value": "administrator"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create library hour MONDAY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({\"dayOfWeek\":\"MONDAY\",\"startTime\":\"08:00:00\",\"endTime\":\"19:00:00\"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=MONDAY&startTime=08:00&endTime=19:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"libraryhour",
+						"add_library_hour"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "MONDAY"
+						},
+						{
+							"key": "startTime",
+							"value": "08:00"
+						},
+						{
+							"key": "endTime",
+							"value": "19:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify libraryhour MONDAY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"dayOfWeek\": \"MONDAY\",",
+							"    \"startTime\": \"07:00:00\",",
+							"    \"endTime\": \"19:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/libraryhour/modify_library_hour?currentUserId=admin&dayOfWeek=MONDAY&startTime=07:00&endTime=19:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"libraryhour",
+						"modify_library_hour"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "MONDAY"
+						},
+						{
+							"key": "startTime",
+							"value": "07:00"
+						},
+						{
+							"key": "endTime",
+							"value": "19:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create library hour TUESDAY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"dayOfWeek\": \"TUESDAY\",",
+							"    \"startTime\": \"08:00:00\",",
+							"    \"endTime\": \"19:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=TUESDAY&startTime=08:00&endTime=19:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"libraryhour",
+						"add_library_hour"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "TUESDAY"
+						},
+						{
+							"key": "startTime",
+							"value": "08:00"
+						},
+						{
+							"key": "endTime",
+							"value": "19:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create library hour WEDNESDAY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"dayOfWeek\": \"WEDNESDAY\",",
+							"    \"startTime\": \"08:00:00\",",
+							"    \"endTime\": \"19:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=WEDNESDAY&startTime=08:00&endTime=19:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"libraryhour",
+						"add_library_hour"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "WEDNESDAY"
+						},
+						{
+							"key": "startTime",
+							"value": "08:00"
+						},
+						{
+							"key": "endTime",
+							"value": "19:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create library hour THURSDAY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"dayOfWeek\": \"THURSDAY\",",
+							"    \"startTime\": \"08:00:00\",",
+							"    \"endTime\": \"19:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=THURSDAY&startTime=08:00&endTime=19:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"libraryhour",
+						"add_library_hour"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "THURSDAY"
+						},
+						{
+							"key": "startTime",
+							"value": "08:00"
+						},
+						{
+							"key": "endTime",
+							"value": "19:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create library hour FRIDAY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"dayOfWeek\": \"FRIDAY\",",
+							"    \"startTime\": \"08:00:00\",",
+							"    \"endTime\": \"19:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=FRIDAY&startTime=08:00&endTime=19:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"libraryhour",
+						"add_library_hour"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "FRIDAY"
+						},
+						{
+							"key": "startTime",
+							"value": "08:00"
+						},
+						{
+							"key": "endTime",
+							"value": "19:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create library hour SATURDAY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"dayOfWeek\": \"SATURDAY\",",
+							"    \"startTime\": \"08:00:00\",",
+							"    \"endTime\": \"19:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=SATURDAY&startTime=08:00&endTime=19:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"libraryhour",
+						"add_library_hour"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "SATURDAY"
+						},
+						{
+							"key": "startTime",
+							"value": "08:00"
+						},
+						{
+							"key": "endTime",
+							"value": "19:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create library hour SUNDAY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"dayOfWeek\": \"SUNDAY\",",
+							"    \"startTime\": \"08:00:00\",",
+							"    \"endTime\": \"19:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=SUNDAY&startTime=08:00&endTime=19:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"libraryhour",
+						"add_library_hour"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "SUNDAY"
+						},
+						{
+							"key": "startTime",
+							"value": "08:00"
+						},
+						{
+							"key": "endTime",
+							"value": "19:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete libraryhour SUNDAY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"true\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/libraryhour/remove_library_hour?currentUserId=admin&dayOfWeek=SUNDAY",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"libraryhour",
+						"remove_library_hour"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "SUNDAY"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create library hour SUNDAY Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"dayOfWeek\": \"SUNDAY\",",
+							"    \"startTime\": \"08:00:00\",",
+							"    \"endTime\": \"19:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=SUNDAY&startTime=08:00&endTime=19:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"libraryhour",
+						"add_library_hour"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "SUNDAY"
+						},
+						{
+							"key": "startTime",
+							"value": "08:00"
+						},
+						{
+							"key": "endTime",
+							"value": "19:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create room",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"roomNum\": \"study1\",",
+							"    \"capacity\": 6",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/rooms/create_room/study1?capacity=6&currentUserId=admin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rooms",
+						"create_room",
+						"study1"
+					],
+					"query": [
+						{
+							"key": "capacity",
+							"value": "6"
+						},
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update room",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"roomNum\": \"study1\",",
+							"    \"capacity\": 10",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/rooms/update_room/study1?newCapacity=10&currentUserId=admin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rooms",
+						"update_room",
+						"study1"
+					],
+					"query": [
+						{
+							"key": "newCapacity",
+							"value": "10"
+						},
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"itemTitle\": \"book\",",
+							"    \"description\": \"cool\",",
+							"    \"imageUrl\": \"no-image\",",
+							"    \"itemNumber\": \"Book-0book\",",
+							"    \"genre\": \"horror\",",
+							"    \"publishDate\": \"2001-09-22\",",
+							"    \"isReservable\": true,",
+							"    \"currentReservationId\": null,",
+							"    \"type\": \"Book\",",
+							"    \"author\": \"saagar\",",
+							"    \"publisher\": \"saagar\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/items/create_book?currentUserId=admin&itemTitle=book&description=cool&imageURL=no-image&publisher=saagar&author=saagar&genre=horror&publishDate=2001-09-22&isReservable=true",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"items",
+						"create_book"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "itemTitle",
+							"value": "book"
+						},
+						{
+							"key": "description",
+							"value": "cool"
+						},
+						{
+							"key": "imageURL",
+							"value": "no-image"
+						},
+						{
+							"key": "publisher",
+							"value": "saagar"
+						},
+						{
+							"key": "author",
+							"value": "saagar"
+						},
+						{
+							"key": "genre",
+							"value": "horror"
+						},
+						{
+							"key": "publishDate",
+							"value": "2001-09-22"
+						},
+						{
+							"key": "isReservable",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create archive",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.itemNumber).to.eql(\"Archive-0archive-for-dummies\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/items/create_archive?currentUserId=admin&itemTitle=archive-for-dummies&description=dumb&imageURL=no-image&genre=dumber&publishDate=2001-09-22&isReservable=true",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"items",
+						"create_archive"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "itemTitle",
+							"value": "archive-for-dummies"
+						},
+						{
+							"key": "description",
+							"value": "dumb"
+						},
+						{
+							"key": "imageURL",
+							"value": "no-image"
+						},
+						{
+							"key": "genre",
+							"value": "dumber"
+						},
+						{
+							"key": "publishDate",
+							"value": "2001-09-22"
+						},
+						{
+							"key": "isReservable",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create librarian",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"idNum\": \"SelenaLibrarian-1\",",
+							"    \"firstName\": \"Selena\",",
+							"    \"lastName\": \"Libby\",",
+							"    \"address\": \"1234 rue Sherbrooke O\",",
+							"    \"email\": \"selena@librarian.com\",",
+							"    \"username\": \"selener\",",
+							"    \"password\": \"selenerpassword\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/librarians/create?currentUserId=admin&firstName=Selena&lastName=Libby&address=1234 rue Sherbrooke O&email=selena@librarian.com&username=selener&password=selenerpassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"librarians",
+						"create"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "firstName",
+							"value": "Selena"
+						},
+						{
+							"key": "lastName",
+							"value": "Libby"
+						},
+						{
+							"key": "address",
+							"value": "1234 rue Sherbrooke O"
+						},
+						{
+							"key": "email",
+							"value": "selena@librarian.com"
+						},
+						{
+							"key": "username",
+							"value": "selener"
+						},
+						{
+							"key": "password",
+							"value": "selenerpassword"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create shift",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"timeSlotId\": \"WEDNESDAYSelenaLibrarian-110:00:0015:00:000\",",
+							"    \"librarianId\": \"SelenaLibrarian-1\",",
+							"    \"startTime\": \"10:00:00\",",
+							"    \"dayOfWeek\": \"WEDNESDAY\",",
+							"    \"endTime\": \"15:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/shift/add_shift/?currentUserId=admin&librarianId=SelenaLibrarian-1&dayOfWeek=WEDNESDAY&startTime=10:00&endTime=15:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"shift",
+						"add_shift",
+						""
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "librarianId",
+							"value": "SelenaLibrarian-1"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "WEDNESDAY"
+						},
+						{
+							"key": "startTime",
+							"value": "10:00"
+						},
+						{
+							"key": "endTime",
+							"value": "15:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modify shift",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"timeSlotId\": \"WEDNESDAYSelenaLibrarian-110:00:0015:00:000\",",
+							"    \"librarianId\": \"SelenaLibrarian-1\",",
+							"    \"startTime\": \"10:00:00\",",
+							"    \"dayOfWeek\": \"THURSDAY\",",
+							"    \"endTime\": \"15:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/shift/modify_shift?currentUserId=admin&librarianId=SelenaLibrarian-1&dayOfWeek=THURSDAY&startTime=10:00&endTime=15:00&timeSlotId=WEDNESDAYSelenaLibrarian-110:00:0015:00:000",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"shift",
+						"modify_shift"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "librarianId",
+							"value": "SelenaLibrarian-1"
+						},
+						{
+							"key": "dayOfWeek",
+							"value": "THURSDAY"
+						},
+						{
+							"key": "startTime",
+							"value": "10:00"
+						},
+						{
+							"key": "endTime",
+							"value": "15:00"
+						},
+						{
+							"key": "timeSlotId",
+							"value": "WEDNESDAYSelenaLibrarian-110:00:0015:00:000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete shift",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"true\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/shift/remove_shift?currentUserId=admin&timeSlotId=WEDNESDAYSelenaLibrarian-110:00:0015:00:000",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"shift",
+						"remove_shift"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "timeSlotId",
+							"value": "WEDNESDAYSelenaLibrarian-110:00:0015:00:000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"username\": \"admin\",",
+							"    \"password\": \"administrator\",",
+							"    \"email\": null,",
+							"    \"idNum\": \"admin\",",
+							"    \"firstName\": null,",
+							"    \"lastName\": null,",
+							"    \"address\": null,",
+							"    \"isLoggedIn\": false",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/user/logout/admin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"logout",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login librarian",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"username\": \"selener\",",
+							"    \"password\": \"selenerpassword\",",
+							"    \"email\": \"selena@librarian.com\",",
+							"    \"idNum\": \"SelenaLibrarian-1\",",
+							"    \"firstName\": \"Selena\",",
+							"    \"lastName\": \"Libby\",",
+							"    \"address\": \"1234 rue Sherbrooke O\",",
+							"    \"isLoggedIn\": true",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/user/login?username=selener&password=selenerpassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "selener"
+						},
+						{
+							"key": "password",
+							"value": "selenerpassword"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change librarian password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"username\": \"selener\",",
+							"    \"password\": \"newselenerpassword\",",
+							"    \"email\": \"selena@librarian.com\",",
+							"    \"idNum\": \"SelenaLibrarian-1\",",
+							"    \"firstName\": \"Selena\",",
+							"    \"lastName\": \"Libby\",",
+							"    \"address\": \"1234 rue Sherbrooke O\",",
+							"    \"isLoggedIn\": true",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/user/change_password?oldPass=selenerpassword&newPass=newselenerpassword&username=selener",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"change_password"
+					],
+					"query": [
+						{
+							"key": "oldPass",
+							"value": "selenerpassword"
+						},
+						{
+							"key": "newPass",
+							"value": "newselenerpassword"
+						},
+						{
+							"key": "username",
+							"value": "selener"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create patron irl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"username\": null,",
+							"    \"password\": null,",
+							"    \"email\": null,",
+							"    \"idNum\": \"KevinPatron-0\",",
+							"    \"firstName\": \"Kevin\",",
+							"    \"lastName\": \"kevinpassword\",",
+							"    \"address\": \"1234 none of ur business\",",
+							"    \"isLoggedIn\": false,",
+							"    \"isVerified\": true,",
+							"    \"isResident\": true,",
+							"    \"isRegisteredOnline\": false",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/patron/create_patron_irl?first=Kevin&last=kevinpassword&isResident=true&address=1234 none of ur business",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"patron",
+						"create_patron_irl"
+					],
+					"query": [
+						{
+							"key": "first",
+							"value": "Kevin"
+						},
+						{
+							"key": "last",
+							"value": "kevinpassword"
+						},
+						{
+							"key": "isResident",
+							"value": "true"
+						},
+						{
+							"key": "address",
+							"value": "1234 none of ur business"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete patron",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"true\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/patron/delete_patron/KevinPatron-0?currentUserId=SelenaLibrarian-1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"patron",
+						"delete_patron",
+						"KevinPatron-0"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "SelenaLibrarian-1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout librarian",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"username\": \"selener\",",
+							"    \"password\": \"newselenerpassword\",",
+							"    \"email\": \"selena@librarian.com\",",
+							"    \"idNum\": \"SelenaLibrarian-1\",",
+							"    \"firstName\": \"Selena\",",
+							"    \"lastName\": \"Libby\",",
+							"    \"address\": \"1234 rue Sherbrooke O\",",
+							"    \"isLoggedIn\": false",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/user/logout/selener",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"logout",
+						"selener"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create patron online",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"idNum\": \"SergeiPatron-0\",",
+							"    \"firstName\": \"Sergei\",",
+							"    \"lastName\": \"password\",",
+							"    \"address\": \"1234 none of ur business\",",
+							"    \"email\": \"business1@none.com\",",
+							"    \"username\": \"Sergei\",",
+							"    \"password\": \"sergeipassword\",",
+							"    \"registeredOnline\": true,",
+							"    \"resident\": true,",
+							"    \"verified\": false",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/patron/create_patron_online?username=Sergei&password=sergeipassword&first=Sergei&last=password&isResident=true&address=1234 none of ur business&email=business1@none.com",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"patron",
+						"create_patron_online"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "Sergei"
+						},
+						{
+							"key": "password",
+							"value": "sergeipassword"
+						},
+						{
+							"key": "first",
+							"value": "Sergei"
+						},
+						{
+							"key": "last",
+							"value": "password"
+						},
+						{
+							"key": "isResident",
+							"value": "true"
+						},
+						{
+							"key": "address",
+							"value": "1234 none of ur business"
+						},
+						{
+							"key": "email",
+							"value": "business1@none.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login patron",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"username\": \"Sergei\",",
+							"    \"password\": \"sergeipassword\",",
+							"    \"email\": \"business1@none.com\",",
+							"    \"idNum\": \"SergeiPatron-0\",",
+							"    \"firstName\": \"Sergei\",",
+							"    \"lastName\": \"password\",",
+							"    \"address\": \"1234 none of ur business\",",
+							"    \"isLoggedIn\": true",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/user/login?username=Sergei&password=sergeipassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "Sergei"
+						},
+						{
+							"key": "password",
+							"value": "sergeipassword"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change patron name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"username\": \"Sergei\",",
+							"    \"password\": \"sergeipassword\",",
+							"    \"email\": \"business1@none.com\",",
+							"    \"idNum\": \"SergeiPatron-0\",",
+							"    \"firstName\": \"Soogy\",",
+							"    \"lastName\": \"SSSS\",",
+							"    \"address\": \"1234 none of ur business\",",
+							"    \"isLoggedIn\": true",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/user/change_name/?username=Sergei&firstName=Soogy&lastName=SSSS",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"change_name",
+						""
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "Sergei"
+						},
+						{
+							"key": "firstName",
+							"value": "Soogy"
+						},
+						{
+							"key": "lastName",
+							"value": "SSSS"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create room booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"roomNum\": \"study1\",",
+							"    \"idNum\": \"SergeiPatron-0\",",
+							"    \"timeSlotId\": \"RoomBooking-012:30study1\",",
+							"    \"date\": \"2022-11-11\",",
+							"    \"startTime\": \"12:30:00\",",
+							"    \"dayOfWeek\": \"FRIDAY\",",
+							"    \"endTime\": \"14:30:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/roombookings/add_roombooking/?currentUserId=SergeiPatron-0&idNum=SergeiPatron-0&roomNum=study1&date=2022-11-11&startTime=12:30&endTime=14:30",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"roombookings",
+						"add_roombooking",
+						""
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "SergeiPatron-0"
+						},
+						{
+							"key": "idNum",
+							"value": "SergeiPatron-0"
+						},
+						{
+							"key": "roomNum",
+							"value": "study1"
+						},
+						{
+							"key": "date",
+							"value": "2022-11-11"
+						},
+						{
+							"key": "startTime",
+							"value": "12:30"
+						},
+						{
+							"key": "endTime",
+							"value": "14:30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update room booking ERROR",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"roomNum\": \"study1\",",
+							"    \"idNum\": \"SergeiPatron-0\",",
+							"    \"timeSlotId\": \"RoomBooking-012:30study1\",",
+							"    \"date\": \"2022-11-13\",",
+							"    \"startTime\": \"11:11:00\",",
+							"    \"dayOfWeek\": \"SUNDAY\",",
+							"    \"endTime\": \"12:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/roombookings/update_roombooking?currentUserId=SergeiPatron-0&timeSlotId=RoomBooking-012:30study1&newDate=2022-11-13&newStartTime=11:11&newEndTime=12:00&newRoomNum=study1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"roombookings",
+						"update_roombooking"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "SergeiPatron-0"
+						},
+						{
+							"key": "timeSlotId",
+							"value": "RoomBooking-012:30study1"
+						},
+						{
+							"key": "newDate",
+							"value": "2022-11-13"
+						},
+						{
+							"key": "newStartTime",
+							"value": "11:11"
+						},
+						{
+							"key": "newEndTime",
+							"value": "12:00"
+						},
+						{
+							"key": "newRoomNum",
+							"value": "study1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete room booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"roomNum\": \"study1\",",
+							"    \"idNum\": \"SergeiPatron-0\",",
+							"    \"timeSlotId\": \"RoomBooking-012:30study1\",",
+							"    \"date\": \"2022-11-13\",",
+							"    \"startTime\": \"11:11:00\",",
+							"    \"dayOfWeek\": \"SUNDAY\",",
+							"    \"endTime\": \"12:00:00\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/roombookings/delete_roombooking?timeSlotId=RoomBooking-012:30study1&currentUserId=SergeiPatron-0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"roombookings",
+						"delete_roombooking"
+					],
+					"query": [
+						{
+							"key": "timeSlotId",
+							"value": "RoomBooking-012:30study1"
+						},
+						{
+							"key": "currentUserId",
+							"value": "SergeiPatron-0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create reservation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.itemReservationId).includes(\"Book-0bookSergeiPatron-00\");",
+							"     pm.expect(jsonData.numOfRenewalsLeft).to.eql(4);",
+							"      pm.expect(jsonData.idNum).includes(\"SergeiPatron-0\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/itemReservations/create_reservation/?currentUserId=SergeiPatron-0&idNum=SergeiPatron-0&itemNumber=Book-0book&isCheckedOut=false",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"itemReservations",
+						"create_reservation",
+						""
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "SergeiPatron-0"
+						},
+						{
+							"key": "idNum",
+							"value": "SergeiPatron-0"
+						},
+						{
+							"key": "itemNumber",
+							"value": "Book-0book"
+						},
+						{
+							"key": "isCheckedOut",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "renew reservation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.numOfRenewalsLeft).to.eql(3);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/itemReservations/renew/Book-0bookSergeiPatron-00?currentUserId=SergeiPatron-0",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"itemReservations",
+						"renew",
+						"Book-0bookSergeiPatron-00"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "SergeiPatron-0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout patron",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"username\": \"Sergei\",",
+							"    \"password\": \"sergeipassword\",",
+							"    \"email\": \"business1@none.com\",",
+							"    \"idNum\": \"SergeiPatron-0\",",
+							"    \"firstName\": \"Soogy\",",
+							"    \"lastName\": \"SSSS\",",
+							"    \"address\": \"1234 none of ur business\",",
+							"    \"isLoggedIn\": false",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/user/logout/Sergei",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"logout",
+						"Sergei"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login as admin again",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"username\": \"admin\",",
+							"    \"password\": \"administrator\",",
+							"    \"email\": null,",
+							"    \"idNum\": \"admin\",",
+							"    \"firstName\": null,",
+							"    \"lastName\": null,",
+							"    \"address\": null,",
+							"    \"isLoggedIn\": true",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/user/login?username=admin&password=administrator",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "admin"
+						},
+						{
+							"key": "password",
+							"value": "administrator"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkout item during reservation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.itemReservationId).includes(\"Book-0bookSergeiPatron-00\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/itemReservations/checkout_item/Book-0book/byPatron/SergeiPatron-0?currentUserId=admin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"itemReservations",
+						"checkout_item",
+						"Book-0book",
+						"byPatron",
+						"SergeiPatron-0"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "return item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.isCheckedOut).to.eql(false);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/itemReservations/return_item/Book-0book/?currentUserId=admin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"itemReservations",
+						"return_item",
+						"Book-0book",
+						""
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create archive reservation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.itemReservationId).includes(\"Archive-0archive-for-dummiesSergeiPatron-01\");",
+							"    pm.expect(jsonData.numOfRenewalsLeft).to.eql(4);",
+							"    pm.expect(jsonData.idNum).to.eql(\"SergeiPatron-0\");",
+							"    pm.expect(jsonData.itemNumber).to.eql(\"Archive-0archive-for-dummies\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/itemReservations/create_reservation/?currentUserId=admin&idNum=SergeiPatron-0&itemNumber=Archive-0archive-for-dummies&isCheckedOut=false",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"itemReservations",
+						"create_reservation",
+						""
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						},
+						{
+							"key": "idNum",
+							"value": "SergeiPatron-0"
+						},
+						{
+							"key": "itemNumber",
+							"value": "Archive-0archive-for-dummies"
+						},
+						{
+							"key": "isCheckedOut",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cancel reservation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"true\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/itemReservations/cancel/Archive-0archive-for-dummiesSergeiPatron-01?currentUserId=admin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"itemReservations",
+						"cancel",
+						"Archive-0archive-for-dummiesSergeiPatron-01"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"Deleted item of type Book with itemNumber Book-0book\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/items/delete/Book-0book?currentUserId=admin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"items",
+						"delete",
+						"Book-0book"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete room",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"roomNum\": \"study1\",",
+							"    \"capacity\": 10",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/rooms/delete_room/study1?currentUserId=admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rooms",
+						"delete_room",
+						"study1"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete librarian",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body({",
+							"    \"idNum\": \"SelenaLibrarian-1\",",
+							"    \"firstName\": \"Selena\",",
+							"    \"lastName\": \"Libby\",",
+							"    \"address\": \"1234 rue Sherbrooke O\",",
+							"    \"email\": \"selena@librarian.com\",",
+							"    \"username\": \"selener\",",
+							"    \"password\": \"newselenerpassword\"",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/librarians/delete/SelenaLibrarian-1?currentUserId=admin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"librarians",
+						"delete",
+						"SelenaLibrarian-1"
+					],
+					"query": [
+						{
+							"key": "currentUserId",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

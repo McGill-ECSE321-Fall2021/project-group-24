@@ -1,0 +1,1351 @@
+{
+	"id": "e5b45a49-52bd-4e10-85be-e90dc76104de",
+	"name": "Group 24 Integration Tests",
+	"timestamp": "2021-11-12T02:27:04.623Z",
+	"collection_id": "18209354-530f9953-e7a6-40e9-96e9-ff0fff1d13b2",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 43,
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "7b0f228f-dba7-4c40-be0b-bad6e740ab7a",
+			"name": "login as admin",
+			"url": "http://localhost:8080/api/user/login?username=admin&password=admin",
+			"time": 415,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				415
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "f8b5eb71-0d06-4243-b2d7-a4e723c7a003",
+			"name": "change admin password",
+			"url": "http://localhost:8080/api/user/change_password/?username=admin&oldPass=admin&newPass=administrator",
+			"time": 109,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				109
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "47e2c84b-1183-415f-8734-56395c949502",
+			"name": "create library hour MONDAY",
+			"url": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=MONDAY&startTime=08:00&endTime=19:00",
+			"time": 192,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				192
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "a9f15363-e956-492c-a722-e03e45595069",
+			"name": "Modify libraryhour MONDAY",
+			"url": "http://localhost:8080/api/libraryhour/modify_library_hour?currentUserId=admin&dayOfWeek=MONDAY&startTime=07:00&endTime=19:00",
+			"time": 135,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				135
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "5f5099cf-32cb-4426-ac7c-04f6a9dfc453",
+			"name": "create library hour TUESDAY",
+			"url": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=TUESDAY&startTime=08:00&endTime=19:00",
+			"time": 160,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				160
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "41541f0a-9dca-46a7-8ae7-e8c92d821f6a",
+			"name": "create library hour WEDNESDAY",
+			"url": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=WEDNESDAY&startTime=08:00&endTime=19:00",
+			"time": 165,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				165
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "cb054a6e-ac04-4628-a3fe-f91118182ff5",
+			"name": "create library hour THURSDAY",
+			"url": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=THURSDAY&startTime=08:00&endTime=19:00",
+			"time": 160,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				160
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "1c0e1cad-9d40-4353-aa35-7d5692f121a5",
+			"name": "create library hour FRIDAY",
+			"url": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=FRIDAY&startTime=08:00&endTime=19:00",
+			"time": 159,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				159
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "89703c6f-533f-4217-b759-c712a1e325db",
+			"name": "create library hour SATURDAY",
+			"url": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=SATURDAY&startTime=08:00&endTime=19:00",
+			"time": 148,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				148
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "8c243dc2-491b-4119-a80d-7f994000a458",
+			"name": "create library hour SUNDAY",
+			"url": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=SUNDAY&startTime=08:00&endTime=19:00",
+			"time": 161,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				161
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "0f5ab19c-84a2-48d3-bb07-13e300fccac9",
+			"name": "delete libraryhour SUNDAY",
+			"url": "http://localhost:8080/api/libraryhour/remove_library_hour?currentUserId=admin&dayOfWeek=SUNDAY",
+			"time": 173,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				173
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "e131664b-8edf-42ff-88c9-1e6aef186cbd",
+			"name": "create library hour SUNDAY Copy",
+			"url": "http://localhost:8080/api/libraryhour/add_library_hour?currentUserId=admin&dayOfWeek=SUNDAY&startTime=08:00&endTime=19:00",
+			"time": 161,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				161
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "85af6c37-44df-4f06-ae5e-e9088e6619eb",
+			"name": "create room",
+			"url": "http://localhost:8080/api/rooms/create_room/study1?capacity=6&currentUserId=admin",
+			"time": 211,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				211
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "c36bca83-1822-40db-922f-9625e997b704",
+			"name": "update room",
+			"url": "http://localhost:8080/api/rooms/update_room/study1?newCapacity=10&currentUserId=admin",
+			"time": 135,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				135
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "316e6fbb-bc12-418d-bc5a-0ae0d0a7707f",
+			"name": "create book",
+			"url": "http://localhost:8080/api/items/create_book?currentUserId=admin&itemTitle=book&description=cool&imageURL=no-image&publisher=saagar&author=saagar&genre=horror&publishDate=2001-09-22&isReservable=true",
+			"time": 192,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				192
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "0bfa2815-f387-4174-922b-769802e38adf",
+			"name": "create archive",
+			"url": "http://localhost:8080/api/items/create_archive?currentUserId=admin&itemTitle=archive-for-dummies&description=dumb&imageURL=no-image&genre=dumber&publishDate=2001-09-22&isReservable=true",
+			"time": 178,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Your test name": true
+			},
+			"testPassFailCounts": {
+				"Your test name": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				178
+			],
+			"allTests": [
+				{
+					"Your test name": true
+				}
+			]
+		},
+		{
+			"id": "0547b755-6ff3-4751-a442-d4598f80f01e",
+			"name": "create librarian",
+			"url": "http://localhost:8080/api/librarians/create?currentUserId=admin&firstName=Selena&lastName=Libby&address=1234%20rue%20Sherbrooke%20O&email=selena@librarian.com&username=selener&password=selenerpassword",
+			"time": 171,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				171
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "643020d5-5025-432f-88d9-004614c8c652",
+			"name": "create shift",
+			"url": "http://localhost:8080/api/shift/add_shift/?currentUserId=admin&librarianId=SelenaLibrarian-1&dayOfWeek=WEDNESDAY&startTime=10:00&endTime=15:00",
+			"time": 239,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				239
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "385cb7f6-bab9-426d-a19d-70e3ca98b6a5",
+			"name": "modify shift",
+			"url": "http://localhost:8080/api/shift/modify_shift?currentUserId=admin&librarianId=SelenaLibrarian-1&dayOfWeek=THURSDAY&startTime=10:00&endTime=15:00&timeSlotId=WEDNESDAYSelenaLibrarian-110:00:0015:00:000",
+			"time": 242,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				242
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "b9da7787-e11f-4c7c-8977-b1af48c08657",
+			"name": "delete shift",
+			"url": "http://localhost:8080/api/shift/remove_shift?currentUserId=admin&timeSlotId=WEDNESDAYSelenaLibrarian-110:00:0015:00:000",
+			"time": 140,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				140
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "2d11e277-719e-47ab-99b7-9746789fac24",
+			"name": "logout admin",
+			"url": "http://localhost:8080/api/user/logout/admin",
+			"time": 134,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				134
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "fb538ba3-bc43-4414-8794-151985a522f3",
+			"name": "login librarian",
+			"url": "http://localhost:8080/api/user/login?username=selener&password=selenerpassword",
+			"time": 191,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				191
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "33089d9a-799c-4c92-bc5f-a5bf38cafb3f",
+			"name": "change librarian password",
+			"url": "http://localhost:8080/api/user/change_password?oldPass=selenerpassword&newPass=newselenerpassword&username=selener",
+			"time": 102,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				102
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "d038204a-69a6-48ca-b796-131aa7ec18a0",
+			"name": "create patron irl",
+			"url": "http://localhost:8080/api/patron/create_patron_irl?first=Kevin&last=kevinpassword&isResident=true&address=1234%20none%20of%20ur%20business",
+			"time": 149,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				149
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "627056a5-4375-47e2-b937-68f40c255d2c",
+			"name": "delete patron",
+			"url": "http://localhost:8080/api/patron/delete_patron/KevinPatron-0?currentUserId=SelenaLibrarian-1",
+			"time": 375,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				375
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "14126b1c-c387-4168-af8f-a097690a3f0c",
+			"name": "logout librarian",
+			"url": "http://localhost:8080/api/user/logout/selener",
+			"time": 151,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				151
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "494378f6-6dbc-46d0-a304-871adc7b31fc",
+			"name": "create patron online",
+			"url": "http://localhost:8080/api/patron/create_patron_online?username=Sergei&password=sergeipassword&first=Sergei&last=password&isResident=true&address=1234%20none%20of%20ur%20business&email=business1@none.com",
+			"time": 176,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				176
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "19e4c6a4-73c8-4bfb-a8c9-34655745b329",
+			"name": "login patron",
+			"url": "http://localhost:8080/api/user/login?username=Sergei&password=sergeipassword",
+			"time": 148,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				148
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "21ffcfb7-404a-4aa0-8fd7-abd8b8103eeb",
+			"name": "Change patron name",
+			"url": "http://localhost:8080/api/user/change_name/?username=Sergei&firstName=Soogy&lastName=SSSS",
+			"time": 156,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				156
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "c96b4a89-9b15-41e4-9d56-3e5829968f07",
+			"name": "create room booking",
+			"url": "http://localhost:8080/api/roombookings/add_roombooking/?currentUserId=SergeiPatron-0&idNum=SergeiPatron-0&roomNum=study1&date=2022-11-11&startTime=12:30&endTime=14:30",
+			"time": 375,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				375
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "0ebc9909-373d-4219-8eb8-2c545a147dea",
+			"name": "update room booking ERROR",
+			"url": "http://localhost:8080/api/roombookings/update_roombooking?currentUserId=SergeiPatron-0&timeSlotId=RoomBooking-012:30study1&newDate=2022-11-13&newStartTime=11:11&newEndTime=12:00&newRoomNum=study1",
+			"time": 235,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				235
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "1f5d40f8-6c35-46f1-9b66-df6fd6b71511",
+			"name": "delete room booking",
+			"url": "http://localhost:8080/api/roombookings/delete_roombooking?timeSlotId=RoomBooking-012:30study1&currentUserId=SergeiPatron-0",
+			"time": 127,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				127
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "2997db45-3d6d-4823-8512-21a61dfad229",
+			"name": "create reservation",
+			"url": "http://localhost:8080/api/itemReservations/create_reservation/?currentUserId=SergeiPatron-0&idNum=SergeiPatron-0&itemNumber=Book-0book&isCheckedOut=false",
+			"time": 473,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Your test name": true
+			},
+			"testPassFailCounts": {
+				"Your test name": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				473
+			],
+			"allTests": [
+				{
+					"Your test name": true
+				}
+			]
+		},
+		{
+			"id": "479cc3b3-5fd4-40ba-8a6c-91f0cb24dda1",
+			"name": "renew reservation",
+			"url": "http://localhost:8080/api/itemReservations/renew/Book-0bookSergeiPatron-00?currentUserId=SergeiPatron-0",
+			"time": 265,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Your test name": true
+			},
+			"testPassFailCounts": {
+				"Your test name": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				265
+			],
+			"allTests": [
+				{
+					"Your test name": true
+				}
+			]
+		},
+		{
+			"id": "c9f1507c-4dd2-4e57-9fda-1d1b37c336ef",
+			"name": "logout patron",
+			"url": "http://localhost:8080/api/user/logout/Sergei",
+			"time": 107,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				107
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "6ee6cbe4-7ed1-4582-9e3f-525f5088fa85",
+			"name": "login as admin again",
+			"url": "http://localhost:8080/api/user/login?username=admin&password=administrator",
+			"time": 177,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				177
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "e5484001-3f23-4ca5-b51b-497c47239f99",
+			"name": "checkout item during reservation",
+			"url": "http://localhost:8080/api/itemReservations/checkout_item/Book-0book/byPatron/SergeiPatron-0?currentUserId=admin",
+			"time": 461,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Your test name": true
+			},
+			"testPassFailCounts": {
+				"Your test name": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				461
+			],
+			"allTests": [
+				{
+					"Your test name": true
+				}
+			]
+		},
+		{
+			"id": "f593f89f-6e36-4972-9727-d5af0499a053",
+			"name": "return item",
+			"url": "http://localhost:8080/api/itemReservations/return_item/Book-0book/?currentUserId=admin",
+			"time": 198,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Your test name": true
+			},
+			"testPassFailCounts": {
+				"Your test name": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				198
+			],
+			"allTests": [
+				{
+					"Your test name": true
+				}
+			]
+		},
+		{
+			"id": "0a1e9801-340d-4a5a-b627-90de03bcd773",
+			"name": "create archive reservation",
+			"url": "http://localhost:8080/api/itemReservations/create_reservation/?currentUserId=admin&idNum=SergeiPatron-0&itemNumber=Archive-0archive-for-dummies&isCheckedOut=false",
+			"time": 409,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Your test name": true
+			},
+			"testPassFailCounts": {
+				"Your test name": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				409
+			],
+			"allTests": [
+				{
+					"Your test name": true
+				}
+			]
+		},
+		{
+			"id": "5f2ddc1a-0b92-434f-9a9e-68d7e6f79c24",
+			"name": "cancel reservation",
+			"url": "http://localhost:8080/api/itemReservations/cancel/Archive-0archive-for-dummiesSergeiPatron-01?currentUserId=admin",
+			"time": 186,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				186
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "148f3370-d4b7-47f5-a611-1e5e8c7bcee7",
+			"name": "delete book",
+			"url": "http://localhost:8080/api/items/delete/Book-0book?currentUserId=admin",
+			"time": 242,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				242
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "b6dccda2-9feb-4ca4-87b7-2c9e9367af1c",
+			"name": "delete room",
+			"url": "http://localhost:8080/api/rooms/delete_room/study1?currentUserId=admin",
+			"time": 160,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				160
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		},
+		{
+			"id": "1c547ed1-268a-4aee-9160-b1cd76cab94c",
+			"name": "delete librarian",
+			"url": "http://localhost:8080/api/librarians/delete/SelenaLibrarian-1?currentUserId=admin",
+			"time": 168,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body is correct": true
+			},
+			"testPassFailCounts": {
+				"Body is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				168
+			],
+			"allTests": [
+				{
+					"Body is correct": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 8811,
+	"collection": {
+		"requests": [
+			{
+				"id": "7b0f228f-dba7-4c40-be0b-bad6e740ab7a",
+				"method": "POST"
+			},
+			{
+				"id": "f8b5eb71-0d06-4243-b2d7-a4e723c7a003",
+				"method": "PUT"
+			},
+			{
+				"id": "47e2c84b-1183-415f-8734-56395c949502",
+				"method": "POST"
+			},
+			{
+				"id": "a9f15363-e956-492c-a722-e03e45595069",
+				"method": "PUT"
+			},
+			{
+				"id": "5f5099cf-32cb-4426-ac7c-04f6a9dfc453",
+				"method": "POST"
+			},
+			{
+				"id": "41541f0a-9dca-46a7-8ae7-e8c92d821f6a",
+				"method": "POST"
+			},
+			{
+				"id": "cb054a6e-ac04-4628-a3fe-f91118182ff5",
+				"method": "POST"
+			},
+			{
+				"id": "1c0e1cad-9d40-4353-aa35-7d5692f121a5",
+				"method": "POST"
+			},
+			{
+				"id": "89703c6f-533f-4217-b759-c712a1e325db",
+				"method": "POST"
+			},
+			{
+				"id": "8c243dc2-491b-4119-a80d-7f994000a458",
+				"method": "POST"
+			},
+			{
+				"id": "0f5ab19c-84a2-48d3-bb07-13e300fccac9",
+				"method": "DELETE"
+			},
+			{
+				"id": "e131664b-8edf-42ff-88c9-1e6aef186cbd",
+				"method": "POST"
+			},
+			{
+				"id": "85af6c37-44df-4f06-ae5e-e9088e6619eb",
+				"method": "POST"
+			},
+			{
+				"id": "c36bca83-1822-40db-922f-9625e997b704",
+				"method": "PUT"
+			},
+			{
+				"id": "316e6fbb-bc12-418d-bc5a-0ae0d0a7707f",
+				"method": "POST"
+			},
+			{
+				"id": "0bfa2815-f387-4174-922b-769802e38adf",
+				"method": "POST"
+			},
+			{
+				"id": "0547b755-6ff3-4751-a442-d4598f80f01e",
+				"method": "POST"
+			},
+			{
+				"id": "643020d5-5025-432f-88d9-004614c8c652",
+				"method": "POST"
+			},
+			{
+				"id": "385cb7f6-bab9-426d-a19d-70e3ca98b6a5",
+				"method": "PUT"
+			},
+			{
+				"id": "b9da7787-e11f-4c7c-8977-b1af48c08657",
+				"method": "DELETE"
+			},
+			{
+				"id": "2d11e277-719e-47ab-99b7-9746789fac24",
+				"method": "POST"
+			},
+			{
+				"id": "fb538ba3-bc43-4414-8794-151985a522f3",
+				"method": "POST"
+			},
+			{
+				"id": "33089d9a-799c-4c92-bc5f-a5bf38cafb3f",
+				"method": "PUT"
+			},
+			{
+				"id": "d038204a-69a6-48ca-b796-131aa7ec18a0",
+				"method": "POST"
+			},
+			{
+				"id": "627056a5-4375-47e2-b937-68f40c255d2c",
+				"method": "DELETE"
+			},
+			{
+				"id": "14126b1c-c387-4168-af8f-a097690a3f0c",
+				"method": "POST"
+			},
+			{
+				"id": "494378f6-6dbc-46d0-a304-871adc7b31fc",
+				"method": "POST"
+			},
+			{
+				"id": "19e4c6a4-73c8-4bfb-a8c9-34655745b329",
+				"method": "POST"
+			},
+			{
+				"id": "21ffcfb7-404a-4aa0-8fd7-abd8b8103eeb",
+				"method": "PUT"
+			},
+			{
+				"id": "c96b4a89-9b15-41e4-9d56-3e5829968f07",
+				"method": "POST"
+			},
+			{
+				"id": "0ebc9909-373d-4219-8eb8-2c545a147dea",
+				"method": "PUT"
+			},
+			{
+				"id": "1f5d40f8-6c35-46f1-9b66-df6fd6b71511",
+				"method": "DELETE"
+			},
+			{
+				"id": "2997db45-3d6d-4823-8512-21a61dfad229",
+				"method": "POST"
+			},
+			{
+				"id": "479cc3b3-5fd4-40ba-8a6c-91f0cb24dda1",
+				"method": "PUT"
+			},
+			{
+				"id": "c9f1507c-4dd2-4e57-9fda-1d1b37c336ef",
+				"method": "POST"
+			},
+			{
+				"id": "6ee6cbe4-7ed1-4582-9e3f-525f5088fa85",
+				"method": "POST"
+			},
+			{
+				"id": "e5484001-3f23-4ca5-b51b-497c47239f99",
+				"method": "PUT"
+			},
+			{
+				"id": "f593f89f-6e36-4972-9727-d5af0499a053",
+				"method": "PUT"
+			},
+			{
+				"id": "0a1e9801-340d-4a5a-b627-90de03bcd773",
+				"method": "POST"
+			},
+			{
+				"id": "5f2ddc1a-0b92-434f-9a9e-68d7e6f79c24",
+				"method": "DELETE"
+			},
+			{
+				"id": "148f3370-d4b7-47f5-a611-1e5e8c7bcee7",
+				"method": "DELETE"
+			},
+			{
+				"id": "b6dccda2-9feb-4ca4-87b7-2c9e9367af1c",
+				"method": "DELETE"
+			},
+			{
+				"id": "1c547ed1-268a-4aee-9160-b1cd76cab94c",
+				"method": "DELETE"
+			}
+		]
+	}
+}
