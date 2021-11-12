@@ -65,17 +65,16 @@ public class RoomController {
 	 * 
 	 * only librarians have permission to update room
 	 */
-	@PutMapping(value = { "/update_room/{oldRoomNumber}", "/update_room/{oldRoomNumber}/" })
-	public ResponseEntity<?> updateRoom(@PathVariable("oldRoomNumber") String oldRoomNumber,
+	@PutMapping(value = { "/update_room/{roomNum}", "/update_room/{roomNum}/" })
+	public ResponseEntity<?> updateRoom(@PathVariable String roomNum,
 			@RequestParam String currentUserId,
-			@RequestParam Integer newCapacity,
-			@RequestParam String newRoomNum) {
+			@RequestParam Integer newCapacity) {
 		
 		System.out.print("Flag put");
 		Room room = null;
 	
 		try {
-			room = roomService.updateRoom(currentUserId, oldRoomNumber, newRoomNum, newCapacity);
+			room = roomService.updateRoom(currentUserId, roomNum, newCapacity);
 			return new ResponseEntity<Object>(convertToDto(room), HttpStatus.OK);
 	    } catch (Exception e) {
 	    	return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -90,7 +89,7 @@ public class RoomController {
 	 * only librarians have permission to update room
 	 */
 	@DeleteMapping(value = { "/delete_room/{roomNum}", "/delete_room/{roomNum}/" })
-	public ResponseEntity<?> deleteRoom(@PathVariable("oldRoomNumber") String roomNum,
+	public ResponseEntity<?> deleteRoom(@PathVariable String roomNum,
 			@RequestParam String currentUserId) {
 		System.out.print("Flag delete");
 		Room room = null;

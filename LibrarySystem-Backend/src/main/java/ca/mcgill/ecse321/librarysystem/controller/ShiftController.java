@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -69,7 +70,7 @@ public class ShiftController {
 	 * @param currentUserId, timeSlotId
 	 * @return true if the shift is successfully deleted 
 	 */
-	@PostMapping(value = {"/remove_shift", "/remove_shift/"}) 
+	@DeleteMapping(value = {"/remove_shift", "/remove_shift/"}) 
 	public ResponseEntity<?> removeShift(@RequestParam String currentUserId, @RequestParam String timeSlotId) {
 		boolean isDeleted = false; 
 		try {
@@ -86,7 +87,7 @@ public class ShiftController {
 	 * @param currentUserId, librarianId
 	 * @return true if their shifts are successfully deleted
 	 */
-	@PostMapping(value = {"/remove_librarian_shifts", "/remove_librarian_shifts/"}) 
+	@DeleteMapping(value = {"/remove_librarian_shifts", "/remove_librarian_shifts/"}) 
 	public ResponseEntity<?> removeLibrarianShifts(@RequestParam String currentUserId, @RequestParam String librarianId) {
 		boolean isDeleted = false; 
 		try {

@@ -14,11 +14,15 @@ import ca.mcgill.ecse321.librarysystem.model.*;
 import ca.mcgill.ecse321.librarysystem.service.HeadLibrarianService;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.hibernate.annotations.SourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,45 +50,71 @@ public class TestRoomService {
 
 	@Mock
 	private LibrarianRepository librarianDao;
+	
+	@Mock 
+	private PatronRepository patronDao;
 
 	
 	private static final int testCapacity = 10;
 	private static final int invalidCapacity = -5;
-	private static final String testRoomNum = "room1";
-	
+	private static final String repeatedRoomNum = "room1";
+	private static final String testRoomNum = "room2";
+	private static final int updatedCapacity = 15;
+	private static final String roomWithbookings = "roomWithbookings";
 	@BeforeEach
 	  public void setMockOutput() {
 	    lenient()
 	      .when(roomDao.findAll())
 	      .thenAnswer((InvocationOnMock invocation) -> {
 	    	  List<Room> allRooms  = new ArrayList<Room>(); 
-		       Room room = new Room();
+		       
+	    	   Room room = new Room();
 		       room.setCapacity(testCapacity);
 		       room.setRoomBookings(null);
-		       room.setRoomNum(testRoomNum);
+		       room.setRoomNum(repeatedRoomNum);
 		       allRooms.add(room);
+		       
+		       Room roomWithBookings = new Room();
+		       roomWithBookings.setCapacity(testCapacity);
+		       
+		       List<RoomBooking> list = new ArrayList<RoomBooking>();
+		       RoomBooking rb = new RoomBooking();
+		       rb.setDate(Date.valueOf(LocalDate.now().plusDays(1)));
+		       list.add(rb);
+		       Set<RoomBooking> set = new HashSet<>(list);
+		       
+		       roomWithBookings.setRoomBookings(set);
+		       roomWithBookings.setRoomNum(roomWithbookings);
+		       allRooms.add(roomWithBookings);
 		       return allRooms;
 	      });
 	    lenient()
-	      .when(roomDao.findById(anyString()))
+	      .when(roomDao.findRoomByRoomNum(roomWithbookings))
 	      .thenAnswer((InvocationOnMock invocation) -> {
-	    	  Room room = new Room();
-		       room.setCapacity(testCapacity);
-		       room.setRoomBookings(null);
-		       room.setRoomNum(testRoomNum);
-		       return room;
+	    	  Room roomWithBookings = new Room();
+		       roomWithBookings.setCapacity(testCapacity);
+		       
+		       List<RoomBooking> list = new ArrayList<RoomBooking>();
+		       RoomBooking rb = new RoomBooking();
+		       rb.setDate(Date.valueOf(LocalDate.now().plusDays(1)));
+		       list.add(rb);
+		       Set<RoomBooking> set = new HashSet<>(list);
+		       
+		       roomWithBookings.setRoomBookings(set);
+		       roomWithBookings.setRoomNum(roomWithbookings);
+		       return roomWithBookings;
 	      });
 	    lenient()
-	      .when(roomDao.findRoomByRoomNum(anyString()))
+	      .when(roomDao.findRoomByRoomNum(repeatedRoomNum))
 	      .thenAnswer((InvocationOnMock invocation) -> {
-	    	  Room room = new Room();
-		       room.setCapacity(testCapacity);
-		       room.setRoomBookings(null);
-		       room.setRoomNum(testRoomNum);
-		       return room;
+		    	   Room room = new Room();
+			       room.setCapacity(testCapacity);
+			       room.setRoomBookings(null);
+			       room.setRoomNum(repeatedRoomNum);
+			       return room;
 	      });
 	    lenient()
-	      .when(headLibrarianDao.findUserByIdNum(anyString()))
+	      .when(headLibrarianDao.findUserByIdNum("admin"))
 	      .thenAnswer((InvocationOnMock invocation) -> {
 		       HeadLibrarian headlibriarian = new HeadLibrarian();
 		       headlibriarian.setIdNum("admin");
@@ -92,7 +122,16 @@ public class TestRoomService {
 		       return headlibriarian;
 	      });
 	    lenient()
-	      .when(librarianDao.findUserByIdNum(anyString()))
+	      .when(patronDao.findUserByIdNum("patron1"))
+	      .thenAnswer((InvocationOnMock invocation) -> {
+		       Patron patron = new Patron();
+		       patron.setIdNum("patron1");
+		       patron.setIsLoggedIn(true);
+		       return patron;
+	      });
+	    
+	    lenient()
+	      .when(librarianDao.findUserByIdNum("librarian1"))
 	      .thenAnswer((InvocationOnMock invocation) -> {
 		       Librarian libriarian = new Librarian();
 		       libriarian.setIdNum("librarian1");
@@ -157,7 +196,7 @@ public class TestRoomService {
 		try {
 			r = roomService.createRoom("librarian1", testRoomNum, testCapacity );
 		} catch (Exception e) {
-		      fail();
+		      System.out.print(e.getMessage());
 		}
 		
 		assertNotNull(r);
@@ -210,9 +249,9 @@ public class TestRoomService {
 			 fail();
 		}
 		
-		assertEquals(1, r.size());
+		assertEquals(2, r.size());
 	    assertEquals(testCapacity, r.get(0).getCapacity());		
-	    assertEquals(testRoomNum, r.get(0).getRoomNum());	
+	    assertEquals(repeatedRoomNum, r.get(0).getRoomNum());	
 	}
 	
 	// test case 6: Get a specific room using roomNum
@@ -221,13 +260,155 @@ public class TestRoomService {
 	public void getRoomWithRoomNum() {
 		Room r = null;
 		try {
-			r = roomService.getRoom(testRoomNum);
+			r = roomService.getRoom(repeatedRoomNum);
 		} catch (Exception e) {
 			 fail();
 		}
 		
 		assertNotNull(r);
 	    assertEquals(testCapacity, r.getCapacity());		
-	    assertEquals(testRoomNum, r.getRoomNum());	
+	    assertEquals(repeatedRoomNum, r.getRoomNum());	
+	}
+	
+	// test case 7: Create a room with valid parameters as a patron
+	// expected outcome: Error message: You do not have permission to create a room
+	@Test
+	public void createRoomAsPatron() {
+		Room r = null;
+		String expectedErrorMsg =  "You do not have permission to create a room";
+		String actualErrorMsg = null;
+		try {
+			r = roomService.createRoom("patron1", testRoomNum, testCapacity );
+		} catch (Exception e) {
+			 actualErrorMsg = e.getMessage();
+		}
+		
+		assertNull(r);
+	    assertEquals(expectedErrorMsg, actualErrorMsg);		
+	}
+	
+	// test case 8: Create a room with invalid (not unique) roomNum as a head librarian
+	// expected outcome: Error message: Room numbers must be unique
+	@Test
+	public void createRoomAsWithInvalidRoomNum() {
+		Room r = null;
+		String expectedErrorMsg =  "Room numbers must be unique";
+		String actualErrorMsg = null;
+		try {
+			r = roomService.createRoom("admin", repeatedRoomNum, testCapacity );
+		} catch (Exception e) {
+			 actualErrorMsg = e.getMessage();
+		}
+		
+		assertNull(r);
+	    assertEquals(expectedErrorMsg, actualErrorMsg);		
+	}
+	
+	// test case 9: Update Room as Librarian with valid parameters
+	// expected outcome: Room updated
+	@Test
+	public void UpdateRoomSuccessfully() {
+		Room r = null;
+		try {
+
+			r = roomService.updateRoom("librarian1", repeatedRoomNum, updatedCapacity);
+			
+		} catch (Exception e) {
+			fail();
+		}
+		
+		assertNotNull(r);
+		assertEquals(repeatedRoomNum, r.getRoomNum());
+		assertEquals(updatedCapacity, r.getCapacity());
+	
+	}
+	
+	// test case 10: Update Room with invalid capacity
+	// expected outcome: Error message: Capacity must be at least 1
+	@Test
+	public void UpdateRoomWithInvalidCapacity() {
+		Room r = null;
+		String expectedErrorMsg =  "Capacity must be at least 1";
+		String actualErrorMsg = null;
+		try {
+
+			r = roomService.updateRoom("librarian1", repeatedRoomNum, invalidCapacity);
+			
+		} catch (Exception e) {
+			actualErrorMsg = e.getMessage();
+		}
+		
+		assertNull(r);
+	    assertEquals(expectedErrorMsg, actualErrorMsg);
+	
+	}
+	
+	// test case 11: Update Room as Patron
+	// expected outcome: Error message: You do not have permission to update a room
+	@Test
+	public void UpdateRoomAsPatron() {
+		Room r = null;
+		String expectedErrorMsg =  "You do not have permission to update a room";
+		String actualErrorMsg = null;
+		try {
+
+			r = roomService.updateRoom("patron1", repeatedRoomNum, updatedCapacity);
+			
+		} catch (Exception e) {
+			actualErrorMsg = e.getMessage();
+		}
+		
+		assertNull(r);
+	    assertEquals(expectedErrorMsg, actualErrorMsg);
+	
+	}
+	
+	// test case 12: Delete Room as Patron
+	// expected outcome: Error message: You do not have permission to delete a room
+	@Test
+	public void DeleteRoomAsPatron() {
+		Room r = null;
+		String expectedErrorMsg =  "You do not have permission to delete a room";
+		String actualErrorMsg = null;
+		try {
+
+			r = roomService.deleteRoom("patron1", repeatedRoomNum);
+			
+		} catch (Exception e) {
+			actualErrorMsg = e.getMessage();
+		}
+		
+		assertNull(r);
+	    assertEquals(expectedErrorMsg, actualErrorMsg);
+	
+	}
+	// test case 13: Delete Room Successfully 
+	// expected outcome: Room deleted
+	@Test
+	public void DeleteRoomSuccessfully() {
+		Room r = null;
+		try {
+			r = roomService.deleteRoom("librarian1", repeatedRoomNum);	
+		} catch (Exception e) {
+			fail();
+		}	
+		assertNotNull(r);
+		assertEquals(repeatedRoomNum, r.getRoomNum());
+	
+	}
+	// test case 14: Delete Room with future RoomBookings  
+	// expected outcome: Error message: The room has bookings in the future, cannot delete
+	@Test
+	public void DeleteRoomWithRoombookings() {
+		Room r = null;
+		String expectedErrorMsg =  "The room has bookings in the future, cannot delete";
+		String actualErrorMsg = null;
+		try {
+			r = roomService.deleteRoom("librarian1", roomWithbookings);	
+		} catch (Exception e) {
+			actualErrorMsg=e.getMessage();
+		}
+		assertNull(r);
+		assertEquals(expectedErrorMsg, actualErrorMsg);
 	}
 }

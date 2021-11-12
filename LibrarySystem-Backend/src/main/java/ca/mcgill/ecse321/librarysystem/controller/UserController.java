@@ -78,7 +78,7 @@ public class UserController {
 	
 	
 	
-	@RequestMapping(value = { "/change_password", "/change_password/" }, method = { RequestMethod.GET, RequestMethod.POST })
+	@PutMapping(value = { "/change_password", "/change_password/" })
 	public ResponseEntity<?> changePassword(@RequestParam("username") String user, @RequestParam("newPass") String newPass, @RequestParam("oldPass") String oldPass) {
 		try {
 			User u = userService.changePassword(user, newPass, oldPass);

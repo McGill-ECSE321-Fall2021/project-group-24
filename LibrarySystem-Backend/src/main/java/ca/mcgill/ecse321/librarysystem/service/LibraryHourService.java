@@ -20,12 +20,12 @@ public class LibraryHourService {
 	/**Method creates a new operating hour (called "libraryHour") for the library. User must be head-librarian and logged-in  
 	 * @author Arman
 	 * @param currentUserId, dayOfWeek, startTime, endTime
-	 * @return the new libraryHour
+	 * @return the new libraryHour 
 	 */
 	@Transactional 
 	public LibraryHour createLibraryHour(String currentUserId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime) {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
-		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can create library hours");
+		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn()) || user==null) throw new IllegalArgumentException("Only the Head Librarian can create library hours");
 		if (dayOfWeek==null || startTime ==null || endTime ==null) {
 			throw new IllegalArgumentException ("Fields cannot be blank"); 
 		}
@@ -50,7 +50,7 @@ public class LibraryHourService {
 	 */
 	public LibraryHour modifyLibraryHour (String currentUserId, TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime) {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
-		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian modify library hours");
+		if (!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) throw new IllegalArgumentException("Only the Head Librarian can modify library hours");
 		if (dayOfWeek==null || startTime ==null || endTime ==null) {
 			throw new IllegalArgumentException ("Fields cannot be blank"); 
 		}
