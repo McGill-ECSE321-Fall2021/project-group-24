@@ -52,14 +52,20 @@ public class TestLibraryHourService {
 	private static final String HEAD_LIBRARIAN_ID = "admin"; 
 	private static final String LIBRARIAN_ID = "librarianId"; 
 	private static final String PATRON_ID = "patronId"; 
+	
 	private static final TimeSlot.DayOfWeek DAY_OF_WEEK = TimeSlot.DayOfWeek.MONDAY;  
+	private static final TimeSlot.DayOfWeek DAY_OF_WEEK_1 = TimeSlot.DayOfWeek.WEDNESDAY;  
 	private static final TimeSlot.DayOfWeek DAY_OF_WEEK_2 = TimeSlot.DayOfWeek.TUESDAY;  
 	
 	private static final Time START_TIME = Time.valueOf("9:00:00");  
 	private static final Time END_TIME = Time.valueOf("17:00:00");  
 	
+	private static final Time START_TIME_1 = Time.valueOf("11:00:00");  
+	private static final Time END_TIME_1 = Time.valueOf("14:00:00");  
+	
 	private static final Time START_TIME_2 = Time.valueOf("10:00:00");  
 	private static final Time END_TIME_2 = Time.valueOf("19:00:00");  
+
 
 	// adds a library hour, a librarian, and a head librarian and saves them to their respective repo's 
 	@BeforeEach
@@ -67,11 +73,19 @@ public class TestLibraryHourService {
 	    lenient() 
 	      .when(libraryHourRepo.findAll())
 	      .thenAnswer((InvocationOnMock invocation) -> {
+	    	  List<LibraryHour> libraryHours = new ArrayList<LibraryHour>(); 
+	    	  
 		      LibraryHour libraryHour = new LibraryHour(); 
 			  libraryHour.setDayOfWeek(DAY_OF_WEEK); 
 		      libraryHour.setStartTime(START_TIME);
 		      libraryHour.setEndTime(END_TIME);
-		      return libraryHour; 
+		      LibraryHour libraryHour2 = new LibraryHour(); 
+			  libraryHour2.setDayOfWeek(DAY_OF_WEEK_1); 
+		      libraryHour2.setStartTime(START_TIME_1);
+		      libraryHour2.setEndTime(END_TIME_1);
+		      libraryHours.add(libraryHour);
+		      libraryHours.add(libraryHour2);
+		      return libraryHours; 
 	      });
 	    lenient() 
 	      .when(libraryHourRepo.findHourByDayOfWeek(DAY_OF_WEEK))
@@ -143,7 +157,7 @@ public class TestLibraryHourService {
 
 	}
 	
-	@Test // create a library hour with as a librarian 
+	@Test // create a library hour as a librarian 
 	public void testCreateLibraryHourAsLibrarian() {
 		LibraryHour libraryHour = null; 
 		
@@ -154,6 +168,20 @@ public class TestLibraryHourService {
 			assertEquals("Only the Head Librarian can create library hours", e.getMessage());
 		}
 		assertNull(libraryHour);
+	}
+	
+	@Test // create library hour with null parameters
+	public void testCreateLibraryHourNullParams() {
+		LibraryHour libHour = null; 
+		
+		try {
+			libHour = libraryHourService.createLibraryHour(HEAD_LIBRARIAN_ID, null, null, null); 
+			fail();
+		}
+		catch (Exception e) {
+			assertEquals("Fields cannot be blank", e.getMessage()); 
+		}
+		assertNull(libHour); 
 	}
 	
 	@Test // create a library hour with start time after end time
@@ -197,6 +225,20 @@ public class TestLibraryHourService {
 		assertEquals(START_TIME_2, libraryHour.getStartTime()); 
 		assertEquals(END_TIME_2, libraryHour.getEndTime());
 		assertEquals(DAY_OF_WEEK, libraryHour.getDayOfWeek());
+	}
+	
+	@Test // modify library hour with null parameters
+	public void testModifyLibraryHourNullParams() {
+		LibraryHour libHour = null; 
+		
+		try {
+			libHour = libraryHourService.modifyLibraryHour(HEAD_LIBRARIAN_ID, null, null, null); 
+			fail();
+		}
+		catch (Exception e) {
+			assertEquals("Fields cannot be blank", e.getMessage()); 
+		}
+		assertNull(libHour); 
 	}
 	
 	@Test // modify a library hour on a day that doesn't have one
@@ -312,6 +354,25 @@ public class TestLibraryHourService {
 		assertEquals(START_TIME, libraryHour.getStartTime()); 
 		assertEquals(END_TIME, libraryHour.getEndTime()); 
 		assertEquals(DAY_OF_WEEK, libraryHour.getDayOfWeek()); 
+	}
+	
+	@Test // get all libraryHours
+	public void testGetAllLibraryHours() {
+		List<LibraryHour> libraryHours = new ArrayList<LibraryHour>(); 
+		try {
+			libraryHours = libraryHourService.getAllLibraryHours(); 
+		}
+		catch(Exception e) {
+			fail(e.getMessage()); 
+		}
+		assertFalse(libraryHours.size()==0); 
+		assertEquals(START_TIME, libraryHours.get(0).getStartTime()); 
+		assertEquals(END_TIME, libraryHours.get(0).getEndTime()); 
+		assertEquals(DAY_OF_WEEK, libraryHours.get(0).getDayOfWeek()); 
+		
+		assertEquals(START_TIME_1, libraryHours.get(1).getStartTime()); 
+		assertEquals(END_TIME_1, libraryHours.get(1).getEndTime()); 
+		assertEquals(DAY_OF_WEEK_1, libraryHours.get(1).getDayOfWeek()); 
 	}
 	
 }
