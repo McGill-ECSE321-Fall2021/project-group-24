@@ -117,7 +117,7 @@ public class PatronService {
 	public boolean deletePatron(String idNum, String currentUserId) {
 		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
 		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
-		Patron patron = patronRepository.findUserByIdNum(idNum);
+		Patron patron = patronRepository.findPatronByIdNum(idNum);
 		if (currentUserId.equals(idNum) && !patron.getIsLoggedIn()
 				|| currentLibrarian != null && !currentLibrarian.getIsLoggedIn()
 				|| currentHeadLibrarian != null && !currentHeadLibrarian.getIsLoggedIn()) {
@@ -156,6 +156,7 @@ public class PatronService {
 	public Patron getPatronAccountByUsername(String username) {
 		if(username.length()==0) throw new IllegalArgumentException("Invalid username entered.");
 		Patron p = patronRepository.findPatronByUsername(username);
+		if(p == null) throw new IllegalArgumentException("User with this username does not exist.");
 		return p;
 	}
 	

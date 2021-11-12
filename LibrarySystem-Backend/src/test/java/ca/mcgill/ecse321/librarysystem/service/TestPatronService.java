@@ -7,38 +7,51 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+
 import static org.mockito.ArgumentMatchers.anyString;
 
-import static org.mockito.Mockito.when;
-
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
+import ca.mcgill.ecse321.librarysystem.dao.HeadLibrarianRepository;
+import ca.mcgill.ecse321.librarysystem.dao.ItemReservationRepository;
+import ca.mcgill.ecse321.librarysystem.dao.LibrarianRepository;
 import ca.mcgill.ecse321.librarysystem.dao.PatronRepository;
 import ca.mcgill.ecse321.librarysystem.model.HeadLibrarian;
+import ca.mcgill.ecse321.librarysystem.model.Item;
+import ca.mcgill.ecse321.librarysystem.model.ItemReservation;
 import ca.mcgill.ecse321.librarysystem.model.Librarian;
-import ca.mcgill.ecse321.librarysystem.model.LibraryHour;
 import ca.mcgill.ecse321.librarysystem.model.Patron;
-import ca.mcgill.ecse321.librarysystem.model.User;
-
 @ExtendWith(MockitoExtension.class)
 public class TestPatronService {
 	
 	@Mock
 	private PatronRepository patronRepo;
 	
+	@Mock
+	private LibrarianRepository librarianRepo;
+	
+	@Mock
+	private HeadLibrarianRepository headLibrarianRepo;
+	
+	@Mock
+	private ItemReservationRepository itemReservationRepo;
+	
 	@InjectMocks
 	private PatronService patronService;
+	
+	@InjectMocks 
+	ItemReservationService itemReservationService;
 	
 	private static final String username = "username";
 	private static final String firstName = "first";
@@ -55,6 +68,9 @@ public class TestPatronService {
 	private static final String email2 = "first2last2@mail.com";
 	private static final String username2 = "username2";
 	private static final String id2 = "id2";
+	private static final Date date = new Date(1,1,2025) ;
+	
+	
 	
 	
 	
@@ -92,6 +108,35 @@ public class TestPatronService {
 	        list.add(patron2);
 
 	        return list;
+		});
+		
+		lenient()
+		.when(itemReservationRepo.findItemReservationsByIdNum(id2))
+		.thenAnswer((InvocationOnMock invocation) -> {
+			List<ItemReservation> list = new ArrayList<>();
+			ItemReservation item = itemReservationService.createItemReservation(id2, date, id2, "one", true);
+			list.add(item);
+			return list;
+		});
+		
+		
+		
+		lenient()
+		.when(librarianRepo.findUserByIdNum(id1))
+		.thenAnswer((InvocationOnMock invocation) -> {
+			Librarian librarian = new Librarian();
+			librarian.setIdNum(id1);
+			librarian.setIsLoggedIn(true);
+			return librarian;
+		});
+		
+		lenient()
+		.when(headLibrarianRepo.findUserByIdNum(id1))
+		.thenAnswer((InvocationOnMock invocation) -> {
+			HeadLibrarian librarian = new HeadLibrarian();
+			librarian.setIdNum(id1);
+			librarian.setIsLoggedIn(true);
+			return librarian;
 		});
 		
 		lenient()
@@ -158,10 +203,10 @@ public class TestPatronService {
 	
 	@Test
 	public void testCreatePatronOnlineWithEmptyUsername() {
-		Patron p = null;
+
 		String error=null;
 		try {
-			p = patronService.createPatronOnline(null, password, firstName, lastName, false, address, email);
+			patronService.createPatronOnline(null, password, firstName, lastName, false, address, email);
 		}catch(Exception e) {
 			error = e.getMessage();
 		}
@@ -171,10 +216,10 @@ public class TestPatronService {
 	
 	@Test
 	public void testCreatePatronOnlineWithSpaceInUsername() {
-		Patron p = null;
+;
 		String error=null;
 		try {
-			p = patronService.createPatronOnline("user name", password, firstName, lastName, false, address, email);
+			patronService.createPatronOnline("user name", password, firstName, lastName, false, address, email);
 		}catch(Exception e) {
 			error = e.getMessage();
 		}
@@ -183,11 +228,11 @@ public class TestPatronService {
 	
 	@Test
 	public void testNewOnlineAccountWithExistingUsername() {
-		Patron p = null;
-		Patron q = null;
+
+
 		String error=null;
 		try {
-			q = patronService.createPatronOnline(username2, password2, firstName, lastName, false, address2, email);
+			patronService.createPatronOnline(username2, password2, firstName, lastName, false, address2, email);
 			
 		}catch(Exception e) {
 			error = e.getMessage();
@@ -197,10 +242,10 @@ public class TestPatronService {
 	
 	@Test
 	public void testCreatePatronOnlineWithPassword() {
-		Patron p = null;
+
 		String error=null;
 		try {
-			p = patronService.createPatronOnline(username, null, firstName, lastName, false, address, email);
+			patronService.createPatronOnline(username, null, firstName, lastName, false, address, email);
 		}catch(Exception e) {
 			error = e.getMessage();
 		}
@@ -209,10 +254,10 @@ public class TestPatronService {
 	
 	@Test
 	public void testCreatePatronOnlineWithSpaceInPassword() {
-		Patron p = null;
+
 		String error=null;
 		try {
-			p = patronService.createPatronOnline(username, "pass word", firstName, lastName, false, address, email);
+			patronService.createPatronOnline(username, "pass word", firstName, lastName, false, address, email);
 		}catch(Exception e) {
 			error = e.getMessage();
 		}
@@ -221,10 +266,9 @@ public class TestPatronService {
 	
 	@Test
 	public void TestCreatePatronOnlineWithEmptyFirstName() {
-		Patron p = null;
 		String error = null;
 		try {
-			p = patronService.createPatronOnline(username, password, null, lastName, false, address, email);
+			patronService.createPatronOnline(username, password, null, lastName, false, address, email);
 		}catch(Exception e) {
 			error = e.getMessage();
 		}
@@ -233,10 +277,10 @@ public class TestPatronService {
 	
 	@Test
 	public void TestCreatePatronOnlineWithEmptyLastName() {
-		Patron p = null;
+
 		String error = null;
 		try {
-			p = patronService.createPatronOnline(username, password, firstName, null, false, address, email);
+			patronService.createPatronOnline(username, password, firstName, null, false, address, email);
 		}catch(Exception e) {
 			error = e.getMessage();
 		}
@@ -245,10 +289,10 @@ public class TestPatronService {
 	
 	@Test
 	public void TestCreatePatronOnlineWithEmptyEmail() {
-		Patron p = null;
+
 		String error = null;
 		try {
-			p = patronService.createPatronOnline(username, password, firstName, lastName, false, address, null);
+			patronService.createPatronOnline(username, password, firstName, lastName, false, address, null);
 		}catch(Exception e) {
 			error = e.getMessage();
 		}
@@ -282,10 +326,10 @@ public class TestPatronService {
 	
 	@Test
 	public void TestCreatePatronIRLWithEmptyFirstName() {
-		Patron p = null;
+
 		String error = null;
 		try {
-			p = patronService.createPatronIRL(null, lastName, true, address);
+			patronService.createPatronIRL(null, lastName, true, address);
 		}catch(Exception e) {
 			error = e.getMessage();
 		}
@@ -294,10 +338,10 @@ public class TestPatronService {
 	
 	@Test
 	public void TestCreatePatronIRLWithEmptyLastName() {
-		Patron p = null;
+
 		String error = null;
 		try {
-			p = patronService.createPatronIRL(firstName, null, true, address);
+			patronService.createPatronIRL(firstName, null, true, address);
 		}catch(Exception e) {
 			error = e.getMessage();
 		}
@@ -306,10 +350,10 @@ public class TestPatronService {
 	
 	@Test
 	public void TestCreatePatronIRLWithEmptyAddress() {
-		Patron p = null;
+
 		String error = null;
 		try {
-			p = patronService.createPatronIRL(firstName, lastName, true, null);
+			patronService.createPatronIRL(firstName, lastName, true, null);
 		}catch(Exception e) {
 			error = e.getMessage();
 		}
@@ -319,28 +363,71 @@ public class TestPatronService {
 	@Test
 	public void TestGetPatronByIDNumSuccessfully() {
 		Patron p = null;
-		Patron q = null;
 		try {
-			p = patronService.createPatronOnline(username, password, firstName, lastName, false, address, email);
-			p.setIdNum(id2);
-			q = patronService.getPatronAccountByID(id2);
+			p = patronService.getPatronAccountByID(id2);
 		}catch(Exception e) {
 			fail(e.getMessage());
 		}
-		assertEquals(q.getIdNum(), p.getIdNum());
+		assertEquals(id2, p.getIdNum());
 	}
 	
 	public void TestGetPatronByIDNumWithInvalidID() {
-		Patron p = null;
-		Patron q = null;
+		
 		try {
-			p = patronService.createPatronOnline(username, password, firstName, lastName, false, address, email);
-			String id = p.getIdNum();
-			id = id+"1";
-			q = patronService.getPatronAccountByID(id);
+			
+			patronService.getPatronAccountByID(id1);
 		}catch(Exception e) {
 			assertEquals(e.getMessage(), "User with this ID does not exist.");
 		}
 	}
 	
+	@Test
+	public void TestGetPatronByUsernameSuccessfully() {
+		Patron p = null;
+		try {
+			p = patronService.getPatronAccountByUsername(username2);
+		}catch(Exception e) {
+			fail(e.getMessage());
+		}
+		assertEquals(username2, p.getUsername());
+	}
+	
+	
+	@Test
+	public void TestGetPatronByInvalidUsername() {
+		
+		try {
+			patronService.getPatronAccountByUsername(username2);
+		}catch(Exception e) {
+			assertEquals(e.getMessage(), "User with this username does not exist.");
+		}
+		
+	}
+	
+	@Test
+	public void TestGetAllPatrons() {
+		ArrayList<Patron> patrons = null;
+		try {
+			patrons = new ArrayList<>(patronService.getAllPatrons());
+		}catch(Exception e) {
+			fail(e.getMessage());
+		}
+		
+		assertNotNull(patrons);
+		assertEquals(2,patrons.size());
+		assertEquals(username, patrons.get(0).getUsername());
+		assertEquals(username2, patrons.get(1).getUsername());
+	}
+	
+//	@Test // removes patron with correct parameters
+//	public void testdeletePatron() {
+//		boolean wasDeleted = false; 
+//		try {
+//		    wasDeleted = patronService.deletePatron(id2, id2); 
+//		}
+//		catch (Exception e) {
+//			fail(e.getMessage()); 
+//		}
+//	}
+
 }
