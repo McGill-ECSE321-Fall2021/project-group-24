@@ -118,6 +118,89 @@ public class TestItemReservationService {
         return patron;
         
       });
+      lenient()
+      .when(patronDao.findUserByIdNum("patron10"))
+      .thenAnswer((InvocationOnMock invocation) -> {
+        Patron patron = new Patron();
+        patron.setIdNum("patron10");
+        patron.setIsLoggedIn(true);
+        System.out.print("Patron10 logged in");
+        return patron;
+      });
+      lenient()
+      .when(itemReservationDao.findItemReservationsByIdNum("patron10"))
+      .thenAnswer((InvocationOnMock invocation) -> {
+        Patron patron = new Patron();
+        patron.setIdNum("patron10");
+        patron.setIsLoggedIn(true);
+        ItemReservation itemReservation1 = new ItemReservation();
+        ItemReservation itemReservation2 = new ItemReservation();
+        ItemReservation itemReservation3 = new ItemReservation();
+        ItemReservation itemReservation4 = new ItemReservation();
+        ItemReservation itemReservation5 = new ItemReservation();
+        ItemReservation itemReservation6 = new ItemReservation();
+        ItemReservation itemReservation7 = new ItemReservation();
+        ItemReservation itemReservation8 = new ItemReservation();
+        ItemReservation itemReservation9 = new ItemReservation();
+        ItemReservation itemReservation10 = new ItemReservation();
+        itemReservation1.setIdNum("patron10");
+        
+        itemReservation2.setIdNum("patron10");
+        itemReservation3.setIdNum("patron10");
+        itemReservation4.setIdNum("patron10");
+        itemReservation5.setIdNum("patron10");
+        itemReservation6.setIdNum("patron10");
+        itemReservation7.setIdNum("patron10");
+        itemReservation8.setIdNum("patron10");
+        itemReservation9.setIdNum("patron10");
+        itemReservation10.setIdNum("patron10");
+
+        itemReservation1.setStartDate(Date.valueOf(LocalDate.now()));
+        itemReservation1.setEndDate(Date.valueOf(LocalDate.now().plusDays(13)));
+        itemReservation2.setStartDate(Date.valueOf(LocalDate.now()));
+        itemReservation2.setEndDate(Date.valueOf(LocalDate.now().plusDays(13)));
+        itemReservation3.setStartDate(Date.valueOf(LocalDate.now()));
+        itemReservation3.setEndDate(Date.valueOf(LocalDate.now().plusDays(13)));
+        itemReservation4.setStartDate(Date.valueOf(LocalDate.now()));
+        itemReservation4.setEndDate(Date.valueOf(LocalDate.now().plusDays(13)));
+        itemReservation5.setStartDate(Date.valueOf(LocalDate.now()));
+        itemReservation5.setEndDate(Date.valueOf(LocalDate.now().plusDays(13)));
+        itemReservation6.setStartDate(Date.valueOf(LocalDate.now()));
+        itemReservation6.setEndDate(Date.valueOf(LocalDate.now().plusDays(13)));
+        itemReservation7.setStartDate(Date.valueOf(LocalDate.now()));
+        itemReservation7.setEndDate(Date.valueOf(LocalDate.now().plusDays(13)));
+        itemReservation8.setStartDate(Date.valueOf(LocalDate.now()));
+        itemReservation8.setEndDate(Date.valueOf(LocalDate.now().plusDays(13)));
+        itemReservation9.setStartDate(Date.valueOf(LocalDate.now()));
+        itemReservation9.setEndDate(Date.valueOf(LocalDate.now().plusDays(13)));
+        itemReservation10.setStartDate(Date.valueOf(LocalDate.now()));
+        itemReservation10.setEndDate(Date.valueOf(LocalDate.now().plusDays(13)));
+        
+        ArrayList<ItemReservation> itemReservations = new ArrayList<ItemReservation>();
+        itemReservations.add(itemReservation1);
+        itemReservations.add(itemReservation2);
+        itemReservations.add(itemReservation3);
+        itemReservations.add(itemReservation4);
+        itemReservations.add(itemReservation5);
+        itemReservations.add(itemReservation6);
+        itemReservations.add(itemReservation7);
+        itemReservations.add(itemReservation8);
+        itemReservations.add(itemReservation9);
+        itemReservations.add(itemReservation10);
+
+        System.out.print("Patron10 logged in");
+        return itemReservations;
+        
+      });
+      lenient()
+      .when(patronDao.findUserByIdNum("notLogged"))
+      .thenAnswer((InvocationOnMock invocation) -> {
+        Patron patron = new Patron();
+        patron.setIdNum("notLogged");
+        patron.setIsLoggedIn(false);
+        return patron;
+        
+      });
     lenient()
       .when(itemReservationDao.findItemReservationByItemReservationId(correctIRString))
       .thenAnswer((InvocationOnMock invocation) -> {
@@ -390,7 +473,60 @@ public void testItemReservationNonexistentItem() {
   System.out.println(error);
   assertEquals("The item does not exist", error);
 }
+@Test
+  //Create item reservation for a user that isn't logged in
+  public void testItemReservationNotLoggedIn() {
+    String error = null;
+    Item item = null;
+    ItemReservation itemReservation = null;
+    try {
+      item = itemDao.findItemByItemNumber(correctString);
+      itemReservation = itemReservationService.createItemReservation("notLogged", null, "notLogged", correctString, false);
+    } 
+    catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    assertEquals("You do not have permission to create an item reservation for this patron at this time", error);
+    System.out.println("You do not have permission to create an item reservation for this patron at this time");
+  }
 
+  @Test
+  //Create item reservation for a patron with 10 reservations
+  public void testItemReservationTenReservations() {
+    String error = null;
+    Item item = null;
+    ItemReservation itemReservation = null;
+    Patron patron = patronDao.findPatronByIdNum("patron10");
 
+    List<ItemReservation> itemReservations = itemReservationDao.findItemReservationsByIdNum("patron10");
+    try {
+      itemReservation = itemReservationService.createItemReservation("patron10", null, "patron10", correctString, false);
+    
+    } 
+      
+    catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    System.out.println(error);
+    assertEquals("Patron cannot have more than 10 reservations at a time", error);
+  }
+
+  @Test
+  //Attempt to checkout an item which has a future reservation already
+  public void testItemReservationFutureCheckout() {
+    String error = null;
+  Item item = null;
+  ItemReservation itemReservation = itemReservationDao.findItemReservationByItemReservationId(correctIRString);
+  try {
+    itemReservation = itemReservationService.createItemReservation("patron", null, "patron", wrongString, false);
+      
+  } 
+    
+  catch (IllegalArgumentException e) {
+    error = e.getMessage();
+  }
+  System.out.println(error);
+  assertEquals("The item does not exist", error);
+  }
 
 }
