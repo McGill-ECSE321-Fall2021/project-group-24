@@ -39,7 +39,7 @@ public class TestShiftPersistence {
 	      Time shiftTime = Time.valueOf("00:00:00");
 	      String shiftId = "shift id";
 	      shift.setTimeSlotId(shiftId);
-	      shift.setDayOfWeek(TimeSlot.DayOfWeek.Monday);
+	      shift.setDayOfWeek(TimeSlot.DayOfWeek.MONDAY);
 	      shift.setStartTime(shiftTime);
 	      shift.setEndTime(shiftTime);
 
@@ -52,7 +52,7 @@ public class TestShiftPersistence {
 	      assertNotNull(shift);
 
 	      assertEquals(shiftId, shift.getTimeSlotId());
-	      assertEquals(TimeSlot.DayOfWeek.Monday, shift.getDayOfWeek());
+	      assertEquals(TimeSlot.DayOfWeek.MONDAY, shift.getDayOfWeek());
 	      assertEquals(shiftTime, shift.getStartTime());
 	      assertEquals(shiftTime, shift.getEndTime());
 	      }

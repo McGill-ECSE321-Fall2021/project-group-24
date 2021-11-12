@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import ca.mcgill.ecse321.librarysystem.model.*;
-import java.sql.Date;
 import java.sql.Time;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +38,7 @@ public class TestLibraryHourPersistence {
 	      Time libraryHourTime = Time.valueOf("00:00:00");
 	      String timeSlotId = "hour id";
 	      hour.setTimeSlotId(timeSlotId);
-	      hour.setDayOfWeek(TimeSlot.DayOfWeek.Monday);
+	      hour.setDayOfWeek(TimeSlot.DayOfWeek.MONDAY);
 	      hour.setStartTime(libraryHourTime);
 	      hour.setEndTime(libraryHourTime);
 
@@ -52,7 +51,7 @@ public class TestLibraryHourPersistence {
 	      assertNotNull(hour);
 
 	      assertEquals(timeSlotId, hour.getTimeSlotId());
-	      assertEquals(TimeSlot.DayOfWeek.Monday, hour.getDayOfWeek());
+	      assertEquals(TimeSlot.DayOfWeek.MONDAY, hour.getDayOfWeek());
 	      assertEquals(libraryHourTime, hour.getStartTime());
 	      assertEquals(libraryHourTime, hour.getEndTime());
 	      }
