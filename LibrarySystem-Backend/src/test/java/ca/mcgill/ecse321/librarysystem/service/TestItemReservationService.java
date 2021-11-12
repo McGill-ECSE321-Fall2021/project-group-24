@@ -673,4 +673,42 @@ public class TestItemReservationService {
 		System.out.println(error);
 		assertEquals("The item does not exist", error);
 	}
+
+  @Test
+  //Find item reservations by a specific patron as a different user
+  public void testItemReservationsOtherPatron() {
+    String error = null;
+    Item item = null;
+    List<ItemReservation> reservations = null;
+    try {
+      reservations = itemReservationService.getItemReservationsByIdNum("patron2", "patron");
+    } 
+      
+    catch (IllegalArgumentException e) {
+      error = e.getMessage();
+    }
+    System.out.println(error);
+    assertEquals("Only a librarian or the patron who's reservation it is can view a reservation", error);
+  }
+
+
+  @Test
+  //Find list of item reservations for a specific item number
+  public void testFindItemReservations() {
+    String error = null;
+    Item item = null;
+    List<ItemReservation> reservations = null;
+    try {
+      reservations = itemReservationDao.findItemReservationsByItemNumber(correctString);
+    } 
+    catch (IllegalArgumentException e) {
+      fail();
+    }
+    assertNotNull(reservations);
+    System.out.println("Found item reservations!");
+  }
+
+
 }
+
+
