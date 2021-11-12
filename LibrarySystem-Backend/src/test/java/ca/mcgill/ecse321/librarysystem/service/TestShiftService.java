@@ -58,7 +58,7 @@ public class TestShiftService {
 	private static final String PATRON_ID = "patronId"; 
 	
 	private static final String TIME_SLOT_ID = "MONDAYlibrarianId9:00:0018:00:000"; 
-	private static final String TIME_SLOT_ID_2 = "timeSlotId2"; 
+	private static final String TIME_SLOT_ID_2 = "TUESDAYlibrarianId210:00:0019:00:001"; 
 	private static final String TIME_SLOT_ID_3 = "timeSlotId3"; 
 
 	
@@ -340,5 +340,70 @@ public class TestShiftService {
     	}
     	assertFalse(wasDeleted);
     }
-		
+    
+    @Test // Attempts to remove shift that does not exist (DNE)
+    public void testRemoveShiftDne() {
+    	boolean wasDeleted = false; 
+    	try {
+    		wasDeleted = shiftService.removeShift(HEAD_LIBRARIAN_ID, "SLIPPERY WHEN WET");
+    		fail();
+    	}
+    	catch (Exception e) {
+    		assertEquals("Shift cannot be found", e.getMessage());
+    	}
+    	assertFalse(wasDeleted); 
+    }
+    
+    @Test // Removes all of a librarian's shifts with valid inputs
+    public void testRemoveLibrarianShifts() {
+    	boolean wasDeleted = false; 
+    	try {
+    		wasDeleted = shiftService.removeLibrarianShifts(HEAD_LIBRARIAN_ID, LIBRARIAN_ID);
+    	}
+    	catch (Exception e) {
+    		fail(e.getMessage());
+    	}
+    	assertTrue(wasDeleted);
+    }
+    
+    @Test // Attempts to remove all of a librarian's shifts as librarian
+    public void testRemoveLibrarianShiftsAsLibrarian() {
+    	boolean wasDeleted = false;
+    	try {
+    		wasDeleted = shiftService.removeLibrarianShifts(LIBRARIAN_ID, LIBRARIAN_ID);
+    		fail();
+    	}
+    	catch (Exception e) {
+    		assertEquals("Only the Head Librarian can remove all of a librarian's shifts", e.getMessage());
+    	}
+    	assertFalse(wasDeleted);
+    }
+    
+    @Test // Attempts to remove all librarian shifts for librarian that DNE
+    public void testRemoveFakeLibrarianShifts() {
+    	boolean wasDeleted = false; 
+    	try {
+    		wasDeleted = shiftService.removeLibrarianShifts(HEAD_LIBRARIAN_ID, "You give love a bad name");
+    		fail();
+    	}
+    	catch (Exception e) {
+    		assertEquals("No librarian with this ID exists", e.getMessage());
+    	}
+    	assertFalse(wasDeleted); 
+    }
+    
+    @Test // Get a list of all shifts for a specific librarian with valid input
+    public void testGetLibrarianShifts() {
+    	List<Shift> shifts = new ArrayList<>(); 
+    	try {
+    		shifts = shiftService.getAllShiftsForLibrarian(HEAD_LIBRARIAN_ID, LIBRARIAN_ID);
+    	} catch (Exception e) {
+    		fail(e.getMessage());
+    	}
+    	assertFalse(shifts.size()==0); 
+    	assertEquals(DAY_OF_WEEK,shifts.get(0).getDayOfWeek());
+    	assertEquals(END_TIME, shifts.get(0).getEndTime()); 
+    	assertEquals(START_TIME, shifts.get(0).getStartTime()); 
+    	assertEquals(TIME_SLOT_ID, shifts.get(0).getTimeSlotId());
+    }
 }
