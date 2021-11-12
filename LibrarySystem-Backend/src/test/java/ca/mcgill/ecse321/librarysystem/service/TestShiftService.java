@@ -396,7 +396,7 @@ public class TestShiftService {
     public void testGetLibrarianShifts() {
     	List<Shift> shifts = new ArrayList<>(); 
     	try {
-    		shifts = shiftService.getAllShiftsForLibrarian(HEAD_LIBRARIAN_ID, LIBRARIAN_ID);
+    		shifts = shiftService.getAllShiftsForLibrarian(LIBRARIAN_ID, LIBRARIAN_ID);
     	} catch (Exception e) {
     		fail(e.getMessage());
     	}
@@ -405,5 +405,106 @@ public class TestShiftService {
     	assertEquals(END_TIME, shifts.get(0).getEndTime()); 
     	assertEquals(START_TIME, shifts.get(0).getStartTime()); 
     	assertEquals(TIME_SLOT_ID, shifts.get(0).getTimeSlotId());
+    }
+    
+    @Test //Attempts to get list of shifts for librarian as a patron
+    public void testGetLibShiftsAsPatron() {
+    	List<Shift> shifts = new ArrayList<>(); 
+       	try {
+    		shifts = shiftService.getAllShiftsForLibrarian(PATRON_ID, LIBRARIAN_ID);
+    		fail();
+    	} catch (Exception e) {
+    		assertEquals("Only librarians can view shifts", e.getMessage()); 
+    	}
+       	assertTrue(shifts.size()==0); 
+    }
+    
+    @Test //Attempts to get list of shifts for a librarian that DNE
+    public void testGetFakeLibShifts() {
+    	List<Shift> shifts = new ArrayList<>(); 
+       	try {
+    		shifts = shiftService.getAllShiftsForLibrarian(LIBRARIAN_ID, "WORKED ON THE DOCKS");
+    		fail();
+    	} catch (Exception e) {
+    		assertEquals("No librarian with this ID exists", e.getMessage()); 
+    	}
+       	assertTrue(shifts.size()==0); 
+    }
+    
+    @Test //Gets list of all shifts
+    public void testGetAllShifts() {
+    	List<Shift> shifts = new ArrayList<>(); 
+    	try {
+    		shifts = shiftService.getAllShifts(LIBRARIAN_ID);
+    	} catch (Exception e) {
+    		fail(e.getMessage());
+    	}
+    	assertFalse(shifts.size()==0); 
+    	assertEquals(DAY_OF_WEEK,shifts.get(0).getDayOfWeek());
+    	assertEquals(END_TIME, shifts.get(0).getEndTime()); 
+    	assertEquals(START_TIME, shifts.get(0).getStartTime()); 
+    	assertEquals(TIME_SLOT_ID, shifts.get(0).getTimeSlotId());
+    	assertEquals(LIBRARIAN_ID, shifts.get(0).getLibrarianId()); 
+    	
+    	assertEquals(DAY_OF_WEEK_2,shifts.get(1).getDayOfWeek());
+    	assertEquals(END_TIME_2, shifts.get(1).getEndTime()); 
+    	assertEquals(START_TIME_2, shifts.get(1).getStartTime()); 
+    	assertEquals(TIME_SLOT_ID_2, shifts.get(1).getTimeSlotId());
+    	assertEquals(LIBRARIAN_ID2, shifts.get(1).getLibrarianId()); 
+
+    }
+    
+    @Test //Attempts to get list of all shifts as patron
+    public void testGetAllShiftsAsPatron() {
+    	List<Shift> shifts = new ArrayList<>(); 
+    	try {
+    		shifts = shiftService.getAllShifts(PATRON_ID);
+    		fail();
+    	} catch (Exception e) {
+    		assertEquals("Only librarians can view shifts", e.getMessage()); 
+    	}
+    	assertTrue(shifts.size()==0);
+    }
+    
+    @Test //Gets a shift with valid input
+    public void getShift() {
+    	Shift shift = null; 
+    	try {
+    		shift = shiftService.getShift(HEAD_LIBRARIAN_ID, TIME_SLOT_ID);
+    	}
+    	catch (Exception e) {
+    		fail(e.getMessage()); 
+    	}
+    	assertNotNull(shift); 
+    	assertEquals(DAY_OF_WEEK, shift.getDayOfWeek()); 
+    	assertEquals(START_TIME, shift.getStartTime()); 
+    	assertEquals(END_TIME, shift.getEndTime()); 
+    	assertEquals(LIBRARIAN_ID, shift.getLibrarianId()); 
+    }
+    
+    @Test //Attempts to get a shift that DNE (does not exist)
+    public void getShiftDne() {
+    	Shift shift = null; 
+    	try {
+    		shift = shiftService.getShift(HEAD_LIBRARIAN_ID, "Shot through the heart");
+    		fail(); 
+    	}
+    	catch (Exception e) {
+    		assertEquals("Shift cannot be found", e.getMessage()); 
+    	}
+    	assertNull(shift);
+    }
+    
+    @Test //Attempts to get a shift as a patron
+    public void getShiftPatron() {
+    	Shift shift = null; 
+    	try {
+    		shift = shiftService.getShift(PATRON_ID, TIME_SLOT_ID);
+    		fail(); 
+    	}
+    	catch (Exception e) {
+    		assertEquals("Only librarians can view shifts", e.getMessage()); 
+    	}
+    	assertNull(shift);
     }
 }

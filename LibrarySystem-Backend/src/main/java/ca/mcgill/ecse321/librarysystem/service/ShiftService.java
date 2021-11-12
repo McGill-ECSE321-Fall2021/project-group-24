@@ -148,7 +148,7 @@ public class ShiftService {
 	public Shift getShift(String currentUserId, String timeSlotId) {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
 		User user1 = librarianRepo.findUserByIdNum(currentUserId); 
-		if ((!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) && (!(user1 instanceof HeadLibrarian) || !(user1.getIsLoggedIn()))) {
+		if ((!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) && (!(user1 instanceof Librarian) || !(user1.getIsLoggedIn()))) {
 			 throw new IllegalArgumentException("Only librarians can view shifts");		
 		}
 		Shift shift = null;
@@ -169,7 +169,7 @@ public class ShiftService {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
 		User user1 = librarianRepo.findUserByIdNum(currentUserId); 
 		Librarian librarian = librarianRepo.findUserByIdNum(librarianId); 
-		if ((!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) && (!(user1 instanceof HeadLibrarian) || !(user1.getIsLoggedIn()))) {
+		if ((!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) && (!(user1 instanceof Librarian) || !(user1.getIsLoggedIn()))) {
 			 throw new IllegalArgumentException("Only librarians can view shifts");		
 		}
 		if (librarianId==null) throw new IllegalArgumentException("Librarian ID cannot be blank"); 
@@ -197,7 +197,7 @@ public class ShiftService {
 	public List<Shift> getAllShifts(String currentUserId) {
 		User user = headLibrarianRepo.findUserByIdNum(currentUserId); 
 		User user1 = librarianRepo.findUserByIdNum(currentUserId); 
-		if ((!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) && (!(user1 instanceof HeadLibrarian) || !(user1.getIsLoggedIn()))) {
+		if ((!(user instanceof HeadLibrarian) || !(user.getIsLoggedIn())) && (!(user1 instanceof Librarian) || !(user1.getIsLoggedIn()))) {
 			 throw new IllegalArgumentException("Only librarians can view shifts");		
 		}		
 		return toList(shiftRepo.findAll()); 
