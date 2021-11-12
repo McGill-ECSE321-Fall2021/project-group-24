@@ -52,16 +52,11 @@ public class LibrarianService {
       librarian.setIdNum(idNum);
       librarian.setAddress(address);
       librarianRepo.save(librarian);
-      System.out.print("LIST OF LIB" + toList(librarianRepo.findAll()));
-      System.out.print("--------------------------------------------");
-      for (Librarian l : toList(librarianRepo.findAll())) {
-        System.out.println("GETTING THE FIRST NAME: " + l.getIdNum());
-      }
-      System.out.print("--------------------------------------------");
+
       return librarian;
     } else {
       throw new IllegalArgumentException(
-        "You do not have permission to create a librarian."
+        "You are not authorized to do this. Only the Head Librarian can."
       );
     }
   }
@@ -80,7 +75,7 @@ public class LibrarianService {
       return bye;
     } else {
       throw new IllegalArgumentException(
-        "You do not have permission to update the librarian information."
+        "You are not authorized to do this. Only the Head Librarian can."
       );
     }
   }
@@ -102,7 +97,7 @@ public class LibrarianService {
       }
     } else {
       throw new IllegalArgumentException(
-        "You do not have permission to view the librarian information."
+        "You are not authorized to do this. Only the Head Librarian can."
       );
     }
   }
@@ -110,14 +105,19 @@ public class LibrarianService {
   @Transactional
   public List<Librarian> getAllLibrarians(String userId) {
     if (isHeadLibrarian(userId)) {
-      return toList(librarianRepo.findAll());
+      if (toList(librarianRepo.findAll()).size() == 0) {
+        throw new IllegalArgumentException("No librarians found.");
+      } else {
+        return toList(librarianRepo.findAll());
+      }
     } else {
       throw new IllegalArgumentException(
-        "You do not have permission to view the librarian information."
+        "You are not authorized to do this. Only the Head Librarian can."
       );
     }
   }
 
+  //helper method to check if the user is a head librarian
   private boolean isHeadLibrarian(String currentUserId) {
     System.out.println("Current User ID: " + currentUserId);
     HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
@@ -125,9 +125,7 @@ public class LibrarianService {
     );
 
     if (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn()) {
-      throw new IllegalArgumentException(
-        "You are not authorized to do this. Only the Head Librarian can."
-      );
+      return false;
     }
     return true;
   }

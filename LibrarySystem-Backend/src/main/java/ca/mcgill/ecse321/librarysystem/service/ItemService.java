@@ -326,7 +326,8 @@ public class ItemService {
 
   @Transactional
   public List<Item> getAllBooks() {
-    return toList(itemRepository.findItemsByType(Item.Type.Book));
+	  List<Item> items = itemRepository.findItemsByType(Item.Type.Book);
+    return toList(items);
   }
 
   @Transactional

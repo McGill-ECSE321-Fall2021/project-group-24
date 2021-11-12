@@ -12,10 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ca.mcgill.ecse321.librarysystem.dao.HeadLibrarianRepository;
+import ca.mcgill.ecse321.librarysystem.dao.LibrarianRepository;
 import ca.mcgill.ecse321.librarysystem.dao.LibraryHourRepository;
 import ca.mcgill.ecse321.librarysystem.dao.PatronRepository;
 import ca.mcgill.ecse321.librarysystem.dao.RoomBookingRepository;
 import ca.mcgill.ecse321.librarysystem.dao.RoomRepository;
+import ca.mcgill.ecse321.librarysystem.model.HeadLibrarian;
+import ca.mcgill.ecse321.librarysystem.model.Librarian;
 import ca.mcgill.ecse321.librarysystem.model.LibraryHour;
 import ca.mcgill.ecse321.librarysystem.model.Patron;
 import ca.mcgill.ecse321.librarysystem.model.Room;
@@ -32,9 +36,9 @@ public class RoomBookingService {
 	@Autowired 
 	RoomBookingRepository roomBookingRepository; 
 	@Autowired 
-	HeadLibrarianService headLibrarianService;
+	HeadLibrarianRepository headLibrarianRepository;
 	@Autowired 
-	LibrarianService librarianService;
+	LibrarianRepository librarianRepository;
 	@Autowired 
 	PatronRepository patronRepo;
 	
@@ -47,16 +51,15 @@ public class RoomBookingService {
 		String idNum,
 		String roomNumber
 	) {
-		String timeSlotId = "RoomBooking-"+getAllRoomBookings().size()+startTime+roomNumber; 
+		String timeSlotId = "RoomBooking-"+getAllRoomBookings("admin").size()+startTime+roomNumber; 
 		// check idNum
 
 		if (!inputIsValid(idNum)) throw new IllegalArgumentException("IdNum cannot be null or empty");
 		Patron p = patronRepo.findUserByIdNum(idNum);
 		if (p == null) throw new IllegalArgumentException("invalid IdNum");
 		// check roomNumber
-		if (!inputIsValid(roomNumber)) throw new IllegalArgumentException("roomNumber cannot be null or empty");
+		if (!inputIsValid(roomNumber)) throw new IllegalArgumentException("Room number cannot be null or empty");
 		Room r = roomRepo.findRoomByRoomNum(roomNumber);
-
 		if (r == null) throw new IllegalArgumentException("invalid roomNumber");
 
 		// current user can only create room bookings for themselves
@@ -69,6 +72,7 @@ public class RoomBookingService {
 	    }
 		// (head) librarians are able to create room bookings for everyone - no need check 
 
+	   
 		// check if date is in the past
 	    if (date.before(Date.valueOf(LocalDate.now()))) throw new IllegalArgumentException("date must be in the future");
 		// check if the reservation has any conflicts
@@ -111,9 +115,11 @@ public class RoomBookingService {
 		for (RoomBooking rb : room.getRoomBookings()) {	
 			if (date.equals(rb.getDate())) {
 				if(timeSlotIdToIgnore == null || !rb.getTimeSlotId().equals(timeSlotIdToIgnore)) {
+
 					if (startTime.after(rb.getStartTime()) && startTime.before(rb.getEndTime())) {
 						return true;
 					}else if (endTime.after(rb.getStartTime()) && endTime.before(rb.getEndTime())) {
+
 						return true;
 					}
 				}
@@ -145,7 +151,7 @@ public class RoomBookingService {
 		if (rb == null) throw new IllegalArgumentException("Room booking does not exist");
 
 		// check if user is a patron, patron can only modify their own room bookings
-	    Patron currentPatron = patronRepo.findPatronByIdNum(currentUserId);
+	    Patron currentPatron = patronRepo.findUserByIdNum(currentUserId);
 	    if (currentPatron != null) {
 	    	if (!rb.getIdNum().equals(currentUserId)) {
 	    		throw new IllegalArgumentException("You do not have permission to modify this room booking");
@@ -180,10 +186,10 @@ public class RoomBookingService {
 		if (rb == null) throw new IllegalArgumentException("Room booking does not exist");
 
 		// check if user is a patron, patron can only delete their own room bookings
-	    Patron currentPatron = patronRepo.findPatronByIdNum(currentUserId);
+	    Patron currentPatron = patronRepo.findUserByIdNum(currentUserId);
 	    if (currentPatron != null) {
 	    	if (!rb.getIdNum().equals(currentUserId)) {
-	    		throw new IllegalArgumentException("You do not have permission to modify this room booking");
+	    		throw new IllegalArgumentException("You do not have permission to delete this room booking");
 	    	}
 	    }
 	    roomBookingRepository.delete(rb);
@@ -192,25 +198,61 @@ public class RoomBookingService {
 	
 	// looks for a room with the given ID number, returns them if found
 	@Transactional 
-	public List<RoomBooking> getAllRoomBookings() {
+	public List<RoomBooking> getAllRoomBookings(String currentUserId) {
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		} 
+		
+		if (!hasPermission) {
+			throw new IllegalArgumentException("Only a librarian or head librarian can get all roombooking");
+		}
 		return toList(roomBookingRepository.findAll()); 
 
 	}
 	
 	@Transactional 
-	public List<RoomBooking> getRoomBookingsByRoomNum(String roomNum) {
+	public List<RoomBooking> getRoomBookingsByRoomNum(String currentUserId, String roomNum) {
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		} 
+		
+		if (!hasPermission) {
+			throw new IllegalArgumentException("Only a librarian or head librarian can get roombooking by room number");
+		}
 		return roomBookingRepository.findRoomBookingByRoomNum(roomNum);
 	}
 	
 	@Transactional 
-	public List<RoomBooking> getRoomBookingsByIdNum(String idNum) {
-		return roomBookingRepository.findRoomBookingByIdNum(idNum);
+	public List<RoomBooking> getRoomBookingsByIdNum(String currentUserId, String idNum) {
+		Patron p = patronRepo.findUserByIdNum(currentUserId);
+		if (p != null && !currentUserId.equals(idNum)) throw new IllegalArgumentException("Patrons are only allowed to view their own room bookings");
+		return roomBookingRepository.findRoomBookingsByIdNum(idNum);
 	}
 	
 	@Transactional 
-	public RoomBooking getRoomBookingsByTimeSlotId(String timeSlotId) {
+	public RoomBooking getRoomBookingsByTimeSlotId(String currentUserId, String timeSlotId) {
+		Librarian currentLibrarian = librarianRepository.findUserByIdNum(currentUserId);
+		HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(currentUserId);
+		boolean hasPermission = false;
+		if (currentLibrarian != null && currentLibrarian.getIsLoggedIn()
+				|| currentHeadLibrarian != null && currentHeadLibrarian.getIsLoggedIn()) {
+			hasPermission = true;
+		} 
+		if (!hasPermission) {
+			throw new IllegalArgumentException("Only a librarian or head librarian can get roombooking by time slot id");
+		}
+		
 		return roomBookingRepository.findRoomBookingByTimeSlotId(timeSlotId);
 	}
+	
 	
 	private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
