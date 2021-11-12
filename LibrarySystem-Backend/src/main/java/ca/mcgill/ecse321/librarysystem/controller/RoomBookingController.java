@@ -102,10 +102,8 @@ public class RoomBookingController {
 			) {
 	
 		try {
-			String timeSlotId = "RoomBooking-"+roomBookingService.getAllRoomBookings().size()+startTime+roomNum; 
 			RoomBooking booking = roomBookingService.createRoomBooking(
 				currentUserId,
-				timeSlotId,
 				Date.valueOf(LocalDate.parse(date)),
 				Time.valueOf(LocalTime.parse(startTime)),
 				Time.valueOf(LocalTime.parse(endTime)),
