@@ -46,6 +46,8 @@ public class PatronService {
 		
 			String idNum = firstName+"Patron-"+toList(patronRepository.findAll()).size();
 			
+			addressIsValid(address);
+			nameIsValid(firstName, lastName);
 			
 		    Patron p = new Patron();
 		    p.setUsername(null);
@@ -78,12 +80,15 @@ public class PatronService {
 		
 		if(username==null||username=="")throw new IllegalArgumentException("Username cannot be empty.");
 		if(password==null||password == "") throw new IllegalArgumentException("Password cannot be empty.");
+		if(password.contains(" ")==true) throw new IllegalArgumentException("Password cannot have spaces in it.");
+		if(username.contains(" ")==true) throw new IllegalArgumentException("Username cannot have spaces in it.");
 		
 		String idNum = firstName+"Patron-"+toList(patronRepository.findAll()).size();
 		nameIsValid(firstName, lastName);
 		usernameIsValid(username);
 		idIsValid(idNum);
 		passwordIsValid(password);
+		emailIsValid(email);
 		
 		Patron p = new Patron();
 		p.setUsername(username);
@@ -160,6 +165,7 @@ public class PatronService {
 	public Patron getPatronAccountByID(String ID) {
 		if(ID.length()==0) throw new IllegalArgumentException("Invalid ID entered.");
 		Patron p = patronRepository.findPatronByIdNum(ID);
+		if(p == null) throw new IllegalArgumentException("User with this ID does not exist.");
 		return p;
 	}
 	
@@ -196,6 +202,7 @@ public class PatronService {
 	
 	
 	public boolean usernameIsValid(String username) {
+		Patron p = patronRepository.findPatronByUsername(username);
 		if(patronRepository.findPatronByUsername(username)==null) {
 			return true;
 		}else {
