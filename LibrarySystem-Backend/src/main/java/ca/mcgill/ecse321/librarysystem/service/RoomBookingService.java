@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ca.mcgill.ecse321.librarysystem.dao.LibraryHourRepository;
+import ca.mcgill.ecse321.librarysystem.dao.PatronRepository;
 import ca.mcgill.ecse321.librarysystem.dao.RoomBookingRepository;
+import ca.mcgill.ecse321.librarysystem.dao.RoomRepository;
 import ca.mcgill.ecse321.librarysystem.model.LibraryHour;
 import ca.mcgill.ecse321.librarysystem.model.Patron;
 import ca.mcgill.ecse321.librarysystem.model.Room;
@@ -23,9 +26,9 @@ import ca.mcgill.ecse321.librarysystem.model.TimeSlot.DayOfWeek;
 @Service
 public class RoomBookingService {
 	@Autowired
-	RoomService roomService;
+	RoomRepository roomRepo;
 	@Autowired
-	LibraryHourService libraryHourservice;
+	LibraryHourRepository libraryHourRepo;
 	@Autowired 
 	RoomBookingRepository roomBookingRepository; 
 	@Autowired 
@@ -33,39 +36,39 @@ public class RoomBookingService {
 	@Autowired 
 	LibrarianService librarianService;
 	@Autowired 
-	PatronService patronService;
+	PatronRepository patronRepo;
 	
 	@Transactional
 	public RoomBooking createRoomBooking(
 		String currentUserId,
-		String timeSlotId,
 		Date date,
 		Time startTime,
 		Time endTime,
 		String idNum,
 		String roomNumber
 	) {
-		
+		String timeSlotId = "RoomBooking-"+getAllRoomBookings().size()+startTime+roomNumber; 
 		// check idNum
-		if (!inputIsValid("idNum")) throw new IllegalArgumentException("IdNum cannot be null or empty");
-		Patron p = patronService.getPatronAccountByID(idNum);
+
+		if (!inputIsValid(idNum)) throw new IllegalArgumentException("IdNum cannot be null or empty");
+		Patron p = patronRepo.findUserByIdNum(idNum);
 		if (p == null) throw new IllegalArgumentException("invalid IdNum");
-		
 		// check roomNumber
-		if (!inputIsValid("roomNumber")) throw new IllegalArgumentException("roomNumber cannot be null or empty");
-		Room r = roomService.getRoom(roomNumber);
+		if (!inputIsValid(roomNumber)) throw new IllegalArgumentException("roomNumber cannot be null or empty");
+		Room r = roomRepo.findRoomByRoomNum(roomNumber);
+
 		if (r == null) throw new IllegalArgumentException("invalid roomNumber");
-		
+
 		// current user can only create room bookings for themselves
 		// check if user is a patron, patron can only delete their own room bookings
-	    Patron currentPatron = patronService.getPatronAccountByID(currentUserId);
+	    Patron currentPatron = patronRepo.findUserByIdNum(currentUserId);
 	    if (currentPatron != null) {
 	    	if (!idNum.equals(currentUserId)) {
 	    		throw new IllegalArgumentException("You can only create room bookings for yourself");
 	    	}
 	    }
 		// (head) librarians are able to create room bookings for everyone - no need check 
-		
+
 		// check if date is in the past
 	    if (date.before(Date.valueOf(LocalDate.now()))) throw new IllegalArgumentException("date must be in the future");
 		// check if the reservation has any conflicts
@@ -78,7 +81,7 @@ public class RoomBookingService {
 		}else if(outsideOfOpeningHours(dayOfWeek, startTime, endTime)) {
 			throw new IllegalArgumentException("Room booking must be within library opening hours");
 		}
-		
+
 		// if no conflict and the inputs are valid 
 		RoomBooking roomBooking = new RoomBooking();
 		roomBooking.setTimeSlotId(timeSlotId);
@@ -103,8 +106,9 @@ public class RoomBookingService {
 	// helper method
 	// check if the room is booked during the times given
 	public boolean isBooked(String roomNumber, Date date, Time startTime, Time endTime, String timeSlotIdToIgnore) {
-		Room room = roomService.getRoom(roomNumber);
-		for (RoomBooking rb : room.getRoomBookings()) {
+		Room room = roomRepo.findRoomByRoomNum(roomNumber);
+		if (room.getRoomBookings() == null) return false;
+		for (RoomBooking rb : room.getRoomBookings()) {	
 			if (date.equals(rb.getDate())) {
 				if(timeSlotIdToIgnore == null || !rb.getTimeSlotId().equals(timeSlotIdToIgnore)) {
 					if (startTime.after(rb.getStartTime()) && startTime.before(rb.getEndTime())) {
@@ -122,7 +126,7 @@ public class RoomBookingService {
 	// check if the times are during the times given
 	public boolean outsideOfOpeningHours(TimeSlot.DayOfWeek dayOfWeek, Time startTime, Time endTime) {
 		// find day of the week from date and convert to DayOfweek
-		LibraryHour lh = libraryHourservice.getLibraryHour(dayOfWeek);
+		LibraryHour lh = libraryHourRepo.findHourByDayOfWeek(dayOfWeek);
 		if (lh.getStartTime().before(startTime) && lh.getEndTime().after(endTime)) return false;
 		return true;
 	}
@@ -141,7 +145,7 @@ public class RoomBookingService {
 		if (rb == null) throw new IllegalArgumentException("Room booking does not exist");
 
 		// check if user is a patron, patron can only modify their own room bookings
-	    Patron currentPatron = patronService.getPatronAccountByID(currentUserId);
+	    Patron currentPatron = patronRepo.findPatronByIdNum(currentUserId);
 	    if (currentPatron != null) {
 	    	if (!rb.getIdNum().equals(currentUserId)) {
 	    		throw new IllegalArgumentException("You do not have permission to modify this room booking");
@@ -176,7 +180,7 @@ public class RoomBookingService {
 		if (rb == null) throw new IllegalArgumentException("Room booking does not exist");
 
 		// check if user is a patron, patron can only delete their own room bookings
-	    Patron currentPatron = patronService.getPatronAccountByID(currentUserId);
+	    Patron currentPatron = patronRepo.findPatronByIdNum(currentUserId);
 	    if (currentPatron != null) {
 	    	if (!rb.getIdNum().equals(currentUserId)) {
 	    		throw new IllegalArgumentException("You do not have permission to modify this room booking");
