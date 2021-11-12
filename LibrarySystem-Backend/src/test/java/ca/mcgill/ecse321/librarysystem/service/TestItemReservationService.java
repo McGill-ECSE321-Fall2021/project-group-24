@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.librarysystem.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -198,6 +199,23 @@ public class TestItemReservationService {
 				return patron;
 			});
 		lenient()
+			.when(itemReservationDao.findItemReservationByItemReservationId("TEEEE"))
+			.thenAnswer((InvocationOnMock invocation) -> {
+				if (invocation.getArgument(0).equals("TEEEE")) {
+					ItemReservation itemReservation = new ItemReservation();
+					itemReservation.setNumOfRenewalsLeft(4);
+					itemReservation.setItemReservationId("bob");
+					itemReservation.setIdNum("patron2");
+					itemReservation.setItemNumber(correctString);
+					itemReservation.setIsCheckedOut(false);
+					itemReservation.setStartDate(Date.valueOf(LocalDate.now().minusDays(1)));
+					itemReservation.setEndDate(Date.valueOf(LocalDate.now().plusDays(1)));
+					return itemReservation;
+				} else {
+					return null;
+				}
+			});
+		lenient()
 			.when(itemReservationDao.findItemReservationByItemReservationId("bob"))
 			.thenAnswer((InvocationOnMock invocation) -> {
 				if (invocation.getArgument(0).equals("bob")) {
@@ -207,6 +225,41 @@ public class TestItemReservationService {
 					itemReservation.setIdNum("patron2");
 					itemReservation.setItemNumber(correctString);
 					itemReservation.setIsCheckedOut(true);
+					itemReservation.setStartDate(correctStartDate);
+					itemReservation.setEndDate(correctEndDate);
+					return itemReservation;
+				} else {
+					return null;
+				}
+			});
+		lenient()
+			.when(itemReservationDao.findItemReservationByItemReservationId("bob6"))
+			.thenAnswer((InvocationOnMock invocation) -> {
+				if (invocation.getArgument(0).equals("bob6")) {
+					ItemReservation itemReservation = new ItemReservation();
+					itemReservation.setNumOfRenewalsLeft(4);
+					itemReservation.setItemReservationId("bob6");
+					itemReservation.setIdNum("patron2");
+					itemReservation.setItemNumber(correctString);
+					itemReservation.setIsCheckedOut(true);
+
+					itemReservation.setStartDate(Date.valueOf(LocalDate.now().minusDays(3)));
+					itemReservation.setEndDate(Date.valueOf(LocalDate.now().plusDays(3)));
+					return itemReservation;
+				} else {
+					return null;
+				}
+			});
+		lenient()
+			.when(itemReservationDao.findItemReservationByItemReservationId("bob5"))
+			.thenAnswer((InvocationOnMock invocation) -> {
+				if (invocation.getArgument(0).equals("bob5")) {
+					ItemReservation itemReservation = new ItemReservation();
+					itemReservation.setNumOfRenewalsLeft(4);
+					itemReservation.setItemReservationId("bob");
+					itemReservation.setIdNum("patron2");
+					itemReservation.setItemNumber(correctString);
+					itemReservation.setIsCheckedOut(false);
 					itemReservation.setStartDate(correctStartDate);
 					itemReservation.setEndDate(correctEndDate);
 					return itemReservation;
@@ -310,6 +363,44 @@ public class TestItemReservationService {
 					archive.setImageUrl("bbi2");
 					archive.setItemNumber("bbi2");
 					archive.setGenre("bbi2");
+					archive.setPublishDate(correctDate);
+					archive.setIsReservable(true);
+					archive.setType(Item.Type.Archive);
+					return archive;
+				} else {
+					return null;
+				}
+			});
+		lenient()
+			.when(itemDao.findItemByItemNumber("bob6"))
+			.thenAnswer((InvocationOnMock invocation) -> {
+				if (invocation.getArgument(0).equals("bob6")) {
+					Archive archive = new Archive();
+					archive.setItemTitle("bob6");
+					archive.setDescription("bob6");
+					archive.setImageUrl("bob6");
+					archive.setItemNumber("bob6");
+					archive.setGenre("bob6");
+					archive.setCurrentReservationId("TEEEE");
+					archive.setPublishDate(correctDate);
+					archive.setIsReservable(false);
+					archive.setType(Item.Type.Archive);
+					return archive;
+				} else {
+					return null;
+				}
+			});
+
+		lenient()
+			.when(itemDao.findItemByItemNumber("tester5"))
+			.thenAnswer((InvocationOnMock invocation) -> {
+				if (invocation.getArgument(0).equals("tester5")) {
+					Archive archive = new Archive();
+					archive.setItemTitle("tester5");
+					archive.setDescription("tester5");
+					archive.setImageUrl("tester5");
+					archive.setItemNumber("tester5");
+					archive.setGenre("tester5");
 					archive.setPublishDate(correctDate);
 					archive.setIsReservable(true);
 					archive.setType(Item.Type.Archive);
@@ -674,41 +765,36 @@ public class TestItemReservationService {
 		assertEquals("The item does not exist", error);
 	}
 
-  @Test
-  //Find item reservations by a specific patron as a different user
-  public void testItemReservationsOtherPatron() {
-    String error = null;
-    Item item = null;
-    List<ItemReservation> reservations = null;
-    try {
-      reservations = itemReservationService.getItemReservationsByIdNum("patron2", "patron");
-    } 
-      
-    catch (IllegalArgumentException e) {
-      error = e.getMessage();
-    }
-    System.out.println(error);
-    assertEquals("Only a librarian or the patron who's reservation it is can view a reservation", error);
-  }
+	@Test
+	//Find item reservations by a specific patron as a different user
+	public void testItemReservationsOtherPatron() {
+		String error = null;
+		Item item = null;
+		List<ItemReservation> reservations = null;
+		try {
+			reservations = itemReservationService.getItemReservationsByIdNum("patron2", "patron");
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		System.out.println(error);
+		assertEquals(
+			"Only a librarian or the patron who's reservation it is can view a reservation",
+			error
+		);
+	}
 
-
-  @Test
-  //Find list of item reservations for a specific item number
-  public void testFindItemReservations() {
-    String error = null;
-    Item item = null;
-    List<ItemReservation> reservations = null;
-    try {
-      reservations = itemReservationDao.findItemReservationsByItemNumber(correctString);
-    } 
-    catch (IllegalArgumentException e) {
-      fail();
-    }
-    assertNotNull(reservations);
-    System.out.println("Found item reservations!");
-  }
-
-
+	@Test
+	//Find list of item reservations for a specific item number
+	public void testFindItemReservations() {
+		String error = null;
+		Item item = null;
+		List<ItemReservation> reservations = null;
+		try {
+			reservations = itemReservationDao.findItemReservationsByItemNumber(correctString);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		assertNotNull(reservations);
+		System.out.println("Found item reservations!");
+	}
 }
-
-
