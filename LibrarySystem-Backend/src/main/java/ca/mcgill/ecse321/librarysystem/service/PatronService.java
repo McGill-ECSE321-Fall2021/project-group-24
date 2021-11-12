@@ -106,7 +106,7 @@ public class PatronService {
 	 * deletes a patron by idNum
 	 * @param idNum
 	 * @param currentUserId
-	 * @return
+	 * @return true if deleted
 	 */
 	@Transactional
 	public boolean deletePatron(String idNum, String currentUserId) {
