@@ -4,6 +4,7 @@ import Hello from "@/components/Hello";
 // Import your component here
 import BrowseItems from "@/components/BrowseItems";
 import LoginPage from "@/components/Login";
+import SignupPage from "@/components/Signup";
 
 Vue.use(Router);
 
@@ -26,6 +27,11 @@ export default new Router({
       path: "/sign_in",
       name: "LoginPage",
       component: LoginPage
+    },
+    {
+      path: "/sign_up",
+      name: "SignupPage",
+      component: SignupPage
     }
   ]
 });

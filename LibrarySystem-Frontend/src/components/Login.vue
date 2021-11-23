@@ -1,35 +1,22 @@
 <template>
   <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
   <div id="loginInputs">
-    <div class="inputs">
+    <div id="usernameinput">
       <a-input placeholder="Username"> </a-input>
     </div>
-    <div class="inputs">
+    <div class="passwordinput">
       <a-input placeholder="Password"> </a-input>
     </div>
-    <a-button
-      type="primary"
-      @click="
-        createBook(
-          'title',
-          'deccy',
-          'url',
-          'pubby',
-          'authy',
-          'genre',
-          '2001-09-22',
-          true,
-          'admin'
-        )
-      "
-    >
+    <a-button type="primary" @click="login('user', 'pwqord')">
       Log In
     </a-button>
   </div>
 </template>
+<script src="./Login.js"></script>
 
 <style>
-.inputs {
+.usernameinput,
+.passwordinput {
   margin: 10px auto;
   position: relative;
   align-self: center;
