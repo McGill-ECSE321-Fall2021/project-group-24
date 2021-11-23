@@ -4,10 +4,18 @@
     <div id="usernameinput">
       <a-input placeholder="Username"> </a-input>
     </div>
-    <div class="passwordinput">
+    <div id="passwordinput">
       <a-input placeholder="Password"> </a-input>
     </div>
-    <a-button type="primary" @click="login('user', 'pwqord')">
+    <a-button
+      type="primary"
+      @click="
+        login(
+          document.getElementById('usernameinput').value,
+          document.getElementById('passwordinput').value
+        )
+      "
+    >
       Log In
     </a-button>
   </div>
@@ -15,8 +23,8 @@
 <script src="./Login.js"></script>
 
 <style>
-.usernameinput,
-.passwordinput {
+#usernameinput,
+#passwordinput {
   margin: 10px auto;
   position: relative;
   align-self: center;

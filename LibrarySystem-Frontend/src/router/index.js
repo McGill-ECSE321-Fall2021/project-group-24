@@ -3,7 +3,7 @@ import Router from "vue-router";
 import Hello from "@/components/Hello";
 // Import your component here
 import BrowseItems from "@/components/BrowseItems";
-import LoginPage from "@/components/Login";
+import LoginPage from "@/components/Login.vue";
 import SignupPage from "@/components/Signup";
 
 Vue.use(Router);
