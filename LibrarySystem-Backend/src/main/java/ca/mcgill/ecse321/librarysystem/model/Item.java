@@ -1,34 +1,39 @@
 package ca.mcgill.ecse321.librarysystem.model;
 
 import java.sql.Date;
-
 import java.util.Set;
 import javax.persistence.*;
-
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "item") 
+@DiscriminatorColumn(name = "item")
 public abstract class Item {
 
   private String itemTitle;
   private String description;
   private String imageUrl;
-  @Id 
+
+  @Id
   private String itemNumber;
+
   private String genre;
   private Date publishDate;
   private boolean isReservable;
   private String currentReservationId;
   private Type type;
-  
-  public enum Type {Archive, Book, Movie, MusicAlbum, PrintedMedia }
+
+  public enum Type {
+    Archive,
+    Book,
+    Movie,
+    MusicAlbum,
+    PrintedMedia,
+  }
 
   @ElementCollection
   private Set<ItemReservation> itemReservations;
 
-  
   @OneToMany(cascade = { CascadeType.ALL })
   public Set<ItemReservation> getItemReservation() {
     return this.itemReservations;
@@ -101,10 +106,12 @@ public abstract class Item {
   public void setCurrentReservationId(String currentReservationId) {
     this.currentReservationId = currentReservationId;
   }
+
   public Type getType() {
-	  return this.type;
+    return this.type;
   }
+
   public void setType(Type type) {
-	  this.type = type;
+    this.type = type;
   }
 }

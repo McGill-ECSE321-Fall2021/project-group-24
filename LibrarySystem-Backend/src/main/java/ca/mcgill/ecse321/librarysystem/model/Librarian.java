@@ -11,7 +11,7 @@ import javax.persistence.OneToMany;
 @DiscriminatorValue("librarian")
 public class Librarian extends User {
 
-	@ElementCollection
+  @ElementCollection
   private Set<Shift> shifts;
 
   @OneToMany(cascade = { CascadeType.ALL })
@@ -22,9 +22,9 @@ public class Librarian extends User {
   public void setShifts(Set<Shift> theShifts) {
     this.shifts = theShifts;
   }
-  
+
   // added in deliverable 2
   public void addShift(Shift shift) {
-	  shifts.add(shift); 
+    shifts.add(shift);
   }
 }

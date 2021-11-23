@@ -31,7 +31,7 @@ public class LibrarySystemRepository {
     String username,
     String email
   ) {
-	Patron p = new Patron();
+    Patron p = new Patron();
     p.setFirstName(firstName);
     p.setLastName(lastName);
     p.setIsResident(isResident);
@@ -74,7 +74,7 @@ public class LibrarySystemRepository {
     entityManager.persist(p);
     return p;
   }
-  
+
   //getPatron returns the patron for the idNum that was passed as a parameter
   @Transactional
   public Patron getPatron(String idNum) {
@@ -83,7 +83,7 @@ public class LibrarySystemRepository {
   }
 
   // by Saagar
-  //create a new librarian 
+  //create a new librarian
   @Transactional
   public Librarian createLibrarian(
     String idNum,
@@ -106,6 +106,7 @@ public class LibrarySystemRepository {
     entityManager.persist(l);
     return l;
   }
+
   //getLibrarian returns the patron for the idNum that was passed as a parameter
   @Transactional
   public Librarian getLibrarian(String idNum) {
@@ -315,7 +316,8 @@ public class LibrarySystemRepository {
     String imageUrl,
     String itemTitle,
     Date publishDate,
-    String itemNumber,String currentReservationId
+    String itemNumber,
+    String currentReservationId
   ) {
     Archive a = new Archive();
     a.setDescription(description);
@@ -398,7 +400,7 @@ public class LibrarySystemRepository {
   }
 
   @Transactional
-  //create a new shift for a librarian 
+  //create a new shift for a librarian
   public Shift createShift(
     TimeSlot.DayOfWeek dayOfWeek,
     Time startTime,
@@ -424,7 +426,7 @@ public class LibrarySystemRepository {
   @Transactional
   //create a new library hour
   public LibraryHour createLibraryHour(
-   TimeSlot.DayOfWeek dayOfWeek,
+    TimeSlot.DayOfWeek dayOfWeek,
     Time startTime,
     Time endTime,
     String timeSlotId

@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import ca.mcgill.ecse321.librarysystem.model.*;
 import java.sql.Date;
 import java.sql.Time;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class TestUserPersistence {
+
   @Autowired
   private HeadLibrarianRepository headLibrarianRepository;
 
@@ -26,22 +26,17 @@ public class TestUserPersistence {
   @Autowired
   private PatronRepository patronRepository;
 
+  @BeforeEach
+  public void clearDatabase() {
+    // First, we clear registrations to avoid exceptions due to inconsistencies
+    //      librarySystemRepository.deleteAll();
+    // Then we can clear the other tables
 
+    headLibrarianRepository.deleteAll();
+    librarianRepository.deleteAll();
 
-    @BeforeEach
-    public void clearDatabase() {
-      // First, we clear registrations to avoid exceptions due to inconsistencies
-//      librarySystemRepository.deleteAll();
-      // Then we can clear the other tables
-    	
-
-      headLibrarianRepository.deleteAll();
-      librarianRepository.deleteAll();
-
-      patronRepository.deleteAll();
-    }
-
-
+    patronRepository.deleteAll();
+  }
 
   //------------------TESTING HEAD LIBRARIAN------------------------//
   @Test
@@ -78,7 +73,7 @@ public class TestUserPersistence {
     assertEquals(firstName, headLibrarian.getFirstName());
     assertEquals(lastName, headLibrarian.getLastName());
   }
- 
+
   //------------------TESTING LIBRARIAN------------------------//
   @Test
   public void testPersistAndLoadLibrarian() {
@@ -115,61 +110,51 @@ public class TestUserPersistence {
     assertEquals(lastName, librarian.getLastName());
   }
 
+  //------------------TESTING PATRON------------------------//
+  @Test
+  public void testPersistAndLoadPatron() {
+    // First example for object save/load
+    Patron patron = new Patron();
+    // First example for attribute save/load
+    String address = "Patron Address";
+    boolean isVerified = true;
+    boolean isResident = true;
+    boolean isRegisteredOnline = true;
+    String username = "Patron Username";
+    String password = "Patron Password";
+    String email = "Patron Email";
+    String idNum = "Patron IDNum";
+    String firstName = "Patron First Name";
+    String lastName = "Patron Last Name";
 
-      
+    patron.setAddress(address);
+    patron.setIsVerified(isVerified);
+    patron.setIsResident(isResident);
+    patron.setIsRegisteredOnline(isRegisteredOnline);
+    patron.setUsername(username);
+    patron.setPassword(password);
+    patron.setEmail(email);
+    patron.setIdNum(idNum);
+    patron.setFirstName(firstName);
+    patron.setLastName(lastName);
 
-      
-  
-    //------------------TESTING PATRON------------------------//
-    @Test
-    public void testPersistAndLoadPatron() {
-      // First example for object save/load
-      Patron patron = new Patron();
-      // First example for attribute save/load
-      String address = "Patron Address";
-      boolean isVerified = true;
-      boolean isResident = true;
-      boolean isRegisteredOnline = true;
-      String username = "Patron Username";
-      String password = "Patron Password";
-      String email = "Patron Email";
-      String idNum = "Patron IDNum";
-      String firstName = "Patron First Name";
-      String lastName = "Patron Last Name";
-  
-      patron.setAddress(address);
-      patron.setIsVerified(isVerified);
-      patron.setIsResident(isResident);
-      patron.setIsRegisteredOnline(isRegisteredOnline);
-      patron.setUsername(username);
-      patron.setPassword(password);
-      patron.setEmail(email);
-      patron.setIdNum(idNum);
-      patron.setFirstName(firstName);
-      patron.setLastName(lastName);
-  
-      patronRepository.save(patron);
-  
-      patron = null;
-  
-      patron = patronRepository.findPatronByIdNum(idNum);
-  
-      assertNotNull(patron);
-  
-      assertEquals(address, patron.getAddress());
-      assertEquals(isVerified, patron.getIsVerified());
-      assertEquals(isResident, patron.getIsResident());
-      assertEquals(isRegisteredOnline, patron.getIsRegisteredOnline());
-      assertEquals(username, patron.getUsername());
-      assertEquals(password, patron.getPassword());
-      assertEquals(email, patron.getEmail());
-      assertEquals(idNum, patron.getIdNum());
-      assertEquals(firstName, patron.getFirstName());
-      assertEquals(lastName, patron.getLastName());
-    }
-  
+    patronRepository.save(patron);
 
-  
+    patron = null;
 
-  
+    patron = patronRepository.findPatronByIdNum(idNum);
+
+    assertNotNull(patron);
+
+    assertEquals(address, patron.getAddress());
+    assertEquals(isVerified, patron.getIsVerified());
+    assertEquals(isResident, patron.getIsResident());
+    assertEquals(isRegisteredOnline, patron.getIsRegisteredOnline());
+    assertEquals(username, patron.getUsername());
+    assertEquals(password, patron.getPassword());
+    assertEquals(email, patron.getEmail());
+    assertEquals(idNum, patron.getIdNum());
+    assertEquals(firstName, patron.getFirstName());
+    assertEquals(lastName, patron.getLastName());
+  }
 }

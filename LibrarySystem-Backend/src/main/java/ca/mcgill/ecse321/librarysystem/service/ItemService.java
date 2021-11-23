@@ -17,6 +17,7 @@ public class ItemService {
 
   @Autowired
   ItemRepository itemRepository;
+
   @Autowired
   ItemReservationRepository itemReservationRepository;
 
@@ -62,7 +63,7 @@ public class ItemService {
       (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
     ) {
       throw new IllegalArgumentException(
-        "You do not have permission to create an item reservation"
+        "You do not have permission to create an item"
       );
     }
 
@@ -106,10 +107,17 @@ public class ItemService {
     }
     Item gone = itemRepository.findItemByItemNumber(itemNumber);
     Date today = Date.valueOf(LocalDate.now());
-    for (ItemReservation reservation : itemReservationRepository.findItemReservationsByItemNumber(itemNumber)) {
-    	if (reservation.getStartDate().after(today) || reservation.getEndDate().after(today)) {
-    		throw new IllegalArgumentException("Item has future reservations, cannot delete");
-    	}
+    for (ItemReservation reservation : itemReservationRepository.findItemReservationsByItemNumber(
+      itemNumber
+    )) {
+      if (
+        reservation.getStartDate().after(today) ||
+        reservation.getEndDate().after(today)
+      ) {
+        throw new IllegalArgumentException(
+          "Item has future reservations, cannot delete"
+        );
+      }
     }
     itemRepository.delete(gone);
     return gone;
@@ -326,7 +334,7 @@ public class ItemService {
 
   @Transactional
   public List<Item> getAllBooks() {
-	  List<Item> items = itemRepository.findItemsByType(Item.Type.Book);
+    List<Item> items = itemRepository.findItemsByType(Item.Type.Book);
     return toList(items);
   }
 

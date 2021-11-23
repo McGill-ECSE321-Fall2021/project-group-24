@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import ca.mcgill.ecse321.librarysystem.model.*;
 import java.sql.Time;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,46 +15,41 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class TestLibraryHourPersistence {
-	  
-	  @Autowired
-	  private LibraryHourRepository libraryHourRepository;
-	  
-	    @BeforeEach
-	    public void clearDatabase() {
-	      // First, we clear registrations to avoid exceptions due to inconsistencies
-//	      librarySystemRepository.deleteAll();
-	      // Then we can clear the other tables
 
-	      libraryHourRepository.deleteAll();
-	    }
-	    
-	    @Test
-	    public void testPersistAndLoadLibraryHour() {
+  @Autowired
+  private LibraryHourRepository libraryHourRepository;
 
-	      LibraryHour hour = new LibraryHour();
-	      
-	      
-	      Time libraryHourTime = Time.valueOf("00:00:00");
-	      String timeSlotId = "hour id";
-	      hour.setTimeSlotId(timeSlotId);
-	      hour.setDayOfWeek(TimeSlot.DayOfWeek.MONDAY);
-	      hour.setStartTime(libraryHourTime);
-	      hour.setEndTime(libraryHourTime);
+  @BeforeEach
+  public void clearDatabase() {
+    // First, we clear registrations to avoid exceptions due to inconsistencies
+    //	      librarySystemRepository.deleteAll();
+    // Then we can clear the other tables
 
-	      libraryHourRepository.save(hour);
+    libraryHourRepository.deleteAll();
+  }
 
-	      hour = null;
+  @Test
+  public void testPersistAndLoadLibraryHour() {
+    LibraryHour hour = new LibraryHour();
 
-	      hour = libraryHourRepository.findHourByTimeSlotId(timeSlotId);
+    Time libraryHourTime = Time.valueOf("00:00:00");
+    String timeSlotId = "hour id";
+    hour.setTimeSlotId(timeSlotId);
+    hour.setDayOfWeek(TimeSlot.DayOfWeek.MONDAY);
+    hour.setStartTime(libraryHourTime);
+    hour.setEndTime(libraryHourTime);
 
-	      assertNotNull(hour);
+    libraryHourRepository.save(hour);
 
-	      assertEquals(timeSlotId, hour.getTimeSlotId());
-	      assertEquals(TimeSlot.DayOfWeek.MONDAY, hour.getDayOfWeek());
-	      assertEquals(libraryHourTime, hour.getStartTime());
-	      assertEquals(libraryHourTime, hour.getEndTime());
-	      }
+    hour = null;
 
+    hour = libraryHourRepository.findHourByTimeSlotId(timeSlotId);
 
+    assertNotNull(hour);
 
+    assertEquals(timeSlotId, hour.getTimeSlotId());
+    assertEquals(TimeSlot.DayOfWeek.MONDAY, hour.getDayOfWeek());
+    assertEquals(libraryHourTime, hour.getStartTime());
+    assertEquals(libraryHourTime, hour.getEndTime());
+  }
 }
