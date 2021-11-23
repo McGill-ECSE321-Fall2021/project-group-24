@@ -5,6 +5,7 @@ import Hello from "@/components/Hello";
 import BrowseItems from "@/components/BrowseItems";
 import LoginPage from "@/components/Login.vue";
 import SignupPage from "@/components/Signup";
+import BrowseRooms from "@/components/BrowseRooms";
 
 Vue.use(Router);
 
@@ -32,6 +33,11 @@ export default new Router({
       path: "/sign_up",
       name: "SignupPage",
       component: SignupPage
+    },
+    {
+      path: "/browse_rooms",
+      name: "BrowseRooms",
+      component: BrowseRooms
     }
   ]
 });
