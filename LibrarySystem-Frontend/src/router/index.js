@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Hello from "@/components/Hello";
 // Import your component here
 import BrowseItems from "@/components/BrowseItems";
+import BrowseRooms from "@/components/BrowseRooms";
 
 Vue.use(Router);
 
@@ -20,6 +21,11 @@ export default new Router({
       path: "/browse_items",
       name: "BrowseItems",
       component: BrowseItems,
+    },
+    {
+      path: "/browse_rooms",
+      name: "BrowseRooms",
+      component: BrowseRooms,
     },
   ],
 });
