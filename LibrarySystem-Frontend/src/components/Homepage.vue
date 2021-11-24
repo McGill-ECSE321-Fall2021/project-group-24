@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="Homepage">
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
     <ul>
@@ -29,15 +29,27 @@
         >
       </li>
     </ul>
+    <h2>Items</h2>
+    <ul>
+      <li>
+        <router-link :to="{ name: 'CreateItems' }">Create Item</router-link>
+      </li>
+    </ul>
+    <h2>Rooms</h2>
+    <ul>
+      <li>
+        <router-link :to="{ name: 'CreateRooms' }">Create Rooms</router-link>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
-  name: "hello",
+  name: "Homepage",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
+      msg: "Welcome to the Homepage",
     };
   },
 };
@@ -47,7 +59,7 @@ export default {
 <style scoped>
 h1,
 h2 {
-  font-weight: normal;
+  font-weight: bold;
 }
 
 ul {
@@ -61,6 +73,6 @@ li {
 }
 
 a {
-  color: #42b983;
+  color: #42b987;
 }
 </style>
