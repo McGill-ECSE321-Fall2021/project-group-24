@@ -38,7 +38,10 @@
     <h2>Rooms</h2>
     <ul>
       <li>
-        <router-link :to="{ name: 'CreateRooms' }">Create Rooms</router-link>
+        <router-link :to="{ name: 'CreateRooms2' }">Create Rooms</router-link>
+      </li>
+      <li>
+        <router-link :to="{ name: 'BrowseRooms' }">Browse Rooms</router-link>
       </li>
     </ul>
   </div>
@@ -69,7 +72,8 @@ ul {
 
 li {
   display: inline-block;
-  margin: 0 10px;
+  margin: 10px;
+  padding: 10px;
 }
 
 a {

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p>s</p>
     <div id="input">
       <h2>Create Rooms</h2>
     </div>
@@ -47,6 +46,37 @@
           <a-button type="primary" html-type="submit"> Submit </a-button>
         </a-form-item>
       </a-form>
+    </div>
+    <div>
+      <li>
+        <router-link :to="{ name: 'BrowseRooms' }"
+          >Go To Browse Rooms!</router-link
+        >
+      </li>
+    </div>
+    <div id="searchbar">
+      <a-spin v-model="visible" spinning="this.responseStatus == ''" />
+      <a-modal v-model="visible" title="Alert" :footer="null" :header="null">
+        <a-alert
+          v-if="this.responseStatus == '200'"
+          message="CREATED ROOM"
+          type="success"
+          show-icon
+        />
+        <a-alert
+          v-if="this.responseStatus != '200'"
+          message="Wrong"
+          type="error"
+          show-icon
+        />
+        <a-alert
+          v-if="this.roomError"
+          message=""
+          description="There was an unexpected error"
+          type="error"
+          show-icon
+        />
+      </a-modal>
     </div>
   </div>
 </template>

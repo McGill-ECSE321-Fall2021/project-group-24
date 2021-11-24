@@ -23,7 +23,7 @@
         )
       "
     >
-      Create Book
+      Create Book - Create Items
     </a-button>
     <div id="searchbar">
       <a-alert
