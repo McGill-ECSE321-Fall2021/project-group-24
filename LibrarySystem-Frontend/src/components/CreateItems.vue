@@ -38,7 +38,7 @@
     </div>
   </div>
 </template>
-<script src="./Items.js"></script>
+<script src=""></script>
 <style>
 #searchbar {
   padding-left: 20%;

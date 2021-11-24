@@ -11,7 +11,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "items",
+  name: "BrowseItems",
   data() {
     return {
       items: [],
@@ -22,7 +22,7 @@ export default {
       visible: false,
     };
   },
-  created: function (/* add parameters here if you need them */) {
+  created: function () {
     //Use this to run the 'get' controller method. If you need to pass a parameter, do "/api/items/all", {params: {itemTitle}}
     AXIOS.get("/api/items/all")
       .then((response) => {
@@ -105,43 +105,6 @@ export default {
           }
         });
       }
-    },
-    createBook: function (
-      itemTitle,
-      description,
-      imageURL,
-      publisher,
-      author,
-      genre,
-      publishDate,
-      isReservable,
-      currentUserId
-    ) {
-      AXIOS.post("/api/items/create_book", null, {
-        params: {
-          itemTitle,
-          description,
-          imageURL,
-          publisher,
-          author,
-          genre,
-          publishDate,
-          isReservable,
-          currentUserId,
-        },
-      })
-        .then((response) => {
-          //this adds it to the list of items on the website
-          this.items.push(response.data);
-          this.itemError = "";
-          this.newItem = "";
-        })
-        .catch((e) => {
-          this.visible = true;
-          var errorMsg = e.response.data;
-          console.log(e.response);
-          this.itemError = errorMsg;
-        });
     },
     deleteItem: function (itemNumber, currentUserId) {
       console.log(itemNumber);

@@ -18,7 +18,7 @@ export default {
       newRoom: "",
       roomError: "",
       response: [],
-      responseStatus: "",
+      responseStatus: null,
       results: [],
       visible: false,
       formLayout: "horizontal",
@@ -85,7 +85,7 @@ export default {
             })
             .catch((e) => {
               this.visible = true;
-              var errorMsg = e.response.data.error;
+              var errorMsg = e.response.data;
               this.roomError = errorMsg;
             });
         }

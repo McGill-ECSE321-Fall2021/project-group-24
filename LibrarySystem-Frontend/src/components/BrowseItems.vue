@@ -111,24 +111,7 @@
       </a-card>
     </div>
     <br />
-    <a-button
-      type="primary"
-      @click="
-        createBook(
-          'title',
-          'deccy',
-          'www.google.com',
-          'pubby',
-          'authy',
-          'genre',
-          '2001-09-22',
-          true,
-          'admin'
-        )
-      "
-    >
-      Create Book
-    </a-button>
+
     <div id="searchbar">
       <a-modal v-model="visible" title="Error" :footer="null" :header="null">
         <a-alert
@@ -149,7 +132,7 @@
     </div>
   </div>
 </template>
-<script src="./js/Items.js"></script>
+<script src="./BrowseItems.js"></script>
 <style>
 #searchbar {
   padding-left: 20%;

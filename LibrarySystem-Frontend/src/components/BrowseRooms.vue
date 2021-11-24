@@ -48,7 +48,7 @@
     </div>
   </div>
 </template>
-<script src="./js/Rooms.js"></script>
+<script src="./BrowseRooms.js"></script>
 <style>
 #searchbar {
   padding-left: 20%;

@@ -55,8 +55,8 @@
       </li>
     </div>
     <div id="searchbar">
-      <a-spin v-model="visible" spinning="this.responseStatus == ''" />
-      <a-modal v-model="visible" title="Alert" :footer="null" :header="null">
+      <a-spin v-model="visible" :spinning="!this.responseStatus" />
+      <a-modal v-model="visible" title=" " :footer="null" :header="null">
         <a-alert
           v-if="this.responseStatus == '200'"
           message="CREATED ROOM"
@@ -65,14 +65,7 @@
         />
         <a-alert
           v-if="this.responseStatus != '200'"
-          message="Wrong"
-          type="error"
-          show-icon
-        />
-        <a-alert
-          v-if="this.roomError"
-          message=""
-          description="There was an unexpected error"
+          :message="this.roomError"
           type="error"
           show-icon
         />
