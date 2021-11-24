@@ -73,7 +73,7 @@
     </div>
   </div>
 </template>
-<script src="./CreateRooms.js"></script>
+<script src="../js/CreateNewRoom.js"></script>
 <style>
 #input {
   padding-left: 20%;

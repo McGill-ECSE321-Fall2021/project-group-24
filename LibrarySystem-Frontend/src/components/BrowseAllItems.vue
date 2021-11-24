@@ -132,7 +132,7 @@
     </div>
   </div>
 </template>
-<script src="./BrowseItems.js"></script>
+<script src="../js/BrowseAllItems.js"></script>
 <style>
 #searchbar {
   padding-left: 20%;
