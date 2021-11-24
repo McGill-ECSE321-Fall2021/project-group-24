@@ -149,7 +149,7 @@
     </div>
   </div>
 </template>
-<script src="./js/Items.js"></script>
+<script src="./Items.js"></script>
 <style>
 #searchbar {
   padding-left: 20%;
