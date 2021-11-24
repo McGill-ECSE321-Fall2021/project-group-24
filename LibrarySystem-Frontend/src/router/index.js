@@ -27,18 +27,18 @@ export default new Router({
     },
     //create items page
     //http://127.0.0.1:8087/#/create_items
-    {
-      path: "/create_items",
-      name: "CreateItems",
-      component: CreateItems,
-    },
+    // {
+    //   path: "/create_items",
+    //   name: "CreateItems",
+    //   component: CreateItems,
+    // },
     //create rooms page
     //http://127.0.0.1:8087/#/create_rooms
-    {
-      path: "/create_rooms",
-      name: "CreateRooms",
-      component: CreateRooms,
-    },
+    // {
+    //   path: "/create_rooms",
+    //   name: "CreateRooms",
+    //   component: CreateRooms,
+    // },
     //create rooms page
     //http://127.0.0.1:8087/#/create_rooms2
     {
