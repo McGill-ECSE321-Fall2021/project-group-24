@@ -5,6 +5,7 @@ import Homepage from "@/components/Homepage";
 import BrowseItems from "@/components/BrowseItems";
 import CreateItems from "@/components/CreateItems";
 import CreateRooms from "@/components/CreateRooms";
+import BrowseRooms from "@/components/BrowseRooms";
 
 Vue.use(Router);
 
@@ -36,6 +37,12 @@ export default new Router({
       path: "/create_rooms",
       name: "CreateRooms",
       component: CreateRooms,
+    },
+
+    {
+      path: "/browse_rooms",
+      name: "BrowseRooms",
+      component: BrowseRooms,
     },
   ],
 });
