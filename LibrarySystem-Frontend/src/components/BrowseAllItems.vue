@@ -99,10 +99,14 @@
             <strong>Publish date:</strong> {{ item.publishDate }}
           </p>
           <div style="20%">
-            <a-button>Reserve item</a-button>
+            <a-button v-if="currentUser.username">Reserve item</a-button>
+            <a-button v-if="currentUser.isPatron == false">
+              Checkout Item for Patron
+            </a-button>
             <a-button type="dashed" v-if="currentUser.isPatron == false">
               Edit item
             </a-button>
+
             <a-button
               type="danger"
               v-if="currentUser.isPatron == false"

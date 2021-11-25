@@ -18,7 +18,7 @@ Vue.use(Antd);
 
 const store = new Vuex.Store({
   state: {
-    currentUser: { username: null, password: null, isPatron: false },
+    currentUser: { username: null, password: null, isPatron: null },
   },
   mutations: {
     changeUser(state, user) {
