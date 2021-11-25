@@ -56,7 +56,7 @@ export default new Router({
       name: "CreateNewItem",
       component: CreateNewItem,
     },
-
+    //http://127.0.0.1:8087/#/sign_up_irl
     {
       path: "/sign_up_irl",
       name: "SignupIRL",
