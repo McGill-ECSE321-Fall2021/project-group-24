@@ -1,43 +1,46 @@
 <template>
-  <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
-  <div id="loginInputs">
-    <div id="usernameinput">
-      <a-input placeholder="Username"> </a-input>
+  <div>
+    <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
+    <div>
+      <a-form
+        :form="form"
+        :label-col="{ span: 5 }"
+        :wrapper-col="{ span: 12 }"
+        @submit="handleSubmit"
+      >
+        <a-form-item label="Username">
+          <a-input
+            v-decorator="[
+              'username',
+              {
+                rules: [{ required: true, message: 'Username' }],
+              },
+            ]"
+          />
+        </a-form-item>
+        <a-form-item label="Password">
+          <a-input-password
+            v-decorator="[
+              'password',
+              {
+                rules: [{ required: true, message: 'Password' }],
+              },
+            ]"
+          />
+        </a-form-item>
+
+        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+          <a-button type="primary" html-type="submit"> Log In </a-button>
+        </a-form-item>
+      </a-form>
     </div>
-    <div id="passwordinput">
-      <a-input placeholder="Password"> </a-input>
+    <div>
+      <router-link :to="{ name: 'SignupPage' }"
+        >Don't have an account? Sign up here</router-link
+      >
     </div>
-    <a-button
-      type="primary"
-      @click="
-        login(
-          document.getElementById('usernameinput').value,
-          document.getElementById('passwordinput').value
-        )
-      "
-    >
-      Log In
-    </a-button>
   </div>
 </template>
-<script src="./Login.js"></script>
+<script src="../js/Login.js"></script>
 
-<style>
-#usernameinput,
-#passwordinput {
-  margin: 10px auto;
-  position: relative;
-  align-self: center;
-  width: 20%;
-}
-
-#loginInputs {
-  /* padding-left: 30%;
-  padding-right: 30%; */
-  position: relative;
-  width: 100%;
-  margin: auto;
-  align-content: center;
-  align-self: center;
-}
-</style>
+<style scoped></style>

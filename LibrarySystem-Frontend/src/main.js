@@ -13,12 +13,12 @@ Vue.use(BootstrapVue);
 
 Vue.config.productionTip = false;
 Vue.use(Antd);
-Vue.prototype.$actionButton = "null";
+Vue.prototype.$currentuser = "null";
 
 /* eslint-disable no-new */
 new Vue({
   el: "#app",
   router,
   template: "<App/>",
-  components: { App }
+  components: { App },
 });
