@@ -1,5 +1,5 @@
 <template>
-  <div class="Homepage">
+  <div class="hello">
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
     <ul>
@@ -29,32 +29,17 @@
         >
       </li>
     </ul>
-    <h2>Items</h2>
-    <ul>
-      <li>
-        <router-link :to="{ name: 'CreateItems' }">Create Item</router-link>
-      </li>
-    </ul>
-    <h2>Rooms</h2>
-    <ul>
-      <li>
-        <router-link :to="{ name: 'CreateRooms2' }">Create Rooms</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'BrowseRooms' }">Browse Rooms</router-link>
-      </li>
-    </ul>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Homepage",
+  name: "hello",
   data() {
     return {
-      msg: "Welcome to the Homepage",
+      msg: "Welcome to Your Vue.js App"
     };
-  },
+  }
 };
 </script>
 
@@ -62,7 +47,7 @@ export default {
 <style scoped>
 h1,
 h2 {
-  font-weight: bold;
+  font-weight: normal;
 }
 
 ul {
@@ -72,11 +57,10 @@ ul {
 
 li {
   display: inline-block;
-  margin: 10px;
-  padding: 10px;
+  margin: 0 10px;
 }
 
 a {
-  color: #42b987;
+  color: #42b983;
 }
 </style>
