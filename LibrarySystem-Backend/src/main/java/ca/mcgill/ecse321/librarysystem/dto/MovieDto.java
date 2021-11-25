@@ -22,7 +22,7 @@ public class MovieDto extends ItemDto {
     String productionCompany,
     String movieCast,
     String director,
-    String producer
+    String producer, Date nextAvailableDate
   ) {
     this.itemTitle = itemTitle;
     this.description = description;
@@ -37,6 +37,7 @@ public class MovieDto extends ItemDto {
     this.productionCompany = productionCompany;
     this.director = director;
     this.producer = producer;
+    this.nextAvailableDate= nextAvailableDate;
   }
 
   public String getProducer() {

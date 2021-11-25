@@ -19,9 +19,14 @@
         <p><strong>Capacity: </strong>{{ room.capacity }}</p>
 
         <div style="20%">
-          <a-button>Reserve room</a-button>
+          <a-button v-if="currentUser.username" @click="reservePressed(room)">
+            Reserve room
+          </a-button>
           <a-button type="dashed">Update room</a-button>
-          <a-button type="danger" @click="deleteRoom(room.roomNum, this.$currentUser)">
+          <a-button
+            type="danger"
+            @click="deleteRoom(room.roomNum, this.$currentUser)"
+          >
             Delete room
           </a-button>
         </div>

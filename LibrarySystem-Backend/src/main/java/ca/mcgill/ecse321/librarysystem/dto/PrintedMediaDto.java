@@ -16,7 +16,7 @@ public class PrintedMediaDto extends ItemDto {
     boolean isReservable,
     String currentReservationId,
     String itemNumber,
-    String issueNumber
+    String issueNumber, Date nextAvailableDate
   ) {
     this.itemTitle = itemTitle;
     this.description = description;
@@ -28,6 +28,7 @@ public class PrintedMediaDto extends ItemDto {
     this.currentReservationId = currentReservationId;
     this.type = Item.Type.PrintedMedia;
     this.issueNumber = issueNumber;
+    this.nextAvailableDate = nextAvailableDate;
   }
 
   public String getIssueNumber() {

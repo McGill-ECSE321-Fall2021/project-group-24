@@ -97,10 +97,26 @@
             <strong>Genre:</strong> {{ item.genre }}
             <br />
             <strong>Publish date:</strong> {{ item.publishDate }}
+            <br />
+            <span v-if="item.isReservable"
+              ><strong>Next Availabile date:</strong>
+              {{ item.nextAvailableDate }}</span
+            >
           </p>
           <div style="20%">
-            <a-button v-if="currentUser.username">Reserve item</a-button>
-            <a-button v-if="currentUser.isPatron == false">
+            <a-button
+              v-if="currentUser.username && item.isReservable"
+              @click="reservePressed(item)"
+              >Reserve item</a-button
+            >
+            <a-button
+              v-if="
+                currentUser.isPatron == false &&
+                item.isReservable &&
+                item.nextAvailableDate == today
+              "
+              @click="checkoutPressed(item)"
+            >
               Checkout Item for Patron
             </a-button>
             <a-button type="dashed" v-if="currentUser.isPatron == false">

@@ -26,6 +26,8 @@ public class ItemController {
 
 	@Autowired
 	private ItemService itemService;
+	@Autowired
+	private ItemReservationService itemReservationService;
 
 	/***
 	 *
@@ -316,6 +318,7 @@ public class ItemController {
 	}
 
 	private BookDto convertToBookDto(Book book) {
+		Date nextAvailableDate = itemReservationService.findNextAvailabilityForItem(book.getItemNumber());
 		BookDto bookDto = new BookDto(
 			book.getItemTitle(),
 			book.getDescription(),
@@ -326,12 +329,13 @@ public class ItemController {
 			book.getPublishDate(),
 			book.getIsReservable(),
 			book.getCurrentReservationId(),
-			book.getItemNumber()
+			book.getItemNumber(),nextAvailableDate
 		);
 		return bookDto;
 	}
 
 	private ArchiveDto convertToArchiveDto(Archive archive) {
+		
 		ArchiveDto archiveDto = new ArchiveDto(
 			archive.getItemTitle(),
 			archive.getDescription(),
@@ -340,7 +344,7 @@ public class ItemController {
 			archive.getPublishDate(),
 			archive.getIsReservable(),
 			archive.getCurrentReservationId(),
-			archive.getItemNumber()
+			archive.getItemNumber(),itemReservationService.findNextAvailabilityForItem(archive.getItemNumber())
 		);
 		return archiveDto;
 	}
@@ -358,7 +362,7 @@ public class ItemController {
 			movie.getProductionCompany(),
 			movie.getMovieCast(),
 			movie.getDirector(),
-			movie.getProducer()
+			movie.getProducer(),itemReservationService.findNextAvailabilityForItem(movie.getItemNumber())
 		);
 		return movieDto;
 	}
@@ -373,7 +377,7 @@ public class ItemController {
 			printedMedia.getIsReservable(),
 			printedMedia.getCurrentReservationId(),
 			printedMedia.getItemNumber(),
-			printedMedia.getIssueNumber()
+			printedMedia.getIssueNumber(),itemReservationService.findNextAvailabilityForItem(printedMedia.getItemNumber())
 		);
 		return printedMediaDto;
 	}
@@ -389,7 +393,7 @@ public class ItemController {
 			musicAlbum.getCurrentReservationId(),
 			musicAlbum.getItemNumber(),
 			musicAlbum.getArtist(),
-			musicAlbum.getRecordingLabel()
+			musicAlbum.getRecordingLabel(),itemReservationService.findNextAvailabilityForItem(musicAlbum.getItemNumber())
 		);
 		return musicAlbumDto;
 	}

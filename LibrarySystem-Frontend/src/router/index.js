@@ -6,6 +6,9 @@ import BrowseAllItems from "@/components/BrowseAllItems";
 import CreateNewRoom from "@/components/CreateNewRoom";
 import BrowseAllRooms from "@/components/BrowseAllRooms";
 import CreateNewItem from "@/components/CreateNewItem";
+import CheckoutItem from "@/components/CheckoutItemForPatron";
+import ReserveItem from "@/components/ReserveItem";
+import ReserveRoom from "@/components/ReserveRoom";
 
 import LoginPage from "@/components/Login.vue";
 import SignupPage from "@/components/Signup";
@@ -56,11 +59,25 @@ export default new Router({
       name: "CreateNewItem",
       component: CreateNewItem,
     },
-
     {
       path: "/sign_up_irl",
       name: "SignupIRL",
       component: SignupIRL,
+    },
+    {
+      path: "/checkout_item",
+      name: "CheckoutItem",
+      component: CheckoutItem,
+    },
+    {
+      path: "/reserve_item",
+      name: "ReserveItem",
+      component: ReserveItem,
+    },
+    {
+      path: "/reserve_room",
+      name: "ReserveRoom",
+      component: ReserveRoom,
     },
   ],
 });

@@ -20,6 +20,7 @@ export default {
       response: [],
       results: [],
       visible: false,
+      currentUser: this.$store.state.currentUser,
     };
   },
   created: function () {
@@ -71,6 +72,9 @@ export default {
           var errorMsg = e.response.data.error;
           this.roomError = errorMsg;
         });
+    },
+    reservePressed: function (room) {
+      this.$router.push({ name: "ReserveRoom", params: { room } });
     },
   },
 };

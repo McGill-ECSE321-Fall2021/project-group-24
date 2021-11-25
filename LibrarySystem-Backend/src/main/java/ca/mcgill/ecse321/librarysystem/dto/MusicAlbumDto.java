@@ -18,7 +18,7 @@ public class MusicAlbumDto extends ItemDto {
     String currentReservationId,
     String itemNumber,
     String artist,
-    String recordingLabel
+    String recordingLabel, Date nextAvailableDate
   ) {
     this.itemTitle = itemTitle;
     this.description = description;
@@ -31,6 +31,7 @@ public class MusicAlbumDto extends ItemDto {
     this.type = Item.Type.MusicAlbum;
     this.artist = artist;
     this.recordingLabel = recordingLabel;
+    this.nextAvailableDate = nextAvailableDate;
   }
 
   public String getRecordingLabel() {
