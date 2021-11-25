@@ -7,6 +7,9 @@ import CreateNewRoom from "@/components/CreateNewRoom";
 import BrowseAllRooms from "@/components/BrowseAllRooms";
 import CreateNewItem from "@/components/CreateNewItem";
 
+import LoginPage from "@/components/Login.vue";
+import SignupPage from "@/components/Signup";
+
 Vue.use(Router);
 
 export default new Router({
@@ -31,8 +34,16 @@ export default new Router({
       name: "CreateNewRoom",
       component: CreateNewRoom,
     },
-
-    //http://127.0.0.1:8087/#/browse_rooms
+    {
+      path: "/sign_in",
+      name: "LoginPage",
+      component: LoginPage,
+    },
+    {
+      path: "/sign_up",
+      name: "SignupPage",
+      component: SignupPage,
+    },
     {
       path: "/browse_rooms",
       name: "BrowseAllRooms",

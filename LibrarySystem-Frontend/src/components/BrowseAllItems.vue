@@ -99,13 +99,21 @@
             <strong>Publish date:</strong> {{ item.publishDate }}
           </p>
           <div style="20%">
-            <a-button>Reserve item</a-button>
-            <a-button type="dashed">Edit item</a-button>
+            <a-button v-if="currentUser.username">Reserve item</a-button>
+            <a-button v-if="currentUser.isPatron == false">
+              Checkout Item for Patron
+            </a-button>
+            <a-button type="dashed" v-if="currentUser.isPatron == false">
+              Edit item
+            </a-button>
+
             <a-button
               type="danger"
-              @click="deleteItem(item.itemNumber, 'admin')"
-              >Delete item</a-button
+              v-if="currentUser.isPatron == false"
+              @click="deleteItem(item.itemNumber, currentUser.idNum)"
             >
+              Delete item
+            </a-button>
           </div>
         </a-layout>
       </a-card>
