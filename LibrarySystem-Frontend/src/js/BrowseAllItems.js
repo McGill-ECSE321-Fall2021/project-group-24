@@ -11,7 +11,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "BrowseItems",
+  name: "BrowseAllItems",
   data() {
     return {
       items: [],

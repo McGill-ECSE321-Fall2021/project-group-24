@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Hello from "@/components/Hello";
+import Homepage from "@/components/Homepage";
 // Import your component here
 import BrowseAllItems from "@/components/BrowseAllItems";
 import CreateNewRoom from "@/components/CreateNewRoom";
@@ -16,8 +16,8 @@ export default new Router({
     // http://127.0.0.1:8087/#/
     {
       path: "/",
-      name: "Hello",
-      component: Hello,
+      name: "Homepage",
+      component: Homepage,
     },
     //Copy this same format for routing your path
     // http://127.0.0.1:8087/#/browse_items
@@ -32,8 +32,8 @@ export default new Router({
       path: "/create_rooms",
       name: "CreateNewRoom",
       component: CreateNewRoom,
-      name: "BrowseItems",
-      component: BrowseItems,
+      name: "BrowseAllItems",
+      component: BrowseAllItems,
     },
     {
       path: "/sign_in",
