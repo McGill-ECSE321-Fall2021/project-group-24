@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div><h2>Create an item</h2></div>
+    <h4>Select which type of item to create:</h4>
     <a-tabs default-active-key="Book" @change="callback">
       <a-tab-pane key="Book" tab="Book" force-render
         ><div id="tabTile"><p>Create a new book!</p></div>
