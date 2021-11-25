@@ -32,16 +32,21 @@
     <h2>Items</h2>
     <ul>
       <li>
-        <router-link :to="{ name: 'CreateItems' }">Create Item</router-link>
+        <router-link :to="{ name: 'CreateNewItem' }"
+          >Create an Item</router-link
+        >
+      </li>
+      <li>
+        <router-link :to="{ name: 'BrowseAllItems' }">Browse Items</router-link>
       </li>
     </ul>
     <h2>Rooms</h2>
     <ul>
       <li>
-        <router-link :to="{ name: 'CreateRooms2' }">Create Rooms</router-link>
+        <router-link :to="{ name: 'CreateNewRoom' }">Create a Room</router-link>
       </li>
       <li>
-        <router-link :to="{ name: 'BrowseRooms' }">Browse Rooms</router-link>
+        <router-link :to="{ name: 'BrowseAllRooms' }">Browse Rooms</router-link>
       </li>
     </ul>
   </div>

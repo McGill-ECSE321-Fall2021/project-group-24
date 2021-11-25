@@ -5,6 +5,7 @@ import Homepage from "@/components/Homepage";
 import BrowseAllItems from "@/components/BrowseAllItems";
 import CreateNewRoom from "@/components/CreateNewRoom";
 import BrowseAllRooms from "@/components/BrowseAllRooms";
+import CreateNewItem from "@/components/CreateNewItem";
 
 Vue.use(Router);
 
@@ -36,6 +37,12 @@ export default new Router({
       path: "/browse_rooms",
       name: "BrowseAllRooms",
       component: BrowseAllRooms,
+    },
+    //http://127.0.0.1:8087/#/create_item
+    {
+      path: "/create_item",
+      name: "CreateNewItem",
+      component: CreateNewItem,
     },
   ],
 });

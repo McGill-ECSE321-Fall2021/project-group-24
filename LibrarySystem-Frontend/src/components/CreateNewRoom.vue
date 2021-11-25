@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div id="form">
     <div id="input">
       <h2>Create Rooms</h2>
     </div>
 
-    <div>
+    <div id="form">
       <a-form
         :form="form"
         :label-col="{ span: 5 }"
@@ -47,15 +47,12 @@
         </a-form-item>
       </a-form>
     </div>
-    <div>
-      <li>
-        <router-link :to="{ name: 'BrowseRooms' }"
-          >Go To Browse Rooms!</router-link
-        >
-      </li>
+    <div id="input">
+      <router-link :to="{ name: 'BrowseAllRooms' }"
+        >Go To Browse Rooms!</router-link
+      >
     </div>
     <div id="searchbar">
-      <a-spin v-model="visible" :spinning="!this.responseStatus" />
       <a-modal v-model="visible" title=" " :footer="null" :header="null">
         <a-alert
           v-if="this.responseStatus == '200'"
@@ -76,10 +73,19 @@
 <script src="../js/CreateNewRoom.js"></script>
 <style>
 #input {
-  padding-left: 20%;
-  padding-right: 20%;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
 }
 #title {
   font-size: 100%;
+}
+#form {
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  margin-left: 100px;
 }
 </style>
