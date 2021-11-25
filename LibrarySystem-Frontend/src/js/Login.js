@@ -37,23 +37,23 @@ export default {
       this.visible = false;
     },
 
-    // login: function (username, password) {
-    //   console.log(username);
-    //   AXIOS.post(
-    //     "/api/user/login/" + "?username=" + username + "&password=" + password
-    //   )
-    //     .then((response) => {
-    //       this.users = this.users.filter((user) => {
-    //         return user.username != username;
-    //       });
-    //       this.results = this.users;
-    //     })
-    //     .catch((e) => {
-    //       this.visible = true;
-    //       var errorMsg = e.response.data.error;
-    //       this.userError = errorMsg;
-    //     });
-    // },
+    login: function (username, password) {
+      console.log(username);
+      AXIOS.post(
+        "/api/user/login/" + "?username=" + username + "&password=" + password
+      )
+        .then((response) => {
+          this.users = this.users.filter((user) => {
+            return user.username != username;
+          });
+          this.results = this.users;
+        })
+        .catch((e) => {
+          this.visible = true;
+          var errorMsg = e.response.data.error;
+          this.userError = errorMsg;
+        });
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
@@ -67,6 +67,7 @@ export default {
               this.user.username +
               "&password=" +
               this.user.password
+
           )
             .then((res) => {
               console.log("RESPONSE: " + res.status);
@@ -76,7 +77,12 @@ export default {
               console.log("HI");
               this.$store.commit("changeUser", res.data);
               console.log("THEN: ");
+              if(this.responseStatus==200){
+                window.location.href = "http://127.0.0.1:8087/#/"
+
+              }
               return res.status;
+              
             })
             .catch((e) => {
               console.log("CATCH: ");
