@@ -9,6 +9,7 @@ import CreateNewItem from "@/components/CreateNewItem";
 
 import LoginPage from "@/components/Login.vue";
 import SignupPage from "@/components/Signup";
+import SignupIRL from "@/components/SignupIRL";
 
 Vue.use(Router);
 
@@ -54,6 +55,12 @@ export default new Router({
       path: "/create_item",
       name: "CreateNewItem",
       component: CreateNewItem,
+    },
+
+    {
+      path: "/sign_up_irl",
+      name: "SignupIRL",
+      component: SignupIRL,
     },
   ],
 });

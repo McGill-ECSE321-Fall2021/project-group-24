@@ -1,6 +1,3 @@
-
- 
-<!-- <div style="background-image: url(../static/images/image_1.jpg);"> -->
 <template>
   <div >
     <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
@@ -154,11 +151,3 @@
     
   </div>
 </template>
-
-<script src="../js/Signup.js"></script>
-
-<style scoped>
-    .white--text /deep/ label {
-    color: white;
-    }
-</style>

@@ -76,14 +76,7 @@ export default{
         },
 
 
-        handleSubmit(e) {
-            e.preventDefault();
-            this.form.validateFieldsAndScroll((err, values) => {
-                if (!err) {
-                    console.log('Received values of form: ', values);
-                }
-            });
-        },
+       
 
 
         handleConfirmBlur(e) {
@@ -147,24 +140,25 @@ export default{
                         "&email=" +
                         this.user.email
                     ).then((res) => {
-                        console.log("RESPONSE: "+res.status);
-                        this.visible=true;
-                        this.responseStatus = responseStatus;
-                        this.user.username = "";
-                        this.user.password = "";
-                        this.user.firstName = "";
-                        this.user.lastName = "";
-                        this.user.isResident = "";
-                        this.user.address = "";
-                        this.user.email = "";
+                        console.log("RESPONSE: " + res.status);
+                        this.visible = true;
+                        this.responseStatus = res.status;
+                        console.log(res.data);
+                        // console.log("HI");
+                        // this.$store.commit("changeUser", res.data);
+                        console.log("THEN: ");
                         if(this.responseStatus==200){
-                            window.location.href = "http://127.0.0.1:8087/#/"
+                          window.location.href = "http://127.0.0.1:8087/#/"
+          
                         }
+                        return res.status;
+                        
                     })
                     .catch((e)=>{
+                        console.log("CATCH: ");
                         this.visible = true;
                         var errorMsg = e.response.data;
-                        this.roomError = errorMsg;
+                        this.userError = errorMsg;
                     });
                 }
             });

@@ -4,7 +4,7 @@
     <div>
       <a-form
         :form="form"
-        :label-col="{ span: 5 }"
+        :label-col="{ span: 6 }"
         :wrapper-col="{ span: 12 }"
         @submit="handleSubmit"
       >
@@ -29,7 +29,7 @@
           />
         </a-form-item>
 
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+        <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
           <a-button type="primary" html-type="submit"> Log In </a-button>
         </a-form-item>
       </a-form>
@@ -39,6 +39,29 @@
         >Don't have an account? Sign up here</router-link
       >
     </div>
+
+    <div>
+      <a-modal v-model="visible" title="Error" :footer="null" :header="null">
+        <a-alert
+          v-if="this.userError"
+          message=" "
+          :description="this.userError"
+          type="error"
+          show-icon
+        />
+        <a-alert
+          v-if="!this.userError"
+          message=" "
+          description="There was an unexpected error"
+          type="error"
+          show-icon
+        />
+      </a-modal>
+    </div>
+  </div>
+
+
+
   </div>
 </template>
 <script src="../js/Login.js"></script>
