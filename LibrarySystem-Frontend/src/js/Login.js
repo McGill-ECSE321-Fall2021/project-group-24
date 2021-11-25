@@ -60,9 +60,6 @@ export default {
         if (!err) {
           console.log("Received values of form: ", values);
           this.user = values;
-          console.log("USERNAME: " + this.user.username);
-          console.log("PASSWORD: " + this.user.password);
-          //Vue.prototype.$currentuser = this.user;
 
           AXIOS.post(
             "/api/user/login" +
@@ -75,6 +72,9 @@ export default {
               console.log("RESPONSE: " + res.status);
               this.visible = true;
               this.responseStatus = res.status;
+              console.log(res.data);
+              console.log("HI");
+              this.$store.commit("changeUser", res.data);
               console.log("THEN: ");
               return res.status;
             })

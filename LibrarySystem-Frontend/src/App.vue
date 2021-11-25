@@ -2,13 +2,14 @@
   <div id="app">
     <!-- <img src="./assets/logo.png"> !-->
     <h1>Library System Application</h1>
+    <h4>Hello, {{ this.$store.state.currentUser.username }}</h4>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: "app"
+  name: "app",
 };
 </script>
 

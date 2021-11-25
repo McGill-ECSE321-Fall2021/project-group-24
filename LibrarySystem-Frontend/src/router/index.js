@@ -32,8 +32,6 @@ export default new Router({
       path: "/create_rooms",
       name: "CreateNewRoom",
       component: CreateNewRoom,
-      name: "BrowseAllItems",
-      component: BrowseAllItems,
     },
     {
       path: "/sign_in",
