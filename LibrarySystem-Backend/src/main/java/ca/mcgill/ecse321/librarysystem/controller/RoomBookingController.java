@@ -137,15 +137,15 @@ public class RoomBookingController {
     @RequestParam String roomNum
   ) {
     try {
-      RoomBooking booking = roomBookingService.createRoomBooking(
-        currentUserId,
-        Date.valueOf(LocalDate.parse(date)),
-        Time.valueOf(LocalTime.parse(startTime)),
-        Time.valueOf(LocalTime.parse(endTime)),
-        idNum,
-        roomNum
-      );
-      return new ResponseEntity<Object>(convertToDto(booking), HttpStatus.OK);
+
+      return new ResponseEntity<Object>(convertToDto(roomBookingService.createRoomBooking(
+    	        currentUserId,
+    	        Date.valueOf(LocalDate.parse(date)),
+    	        Time.valueOf(LocalTime.parse(startTime)),
+    	        Time.valueOf(LocalTime.parse(endTime)),
+    	        idNum,
+    	        roomNum
+    	      )), HttpStatus.OK);
     } catch (IllegalArgumentException e) {
       return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }

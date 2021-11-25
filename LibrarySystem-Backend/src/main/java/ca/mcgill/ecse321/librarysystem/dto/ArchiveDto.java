@@ -13,7 +13,7 @@ public class ArchiveDto extends ItemDto {
     Date publishDate,
     boolean isReservable,
     String currentReservationId,
-    String itemNumber
+    String itemNumber, Date nextAvailableDate
   ) {
     this.itemTitle = itemTitle;
     this.description = description;
@@ -24,5 +24,6 @@ public class ArchiveDto extends ItemDto {
     this.itemNumber = itemNumber;
     this.currentReservationId = currentReservationId;
     this.type = Item.Type.Archive;
+    this.nextAvailableDate = nextAvailableDate;
   }
 }

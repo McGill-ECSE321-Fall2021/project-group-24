@@ -21,13 +21,16 @@ export default {
       results: [],
       visible: false,
       currentUser: this.$store.state.currentUser,
+      today: new Date().toJSON().slice(0, 10),
     };
   },
   created: function () {
+    console.log(this.today);
     //Use this to run the 'get' controller method. If you need to pass a parameter, do "/api/items/all", {params: {itemTitle}}
     AXIOS.get("/api/items/all")
       .then((response) => {
         this.items = response.data;
+
         // this is how I added an example item to be shown. This is just because when we start the database it resets everything lol
         this.items = [
           ...this.items,
@@ -58,7 +61,6 @@ export default {
       .catch((e) => {
         this.visible = true;
         this.itemError = e;
-        console.log(e);
       });
   },
   //this is where you add custom functions / methods you want to use in your vue file. Here we have removeError to clear the error message, and createBook to create books
@@ -123,6 +125,12 @@ export default {
           var errorMsg = e.response.data.error;
           this.itemError = errorMsg;
         });
+    },
+    checkoutPressed: function (item) {
+      this.$router.push({ name: "CheckoutItem", params: { item } });
+    },
+    reservePressed: function (item) {
+      this.$router.push({ name: "ReserveItem", params: { item } });
     },
   },
 };

@@ -66,7 +66,11 @@ public class ItemReservationService {
       currentUserId
     );
     Patron patron = patronRepository.findUserByIdNum(idNum);
-
+    if (patron == null) {
+    	throw new IllegalArgumentException(
+    	        "Patron does not exist"
+    	      );
+    }
     boolean hasPermission = false;
     if (
       currentUserId.equals(idNum) &&
@@ -297,7 +301,7 @@ public class ItemReservationService {
       throw new IllegalArgumentException(
         "No reservation at this time for this patron"
       );
-    } else if (patronRepository.findPatronByIdNum(idNum).getIsVerified()) {
+    } else if (!patronRepository.findPatronByIdNum(idNum).getIsVerified()) {
       throw new IllegalArgumentException(
         "Must verify patron before checking out books"
       );
@@ -615,7 +619,7 @@ public class ItemReservationService {
   }
 
   /***
-   * Creates an item reservation for TODAY
+   * find next availability
    * @author saagararya
    * @param itemNumber
    * @return
@@ -629,7 +633,7 @@ public class ItemReservationService {
     for (ItemReservation r : reservationsByItemNumber) {
       if (latestReservation == null) {
         latestReservation = r;
-      } else if (latestReservation.getEndDate().before(r.getStartDate())) {
+      } else if (latestReservation.getEndDate().before(r.getStartDate()) || latestReservation.getEndDate().equals(r.getStartDate())) {
         latestReservation = r;
       }
     }

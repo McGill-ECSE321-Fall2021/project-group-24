@@ -18,7 +18,7 @@ public class BookDto extends ItemDto {
     Date publishDate,
     boolean isReservable,
     String currentReservationId,
-    String itemNumber
+    String itemNumber, Date nextAvailableDate
   ) {
     this.itemTitle = itemTitle;
     this.description = description;
@@ -31,6 +31,7 @@ public class BookDto extends ItemDto {
     this.itemNumber = itemNumber;
     this.currentReservationId = currentReservationId;
     this.type = Item.Type.Book;
+    this.nextAvailableDate = nextAvailableDate;
   }
 
   public String getAuthor() {

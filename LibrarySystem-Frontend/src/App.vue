@@ -49,6 +49,12 @@
       >
         <router-link :to="{ name: 'LoginPage' }"> Sign in </router-link>
       </a-menu-item>
+      <a-menu-item
+        key="SignupPage"
+        v-if="!this.$store.state.currentUser.username"
+      >
+        <router-link :to="{ name: 'SignupPage' }"> Sign up </router-link>
+      </a-menu-item>
       <a-menu-item key="Logout" v-if="this.$store.state.currentUser.username">
         <a @click="logout">Logout</a>
       </a-menu-item>

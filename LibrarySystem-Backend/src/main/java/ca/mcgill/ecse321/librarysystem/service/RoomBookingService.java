@@ -166,10 +166,14 @@ public class RoomBookingService {
   ) {
     // find day of the week from date and convert to DayOfweek
     LibraryHour lh = libraryHourRepo.findHourByDayOfWeek(dayOfWeek);
-    if (
-      lh.getStartTime().before(startTime) && lh.getEndTime().after(endTime)
-    ) return false;
-    return true;
+    if (lh != null &&
+      (lh.getStartTime().before(startTime) && lh.getEndTime().after(endTime))
+    ) {
+    	return false;
+    } else {
+    	  return true;
+    }
+  
   }
 
   @Transactional
