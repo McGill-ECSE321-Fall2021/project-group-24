@@ -13,7 +13,9 @@
             v-decorator="[
               'username',
               {
-                rules: [{ required: true, message: 'Username' }],
+                rules: [
+                  { required: true, message: 'Username cannot be empty' },
+                ],
               },
             ]"
           />
@@ -23,7 +25,9 @@
             v-decorator="[
               'password',
               {
-                rules: [{ required: true, message: 'Password' }],
+                rules: [
+                  { required: true, message: 'Password cannot be empty' },
+                ],
               },
             ]"
           />

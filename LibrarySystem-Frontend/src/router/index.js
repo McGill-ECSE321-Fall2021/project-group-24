@@ -10,7 +10,7 @@ import CheckoutItem from "@/components/CheckoutItemForPatron";
 import ReserveItem from "@/components/ReserveItem";
 import ReserveRoom from "@/components/ReserveRoom";
 import BrowseItemReservations from "@/components/BrowseItemReservations";
-
+import BrowseRoomBookings from "@/components/BrowseRoomBookings";
 import LoginPage from "@/components/Login.vue";
 import SignupPage from "@/components/Signup";
 import SignupIRL from "@/components/SignupIRL";
@@ -84,6 +84,11 @@ export default new Router({
       path: "/browse_reservations",
       name: "BrowseItemReservations",
       component: BrowseItemReservations,
+    },
+    {
+      path: "/browse_roombookings",
+      name: "BrowseRoomBookings",
+      component: BrowseRoomBookings,
     },
   ],
 });
