@@ -144,7 +144,19 @@ export default {
     disabledEndDate(endValue) {
       const startValue = new Date();
       startValue.setDate(startValue.getDate() - 1);
-      return startValue.valueOf() > endValue.valueOf();
+      var answer = startValue.valueOf() > endValue.valueOf();
+      if (answer) {
+        return answer;
+      }
+      var day = new Date(endValue).getDay();
+      if (day == 0) {
+        day = 7;
+      }
+      if (this.daysToHide.indexOf(day) != -1) {
+        console.log(this.daysToHide.indexOf(day));
+        return true;
+      }
+      return answer;
     },
     changeStartTime: function (startTime) {
       this.startTime = startTime;

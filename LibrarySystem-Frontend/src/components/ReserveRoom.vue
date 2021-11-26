@@ -41,7 +41,7 @@
           :hide-weekdays="this.daysToHide"
           :events="this.events"
           :editable-events="{
-            title: true,
+            title: false,
             drag: false,
             resize: true,
             delete: true,
