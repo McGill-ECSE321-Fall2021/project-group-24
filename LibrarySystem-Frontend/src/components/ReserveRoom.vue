@@ -6,7 +6,7 @@
 
       <p><strong>Capacity: </strong>{{ room.capacity }}</p>
     </a-card>
-    <h1>For patron:</h1>
+
     <div style="padding-right: 20%; padding-left: 20%">
       <a-form :form="form" @submit="handleSubmit">
         <a-form-item>
@@ -32,63 +32,37 @@
             <a-icon slot="prefix" type="user" />
           </a-input>
         </a-form-item>
-        <h1>For date:</h1>
-        <a-form-item>
-          <a-input
-            placeholder="Booking Date"
-            v-decorator="[
-              'date',
-              {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Input date!',
-                  },
-                ],
-              },
-            ]"
-          >
-            <a-icon slot="prefix" type="date" />
-          </a-input>
-        </a-form-item>
-        <h1>Start time:</h1>
-        <a-form-item>
-          <a-input
-            placeholder="Start time"
-            v-decorator="[
-              'startTime',
-              {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Input start time!',
-                  },
-                ],
-              },
-            ]"
-          >
-            <a-icon slot="prefix" type="clock" />
-          </a-input>
-        </a-form-item>
-        <h1>End time:</h1>
-        <a-form-item>
-          <a-input
-            placeholder="End time"
-            v-decorator="[
-              'endTime',
-              {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Input end time!',
-                  },
-                ],
-              },
-            ]"
-          >
-            <a-icon slot="prefix" type="clock" />
-          </a-input>
-        </a-form-item>
+        <vue-cal
+          :disable-views="['day', 'years', 'year', 'month']"
+          hide-view-selector
+          style="height: 500px"
+          :minDate="this.today"
+          :special-hours="this.libraryHours"
+          :hide-weekdays="this.daysToHide"
+          :events="this.events"
+          :editable-events="{
+            title: true,
+            drag: false,
+            resize: true,
+            delete: true,
+            create: false,
+          }"
+        />
+        <a-date-picker @change="changeDate" :disabled-date="disabledEndDate" />
+        <a-time-picker
+          :default-open-value="moment('00:00:00', 'HH:mm:ss')"
+          use12-hours
+          format="h:mm a"
+          @change="changeStartTime"
+          :minute-step="15"
+        />
+        <a-time-picker
+          :default-open-value="moment('00:00:00', 'HH:mm:ss')"
+          use12-hours
+          format="h:mm a"
+          @change="changeEndTime"
+          :minute-step="15"
+        />
         <a-form-item>
           <a-button html-type="submit">Confirm room booking</a-button>
         </a-form-item>
@@ -120,4 +94,13 @@
 ;
 
 <script src="../js/ReserveRoom.js"></script>
-;
+<style>
+.business-hours {
+  background-color: rgba(169, 255, 140, 0.2);
+  border: solid rgba(169, 255, 140, 0.6);
+  border-width: 2px 0;
+}
+.vuecal__event {
+  background-color: rgba(255, 148, 148, 0.35);
+}
+</style>

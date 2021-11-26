@@ -90,6 +90,29 @@ public class RoomBookingController {
       return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
+  
+  /** Method get all roombookings of a room
+   * @author Saagar
+   * @param roomNum
+   * @return all roombookings of a room, without sensitive info
+   */
+  @GetMapping(
+    value = {
+      "/privateview_roombookings/room/{roomNum}", "/privateview_roombookings/room/{roomNum}/",
+    }
+  )
+  public ResponseEntity<?> getRoomBookingOfRoomPrivate(
+    @PathVariable("roomNum") String roomNum
+  ) {
+    try {
+      return new ResponseEntity<Object>(
+    		  getRoomBookingDtosForRoomPrivate(roomNum),
+        HttpStatus.OK
+      );
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
 
   /** Method get the roombooking with timeSlotId
    * @author Selena
@@ -235,6 +258,26 @@ public class RoomBookingController {
     }
     return roomBooking;
   }
+  
+  private List<RoomBookingDto> getRoomBookingDtosForRoomPrivate(
+		    String roomNum
+		  ) {
+		    List<RoomBooking> roomBookingsForRoomNum = roomBookingService.getRoomBookingsByRoomNumPrivate(
+		      roomNum
+		    );
+		    List<RoomBookingDto> roomBooking = new ArrayList<>();
+		    for (RoomBooking booking : roomBookingsForRoomNum) {
+		      roomBooking.add(new RoomBookingDto(
+		    		  "private",
+		    		  booking.getDate(),
+		    		  booking.getStartTime(),
+		    		  booking.getEndTime(),
+		    		 "private",
+		    		  booking.getRoomNum()
+		    	    ));
+		    }
+		    return roomBooking;
+		  }
 
   private RoomBookingDto convertToDto(RoomBooking roomBooking) {
     RoomBookingDto roomBookingDto = new RoomBookingDto(

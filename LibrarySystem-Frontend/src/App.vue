@@ -50,6 +50,17 @@
         <router-link :to="{ name: 'LoginPage' }"> Sign in </router-link>
       </a-menu-item>
       <a-menu-item
+        key="SignUpIRL"
+        v-if="
+          this.$store.state.currentUser.username &&
+          !this.$store.state.currentUser.isPatron
+        "
+      >
+        <router-link :to="{ name: 'SignupIRL' }">
+          Sign up patron irl
+        </router-link>
+      </a-menu-item>
+      <a-menu-item
         key="SignupPage"
         v-if="!this.$store.state.currentUser.username"
       >

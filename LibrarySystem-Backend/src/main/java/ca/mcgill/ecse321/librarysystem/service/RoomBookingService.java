@@ -321,6 +321,13 @@ public class RoomBookingService {
     }
     return roomBookingRepository.findRoomBookingByRoomNum(roomNum);
   }
+  
+  @Transactional
+  public List<RoomBooking> getRoomBookingsByRoomNumPrivate(
+    String roomNum
+  ) {
+    return roomBookingRepository.findRoomBookingByRoomNum(roomNum);
+  }
 
   @Transactional
   public List<RoomBooking> getRoomBookingsByIdNum(
