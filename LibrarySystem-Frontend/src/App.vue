@@ -70,7 +70,8 @@ export default {
   methods: {
     logout: function () {
       //insert logout method here
-      this.$router.push({ name: "LoginPage" });
+      this.$store.commit("changeUser", "null");
+      this.$router.push({ name: "HomePage" });
     },
   },
 };

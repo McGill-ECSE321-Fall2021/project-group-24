@@ -59,10 +59,6 @@
       </a-modal>
     </div>
   </div>
-
-
-
-  </div>
 </template>
 <script src="../js/Login.js"></script>
 
