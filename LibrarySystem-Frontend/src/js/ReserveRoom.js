@@ -34,7 +34,6 @@ export default {
   },
   created: function () {
     AXIOS.get("api/libraryhour/view_library_hours").then((res) => {
-      console.log(res.data);
       var daysOfWeek = [
         "MONDAY",
         "TUESDAY",
@@ -109,9 +108,22 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           var startTime = new Date(this.startTime);
-          startTime = startTime.getHours() + ":" + startTime.getMinutes();
+          startTime =
+            (startTime.getHours() < 10
+              ? "0" + startTime.getHours()
+              : startTime.getHours()) +
+            ":" +
+            (startTime.getMinutes() == 0 ? "00" : startTime.getMinutes());
           var endTime = new Date(this.endTime);
-          endTime = endTime.getHours() + ":" + endTime.getMinutes();
+          endTime =
+            (endTime.getHours() < 10
+              ? "0" + endTime.getHours()
+              : endTime.getHours()) +
+            ":" +
+            (endTime.getMinutes() == 0 ? "00" : endTime.getMinutes());
+
+          var date = this.date;
+
           AXIOS.post(
             "api/roombookings/add_roombooking/?currentUserId=" +
               this.currentUser.idNum +
@@ -122,7 +134,7 @@ export default {
               "&roomNum=" +
               this.room.roomNum +
               "&date=" +
-              this.date +
+              date +
               "&startTime=" +
               startTime +
               "&endTime=" +
@@ -153,7 +165,6 @@ export default {
         day = 7;
       }
       if (this.daysToHide.indexOf(day) != -1) {
-        console.log(this.daysToHide.indexOf(day));
         return true;
       }
       return answer;
@@ -165,7 +176,7 @@ export default {
       this.endTime = endTime;
     },
     changeDate: function (newDate) {
-      this.date = newDate;
+      this.date = moment(newDate).format("YYYY-MM-DD");
     },
   },
 };

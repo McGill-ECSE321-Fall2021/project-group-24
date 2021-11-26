@@ -127,7 +127,7 @@
       </a-form>
       <a-modal
         v-model="modalVisible"
-        title="Error"
+        title="this.error ? 'Error' : 'Message'"
         :footer="null"
         :header="null"
       >

@@ -133,21 +133,21 @@ public class RoomBookingService {
     Time endTime,
     String timeSlotIdToIgnore
   ) {
-    Room room = roomRepo.findRoomByRoomNum(roomNumber);
-    if (room.getRoomBookings() == null) return false;
-    for (RoomBooking rb : room.getRoomBookings()) {
+    List<RoomBooking> bookings = roomBookingRepository.findRoomBookingByRoomNum(roomNumber);
+    if (bookings == null || bookings.size() == 0) return false;
+    for (RoomBooking rb : bookings) {
       if (date.equals(rb.getDate())) {
         if (
           timeSlotIdToIgnore == null ||
           !rb.getTimeSlotId().equals(timeSlotIdToIgnore)
         ) {
           if (
-            startTime.after(rb.getStartTime()) &&
-            startTime.before(rb.getEndTime())
+            (startTime.after(rb.getStartTime()) &&
+            startTime.before(rb.getEndTime())) || startTime.equals(rb.getStartTime())
           ) {
             return true;
           } else if (
-            endTime.after(rb.getStartTime()) && endTime.before(rb.getEndTime())
+            endTime.after(rb.getStartTime()) && endTime.before(rb.getEndTime()) || endTime.equals(rb.getEndTime())
           ) {
             return true;
           }
