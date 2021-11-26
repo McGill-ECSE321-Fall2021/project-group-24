@@ -10,6 +10,7 @@ import CheckoutItem from "@/components/CheckoutItemForPatron";
 import ReserveItem from "@/components/ReserveItem";
 import ReserveRoom from "@/components/ReserveRoom";
 import BrowseItemReservations from "@/components/BrowseItemReservations";
+import EditItem from "@components/EditItem";
 
 import LoginPage from "@/components/Login.vue";
 import SignupPage from "@/components/Signup";
@@ -84,6 +85,11 @@ export default new Router({
       path: "/browse_reservations",
       name: "BrowseItemReservations",
       component: BrowseItemReservations,
+    },
+    {
+      path: "/edit_item",
+      name: "EditItem",
+      component: EditItem,
     },
   ],
 });
