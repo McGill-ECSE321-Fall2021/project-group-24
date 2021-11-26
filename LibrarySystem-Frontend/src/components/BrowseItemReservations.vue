@@ -11,112 +11,115 @@
       </div>
 
       <div style="align-self: center; margin: auto; width: 70%">
-        <a-card
-          v-for="reservation in reservations"
-          :key="reservation.itemReservationId"
-          style="align-items: center; margin-top: 20px"
-        >
-          <a-card-grid
-            style="width: 25%; text-align: center; align-self: center"
-            :hoverable="false"
+        <h1 v-if="reservations.length == 0">No reservations</h1>
+        <div v-if="reservations.length != 0">
+          <a-card
+            v-for="reservation in reservations"
+            :key="reservation.itemReservationId"
+            style="align-items: center; margin-top: 20px"
           >
-            <img
-              v-if="reservation.imageURL"
-              :alt="reservation.imageTitle"
-              :src="reservation.imageURL"
-              style="width: 100%"
-            />
-            <img
-              v-if="!reservation.imageURL"
-              :alt="reservation.imageTitle"
-              style="width: 100%"
-              src="https://islandpress.org/sites/default/files/default_book_cover_2015.jpg"
-            />
-          </a-card-grid>
-          <a-card-grid
-            :hoverable="false"
-            :bordered="false"
-            style="width: 75%; text-align: center"
-          >
-            <h4>{{ reservation.itemTitle }}</h4>
-          </a-card-grid>
-          <a-layout
-            style="
-              padding-left: 5%;
-              padding-right: 5%;
-              padding-top: 2.5%;
-              width: 75%;
-              background-color: white;
-            "
-          >
-            <p style="text-align: left">{{ reservation.description }}</p>
-            <p style="text-align: left">
-              <span v-if="reservation.author">
-                <br />
-                <strong>Author:</strong> {{ reservation.author }}
-              </span>
-              <span v-if="reservation.artist">
-                <br />
-                <strong>Artist:</strong>
-                {{ reservation.artist }}
-              </span>
-              <span v-if="reservation.publisher">
-                <br />
-                <strong>Publisher:</strong> {{ reservation.publisher }}
-              </span>
-              <span v-if="reservation.recordingLabel">
-                <br />
-                <strong>Recording Label:</strong>
-                {{ reservation.recordingLabel }}
-              </span>
-              <span v-if="reservation.productionCompany">
-                <strong>Production Company:</strong>
-                {{ reservation.productionCompany }}
-              </span>
-              <span v-if="reservation.movieCase">
-                <br />
-                <strong>Movie Cast:</strong> {{ reservation.movieCase }}
-              </span>
-              <span v-if="reservation.director">
-                <br />
-                <strong>Director:</strong> {{ reservation.director }}
-              </span>
-              <span v-if="reservation.issueNumber">
-                <br />
-                <strong>Issue Number:</strong> {{ reservation.issueNumber }}
-              </span>
-              <span v-if="reservation.producer">
-                <br />
-                <strong>Producer:</strong> {{ reservation.producer }}
-              </span>
+            <a-card-grid
+              style="width: 25%; text-align: center; align-self: center"
+              :hoverable="false"
+            >
+              <img
+                v-if="reservation.imageURL"
+                :alt="reservation.imageTitle"
+                :src="reservation.imageURL"
+                style="width: 100%"
+              />
+              <img
+                v-if="!reservation.imageURL"
+                :alt="reservation.imageTitle"
+                style="width: 100%"
+                src="https://islandpress.org/sites/default/files/default_book_cover_2015.jpg"
+              />
+            </a-card-grid>
+            <a-card-grid
+              :hoverable="false"
+              :bordered="false"
+              style="width: 75%; text-align: center"
+            >
+              <h4>{{ reservation.itemTitle }}</h4>
+            </a-card-grid>
+            <a-layout
+              style="
+                padding-left: 5%;
+                padding-right: 5%;
+                padding-top: 2.5%;
+                width: 75%;
+                background-color: white;
+              "
+            >
+              <p style="text-align: left">{{ reservation.description }}</p>
+              <p style="text-align: left">
+                <span v-if="reservation.author">
+                  <br />
+                  <strong>Author:</strong> {{ reservation.author }}
+                </span>
+                <span v-if="reservation.artist">
+                  <br />
+                  <strong>Artist:</strong>
+                  {{ reservation.artist }}
+                </span>
+                <span v-if="reservation.publisher">
+                  <br />
+                  <strong>Publisher:</strong> {{ reservation.publisher }}
+                </span>
+                <span v-if="reservation.recordingLabel">
+                  <br />
+                  <strong>Recording Label:</strong>
+                  {{ reservation.recordingLabel }}
+                </span>
+                <span v-if="reservation.productionCompany">
+                  <strong>Production Company:</strong>
+                  {{ reservation.productionCompany }}
+                </span>
+                <span v-if="reservation.movieCase">
+                  <br />
+                  <strong>Movie Cast:</strong> {{ reservation.movieCase }}
+                </span>
+                <span v-if="reservation.director">
+                  <br />
+                  <strong>Director:</strong> {{ reservation.director }}
+                </span>
+                <span v-if="reservation.issueNumber">
+                  <br />
+                  <strong>Issue Number:</strong> {{ reservation.issueNumber }}
+                </span>
+                <span v-if="reservation.producer">
+                  <br />
+                  <strong>Producer:</strong> {{ reservation.producer }}
+                </span>
 
-              <span v-if="reservation.publisher">
+                <span v-if="reservation.publisher">
+                  <br />
+                  <strong>Publisher:</strong> {{ reservation.publisher }}
+                </span>
                 <br />
-                <strong>Publisher:</strong> {{ reservation.publisher }}
-              </span>
-              <br />
-              <strong>Genre:</strong> {{ reservation.genre }}
-              <br />
-              <strong>Publish date:</strong> {{ reservation.publishDate }}
-              <br />
-              <strong>Reservation Start Date:</strong>
-              {{ reservation.startDate }}
-              <br />
-              <strong>Reservation end date</strong> {{ reservation.endDate }}
-              <br />
-              <strong>Checked out?</strong> {{ reservation.isCheckedOut }}
-              <br />
-              <strong>Num of renewals left:</strong>
-              {{ reservation.numOfRenewalsLeft }}
-              <br />
-              <strong>Reserved for:</strong> {{ reservation.idNum }}
-              <br />
-            </p>
-            <div style="20%">
-              <a-button type="dashed"> Renew </a-button>
-            </div>
-          </a-layout>
-        </a-card>
+                <strong>Genre:</strong> {{ reservation.genre }}
+                <br />
+                <strong>Publish date:</strong> {{ reservation.publishDate }}
+                <br />
+                <strong>Reservation Start Date:</strong>
+                {{ reservation.startDate }}
+                <br />
+                <strong>Reservation end date</strong> {{ reservation.endDate }}
+                <br />
+                <strong>Checked out?</strong> {{ reservation.isCheckedOut }}
+                <br />
+                <strong>Num of renewals left:</strong>
+                {{ reservation.numOfRenewalsLeft }}
+                <br />
+                <strong>Reserved for:</strong> {{ reservation.idNum }}
+                <br />
+              </p>
+              <div style="20%">
+                <a-button type="dashed"> Renew </a-button>
+              </div>
+            </a-layout>
+          </a-card>
+        </div>
       </div>
       <br />
       <div id="searchbar">

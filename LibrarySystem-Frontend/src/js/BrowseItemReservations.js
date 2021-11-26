@@ -35,17 +35,22 @@ export default {
       .catch((e) => {
         console.log(e);
       });
-    var counter = 0;
-    await Promise.all(
-      this.reservations.map((reservation) =>
-        AXIOS.get("/api/items/" + reservation.itemNumber).then((response) => {
-          this.reservations[counter] = { ...reservation, ...response.data };
-          counter++;
-          if (counter == this.reservations.length) {
-            this.loading = false;
-          }
-        })
-      )
-    );
+
+    if (this.reservations.length == 0) {
+      this.loading = false;
+    } else {
+      var counter = 0;
+      await Promise.all(
+        this.reservations.map((reservation) =>
+          AXIOS.get("/api/items/" + reservation.itemNumber).then((response) => {
+            this.reservations[counter] = { ...reservation, ...response.data };
+            counter++;
+            if (counter == this.reservations.length) {
+              this.loading = false;
+            }
+          })
+        )
+      );
+    }
   },
 };

@@ -21,13 +21,6 @@
           Browse Rooms
         </router-link>
       </a-menu-item>
-      <a-menu-item
-        key="CreateNewItem"
-        v-if="
-          this.$store.state.currentUser.username &&
-          !this.$store.state.currentUser.isPatron
-        "
-      ></a-menu-item>
 
       <a-menu-item
         key="BrowseItemReservations"
@@ -37,7 +30,16 @@
           Browse reservations
         </router-link>
       </a-menu-item>
-
+      <a-menu-item
+        key="CreateNewItem"
+        v-if="
+          this.$store.state.currentUser.username &&
+          !this.$store.state.currentUser.isPatron
+        "
+        ><router-link :to="{ name: 'CreateNewItem' }">
+          Create New Item
+        </router-link></a-menu-item
+      >
       <a-menu-item
         key="CreateNewRoom"
         v-if="
