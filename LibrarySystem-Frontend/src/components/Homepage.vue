@@ -11,17 +11,30 @@
     <h2>Items</h2>
     <ul>
       <li>
-        <router-link :to="{ name: 'CreateNewItem' }">Create Item</router-link>
-        <router-link :to="{ name: 'BrowseAllItems' }">Browse Items</router-link>
+        <router-link :to="{ name: 'BrowseAllItems' }" >Browse Items</router-link>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <router-link :to="{ name: 'CreateNewItem' }" v-if="
+          this.$store.state.currentUser.username &&
+          !this.$store.state.currentUser.isPatron
+        ">Create Item</router-link>
+        
       </li>
     </ul>
     <h2>Rooms</h2>
     <ul>
       <li>
-        <router-link :to="{ name: 'CreateNewRoom' }">Create Rooms</router-link>
-      </li>
-      <li>
         <router-link :to="{ name: 'BrowseAllRooms' }">Browse Rooms</router-link>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <router-link :to="{ name: 'CreateNewRoom' }" v-if="
+          this.$store.state.currentUser.username &&
+          !this.$store.state.currentUser.isPatron
+        ">Create Rooms</router-link>
       </li>
     </ul>
   </div>
@@ -32,6 +45,7 @@ export default {
   name: "Homepage",
 };
 </script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>

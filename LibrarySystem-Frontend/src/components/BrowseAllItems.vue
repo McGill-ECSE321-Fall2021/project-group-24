@@ -119,9 +119,6 @@
             >
               Checkout Item for Patron
             </a-button>
-            <a-button type="dashed" v-if="currentUser.isPatron == false">
-              Edit item
-            </a-button>
 
             <a-button
               type="danger"
