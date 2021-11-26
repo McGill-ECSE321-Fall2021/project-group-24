@@ -31,16 +31,6 @@
             ]"
           />
         </a-form-item>
-        <a-form-item label="Current User ID">
-          <a-input
-            v-decorator="[
-              'currentUserId',
-              {
-                rules: [{ required: true, message: 'Please input your note!' }],
-              },
-            ]"
-          />
-        </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
           <a-button type="primary" html-type="submit"> Submit </a-button>

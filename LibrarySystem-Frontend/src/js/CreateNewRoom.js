@@ -14,6 +14,7 @@ export default {
   name: "rooms",
   data() {
     return {
+      currentUser: this.$store.state.currentUser,
       rooms: [],
       newRoom: "",
       roomError: "",
@@ -37,28 +38,6 @@ export default {
       this.visible = false;
     },
 
-    createRoom: function (roomNum, capacity, currentUserId) {
-      console.log(roomNum);
-      AXIOS.post(
-        "/api/rooms/create_room/" +
-          roomNum +
-          "?currentUserId=" +
-          currentUserId +
-          "&capacity=" +
-          capacity
-      )
-        .then((response) => {
-          this.rooms = this.rooms.filter((room) => {
-            return room.roomNum != roomNum;
-          });
-          this.results = this.rooms;
-        })
-        .catch((e) => {
-          this.visible = true;
-          var errorMsg = e.response.data.error;
-          this.roomError = errorMsg;
-        });
-    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
@@ -70,7 +49,7 @@ export default {
             "/api/rooms/create_room/" +
               this.room.roomNum +
               "?currentUserId=" +
-              this.room.currentUserId +
+              this.currentUser.idNum +
               "&capacity=" +
               this.room.capacity
           )

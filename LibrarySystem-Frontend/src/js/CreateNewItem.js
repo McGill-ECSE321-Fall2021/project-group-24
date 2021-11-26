@@ -14,6 +14,7 @@ export default {
   name: "item",
   data() {
     return {
+      currentUser: this.$store.state.currentUser,
       rooms: [],
       newRoom: "",
       roomError: "",
@@ -74,7 +75,7 @@ export default {
               "&isReservable=" +
               this.item.reserveGroupButtons +
               "&currentUserId=" +
-              this.item.currentUserId
+              this.currentUser.idNum
           )
             .then((res) => {
               console.log("RESPONSE: " + res.status);
@@ -83,9 +84,9 @@ export default {
               return res.status;
             })
             .catch((e) => {
-              console.log("ERROR RESPONSE: " + e.response.data.error);
+              console.log("ERROR RESPONSE: " + e.response.data);
               this.visible = true;
-              var errorMsg = e.response.data.error;
+              var errorMsg = e.response.data;
               this.roomError = errorMsg;
             });
         }
@@ -122,7 +123,7 @@ export default {
               "&producer=" +
               this.item.producer +
               "&currentUserId=" +
-              this.item.currentUserId
+              this.currentUser.idNum
           )
             .then((res) => {
               console.log("RESPONSE: " + res.status);
@@ -161,7 +162,7 @@ export default {
               "&isReservable=" +
               this.item.reserveGroupButtons +
               "&currentUserId=" +
-              this.item.currentUserId
+              this.currentUser.idNum
           )
             .then((res) => {
               console.log("RESPONSE: " + res.status);
@@ -200,7 +201,7 @@ export default {
               "&isReservable=" +
               this.item.reserveGroupButtons +
               "&currentUserId=" +
-              this.item.currentUserId +
+              this.currentUser.idNum +
               "&artist=" +
               this.item.artist +
               "&recordingLabel=" +
@@ -243,7 +244,7 @@ export default {
               "&isReservable=" +
               this.item.reserveGroupButtons +
               "&currentUserId=" +
-              this.item.currentUserId +
+              this.currentUser.idNum +
               "&issueNumber=" +
               this.item.issueNumber
           )

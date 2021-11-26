@@ -9,7 +9,7 @@
       Hello, {{ this.$store.state.currentUser.username }}
     </h4>
 
-    <a-menu :v-model="this.$route.name" mode="horizontal">
+    <a-menu v-model="current" mode="horizontal">
       <a-menu-item key="Homepage">
         <router-link :to="{ name: 'Homepage' }">Home</router-link>
       </a-menu-item>
@@ -92,6 +92,11 @@ export default {
       this.$store.commit("changeUser", "null");
       this.$router.push({ name: "HomePage" });
     },
+  },
+  data() {
+    return {
+      current: [this.$route.name],
+    };
   },
 };
 </script>

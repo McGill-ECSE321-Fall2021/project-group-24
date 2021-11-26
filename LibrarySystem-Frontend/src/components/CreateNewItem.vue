@@ -124,22 +124,6 @@
               </a-radio-group>
             </a-form-item>
 
-            <a-form-item label="Current User ID">
-              <a-input
-                v-decorator="[
-                  'currentUserId',
-                  {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please enter a current user ID!',
-                      },
-                    ],
-                  },
-                ]"
-              />
-            </a-form-item>
-
             <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
               <a-button type="primary" html-type="submit"> Create </a-button>
             </a-form-item>
@@ -306,22 +290,6 @@
               />
             </a-form-item>
 
-            <a-form-item label="Current User ID">
-              <a-input
-                v-decorator="[
-                  'currentUserId',
-                  {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please enter a current user ID!',
-                      },
-                    ],
-                  },
-                ]"
-              />
-            </a-form-item>
-
             <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
               <a-button type="primary" html-type="submit"> Create </a-button>
             </a-form-item>
@@ -427,22 +395,6 @@
               </a-radio-group>
             </a-form-item>
 
-            <a-form-item label="Current User ID">
-              <a-input
-                v-decorator="[
-                  'currentUserId',
-                  {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please enter a current user ID!',
-                      },
-                    ],
-                  },
-                ]"
-              />
-            </a-form-item>
-
             <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
               <a-button type="primary" html-type="submit"> Create </a-button>
             </a-form-item>
@@ -546,22 +498,6 @@
                 <a-radio-button value="yes"> Yes </a-radio-button>
                 <a-radio-button value="no"> No </a-radio-button>
               </a-radio-group>
-            </a-form-item>
-
-            <a-form-item label="Current User ID">
-              <a-input
-                v-decorator="[
-                  'currentUserId',
-                  {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please enter a current user ID!',
-                      },
-                    ],
-                  },
-                ]"
-              />
             </a-form-item>
 
             <a-form-item label="Artist">
@@ -699,22 +635,6 @@
                 <a-radio-button value="yes"> Yes </a-radio-button>
                 <a-radio-button value="no"> No </a-radio-button>
               </a-radio-group>
-            </a-form-item>
-
-            <a-form-item label="Current User ID">
-              <a-input
-                v-decorator="[
-                  'currentUserId',
-                  {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please enter a current user ID!',
-                      },
-                    ],
-                  },
-                ]"
-              />
             </a-form-item>
 
             <a-form-item label="Issue Number">
