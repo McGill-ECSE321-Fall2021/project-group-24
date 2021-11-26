@@ -140,12 +140,12 @@
     </div>
     <div v-if="loading" style="align-self: center; margin: auto; width: 70%">
       <a-card style="align-items: center; margin-top: 20px"
-        ><a-skeleton /><a-skeleton /></a-card
+        ><a-skeleton active /><a-skeleton active /></a-card
       ><a-card style="align-items: center; margin-top: 20px"
-        ><a-skeleton /><a-skeleton
+        ><a-skeleton active /><a-skeleton active
       /></a-card>
       <a-card style="align-items: center; margin-top: 20px"
-        ><a-skeleton /><a-skeleton
+        ><a-skeleton active /><a-skeleton active
       /></a-card>
     </div>
   </div>
