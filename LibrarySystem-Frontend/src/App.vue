@@ -65,7 +65,7 @@
         "
       >
         <router-link :to="{ name: 'SignupIRL' }">
-          Sign up patron irl
+          Sign up for patron
         </router-link>
       </a-menu-item>
       <a-menu-item
@@ -74,6 +74,15 @@
       >
         <router-link :to="{ name: 'SignupPage' }"> Sign up </router-link>
       </a-menu-item>
+      <a-menu-item
+        key="BrowseRoomBookings"
+        v-if="this.$store.state.currentUser.username"
+      >
+        <router-link :to="{ name: 'BrowseRoomBookings' }">
+          Browse RoomBookings
+        </router-link>
+      </a-menu-item>
+
       <a-menu-item key="Logout" v-if="this.$store.state.currentUser.username">
         <a @click="logout">Logout</a>
       </a-menu-item>

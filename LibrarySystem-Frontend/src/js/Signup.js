@@ -149,7 +149,29 @@ export default {
               // this.$store.commit("changeUser", res.data);
               console.log("THEN: ");
               if (this.responseStatus == 200) {
-                this.$store.commit("changeUser", res.data);
+                AXIOS.post(
+                  "/api/user/login" +
+                    "?username=" +
+                    this.user.username +
+                    "&password=" +
+                    this.user.password
+                )
+                  .then((res) => {
+                    this.visible = true;
+                    this.responseStatus = res.status;
+                    console.log(res.data);
+                    this.$store.commit("changeUser", res.data);
+                    if (this.responseStatus == 200) {
+                      // window.location.href = "http://127.0.0.1:8087/#/";
+                      this.$router.replace({ name: "Homepage" });
+                    }
+                    return res.status;
+                  })
+                  .catch((e) => {
+                    this.visible = true;
+                    var errorMsg = e.response.data;
+                    this.userError = errorMsg;
+                  });
                 window.location.href = "http://127.0.0.1:8087/#/";
               }
               return res.status;
