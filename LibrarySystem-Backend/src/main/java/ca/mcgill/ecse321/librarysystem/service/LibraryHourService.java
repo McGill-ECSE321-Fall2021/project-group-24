@@ -158,9 +158,10 @@ public class LibraryHourService {
   @Transactional
   public List<LibraryHour> getAllLibraryHours() {
     List<LibraryHour> libraryHours = toList(libraryHourRepo.findAll());
-    if (libraryHours.size() == 0) throw new IllegalArgumentException(
-      "No library hours exist"
-    );
+    //removed otherwise website crashes if no library hours
+//    if (libraryHours.size() == 0) throw new IllegalArgumentException(
+//      "No library hours exist"
+//    );
     return libraryHours;
   }
 
