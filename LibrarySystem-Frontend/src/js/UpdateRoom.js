@@ -11,7 +11,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "rooms",
+  name: "updateRoom",
   data() {
     return {
       currentUser: this.$store.state.currentUser,
@@ -19,13 +19,15 @@ export default {
       visible: false,
       formLayout: "horizontal",
       form: this.$form.createForm(this, { name: "coordinated" }),
+      error: "",
+      response: "",
     };
   },
 
   methods: {
     showModal: function () {
       this.visible = true;
-      this.roomError = "";
+      this.error = "";
     },
     handleOk: function (e) {
       console.log(e);
@@ -37,29 +39,32 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
-          this.room = values;
-          console.log("any object", this.room.capacity);
-          AXIOS.post(
+          this.room.capacity = values.capacity;
+          console.log("any object", this.room.roomNum);
+          AXIOS.put(
             "/api/rooms/update_room/" +
-              this.$route.params.roomNum +
+              this.room.roomNum +
               "?currentUserId=" +
               this.currentUser.idNum +
-              "&capacity=" +
-              this.room.capacity
+              "&newCapacity=" +
+              parseInt(this.room.capacity)
           )
             .then((res) => {
               console.log("RESPONSE: " + res.status);
               this.visible = true;
-              this.responseStatus = res.status;
+              this.response = "Room Updated!";
+              this.error = "";
               this.room.roomNum = "";
               this.room.capacity = "";
               this.room.currentUserId = "";
-              return res.status;
+              this.$router.replace({ name: "BrowseAllRooms" });
             })
             .catch((e) => {
+              console.log(e.response.data);
               this.visible = true;
               var errorMsg = e.response.data;
-              this.roomError = errorMsg;
+              this.error = errorMsg;
+              this.response = "";
             });
         }
       });

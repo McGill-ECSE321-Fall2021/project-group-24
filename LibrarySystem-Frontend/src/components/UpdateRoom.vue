@@ -14,7 +14,7 @@
             :disabled="this.currentUser.isPatron"
             :placeholder="'Room Capacity'"
             v-decorator="[
-              '',
+              'capacity',
               {
                 rules: [
                   {
@@ -32,7 +32,7 @@
         </a-form-item>
       </a-form>
       <a-modal
-        v-model="modalVisible"
+        v-model="visible"
         :title="this.error ? 'Error' : 'Message'"
         :footer="null"
         :header="null"
