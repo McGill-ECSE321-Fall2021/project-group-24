@@ -50,3 +50,4 @@
 
     </div>
 </template>
+<script src="../js/AddLibraryHour.js"></script>
