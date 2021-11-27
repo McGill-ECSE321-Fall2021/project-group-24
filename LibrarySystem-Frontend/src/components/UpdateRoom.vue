@@ -19,7 +19,7 @@
                 rules: [
                   {
                     required: true,
-                    message: 'Input new room capacity!',
+                    message: 'Input room capacity!',
                   },
                 ],
               },
