@@ -11,18 +11,18 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "itemreservations",
+  name: "roombookings",
   data() {
     return {
       error: "",
       response: "",
       visible: false,
-      items: [],
-      reservations: [],
+      rooms: [],
+      roombookings: [],
       currentUser: this.$store.state.currentUser,
       loading: true,
-      reservationResults: [],
-      itemResults: [],
+      roombookingResults: [],
+      roomResults: [],
     };
   },
   created: async function () {
@@ -36,8 +36,8 @@ export default {
       )
         .then((response) => {
           console.log(response.data);
-          this.reservations = response.data;
-          this.reservationResults = response.data;
+          this.roombookings = response.data;
+          this.roombookingResults = response.data;
           return response.data;
         })
         .catch((e) => {
@@ -51,8 +51,8 @@ export default {
       )
         .then((response) => {
           console.log(response.data);
-          this.reservations = response.data;
-          this.reservationResults = response.data;
+          this.roombookings = response.data;
+          this.roombookingResults = response.data;
           return response.data;
         })
         .catch((e) => {
@@ -60,13 +60,13 @@ export default {
         });
     }
 
-    if (this.reservations.length == 0) {
+    if (this.roombookings.length == 0) {
       this.loading = false;
     } else {
-      console.log(this.reservations[0].timeSlotId);
+      console.log(this.roombookings[0].timeSlotId);
       var counter = 0;
       await Promise.all(
-        this.reservations.map((reservation) =>
+        this.roombookings.map((roombooking) =>
           AXIOS.get(
             // "api/roombookings/view_roombooking/RoomBooking-015:00:00study1" +
             //   "?currentUserId=" +
@@ -75,29 +75,29 @@ export default {
           ).then((response) => {
             console.log("hellllsladlfaf");
             console.log(response.data);
-            this.items[counter] = { ...response.data };
+            this.rooms[counter] = { ...response.data };
             counter++;
-            if (counter == this.reservations.length) {
+            if (counter == this.roombookings.length) {
               this.loading = false;
             }
           })
         )
       );
-      this.itemResults = this.items;
+      this.roomResults = this.rooms;
     }
   },
   methods: {
     search: function (query) {
-      this.reservationResults = [];
-      this.itemResults = [];
+      this.roombookingResults = [];
+      this.roomResults = [];
       if (query.length == 0) {
-        this.reservationResults = this.reservations;
-        this.itemResults = this.items;
+        this.roombookingResults = this.roombookings;
+        this.roomResults = this.rooms;
       } else {
-        this.reservationResults = this.reservations.filter(
-          (reservation, index) => {
-            if (reservation.idNum.toLowerCase().includes(query.toLowerCase())) {
-              this.itemResults.push(this.items[index]);
+        this.roombookingResults = this.roombookings.filter(
+          (roombooking, index) => {
+            if (roombooking.idNum.toLowerCase().includes(query.toLowerCase())) {
+              this.roomResults.push(this.rooms[index]);
               return true;
             }
           }
@@ -105,17 +105,33 @@ export default {
       }
     },
 
-    renew: function (itemReservationId, currentUserId, index) {
+    renew: function (
+      currentUserId,
+      timeSlotId,
+      newDate,
+      newStartTime,
+      newEndTime,
+      newRoomNum
+    ) {
       AXIOS.put(
-        "/api/itemReservations/renew/" +
-          itemReservationId +
+        "/api/roombookings/update_roombooking" +
           "?currentUserId=" +
-          currentUserId
+          currentUserId +
+          "&timeSlotId=" +
+          timeSlotId +
+          "&newDate=" +
+          newDate +
+          "&newStartTime=" +
+          newStartTime +
+          "&newEndTime=" +
+          newEndTime +
+          "&newRoomNum=" +
+          newRoomNum
       )
         .then((response) => {
           this.visible = true;
-          this.$set(this.reservations, index, response.data);
-          this.response = "Renewed!";
+          this.$set(this.roombookings, index, response.data);
+          this.response = "Room Booking Updated";
           this.error = "";
         })
         .catch((e) => {
@@ -126,18 +142,19 @@ export default {
         });
     },
 
-    cancelReservation: function (itemReservationId, currentUserId, index) {
+    cancelroombooking: function (currentUserId, timeSlotId, index) {
       AXIOS.delete(
-        "/api/itemReservations/cancel/" +
-          itemReservationId +
+        "/api/roombookings/delete_roombooking" +
           "?currentUserId=" +
-          currentUserId
+          currentUserId +
+          "&timeSlotId=" +
+          timeSlotId
       )
         .then((response) => {
           this.visible = true;
-          this.response = "Reservation Cancelled!";
+          this.response = "Room Booking Cancelled";
           this.error = "";
-          this.reservations.splice(index, 1);
+          this.roombookings.splice(index, 1);
         })
         .catch((e) => {
           this.visible = true;

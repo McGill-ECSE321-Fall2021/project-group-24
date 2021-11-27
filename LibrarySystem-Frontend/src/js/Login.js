@@ -53,10 +53,8 @@ export default {
             .then((res) => {
               this.visible = true;
               this.responseStatus = res.status;
-              console.log(res.data);
-              this.$store.commit("changeUser", res.data);
               if (this.responseStatus == 200) {
-                // window.location.href = "http://127.0.0.1:8087/#/";
+                this.$store.commit("changeUser", res.data);
                 this.$router.replace({ name: "Homepage" });
               }
               return res.status;

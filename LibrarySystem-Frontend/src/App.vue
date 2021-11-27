@@ -93,13 +93,37 @@
 </template>
 
 <script>
+import axios from "axios";
+var config = require("../config");
+
+var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
+var backendUrl =
+  "http://" + config.dev.backendHost + ":" + config.dev.backendPort;
+
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { "Access-Control-Allow-Origin": frontendUrl },
+});
 export default {
   name: "app",
   methods: {
     logout: function () {
       //insert logout method here
-      this.$store.commit("changeUser", "null");
-      this.$router.push({ name: "HomePage" });
+      AXIOS.post("api/user/logout/" + this.$store.state.currentUser.username)
+        .then((res) => {
+          this.visible = true;
+          this.responseStatus = res.status;
+          if (this.responseStatus == 200) {
+            this.$store.commit("changeUser", "null");
+            this.$router.push({ name: "HomePage" });
+          }
+          return res.status;
+        })
+        .catch((e) => {
+          this.visible = true;
+          var errorMsg = e.response.data;
+          this.userError = errorMsg;
+        });
     },
   },
   data() {

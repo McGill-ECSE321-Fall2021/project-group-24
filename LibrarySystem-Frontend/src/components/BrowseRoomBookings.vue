@@ -12,16 +12,79 @@
       </div>
 
       <div style="align-self: center; margin: auto; width: 70%">
-        <h1 v-if="reservationResults.length == 0">
+        <h1 v-if="roombookingResults.length == 0">
           <p />
           No room bookings
         </h1>
-        <div v-if="reservationResults.length != 0">
-          <a-card title="Default size card" style="width: 300px">
-            <a slot="extra" href="#">more</a>
-            <p>capacity</p>
-            <p>date</p>
-            <p>time</p>
+        <div v-if="roombookingResults.length != 0">
+          <a-card
+            v-for="(roombooking, index) in roombookingResults"
+            :key="index"
+            style="align-rooms: center; margin-top: 20px"
+            :title="'Room Booking ' + (index + 1)"
+          >
+            <a-layout
+              style="
+                padding-left: 5%;
+                padding-right: 5%;
+                padding-top: 2.5%;
+                width: 75%;
+                background-color: white;
+              "
+            >
+              <p style="text-align: left">
+                <span>
+                  <br />
+                  <strong>Room:</strong>
+                  {{ roomResults[index].roomNum }}
+                </span>
+                <span>
+                  <br />
+                  <strong>Date:</strong>
+                  {{ roomResults[index].date }}
+                </span>
+                <span>
+                  <br />
+                  <strong>Start time:</strong>
+                  {{ roomResults[index].startTime }}
+                </span>
+                <span>
+                  <br />
+                  <strong>End time:</strong>
+                  {{ roomResults[index].endTime }}
+                </span>
+                <span>
+                  <br />
+                  <strong>Day:</strong> {{ roomResults[index].dayOfWeek }}
+                </span>
+              </p>
+              <div style="20%">
+                <a-button
+                  type="dashed"
+                  @click="
+                    renew(
+                      roombooking.roomroombookingId,
+                      currentUser.idNum,
+                      index
+                    )
+                  "
+                >
+                  Modify
+                </a-button>
+                <a-button
+                  type="danger"
+                  @click="
+                    cancelroombooking(
+                      currentUser.idNum,
+                      roombooking.timeSlotId,
+                      index
+                    )
+                  "
+                >
+                  Cancel
+                </a-button>
+              </div>
+            </a-layout>
           </a-card>
         </div>
       </div>
@@ -46,12 +109,12 @@
       </div>
     </div>
     <div v-if="loading" style="align-self: center; margin: auto; width: 70%">
-      <a-card style="align-items: center; margin-top: 20px"
+      <a-card style="align-rooms: center; margin-top: 20px"
         ><a-skeleton active /><a-skeleton active /></a-card
-      ><a-card style="align-items: center; margin-top: 20px"
+      ><a-card style="align-rooms: center; margin-top: 20px"
         ><a-skeleton active /><a-skeleton active
       /></a-card>
-      <a-card style="align-items: center; margin-top: 20px"
+      <a-card style="align-rooms: center; margin-top: 20px"
         ><a-skeleton active /><a-skeleton active
       /></a-card>
     </div>
