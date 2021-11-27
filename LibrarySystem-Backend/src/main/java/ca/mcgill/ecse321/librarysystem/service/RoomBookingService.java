@@ -55,7 +55,7 @@ public class RoomBookingService {
   ) {
     String timeSlotId =
       "RoomBooking-" +
-      getAllRoomBookings("admin").size() +
+   roomBookingRepository.count() +
       startTime +
       roomNumber;
     // check idNum

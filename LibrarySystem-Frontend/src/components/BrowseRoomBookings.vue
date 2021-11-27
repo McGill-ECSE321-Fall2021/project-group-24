@@ -36,26 +36,26 @@
                 <span>
                   <br />
                   <strong>Room:</strong>
-                  {{ roomResults[index].roomNum }}
+                  {{ roombooking.roomNum }}
                 </span>
                 <span>
                   <br />
                   <strong>Date:</strong>
-                  {{ roomResults[index].date }}
+                  {{ roombooking.date }}
                 </span>
                 <span>
                   <br />
                   <strong>Start time:</strong>
-                  {{ roomResults[index].startTime }}
+                  {{ roombooking.startTime }}
                 </span>
                 <span>
                   <br />
                   <strong>End time:</strong>
-                  {{ roomResults[index].endTime }}
+                  {{ roombooking.endTime }}
                 </span>
                 <span>
                   <br />
-                  <strong>Day:</strong> {{ roomResults[index].dayOfWeek }}
+                  <strong>Day:</strong> {{ roombooking.dayOfWeek }}
                 </span>
               </p>
               <div style="20%">

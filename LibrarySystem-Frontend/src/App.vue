@@ -115,7 +115,7 @@ export default {
           this.responseStatus = res.status;
           if (this.responseStatus == 200) {
             this.$store.commit("changeUser", "null");
-            this.$router.push({ name: "HomePage" });
+            this.$router.push({ name: "Homepage" });
           }
           return res.status;
         })
