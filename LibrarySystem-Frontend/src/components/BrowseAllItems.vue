@@ -122,7 +122,7 @@
 
             <a-button
               type="danger"
-              v-if="currentUser.isPatron == false"
+              v-if="currentUser.isPatron == false && item.nextAvailableDate"
               @click="deleteItem(item.itemNumber, currentUser.idNum)"
             >
               Delete item
