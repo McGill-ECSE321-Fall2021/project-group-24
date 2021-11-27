@@ -14,6 +14,9 @@ export default {
   name: "roombookings",
   data() {
     return {
+      ModalText: "Content of the modal",
+      visible: false,
+      confirmLoading: false,
       error: "",
       response: "",
       visible: false,
@@ -87,6 +90,13 @@ export default {
     }
   },
   methods: {
+    showModal() {
+      this.visible = true;
+    },
+    handleCancel(e) {
+      console.log("Clicked cancel button");
+      this.visible = false;
+    },
     search: function (query) {
       this.roombookingResults = [];
       this.roomResults = [];

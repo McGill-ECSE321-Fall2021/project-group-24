@@ -59,7 +59,39 @@
                 </span>
               </p>
               <div style="20%">
-                <a-button
+                <div>
+                  <a-button type="primary" @click="showModal">
+                    Modify
+                  </a-button>
+                  <a-modal
+                    title="Modify Room booking"
+                    :footer="null"
+                    :visible="visible"
+                    :confirm-loading="confirmLoading"
+                    @ok="handleOk"
+                    @cancel="handleCancel"
+                  >
+                    <a-form
+                      :form="form"
+                      :label-col="{ span: 6 }"
+                      :wrapper-col="{ span: 12 }"
+                      @submit="handleSubmit"
+                    >
+                      <a-form-item label="new date">
+                        <!-- TODO: add date picker -->
+                        <!-- TODO: add time picker -->
+                        <!-- TODO: add room selector -->
+
+                        <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
+                          <a-button type="primary" html-type="submit">
+                            Log In
+                          </a-button>
+                        </a-form-item>
+                      </a-form-item>
+                    </a-form>
+                  </a-modal>
+                </div>
+                <!-- <a-button
                   type="dashed"
                   @click="
                     renew(
@@ -70,7 +102,7 @@
                   "
                 >
                   Modify
-                </a-button>
+                </a-button> -->
                 <a-button
                   type="danger"
                   @click="
