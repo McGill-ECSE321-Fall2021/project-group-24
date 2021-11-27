@@ -9,6 +9,13 @@
         {{ hour.endTime.substring(0, 5) }}
       </h5>
     </div>
+    <a-button key="AddLibraryHour" type="primary" v-if="
+          this.$store.state.currentUser.username &&
+          !this.$store.state.currentUser.isPatron &&
+          !this.$store.state.currentUser.isLibrarian
+        ">
+      Add Library Hour
+    </a-button>
   </div>
 </template>
 

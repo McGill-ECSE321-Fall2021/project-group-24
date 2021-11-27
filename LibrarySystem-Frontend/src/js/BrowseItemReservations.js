@@ -84,7 +84,20 @@ export default {
       } else {
         this.reservationResults = this.reservations.filter(
           (reservation, index) => {
-            if (reservation.idNum.toLowerCase().includes(query.toLowerCase())) {
+            if (
+              reservation.idNum.toLowerCase().includes(query.toLowerCase()) ||
+              this.items[index].itemTitle
+                .toLowerCase()
+                .includes(query.toLowerCase()) ||
+              this.items[index].itemNumber
+                .toLowerCase()
+                .includes(
+                  query.toLowerCase() ||
+                    reservation.itemReservationId
+                      .toLowerCase()
+                      .includes(query.toLowerCase())
+                )
+            ) {
               this.itemResults.push(this.items[index]);
               return true;
             }

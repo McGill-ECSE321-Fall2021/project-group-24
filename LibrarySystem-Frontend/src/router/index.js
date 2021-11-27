@@ -15,7 +15,7 @@ import BrowseRoomBookings from "../js/BrowseRoomBookings";
 import LoginPage from "@/components/Login.vue";
 import SignupPage from "@/components/Signup";
 import SignupIRL from "@/components/SignupIRL";
-
+import AddLibraryHour from "@/components/AddLibraryHour"; 
 Vue.use(Router);
 
 export default new Router({
@@ -60,6 +60,11 @@ export default new Router({
       path: "/create_item",
       name: "CreateNewItem",
       component: CreateNewItem,
+    },
+    {
+      path: "/add_library_hour",
+      name: "AddLibraryHour",
+      component: AddLibraryHour,
     },
     {
       path: "/sign_up_irl",
