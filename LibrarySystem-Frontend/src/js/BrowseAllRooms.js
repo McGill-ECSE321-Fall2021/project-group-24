@@ -73,8 +73,12 @@ export default {
           this.roomError = errorMsg;
         });
     },
+
     reservePressed: function (room) {
       this.$router.push({ name: "ReserveRoom", params: { room } });
     },
+    updatePressed: function(room) {
+      this.$router.push({ name: "UpdateRoom", params: { room } });
+    }
   },
 };

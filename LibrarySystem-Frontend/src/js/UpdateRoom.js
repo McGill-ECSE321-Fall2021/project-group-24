@@ -1,0 +1,68 @@
+import axios from "axios";
+var config = require("../../config");
+
+var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
+var backendUrl =
+  "http://" + config.dev.backendHost + ":" + config.dev.backendPort;
+
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { "Access-Control-Allow-Origin": frontendUrl },
+});
+
+export default {
+  name: "rooms",
+  data() {
+    return {
+      currentUser: this.$store.state.currentUser,
+      ...this.$route.params,
+      visible: false,
+      formLayout: "horizontal",
+      form: this.$form.createForm(this, { name: "coordinated" }),
+    };
+  },
+
+  methods: {
+    showModal: function () {
+      this.visible = true;
+      this.roomError = "";
+    },
+    handleOk: function (e) {
+      console.log(e);
+      this.visible = false;
+    },
+
+    handleSubmit(e) {
+      e.preventDefault();
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log("Received values of form: ", values);
+          this.room = values;
+          console.log("any object", this.room.capacity);
+          AXIOS.post(
+            "/api/rooms/update_room/" +
+              this.$route.params.roomNum +
+              "?currentUserId=" +
+              this.currentUser.idNum +
+              "&capacity=" +
+              this.room.capacity
+          )
+            .then((res) => {
+              console.log("RESPONSE: " + res.status);
+              this.visible = true;
+              this.responseStatus = res.status;
+              this.room.roomNum = "";
+              this.room.capacity = "";
+              this.room.currentUserId = "";
+              return res.status;
+            })
+            .catch((e) => {
+              this.visible = true;
+              var errorMsg = e.response.data;
+              this.roomError = errorMsg;
+            });
+        }
+      });
+    },
+  },
+};

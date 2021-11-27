@@ -22,7 +22,7 @@
           <a-button v-if="currentUser.username" @click="reservePressed(room)">
             Reserve room
           </a-button>
-          <a-button type="dashed">Update room</a-button>
+          <a-button type="dashed" @click="updatePressed(room)" >Update room</a-button>
           <a-button
             type="danger"
             @click="deleteRoom(room.roomNum, this.$currentUser)"

@@ -27,7 +27,7 @@
         v-if="this.$store.state.currentUser.username"
       >
         <router-link :to="{ name: 'BrowseItemReservations' }">
-          Browse reservations
+          Browse Reservations
         </router-link>
       </a-menu-item>
       <a-menu-item
@@ -48,7 +48,7 @@
         "
       >
         <router-link :to="{ name: 'CreateNewRoom' }">
-          Create new Room
+          Create New Room
         </router-link>
       </a-menu-item>
       <a-menu-item
@@ -65,7 +65,7 @@
         "
       >
         <router-link :to="{ name: 'SignupIRL' }">
-          Sign up for patron
+          Sign Up for Patron
         </router-link>
       </a-menu-item>
       <a-menu-item
@@ -79,7 +79,7 @@
         v-if="this.$store.state.currentUser.username"
       >
         <router-link :to="{ name: 'BrowseRoomBookings' }">
-          Browse RoomBookings
+          Browse Room Bookings
         </router-link>
       </a-menu-item>
 
