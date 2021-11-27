@@ -44,8 +44,13 @@ export default {
           console.log(e);
         });
     } else {
-      await AXIOS.get("api/view_roombookings")
+      await AXIOS.get(
+        "api/roombookings/view_roombookings" +
+          "?currentUserId=" +
+          this.currentUser.idNum
+      )
         .then((response) => {
+          console.log(response.data);
           this.reservations = response.data;
           this.reservationResults = response.data;
           return response.data;
@@ -58,10 +63,18 @@ export default {
     if (this.reservations.length == 0) {
       this.loading = false;
     } else {
+      console.log(this.reservations[0].timeSlotId);
       var counter = 0;
       await Promise.all(
         this.reservations.map((reservation) =>
-          AXIOS.get("/api/items/" + reservation.itemNumber).then((response) => {
+          AXIOS.get(
+            // "api/roombookings/view_roombooking/RoomBooking-015:00:00study1" +
+            //   "?currentUserId=" +
+            //   this.currentUser.idNum
+            "http://localhost:8080/api/roombookings/view_roombooking/RoomBooking-012:30:00study1?currentUserId=admin"
+          ).then((response) => {
+            console.log("hellllsladlfaf");
+            console.log(response.data);
             this.items[counter] = { ...response.data };
             counter++;
             if (counter == this.reservations.length) {

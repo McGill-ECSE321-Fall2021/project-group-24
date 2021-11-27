@@ -30,6 +30,7 @@ public class RoomBookingController {
   @GetMapping(value = { "/view_roombookings", "/view_roombookings/" })
   public ResponseEntity<?> getRoomBooking(@RequestParam String currentUserId) {
     try {
+      System.out.println("hi");
       return new ResponseEntity<Object>(
         roomBookingService
           .getAllRoomBookings(currentUserId)
@@ -90,7 +91,7 @@ public class RoomBookingController {
       return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
-  
+
   /** Method get all roombookings of a room
    * @author Saagar
    * @param roomNum
@@ -98,7 +99,8 @@ public class RoomBookingController {
    */
   @GetMapping(
     value = {
-      "/privateview_roombookings/room/{roomNum}", "/privateview_roombookings/room/{roomNum}/",
+      "/privateview_roombookings/room/{roomNum}",
+      "/privateview_roombookings/room/{roomNum}/",
     }
   )
   public ResponseEntity<?> getRoomBookingOfRoomPrivate(
@@ -106,7 +108,7 @@ public class RoomBookingController {
   ) {
     try {
       return new ResponseEntity<Object>(
-    		  getRoomBookingDtosForRoomPrivate(roomNum),
+        getRoomBookingDtosForRoomPrivate(roomNum),
         HttpStatus.OK
       );
     } catch (IllegalArgumentException e) {
@@ -160,15 +162,19 @@ public class RoomBookingController {
     @RequestParam String roomNum
   ) {
     try {
-
-      return new ResponseEntity<Object>(convertToDto(roomBookingService.createRoomBooking(
-    	        currentUserId,
-    	        Date.valueOf(LocalDate.parse(date)),
-    	        Time.valueOf(LocalTime.parse(startTime)),
-    	        Time.valueOf(LocalTime.parse(endTime)),
-    	        idNum,
-    	        roomNum
-    	      )), HttpStatus.OK);
+      return new ResponseEntity<Object>(
+        convertToDto(
+          roomBookingService.createRoomBooking(
+            currentUserId,
+            Date.valueOf(LocalDate.parse(date)),
+            Time.valueOf(LocalTime.parse(startTime)),
+            Time.valueOf(LocalTime.parse(endTime)),
+            idNum,
+            roomNum
+          )
+        ),
+        HttpStatus.OK
+      );
     } catch (IllegalArgumentException e) {
       return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
@@ -258,28 +264,31 @@ public class RoomBookingController {
     }
     return roomBooking;
   }
-  
+
   private List<RoomBookingDto> getRoomBookingDtosForRoomPrivate(
-		    String roomNum
-		  ) {
-		    List<RoomBooking> roomBookingsForRoomNum = roomBookingService.getRoomBookingsByRoomNumPrivate(
-		      roomNum
-		    );
-		    List<RoomBookingDto> roomBooking = new ArrayList<>();
-		    for (RoomBooking booking : roomBookingsForRoomNum) {
-		      roomBooking.add(new RoomBookingDto(
-		    		  "private",
-		    		  booking.getDate(),
-		    		  booking.getStartTime(),
-		    		  booking.getEndTime(),
-		    		 "private",
-		    		  booking.getRoomNum()
-		    	    ));
-		    }
-		    return roomBooking;
-		  }
+    String roomNum
+  ) {
+    List<RoomBooking> roomBookingsForRoomNum = roomBookingService.getRoomBookingsByRoomNumPrivate(
+      roomNum
+    );
+    List<RoomBookingDto> roomBooking = new ArrayList<>();
+    for (RoomBooking booking : roomBookingsForRoomNum) {
+      roomBooking.add(
+        new RoomBookingDto(
+          "private",
+          booking.getDate(),
+          booking.getStartTime(),
+          booking.getEndTime(),
+          "private",
+          booking.getRoomNum()
+        )
+      );
+    }
+    return roomBooking;
+  }
 
   private RoomBookingDto convertToDto(RoomBooking roomBooking) {
+	  System.out.println("roombooking:" +roomBooking);
     RoomBookingDto roomBookingDto = new RoomBookingDto(
       roomBooking.getTimeSlotId(),
       roomBooking.getDate(),
