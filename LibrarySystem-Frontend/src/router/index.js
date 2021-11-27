@@ -11,11 +11,11 @@ import ReserveItem from "@/components/ReserveItem";
 import ReserveRoom from "@/components/ReserveRoom";
 import BrowseItemReservations from "@/components/BrowseItemReservations";
 import UpdateRoom from "@/components/UpdateRoom";
-import BrowseRoomBookings from "../js/BrowseRoomBookings";
+import BrowseRoomBookings from "@/components/BrowseRoomBookings";
 import LoginPage from "@/components/Login.vue";
 import SignupPage from "@/components/Signup";
 import SignupIRL from "@/components/SignupIRL";
-import AddLibraryHour from "@/components/AddLibraryHour"; 
+import AddLibraryHour from "@/components/AddLibraryHour";
 Vue.use(Router);
 
 export default new Router({
