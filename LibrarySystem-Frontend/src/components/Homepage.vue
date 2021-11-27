@@ -1,4 +1,8 @@
 <template>
+<!-- Home page shows operating hours for the library.
+     If the head librarian (admin) is logged in, 
+     buttons appear that allow them to modify the hours.
+-->
   <div class="Homepage">
     <h3>Library Opening Hours</h3>
     <h5 v-if="hours.length == 0">No library hours</h5>
@@ -13,8 +17,10 @@
           this.$store.state.currentUser.username &&
           !this.$store.state.currentUser.isPatron &&
           !this.$store.state.currentUser.isLibrarian
-        ">
-      Add Library Hour
+        " >
+        <router-link :to="{ name: 'AddLibraryHour' }">
+                Add Library Hour
+        </router-link>
     </a-button>
   </div>
 </template>
