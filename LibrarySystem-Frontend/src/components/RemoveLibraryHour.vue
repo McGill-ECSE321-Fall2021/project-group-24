@@ -1,7 +1,7 @@
 <template>
     <div >
-    <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
-
+    <!--Form allows user to only select days for which a library hour exists (can't remove what doesn't exist) -->
+    
         <a-form
             :form="form"
             :label-col="{ span: 7 }"
@@ -18,30 +18,29 @@
                     placeholder="Please choose an option."
                    
                 >
-                    <a-select-option value= "MONDAY" >
+                    <a-select-option v-if="daysOfWeek[0]==true" value= "MONDAY" >
                         MONDAY
                     </a-select-option>
-                    <a-select-option value= "TUESDAY">
+                    <a-select-option v-if="daysOfWeek[1]==true" value= "TUESDAY">
                        TUESDAY
                     </a-select-option>
-                    <a-select-option value= "WEDNESDAY">
+                    <a-select-option v-if="daysOfWeek[2]==true" value= "WEDNESDAY">
                         WEDNESDAY
                     </a-select-option>
-                    <a-select-option value= "THURSDAY">
+                    <a-select-option v-if="daysOfWeek[3]==true" value= "THURSDAY">
                        THURSDAY
                     </a-select-option>
-                    <a-select-option value= "FRIDAY">
+                    <a-select-option v-if="daysOfWeek[4]==true" value= "FRIDAY">
                         FRIDAY
                     </a-select-option>
-                    <a-select-option value= "SATURDAY">
+                    <a-select-option v-if="daysOfWeek[5]==true" value= "SATURDAY">
                        SATURDAY
                     </a-select-option>
-                    <a-select-option value= "SUNDAY">
+                    <a-select-option v-if="daysOfWeek[6]==true" value= "SUNDAY">
                        SUNDAY
                     </a-select-option>
                 </a-select>
             </a-form-item>  
-
 
             <a-form-item label="Opening Time" >
                 <a-input
@@ -53,7 +52,6 @@
                     ]"
                 />
             </a-form-item>
-
 
             <a-form-item label="Closing Time" >
                 <a-input
@@ -73,7 +71,7 @@
 
     </div>
 </template>
-<script src="../js/AddLibraryHour.js"></script>
+<script src="../js/RemoveLibraryHour.js"></script>
 <style scoped>
     .white--text /deep/ label {
     color: white;
