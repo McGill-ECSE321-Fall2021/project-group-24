@@ -59,92 +59,87 @@
                 </span>
               </p>
               <div style="20%">
-                <div>
-                  <a-button
-                    type="primary"
-                    @click="showModal(roombooking.roomNum)"
+                <a-button
+                  type="primary"
+                  @click="showModal(roombooking.roomNum)"
+                >
+                  Modify
+                </a-button>
+                <a-modal
+                  title="Modify Room booking"
+                  :footer="null"
+                  :visible="visible"
+                  :confirm-loading="confirmLoading"
+                  @cancel="handleCancel"
+                >
+                  <a-form
+                    :form="form"
+                    @submit="
+                      handleSubmit(roombooking.timeSlotId, roombooking.roomNum)
+                    "
                   >
-                    Modify
-                  </a-button>
+                    <vue-cal
+                      :disable-views="['day', 'years', 'year', 'month']"
+                      hide-view-selector
+                      style="height: 500px"
+                      :special-hours="libraryHours"
+                      :minDate="today"
+                      :hide-weekdays="daysToHide"
+                      :events="events"
+                      :editable-events="{
+                        title: false,
+                        drag: false,
+                        resize: true,
+                        delete: true,
+                        create: false,
+                      }"
+                    />
+                    <a-date-picker
+                      @change="changeDate"
+                      :disabled-date="disabledEndDate"
+                    />
+                    <a-time-picker
+                      :default-open-value="moment('00:00:00', 'HH:mm:ss')"
+                      use12-hours
+                      format="h:mm a"
+                      @change="changeStartTime"
+                      :minute-step="15"
+                    />
+                    <a-time-picker
+                      :default-open-value="moment('00:00:00', 'HH:mm:ss')"
+                      use12-hours
+                      format="h:mm a"
+                      @change="changeEndTime"
+                      :minute-step="15"
+                    />
+                    <a-form-item>
+                      <a-button html-type="submit"
+                        >Modify room booking</a-button
+                      >
+                    </a-form-item>
+                  </a-form>
                   <a-modal
-                    title="Modify Room booking"
+                    v-model="modalVisible"
+                    :title="error ? 'Error' : 'Message'"
                     :footer="null"
-                    :visible="visible"
-                    :confirm-loading="confirmLoading"
-                    @cancel="handleCancel"
+                    :header="null"
                   >
-                    <a-form
-                      :form="form"
-                      @submit="
-                        handleSubmit(
-                          roombooking.timeSlotId,
-                          roombooking.roomNum
-                        )
-                      "
-                    >
-                      <vue-cal
-                        :disable-views="['day', 'years', 'year', 'month']"
-                        hide-view-selector
-                        style="height: 500px"
-                        :special-hours="libraryHours"
-                        :minDate="today"
-                        :hide-weekdays="daysToHide"
-                        :events="events"
-                        :editable-events="{
-                          title: false,
-                          drag: false,
-                          resize: true,
-                          delete: true,
-                          create: false,
-                        }"
-                      />
-                      <a-date-picker
-                        @change="changeDate"
-                        :disabled-date="disabledEndDate"
-                      />
-                      <a-time-picker
-                        :default-open-value="moment('00:00:00', 'HH:mm:ss')"
-                        use12-hours
-                        format="h:mm a"
-                        @change="changeStartTime"
-                        :minute-step="15"
-                      />
-                      <a-time-picker
-                        :default-open-value="moment('00:00:00', 'HH:mm:ss')"
-                        use12-hours
-                        format="h:mm a"
-                        @change="changeEndTime"
-                        :minute-step="15"
-                      />
-                      <a-form-item>
-                        <a-button html-type="submit"
-                          >Modify room booking</a-button
-                        >
-                      </a-form-item>
-                    </a-form>
-                    <a-modal
-                      v-model="modalVisible"
-                      :title="error ? 'Error' : 'Message'"
-                      :footer="null"
-                      :header="null"
-                    >
-                      <a-alert
-                        v-if="error"
-                        message=" "
-                        :description="error"
-                        type="error"
-                        show-icon
-                      />
-                      <a-alert
-                        v-if="response"
-                        message=" "
-                        :description="response"
-                        type="success"
-                        show-icon
-                      />
-                    </a-modal>
+                    <a-alert
+                      v-if="error"
+                      message=" "
+                      :description="error"
+                      type="error"
+                      show-icon
+                    />
+                    <a-alert
+                      v-if="response"
+                      message=" "
+                      :description="response"
+                      type="success"
+                      show-icon
+                    />
                   </a-modal>
-                </div>
+                </a-modal>
                 <a-button
                   type="danger"
                   @click="
