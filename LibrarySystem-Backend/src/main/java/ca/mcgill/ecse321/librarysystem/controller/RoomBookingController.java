@@ -30,7 +30,6 @@ public class RoomBookingController {
   @GetMapping(value = { "/view_roombookings", "/view_roombookings/" })
   public ResponseEntity<?> getRoomBooking(@RequestParam String currentUserId) {
     try {
-      System.out.println("hi");
       return new ResponseEntity<Object>(
         roomBookingService
           .getAllRoomBookings(currentUserId)
@@ -288,7 +287,7 @@ public class RoomBookingController {
   }
 
   private RoomBookingDto convertToDto(RoomBooking roomBooking) {
-	  System.out.println("roombooking:" +roomBooking);
+    System.out.println("roombooking:" + roomBooking);
     RoomBookingDto roomBookingDto = new RoomBookingDto(
       roomBooking.getTimeSlotId(),
       roomBooking.getDate(),

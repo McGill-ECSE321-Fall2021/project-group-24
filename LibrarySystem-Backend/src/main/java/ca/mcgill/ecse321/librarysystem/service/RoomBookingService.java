@@ -54,10 +54,7 @@ public class RoomBookingService {
     String roomNumber
   ) {
     String timeSlotId =
-      "RoomBooking-" +
-   roomBookingRepository.count() +
-      startTime +
-      roomNumber;
+      "RoomBooking-" + roomBookingRepository.count() + startTime + roomNumber;
     // check idNum
 
     if (!inputIsValid(idNum)) throw new IllegalArgumentException(
@@ -133,7 +130,9 @@ public class RoomBookingService {
     Time endTime,
     String timeSlotIdToIgnore
   ) {
-    List<RoomBooking> bookings = roomBookingRepository.findRoomBookingByRoomNum(roomNumber);
+    List<RoomBooking> bookings = roomBookingRepository.findRoomBookingByRoomNum(
+      roomNumber
+    );
     if (bookings == null || bookings.size() == 0) return false;
     for (RoomBooking rb : bookings) {
       if (date.equals(rb.getDate())) {
@@ -142,12 +141,17 @@ public class RoomBookingService {
           !rb.getTimeSlotId().equals(timeSlotIdToIgnore)
         ) {
           if (
-            (startTime.after(rb.getStartTime()) &&
-            startTime.before(rb.getEndTime())) || startTime.equals(rb.getStartTime())
+            (
+              startTime.after(rb.getStartTime()) &&
+              startTime.before(rb.getEndTime())
+            ) ||
+            startTime.equals(rb.getStartTime())
           ) {
             return true;
           } else if (
-            endTime.after(rb.getStartTime()) && endTime.before(rb.getEndTime()) || endTime.equals(rb.getEndTime())
+            endTime.after(rb.getStartTime()) &&
+            endTime.before(rb.getEndTime()) ||
+            endTime.equals(rb.getEndTime())
           ) {
             return true;
           }
@@ -166,14 +170,14 @@ public class RoomBookingService {
   ) {
     // find day of the week from date and convert to DayOfweek
     LibraryHour lh = libraryHourRepo.findHourByDayOfWeek(dayOfWeek);
-    if (lh != null &&
+    if (
+      lh != null &&
       (lh.getStartTime().before(startTime) && lh.getEndTime().after(endTime))
     ) {
-    	return false;
+      return false;
     } else {
-    	  return true;
+      return true;
     }
-  
   }
 
   @Transactional
@@ -237,6 +241,8 @@ public class RoomBookingService {
     rb.setStartTime(newStartTime);
     rb.setEndTime(newEndTime);
     roomBookingRepository.save(rb);
+    System.out.println("UPDATING BOOKING");
+    System.out.println(newStartTime);
     return rb;
   }
 
@@ -321,11 +327,9 @@ public class RoomBookingService {
     }
     return roomBookingRepository.findRoomBookingByRoomNum(roomNum);
   }
-  
+
   @Transactional
-  public List<RoomBooking> getRoomBookingsByRoomNumPrivate(
-    String roomNum
-  ) {
+  public List<RoomBooking> getRoomBookingsByRoomNumPrivate(String roomNum) {
     return roomBookingRepository.findRoomBookingByRoomNum(roomNum);
   }
 

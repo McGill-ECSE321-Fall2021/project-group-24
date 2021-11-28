@@ -60,7 +60,10 @@
               </p>
               <div style="20%">
                 <div>
-                  <a-button type="primary" @click="showModal">
+                  <a-button
+                    type="primary"
+                    @click="showModal(roombooking.roomNum)"
+                  >
                     Modify
                   </a-button>
                   <a-modal
@@ -70,15 +73,23 @@
                     :confirm-loading="confirmLoading"
                     @cancel="handleCancel"
                   >
-                    <a-form :form="form" @submit="handleSubmit">
+                    <a-form
+                      :form="form"
+                      @submit="
+                        handleSubmit(
+                          roombooking.timeSlotId,
+                          roombooking.roomNum
+                        )
+                      "
+                    >
                       <vue-cal
                         :disable-views="['day', 'years', 'year', 'month']"
                         hide-view-selector
                         style="height: 500px"
-                        :special-hours="this.libraryHours"
-                        :minDate="this.today"
-                        :hide-weekdays="this.daysToHide"
-                        :events="this.events"
+                        :special-hours="libraryHours"
+                        :minDate="today"
+                        :hide-weekdays="daysToHide"
+                        :events="events"
                         :editable-events="{
                           title: false,
                           drag: false,
@@ -107,45 +118,33 @@
                       />
                       <a-form-item>
                         <a-button html-type="submit"
-                          >Confirm room booking</a-button
+                          >Modify room booking</a-button
                         >
                       </a-form-item>
                     </a-form>
                     <a-modal
                       v-model="modalVisible"
-                      :title="this.error ? 'Error' : 'Message'"
+                      :title="error ? 'Error' : 'Message'"
                       :footer="null"
                       :header="null"
                     >
                       <a-alert
-                        v-if="this.error"
+                        v-if="error"
                         message=" "
-                        :description="this.error"
+                        :description="error"
                         type="error"
                         show-icon
                       />
                       <a-alert
-                        v-if="this.response"
+                        v-if="response"
                         message=" "
-                        :description="this.response"
+                        :description="response"
                         type="success"
                         show-icon
                       />
                     </a-modal>
                   </a-modal>
                 </div>
-                <!-- <a-button
-                  type="dashed"
-                  @click="
-                    renew(
-                      roombooking.roomroombookingId,
-                      currentUser.idNum,
-                      index
-                    )
-                  "
-                >
-                  Modify
-                </a-button> -->
                 <a-button
                   type="danger"
                   @click="
