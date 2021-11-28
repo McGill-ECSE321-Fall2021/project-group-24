@@ -68,27 +68,70 @@
                     :footer="null"
                     :visible="visible"
                     :confirm-loading="confirmLoading"
-                    @ok="handleOk"
                     @cancel="handleCancel"
                   >
-                    <a-form
-                      :form="form"
-                      :label-col="{ span: 6 }"
-                      :wrapper-col="{ span: 12 }"
-                      @submit="handleSubmit"
-                    >
-                      <a-form-item label="new date">
-                        <!-- TODO: add date picker -->
-                        <!-- TODO: add time picker -->
-                        <!-- TODO: add room selector -->
-
-                        <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-                          <a-button type="primary" html-type="submit">
-                            Log In
-                          </a-button>
-                        </a-form-item>
+                    <a-form :form="form" @submit="handleSubmit">
+                      <vue-cal
+                        :disable-views="['day', 'years', 'year', 'month']"
+                        hide-view-selector
+                        style="height: 500px"
+                        :special-hours="this.libraryHours"
+                        :minDate="this.today"
+                        :hide-weekdays="this.daysToHide"
+                        :events="this.events"
+                        :editable-events="{
+                          title: false,
+                          drag: false,
+                          resize: true,
+                          delete: true,
+                          create: false,
+                        }"
+                      />
+                      <a-date-picker
+                        @change="changeDate"
+                        :disabled-date="disabledEndDate"
+                      />
+                      <a-time-picker
+                        :default-open-value="moment('00:00:00', 'HH:mm:ss')"
+                        use12-hours
+                        format="h:mm a"
+                        @change="changeStartTime"
+                        :minute-step="15"
+                      />
+                      <a-time-picker
+                        :default-open-value="moment('00:00:00', 'HH:mm:ss')"
+                        use12-hours
+                        format="h:mm a"
+                        @change="changeEndTime"
+                        :minute-step="15"
+                      />
+                      <a-form-item>
+                        <a-button html-type="submit"
+                          >Confirm room booking</a-button
+                        >
                       </a-form-item>
                     </a-form>
+                    <a-modal
+                      v-model="modalVisible"
+                      :title="this.error ? 'Error' : 'Message'"
+                      :footer="null"
+                      :header="null"
+                    >
+                      <a-alert
+                        v-if="this.error"
+                        message=" "
+                        :description="this.error"
+                        type="error"
+                        show-icon
+                      />
+                      <a-alert
+                        v-if="this.response"
+                        message=" "
+                        :description="this.response"
+                        type="success"
+                        show-icon
+                      />
+                    </a-modal>
                   </a-modal>
                 </div>
                 <!-- <a-button
