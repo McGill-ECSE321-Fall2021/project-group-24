@@ -33,8 +33,11 @@ export default {
       libraryHours: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
       startTime: "",
       endTime: "",
+      date: "",
       roombookingResults: [],
-      roomResults: [],
+      roombookings: [],
+      roomNum: "",
+      timeSlotId: "",
     };
   },
   created: async function () {
@@ -46,8 +49,6 @@ export default {
           this.currentUser.idNum
       )
         .then((response) => {
-          console.log("REPONSE");
-          console.log(response.data);
           this.roombookings = response.data;
           this.roombookingResults = response.data;
           this.loading = false;
@@ -63,8 +64,6 @@ export default {
           this.currentUser.idNum
       )
         .then((response) => {
-          console.log("HEELELLELELE");
-          console.log(response.data);
           this.roombookings = response.data;
           this.roombookingResults = response.data;
           this.loading = false;
@@ -83,7 +82,7 @@ export default {
     changeEndTime: function (newEndTime) {
       this.endTime = newEndTime;
     },
-    showModal(roomNum) {
+    showModal(roomNum, timeSlotId) {
       AXIOS.get("api/libraryhour/view_library_hours").then((res) => {
         var daysOfWeek = [
           "MONDAY",
@@ -94,8 +93,24 @@ export default {
           "SATURDAY",
           "SUNDAY",
         ];
+        this.daysToHide = [1, 2, 3, 4, 5, 6, 7];
+        this.libraryHours = {
+          1: {},
+          2: {},
+          3: {},
+          4: {},
+          5: {},
+          6: {},
+          7: {},
+        };
         for (var i = 0; i < res.data.length; i++) {
-          this.daysToHide.splice(daysOfWeek.indexOf(res.data[i].dayOfWeek), 1);
+          this.daysToHide.splice(
+            this.daysToHide.indexOf(
+              daysOfWeek.indexOf(res.data[i].dayOfWeek) + 1
+            ),
+            1
+          );
+
           //starttime
           var startTime = res.data[i].startTime;
           var startTimeArray = startTime.split(":");
@@ -116,6 +131,8 @@ export default {
       AXIOS.get("api/roombookings/privateview_roombookings/room/" + roomNum)
         .then((res) => {
           console.log("GETTING ROOOOM BOOKINGS");
+          this.roomNum = roomNum;
+          this.timeSlotId = timeSlotId;
           for (var i = 0; i < res.data.length; i++) {
             this.events = [
               ...this.events,
@@ -144,8 +161,11 @@ export default {
       console.log("Clicked cancel button");
       this.visible = false;
     },
-    handleSubmit(timeSlotId, roomNum) {
+    handleSubmit(e) {
+      e.preventDefault();
+      console.log("hi");
       this.form.validateFields((err, values) => {
+        // console.log(values);
         if (!err) {
           var startTime = new Date(this.startTime);
           startTime =
@@ -162,17 +182,12 @@ export default {
             ":" +
             (endTime.getMinutes() == 0 ? "00" : endTime.getMinutes());
           var date = this.date;
-          console.log(timeSlotId);
-          console.log(roomNum);
-          console.log(startTime);
-          console.log(endTime);
-          console.log(date);
           AXIOS.put(
             "/api/roombookings/update_roombooking" +
               "?currentUserId=" +
               this.currentUser.idNum +
               "&timeSlotId=" +
-              timeSlotId +
+              this.timeSlotId +
               "&newDate=" +
               date +
               "&newStartTime=" +
@@ -180,13 +195,25 @@ export default {
               "&newEndTime=" +
               endTime +
               "&newRoomNum=" +
-              roomNum
+              this.roomNum
           )
             .then((res) => {
-              console.log("UPDATING");
-              this.response = "Successfully created Room Booking for patron";
+              this.response = "Successfully modified Room Booking";
               this.modalVisible = true;
               this.error = "";
+              console.log("help");
+              for (var i = 0; i < this.roombookings.length; i++) {
+                if (this.roombookings[i].timeSlotId == this.timeSlotId) {
+                  this.roombookings[i].startTime = this.startTime
+                    .toString()
+                    .substring(15, 23);
+                  this.roombookings[i].endTime = this.endTime
+                    .toString()
+                    .substring(15, 23);
+                  this.roombookings[i].date = date;
+                }
+              }
+              this.search("");
             })
             .catch((e) => {
               this.response = "";
@@ -198,15 +225,17 @@ export default {
     },
     search: function (query) {
       this.roombookingResults = [];
-      this.roomResults = [];
       if (query.length == 0) {
         this.roombookingResults = this.roombookings;
-        this.roomResults = this.rooms;
       } else {
         this.roombookingResults = this.roombookings.filter(
           (roombooking, index) => {
-            if (roombooking.idNum.toLowerCase().includes(query.toLowerCase())) {
-              this.roomResults.push(this.rooms[index]);
+            if (
+              roombooking.roomNum.toLowerCase().includes(query.toLowerCase()) ||
+              roombooking.idNum.toLowerCase().includes(query.toLowerCase()) ||
+              roombooking.date.toLowerCase().includes(query.toLowerCase())
+            ) {
+              this.roombookingResults.push(roombooking);
               return true;
             }
           }

@@ -172,7 +172,7 @@ public class RoomBookingService {
     LibraryHour lh = libraryHourRepo.findHourByDayOfWeek(dayOfWeek);
     if (
       lh != null &&
-      (lh.getStartTime().before(startTime) && lh.getEndTime().after(endTime))
+      ((lh.getStartTime().before(startTime) || lh.getStartTime().equals(startTime)) && (lh.getEndTime().after(endTime) || lh.getEndTime().equals(endTime)))
     ) {
       return false;
     } else {

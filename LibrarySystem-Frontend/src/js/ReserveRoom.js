@@ -43,8 +43,15 @@ export default {
         "SATURDAY",
         "SUNDAY",
       ];
+      // 1 2 3 4 5 6 7
+
       for (var i = 0; i < res.data.length; i++) {
-        this.daysToHide.splice(daysOfWeek.indexOf(res.data[i].dayOfWeek), 1);
+        this.daysToHide.splice(
+          this.daysToHide.indexOf(
+            daysOfWeek.indexOf(res.data[i].dayOfWeek) + 1
+          ),
+          1
+        );
         //starttime
         var startTime = res.data[i].startTime;
         var startTimeArray = startTime.split(":");
@@ -60,6 +67,8 @@ export default {
           class: "business-hours",
         };
       }
+      console.log(res.data);
+      console.log(this.daysToHide);
     });
     AXIOS.get(
       "api/roombookings/privateview_roombookings/room/" + this.room.roomNum

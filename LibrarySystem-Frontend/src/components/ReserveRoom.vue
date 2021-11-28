@@ -55,6 +55,7 @@
           format="h:mm a"
           @change="changeStartTime"
           :minute-step="15"
+          placeholder="Start time"
         />
         <a-time-picker
           :default-open-value="moment('00:00:00', 'HH:mm:ss')"
@@ -62,6 +63,7 @@
           format="h:mm a"
           @change="changeEndTime"
           :minute-step="15"
+          placeholder="End time"
         />
         <a-form-item>
           <a-button html-type="submit">Confirm room booking</a-button>

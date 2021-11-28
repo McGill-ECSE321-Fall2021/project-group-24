@@ -171,9 +171,9 @@ export default {
                     this.visible = true;
                     var errorMsg = e.response.data;
                     this.userError = errorMsg;
-                  }
-                );
-                  window.location.href = "http://127.0.0.1:8087/#/";
+                  });
+                // window.location.href = "http://127.0.0.1:8087/#/";
+                this.$router.replace({ name: "Homepage" });
               }
               return res.status;
             })

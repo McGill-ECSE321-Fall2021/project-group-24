@@ -38,6 +38,11 @@
                   <strong>Room:</strong>
                   {{ roombooking.roomNum }}
                 </span>
+                <span v-if="!currentUser.isPatron">
+                  <br />
+                  <strong>Patron id:</strong>
+                  {{ roombooking.idNum }}
+                </span>
                 <span>
                   <br />
                   <strong>Date:</strong>
@@ -46,13 +51,14 @@
                 <span>
                   <br />
                   <strong>Start time:</strong>
-                  {{ roombooking.startTime }}
+                  {{ roombooking.startTime.substring(0, 5) }}
                 </span>
                 <span>
                   <br />
                   <strong>End time:</strong>
-                  {{ roombooking.endTime }}
+                  {{ roombooking.endTime.substring(0, 5) }}
                 </span>
+
                 <span>
                   <br />
                   <strong>Day:</strong> {{ roombooking.dayOfWeek }}
@@ -61,7 +67,9 @@
               <div style="20%">
                 <a-button
                   type="primary"
-                  @click="showModal(roombooking.roomNum)"
+                  @click="
+                    showModal(roombooking.roomNum, roombooking.timeSlotId)
+                  "
                 >
                   Modify
                 </a-button>
@@ -72,12 +80,7 @@
                   :confirm-loading="confirmLoading"
                   @cancel="handleCancel"
                 >
-                  <a-form
-                    :form="form"
-                    @submit="
-                      handleSubmit(roombooking.timeSlotId, roombooking.roomNum)
-                    "
-                  >
+                  <a-form :form="form" @submit="handleSubmit">
                     <vue-cal
                       :disable-views="['day', 'years', 'year', 'month']"
                       hide-view-selector
@@ -112,10 +115,51 @@
                       @change="changeEndTime"
                       :minute-step="15"
                     />
+
                     <a-form-item>
                       <a-button html-type="submit"
                         >Modify room booking</a-button
                       >
+                    </a-form-item>
+                    <a-form-item
+                      style="
+                        width: 0;
+                        margin-top: 0;
+                        margin-bottom: 0;
+                        height: 0;
+                        opacity: 0;
+                      "
+                    >
+                      <a-input
+                        disabled
+                        v-decorator="[
+                          'timeSlotId',
+                          {
+                            rules: [{ required: false, message: '' }],
+                          },
+                        ]"
+                        :placeholder="roombooking.timeSlotId"
+                      />
+                    </a-form-item>
+                    <a-form-item
+                      style="
+                        width: 0;
+                        margin-top: 0;
+                        margin-bottom: 0;
+                        height: 0;
+                        opacity: 0;
+                      "
+                    >
+                      <a-input
+                        disabled
+                        v-decorator="[
+                          'roomNum',
+                          {
+                            rules: [{ required: false, message: '' }],
+                          },
+                        ]"
+                        :placeholder="roombooking.roomNum"
+                      />
                     </a-form-item>
                   </a-form>
                   <a-modal
@@ -216,5 +260,13 @@
 #searchbar {
   padding-left: 20%;
   padding-right: 20%;
+}
+.business-hours {
+  background-color: rgba(169, 255, 140, 0.2);
+  border: solid rgba(169, 255, 140, 0.6);
+  border-width: 2px 0;
+}
+.vuecal__event {
+  background-color: rgba(255, 148, 148, 0.35);
 }
 </style>
