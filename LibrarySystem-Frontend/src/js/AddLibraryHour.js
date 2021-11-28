@@ -1,4 +1,5 @@
 import axios from "axios";
+
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
@@ -11,11 +12,14 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "libraryHours",
+  name: "AddLibraryHours",
   data() {
     return {
       libraryHours: [],
       newLibraryHour: "",
+      dayOfWeek: "", 
+      startTime: "", 
+      endTime: "",
       libraryHourError: "",
       response: [],
       responseStatus: null,
@@ -24,7 +28,7 @@ export default {
       formLayout: "horizontal",
       form: this.$form.createForm(this, { name: "coordinated" }),
     };
-  },
+  }, 
 
   methods: {
     showModal: function () {

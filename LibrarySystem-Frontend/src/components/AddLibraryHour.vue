@@ -7,17 +7,40 @@
             :label-col="{ span: 7 }"
             :wrapper-col="{ span: 12 }"
             @submit="handleSubmit"
-        >
-            <a-form-item label="Day Of Week" >
-                <a-input
+        >   
+                <a-form-item label="Day Of Week">
+                <a-select
                     v-decorator="[
-                        'dayOfWeek',
-                            {
-                                rules: [{ required: true, message: 'Please enter the day of week.' }],
-                            },
+                        'DayOfWeek',
+                        { rules: [{ required: true, message: 'Please select day.' }] },
                     ]"
-                />
-            </a-form-item>
+                    
+                    placeholder="Please choose an option."
+                   
+                >
+                    <a-select-option value= "MONDAY" >
+                        MONDAY
+                    </a-select-option>
+                    <a-select-option value= "TUESDAY">
+                       TUESDAY
+                    </a-select-option>
+                    <a-select-option value= "WEDNESDAY">
+                        WEDNESDAY
+                    </a-select-option>
+                    <a-select-option value= "THURSDAY">
+                       THURSDAY
+                    </a-select-option>
+                    <a-select-option value= "FRIDAY">
+                        FRIDAY
+                    </a-select-option>
+                    <a-select-option value= "SATURDAY">
+                       SATURDAY
+                    </a-select-option>
+                    <a-select-option value= "SUNDAY">
+                       SUNDAY
+                    </a-select-option>
+                </a-select>
+            </a-form-item>  
 
 
             <a-form-item label="Opening Time" >
@@ -44,10 +67,15 @@
             </a-form-item>
 
             <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-                <a-button type="primary" html-type="submit"> Add Library Hour </a-button>
+                <a-button v-on:click="addLibraryHour('dayOfWeek', 'startTime', 'endTime')" type="primary" html-type="submit"> Add Library Hour </a-button>
             </a-form-item>
         </a-form>
 
     </div>
 </template>
 <script src="../js/AddLibraryHour.js"></script>
+<style scoped>
+    .white--text /deep/ label {
+    color: white;
+    }
+</style>
