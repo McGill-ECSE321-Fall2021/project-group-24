@@ -20,7 +20,7 @@
             <a-form-item label="First Name" >
                 <a-input
                     v-decorator="[
-                        'firstName',
+                        'firstname',
                             {   
                                 initialValue: currentUser.firstName,
                                 rules: [{ required: true, message: 'Please enter your first name.' }],
@@ -33,7 +33,7 @@
             <a-form-item label="Last Name" >
                 <a-input
                     v-decorator="[
-                        'lastName',
+                        'lastname',
                             {
                                 initialValue: currentUser.lastName,
                                 rules: [{ required: true, message: 'Please enter your last name.' }],
@@ -45,7 +45,7 @@
             <a-form-item label="E-mail" >
                 <a-input
                     v-decorator="[
-                        'email',
+                        'emailinput',
                         {
                             initialValue: currentUser.email,
                             rules: [{type: 'email', message: 'The input is not valid E-mail!'}, {required: true, message: 'Please input your E-mail!'}]
@@ -57,7 +57,7 @@
             <a-form-item label="Address" >
                 <a-input
                     v-decorator="[
-                        'address',
+                        'addressinput',
                         {
                             initialValue: currentUser.address,
                             rules: [{required:true, message: 'This field cannot be empty.'}]
