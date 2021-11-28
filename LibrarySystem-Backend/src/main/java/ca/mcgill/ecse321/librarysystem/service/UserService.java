@@ -131,7 +131,7 @@ public class UserService {
 		}
 
 		if (!user.getPassword().equals(oldPass)) {
-			throw new IllegalArgumentException("Incorrect old password entered.");
+			throw new IllegalArgumentException("Incorrect current password entered.");
 		}
 
 		if (user.getIsLoggedIn() == false) {
@@ -140,7 +140,7 @@ public class UserService {
 
 		if (user.getPassword().equals(newPass)) {
 			throw new IllegalArgumentException(
-				"New password cannot be the same as the old password."
+				"New password cannot be the same as the current password."
 			);
 		}
 

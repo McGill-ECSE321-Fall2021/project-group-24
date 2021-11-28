@@ -129,6 +129,11 @@ public class PatronService {
       currentUserId
     );
     Patron patron = patronRepository.findPatronByIdNum(idNum);
+    
+    if(patron == null) {
+    	throw new IllegalArgumentException("Account with this ID does not exist.");
+    }
+    
     if (
       currentUserId.equals(idNum) &&
       !patron.getIsLoggedIn() ||
@@ -141,6 +146,8 @@ public class PatronService {
         "Only a librarian or the patron themselves can delete a patron account"
       );
     }
+    
+    
     if (
       librarianRepository.findUserByIdNum(idNum) != null ||
       headLibrarianRepository.findUserByIdNum(idNum) != null

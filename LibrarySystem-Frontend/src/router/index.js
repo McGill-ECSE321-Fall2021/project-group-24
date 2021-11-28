@@ -16,6 +16,9 @@ import LoginPage from "@/components/Login.vue";
 import SignupPage from "@/components/Signup";
 import SignupIRL from "@/components/SignupIRL";
 import AddLibraryHour from "@/components/AddLibraryHour";
+import EditAccountDetails from "@/components/EditAccountDetails"
+import ChangePassword from "@/components/ChangePassword"
+import DeleteAccount from "@/components/DeleteAccount"
 Vue.use(Router);
 
 export default new Router({
@@ -101,5 +104,21 @@ export default new Router({
       name: "BrowseRoomBookings",
       component: BrowseRoomBookings,
     },
+    {
+      path: "/edit",
+      name: "EditAccountDetails",
+      component: EditAccountDetails,
+    },
+    {
+      path: "/changePassword",
+      name: "ChangePassword",
+      component: ChangePassword,
+    },
+    {
+      path: "/deleteAccount",
+      name: "DeleteAccount",
+      component: DeleteAccount,
+    }
+  
   ],
 });

@@ -83,6 +83,11 @@
         </router-link>
       </a-menu-item>
 
+      <a-menu-item key="EditAccountDetails" v-if="this.$store.state.currentUser.username">
+        <router-link :to="{ name: 'EditAccountDetails' }">Settings</router-link>
+      </a-menu-item>
+
+
       <a-menu-item key="Logout" v-if="this.$store.state.currentUser.username">
         <a @click="logout">Logout</a>
       </a-menu-item>
