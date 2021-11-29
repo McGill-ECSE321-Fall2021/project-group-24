@@ -14,130 +14,215 @@
       e.g. "View Librarians" is accessible only if the user is logged in as a librarian, 
       while "Browse Items" is accessible by any user (if those not logged-in)
   -->
-    <a-menu v-model="current" mode="horizontal">
-      <a-menu-item key="Homepage">
-        <router-link :to="{ name: 'Homepage' }">Home</router-link>
-      </a-menu-item>
-
-      <a-menu-item key="BrowseAllItems">
-        <router-link :to="{ name: 'BrowseAllItems' }">Browse Items</router-link>
-      </a-menu-item>
-
-      <a-menu-item key="BrowseAllRooms">
-        <router-link :to="{ name: 'BrowseAllRooms' }">
-          Browse Rooms
-        </router-link>
-      </a-menu-item>
-
-      <a-menu-item key="BrowseAllShifts">
-        <router-link :to="{ name: 'BrowseAllShifts' }">
-          Browse Shifts
-        </router-link>
-      </a-menu-item>
-
-      <a-menu-item
-        key="BrowseRoomBookings"
-        v-if="this.$store.state.currentUser.username"
-      >
-        <router-link :to="{ name: 'BrowseRoomBookings' }">
-          Browse Room Bookings
-        </router-link>
-      </a-menu-item>
-
-      <a-menu-item
-        key="BrowseItemReservations"
-        v-if="this.$store.state.currentUser.username"
-      >
-        <router-link :to="{ name: 'BrowseItemReservations' }">
-          Browse Reservations
-        </router-link>
-      </a-menu-item>
-
-      <a-menu-item
-        key="CreateNewItem"
-        v-if="
-          this.$store.state.currentUser.username &&
-          !this.$store.state.currentUser.isPatron
-        "
-        ><router-link :to="{ name: 'CreateNewItem' }">
-          Create New Item
-        </router-link></a-menu-item
-      >
-
-      <a-menu-item
-        key="CreateNewRoom"
+    <!-- menu bar for logged in librarians/head librarian -->
+    <div>
+      <a-menu
+        v-model="current"
+        mode="horizontal"
         v-if="
           this.$store.state.currentUser.username &&
           !this.$store.state.currentUser.isPatron
         "
       >
-        <router-link :to="{ name: 'CreateNewRoom' }">
-          Create New Room
-        </router-link>
-      </a-menu-item>
+        <a-menu-item key="Homepage">
+          <router-link :to="{ name: 'Homepage' }">Home </router-link>
+        </a-menu-item>
+        <a-sub-menu>
+          <span slot="title" class="submenu-title-wrapper">Manage Items</span>
+          <a-menu-item
+            key="CreateNewItem"
+            v-if="
+              this.$store.state.currentUser.username &&
+              !this.$store.state.currentUser.isPatron
+            "
+            ><router-link :to="{ name: 'CreateNewItem' }">
+              Create New Item
+            </router-link></a-menu-item
+          >
+          <a-menu-item key="BrowseAllItems">
+            <router-link :to="{ name: 'BrowseAllItems' }"
+              >Browse Items</router-link
+            >
+          </a-menu-item>
 
-      <a-menu-item
-        key="LoginPage"
-        v-if="!this.$store.state.currentUser.username"
-      >
-        <router-link :to="{ name: 'LoginPage' }"> Sign in </router-link>
-      </a-menu-item>
+          <a-menu-item
+            key="BrowseItemReservations"
+            v-if="this.$store.state.currentUser.username"
+          >
+            <router-link :to="{ name: 'BrowseItemReservations' }">
+              Browse Reservations
+            </router-link>
+          </a-menu-item>
+        </a-sub-menu>
+        <a-sub-menu>
+          <span slot="title" class="submenu-title-wrapper"> Manage Rooms</span>
+          <a-menu-item
+            key="CreateNewRoom"
+            v-if="
+              this.$store.state.currentUser.username &&
+              !this.$store.state.currentUser.isPatron
+            "
+          >
+            <router-link :to="{ name: 'CreateNewRoom' }">
+              Create New Room
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="BrowseAllRooms">
+            <router-link :to="{ name: 'BrowseAllRooms' }">
+              Browse Rooms
+            </router-link>
+          </a-menu-item>
+          <a-menu-item
+            key="BrowseRoomBookings"
+            v-if="this.$store.state.currentUser.username"
+          >
+            <router-link :to="{ name: 'BrowseRoomBookings' }">
+              Browse Room Bookings
+            </router-link>
+          </a-menu-item>
+        </a-sub-menu>
+        <a-sub-menu>
+          <span slot="title" class="submenu-title-wrapper">
+            Manage Patrons</span
+          >
+          <a-menu-item
+            key="ViewAllPatrons"
+            v-if="
+              this.$store.state.currentUser.username &&
+              !this.$store.state.currentUser.isPatron
+            "
+          >
+            <router-link :to="{ name: 'ViewAllPatrons' }">
+              View all Patrons
+            </router-link>
+          </a-menu-item>
+          <a-menu-item
+            key="SignUpIRL"
+            v-if="
+              this.$store.state.currentUser.username &&
+              !this.$store.state.currentUser.isPatron
+            "
+          >
+            <router-link :to="{ name: 'SignupIRL' }">
+              Sign Up for Patron
+            </router-link>
+          </a-menu-item>
+        </a-sub-menu>
+        <a-sub-menu
+          v-if="
+            this.$store.state.currentUser.username &&
+            this.$store.state.currentUser.username === 'admin'
+          "
+        >
+          <span slot="title" class="submenu-title-wrapper">
+            Manage Librarians</span
+          >
+          <a-menu-item
+            key="ViewLibrarians"
+            v-if="
+              this.$store.state.currentUser.username &&
+              !this.$store.state.currentUser.isPatron
+            "
+          >
+            <router-link :to="{ name: 'ViewLibrarians' }">
+              View Librarians
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="BrowseAllShifts">
+            <router-link :to="{ name: 'BrowseAllShifts' }">
+              Browse Shifts
+            </router-link>
+          </a-menu-item>
+        </a-sub-menu>
+        <a-menu-item
+          key="LoginPage"
+          v-if="!this.$store.state.currentUser.username"
+        >
+          <router-link :to="{ name: 'LoginPage' }"> Sign in </router-link>
+        </a-menu-item>
 
-      <a-menu-item
-        key="ViewAllPatrons"
+        <a-menu-item
+          key="SignupPage"
+          v-if="!this.$store.state.currentUser.username"
+        >
+          <router-link :to="{ name: 'SignupPage' }"> Sign up </router-link>
+        </a-menu-item>
+
+        <a-menu-item
+          key="EditAccountDetails"
+          v-if="this.$store.state.currentUser.username"
+        >
+          <router-link :to="{ name: 'EditAccountDetails' }"
+            >Settings</router-link
+          >
+        </a-menu-item>
+
+        <a-menu-item key="Logout" v-if="this.$store.state.currentUser.username">
+          <a @click="logout">Logout</a>
+        </a-menu-item>
+      </a-menu>
+    </div>
+
+    <!-- menu bar for not logged in or a logged in patron -->
+    <div>
+      <a-menu
+        v-model="current"
+        mode="horizontal"
         v-if="
-          this.$store.state.currentUser.username &&
-          !this.$store.state.currentUser.isPatron
+          !this.$store.state.currentUser.username ||
+          (this.$store.state.currentUser.username &&
+            this.$store.state.currentUser.isPatron)
         "
       >
-        <router-link :to="{ name: 'ViewAllPatrons' }">
-          View all Patrons
-        </router-link>
-      </a-menu-item>
+        <a-menu-item key="Homepage">
+          <router-link :to="{ name: 'Homepage' }">Home </router-link>
+        </a-menu-item>
+        <a-menu-item key="BrowseAllItems">
+          <router-link :to="{ name: 'BrowseAllItems' }"
+            >Browse Items</router-link
+          >
+        </a-menu-item>
+        <a-menu-item key="BrowseAllRooms">
+          <router-link :to="{ name: 'BrowseAllRooms' }">
+            Browse Rooms
+          </router-link>
+        </a-menu-item>
+        <a-menu-item
+          key="BrowseRoomBookings"
+          v-if="this.$store.state.currentUser.username"
+        >
+          <router-link :to="{ name: 'BrowseRoomBookings' }">
+            Browse Room Bookings
+          </router-link>
+        </a-menu-item>
+        <a-menu-item
+          key="LoginPage"
+          v-if="!this.$store.state.currentUser.username"
+        >
+          <router-link :to="{ name: 'LoginPage' }"> Sign in </router-link>
+        </a-menu-item>
 
-      <a-menu-item
-        key="ViewLibrarians"
-        v-if="
-          this.$store.state.currentUser.username &&
-          !this.$store.state.currentUser.isPatron
-        "
-      >
-        <router-link :to="{ name: 'ViewLibrarians' }">
-          View Librarians
-        </router-link>
-      </a-menu-item>
+        <a-menu-item
+          key="SignupPage"
+          v-if="!this.$store.state.currentUser.username"
+        >
+          <router-link :to="{ name: 'SignupPage' }"> Sign up </router-link>
+        </a-menu-item>
 
-      <a-menu-item
-        key="SignUpIRL"
-        v-if="
-          this.$store.state.currentUser.username &&
-          !this.$store.state.currentUser.isPatron
-        "
-      >
-        <router-link :to="{ name: 'SignupIRL' }">
-          Sign Up for Patron
-        </router-link>
-      </a-menu-item>
+        <a-menu-item
+          key="EditAccountDetails"
+          v-if="this.$store.state.currentUser.username"
+        >
+          <router-link :to="{ name: 'EditAccountDetails' }"
+            >Settings</router-link
+          >
+        </a-menu-item>
 
-      <a-menu-item
-        key="SignupPage"
-        v-if="!this.$store.state.currentUser.username"
-      >
-        <router-link :to="{ name: 'SignupPage' }"> Sign up </router-link>
-      </a-menu-item>
-
-      <a-menu-item
-        key="EditAccountDetails"
-        v-if="this.$store.state.currentUser.username"
-      >
-        <router-link :to="{ name: 'EditAccountDetails' }">Settings</router-link>
-      </a-menu-item>
-
-      <a-menu-item key="Logout" v-if="this.$store.state.currentUser.username">
-        <a @click="logout">Logout</a>
-      </a-menu-item>
-    </a-menu>
-    <br />
+        <a-menu-item key="Logout" v-if="this.$store.state.currentUser.username">
+          <a @click="logout">Logout</a>
+        </a-menu-item>
+      </a-menu>
+    </div>
     <router-view></router-view>
   </div>
 </template>
