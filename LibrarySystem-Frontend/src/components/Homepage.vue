@@ -1,7 +1,7 @@
 <template>
 <!-- Home page shows operating hours for the library.
      If the head librarian (admin) is logged in, 
-     buttons appear that allow them to modify the hours.
+     buttons appear that allow them to add, modify, and remove the hours.
 -->
   <div class="Homepage">
     <h3>Library Opening Hours</h3>
@@ -35,8 +35,7 @@
     </a-button>
   </div>
 </template>
-
-
+<script src="../js/Homepage.js"></script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
