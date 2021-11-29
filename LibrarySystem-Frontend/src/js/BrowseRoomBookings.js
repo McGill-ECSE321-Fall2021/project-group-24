@@ -30,7 +30,6 @@ export default {
       form: this.$form.createForm(this, { name: "coordinated" }),
       libraryHours: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
       daysToHide: [1, 2, 3, 4, 5, 6, 7],
-      libraryHours: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
       startTime: "",
       endTime: "",
       date: "",

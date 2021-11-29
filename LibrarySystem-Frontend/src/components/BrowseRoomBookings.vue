@@ -1,4 +1,3 @@
-@@ -0,0 +1,87 @@
 <template>
   <div>
     <div v-if="!loading">
