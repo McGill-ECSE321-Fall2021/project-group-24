@@ -67,7 +67,7 @@ export default {
               this.response = "Patron successfully verified.";
               this.error="";
               //need to refresh page somehow to show changes
-              // this.$router.go(0);
+              this.$router.go(0);
             }
           }
           ).catch((e) => {
