@@ -15,7 +15,8 @@ import BrowseRoomBookings from "@/components/BrowseRoomBookings";
 import LoginPage from "@/components/Login.vue";
 import SignupPage from "@/components/Signup";
 import SignupIRL from "@/components/SignupIRL";
-import AddLibraryHour from "@/components/AddLibraryHour";
+import AddLibraryHour from "@/components/AddLibraryHour"; 
+import RemoveLibraryHour from "@/components/RemoveLibraryHour";
 import EditAccountDetails from "@/components/EditAccountDetails"
 import ChangePassword from "@/components/ChangePassword"
 import DeleteAccount from "@/components/DeleteAccount"
@@ -63,6 +64,11 @@ export default new Router({
       path: "/create_item",
       name: "CreateNewItem",
       component: CreateNewItem,
+    },
+    {
+      path: "/remove_library_hour",
+      name: "RemoveLibraryHour",
+      component: RemoveLibraryHour,
     },
     {
       path: "/add_library_hour",

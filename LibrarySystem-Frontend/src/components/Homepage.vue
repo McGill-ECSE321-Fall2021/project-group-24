@@ -48,33 +48,18 @@ var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: { "Access-Control-Allow-Origin": frontendUrl },
 });
+/** 
+ * Returns the library hours so that they can be displayed
+ * */ 
 export default {
   name: "Homepage",
   data() {
     return { hours: [] };
   },
   created: function () {
-    var daysOfWeek = [
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-      "SUNDAY",
-    ];
-    AXIOS.get("api/libraryhour/view_library_hours").then((res) => {
-      this.hours = res.data.sort((day1, day2) => {
-        if (
-          daysOfWeek.indexOf(day1.dayOfWeek) >
-          daysOfWeek.indexOf(day2.dayOfWeek)
-        ) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
 
+    AXIOS.get("api/libraryhour/view_library_hours").then((res) => {
+      this.hours = res.data;
       console.log(res.data);
     });
   },
