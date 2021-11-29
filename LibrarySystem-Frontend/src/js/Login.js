@@ -12,9 +12,7 @@ var AXIOS = axios.create({
 
 export default {
   name: "users",
-  created: function () {
-    console.log(JSON.parse(sessionStorage.getItem("currentUser")));
-  },
+
   data() {
     return {
       users: [],
@@ -61,7 +59,9 @@ export default {
                   "currentUser",
                   JSON.stringify(res.data)
                 );
+
                 this.$router.replace({ name: "Homepage" });
+                location.reload();
               }
               return res.status;
             })
