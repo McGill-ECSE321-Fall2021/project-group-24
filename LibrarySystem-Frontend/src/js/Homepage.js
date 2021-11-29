@@ -9,19 +9,27 @@ var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: { "Access-Control-Allow-Origin": frontendUrl },
 });
-/** 
- * Returns the library hours so that they can be displayed on the homepage 
- * */ 
+/**
+ * Returns the library hours so that they can be displayed on the homepage
+ * */
 export default {
   name: "Homepage",
   data() {
-    return { hours: [] };
+    return {
+      hours: [],
+      item: null,
+      currentUser: this.$store.state.currentUser,
+    };
   },
-  created: function () {
 
+  created: function () {
     AXIOS.get("api/libraryhour/view_library_hours").then((res) => {
       this.hours = res.data;
       console.log(res.data);
+    });
+    AXIOS.get("/api/items/all").then((response) => {
+      if (response.data.length > 0) this.item = response.data[0];
+      console.log(this.item);
     });
   },
 };

@@ -241,6 +241,11 @@ var AXIOS = axios.create({
 });
 export default {
   name: "app",
+  watch: {
+    $route(to, from) {
+      this.current = [to.name];
+    },
+  },
   methods: {
     logout: function () {
       //When a user logouts they are redirected to the homepage
