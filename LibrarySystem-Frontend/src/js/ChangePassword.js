@@ -108,6 +108,7 @@ export default {
               this.responseStatus = res.status;
               if (this.responseStatus === 200) {
                 this.$store.commit("changeUser", res.data);
+                this.userError = "";
                 this.response = "Password changed";
                 //this.$router.push("EditAccountDetails");
               }
@@ -115,6 +116,7 @@ export default {
               return res.status;
             })
             .catch((e) => {
+              this.response = "";
               this.visible = true;
               var errorMsg = e.response.data;
               this.userError = errorMsg;
