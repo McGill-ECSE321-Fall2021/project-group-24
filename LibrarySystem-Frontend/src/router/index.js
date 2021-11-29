@@ -22,6 +22,8 @@ import EditAccountDetails from "@/components/EditAccountDetails";
 import ChangePassword from "@/components/ChangePassword";
 import DeleteAccount from "@/components/DeleteAccount";
 import ViewAllPatrons from "@/components/ViewAllPatrons";
+import ViewLibrarians from "@/components/ViewLibrarians"; 
+import AddLibrarian from "@/components/AddLibrarian";
 Vue.use(Router);
 
 export default new Router({
@@ -121,6 +123,16 @@ export default new Router({
       path: "/view_patrons",
       name: "ViewAllPatrons",
       component: ViewAllPatrons,
+    },
+    {
+      path: "/view_librarians",
+      name: "ViewLibrarians",
+      component: ViewLibrarians,
+    },
+    {
+      path: "/add_librarian",
+      name: "AddLibrarian",
+      component: AddLibrarian,
     },
 
     {

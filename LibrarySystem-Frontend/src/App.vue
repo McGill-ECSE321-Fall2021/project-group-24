@@ -1,4 +1,5 @@
-<template>
+<template> 
+  <!--Application header -->
   <div id="app">
     <router-link
       :to="{ name: 'Homepage' }"
@@ -8,19 +9,27 @@
     <h4 v-if="this.$store.state.currentUser.username">
       Hello, {{ this.$store.state.currentUser.username }}
     </h4>
-
+  <!--Navigation Menu starting with "Homepage" on the furthest left and other tabs to its right 
+      Depending on the type of user accessing the website, different tabs in the menu are available.
+      e.g. "View Librarians" is accessible only if the user is logged in as a librarian, 
+      while "Browse Items" is accessible by any user (if those not logged-in)
+  -->
     <a-menu v-model="current" mode="horizontal">
+
       <a-menu-item key="Homepage">
         <router-link :to="{ name: 'Homepage' }">Home</router-link>
       </a-menu-item>
+
       <a-menu-item key="BrowseAllItems">
         <router-link :to="{ name: 'BrowseAllItems' }">Browse Items</router-link>
       </a-menu-item>
+
       <a-menu-item key="BrowseAllRooms">
         <router-link :to="{ name: 'BrowseAllRooms' }">
           Browse Rooms
         </router-link>
       </a-menu-item>
+
       <a-menu-item
         key="BrowseRoomBookings"
         v-if="this.$store.state.currentUser.username"
@@ -38,6 +47,7 @@
           Browse Reservations
         </router-link>
       </a-menu-item>
+
       <a-menu-item
         key="CreateNewItem"
         v-if="
@@ -46,8 +56,8 @@
         "
         ><router-link :to="{ name: 'CreateNewItem' }">
           Create New Item
-        </router-link></a-menu-item
-      >
+        </router-link></a-menu-item>
+        
       <a-menu-item
         key="CreateNewRoom"
         v-if="
@@ -59,12 +69,14 @@
           Create New Room
         </router-link>
       </a-menu-item>
+
       <a-menu-item
         key="LoginPage"
         v-if="!this.$store.state.currentUser.username"
       >
         <router-link :to="{ name: 'LoginPage' }"> Sign in </router-link>
       </a-menu-item>
+      
       <a-menu-item
         key="ViewAllPatrons"
         v-if="
@@ -76,6 +88,19 @@
           View all Patrons
         </router-link>
       </a-menu-item>
+
+      <a-menu-item
+        key="ViewLibrarians"
+        v-if="
+          this.$store.state.currentUser.username &&
+          !this.$store.state.currentUser.isPatron
+        "
+      >
+        <router-link :to="{ name: 'ViewLibrarians' }">
+          View Librarians
+        </router-link>
+      </a-menu-item>
+
       <a-menu-item
         key="SignUpIRL"
         v-if="
@@ -87,6 +112,7 @@
           Sign Up for Patron
         </router-link>
       </a-menu-item>
+
       <a-menu-item
         key="SignupPage"
         v-if="!this.$store.state.currentUser.username"
@@ -104,6 +130,7 @@
       <a-menu-item key="Logout" v-if="this.$store.state.currentUser.username">
         <a @click="logout">Logout</a>
       </a-menu-item>
+
     </a-menu>
     <br />
     <router-view></router-view>
@@ -126,7 +153,7 @@ export default {
   name: "app",
   methods: {
     logout: function () {
-      //insert logout method here
+      //When a user logouts they are redirected to the homepage
       AXIOS.post("api/user/logout/" + this.$store.state.currentUser.username)
         .then((res) => {
           this.visible = true;
