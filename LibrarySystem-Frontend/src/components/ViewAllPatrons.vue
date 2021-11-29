@@ -40,17 +40,17 @@
                 </span>
                 <span v-if="!currentUser.isPatron">
                   <br />
-                  <strong>Patron id:</strong>
+                  <strong>User ID:</strong>
                   {{ patron.idNum }}
                 </span>
                 <span>
                   <br />
-                  <strong>First name:</strong>
+                  <strong>First Name:</strong>
                   {{ patron.firstName }}
                 </span>
                 <span>
                   <br />
-                  <strong>Last name:</strong>
+                  <strong>Last Name:</strong>
                   {{ patron.lastName }}
                 </span>
                 <span>
@@ -76,12 +76,21 @@
                 </span>
               </p>
               <div style="20%">
-                <a-button type="primary" @click="verfiyPatron()">
+                <a-button type="primary" @click="verifyPatron(patron.idNum)">
                   Verify Patron
                 </a-button>
-                <a-button type="danger" @click="deletePatron">
-                  Delete Patron
-                </a-button>
+
+                <a-popconfirm
+                  title="Are you sure you want to delete this patron?"
+                  ok-text="Yes"
+                  cancel-text="No"
+                  @confirm="deletePatron(patron.idNum)"
+                >
+
+                  <a-button type="danger" >
+                    Delete Patron
+                  </a-button>
+                </a-popconfirm>  
               </div>
             </a-layout>
           </a-card>

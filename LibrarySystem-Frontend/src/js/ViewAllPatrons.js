@@ -44,8 +44,92 @@ export default {
     }
   },
   methods: {
-    verifyPatron() {}, // TODO
-    deletePatron() {}, // TODO
+    verifyPatron(id) {
+      this.form.validateFields((err, values) => {
+        if(!err){
+          console.log("Recieved values of form: ", values);
+          this.user = values;
+          AXIOS.post(
+            "/api/librarians/verify/?idNum="+
+            id
+          ).then((res) => {
+            console.log("RESPONSE: " + res.status);
+            this.visible = true;
+            this.responseStatus = res.status;
+            console.log(res.data);
+            // console.log("HI");
+            // this.$store.commit("changeUser", res.data);
+            console.log("THEN: ");
+            if(this.responseStatus==200){
+              this.visible = true;
+              this.responseStatus = res.status;
+              console.log(res.data);
+              this.response = "Patron successfully verified.";
+              this.error="";
+              //need to refresh page somehow to show changes
+              // this.$router.go(0);
+            }
+          }
+          ).catch((e) => {
+            this.visible=true;
+            this.error = e.response.data;
+            this.response="";
+          }
+          );
+
+        }
+
+      });
+
+    }, // TODO
+
+    deletePatron(id) {
+      this.form.validateFields((err, values) => {
+        if(!err){
+          console.log("Recieved values of form: ", values);
+          this.user = values;
+          AXIOS.delete(
+            "/api/patron/delete_patron/"+
+            id+
+            "/?currentUserId="+
+            this.currentUser.idNum
+          ).then((res) => {
+            console.log("RESPONSE: " + res.status);
+            this.visible = true;
+            this.responseStatus = res.status;
+            console.log(res.data);
+            // console.log("HI");
+            // this.$store.commit("changeUser", res.data);
+            console.log("THEN: ");
+            if(this.responseStatus==200){
+              this.visible = true;
+              this.responseStatus = res.status;
+              console.log(res.data);
+              this.response = "Patron successfully deleted.";
+              this.error="";
+              this.$router.go(0);
+              //need to refresh page somehow to show changes
+              
+            }
+          }
+          ).catch((e) => {
+            this.visible=true;
+            this.error = e.response.data;
+            this.response="";
+          }
+          );
+
+        }
+
+      });
+      
+    },
+
+    refreshPage(){
+      this.$router.go(0);
+    },
+
+
     search: function (query) {
       this.patronResults = [];
       if (query.length == 0) {
