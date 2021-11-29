@@ -17,9 +17,10 @@ import SignupPage from "@/components/Signup";
 import SignupIRL from "@/components/SignupIRL";
 import AddLibraryHour from "@/components/AddLibraryHour"; 
 import RemoveLibraryHour from "@/components/RemoveLibraryHour";
-import EditAccountDetails from "@/components/EditAccountDetails"
-import ChangePassword from "@/components/ChangePassword"
-import DeleteAccount from "@/components/DeleteAccount"
+import ModifyLibraryHour from "@/components/ModifyLibraryHour";
+import EditAccountDetails from "@/components/EditAccountDetails";
+import ChangePassword from "@/components/ChangePassword";
+import DeleteAccount from "@/components/DeleteAccount";
 Vue.use(Router);
 
 export default new Router({
@@ -69,6 +70,11 @@ export default new Router({
       path: "/remove_library_hour",
       name: "RemoveLibraryHour",
       component: RemoveLibraryHour,
+    },
+    {
+      path: "/modify_library_hour",
+      name: "ModifyLibraryHour",
+      component: ModifyLibraryHour,
     },
     {
       path: "/add_library_hour",

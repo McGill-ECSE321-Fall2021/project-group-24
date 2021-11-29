@@ -62,10 +62,6 @@ export default {
               console.log("RESPONSE: " + res.status);
               this.visible = true;
               this.responseStatus = res.status;
-              console.log(res.data);
-              // console.log("HI");
-              // this.$store.commit("changeUser", res.data);
-              console.log("THEN: ");
               if (this.responseStatus == 201) {
                 this.$router.replace({ name: "Homepage" });
               }
@@ -76,6 +72,7 @@ export default {
               this.visible = true;
               var errorMsg = e.response.data;
               this.addHourError = errorMsg;
+              alert(this.addHourError);
             });
         }
       });

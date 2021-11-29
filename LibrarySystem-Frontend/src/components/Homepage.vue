@@ -24,14 +24,24 @@
     </a-button>
 
     <a-button key="RemoveLibraryHour" type="primary" v-if="
-      this.$store.state.currentUser.username &&
-      !this.$store.state.currentUser.isPatron &&
-      !this.$store.state.currentUser.isLibrarian &&
-      hours.length!=0
-    " >
-      <router-link :to="{ name: 'RemoveLibraryHour' }">
-              Remove Library Hour
-      </router-link>
+        this.$store.state.currentUser.username &&
+        !this.$store.state.currentUser.isPatron &&
+        !this.$store.state.currentUser.isLibrarian &&
+        hours.length!=0
+      " >
+        <router-link :to="{ name: 'RemoveLibraryHour' }">
+                Remove Library Hour
+        </router-link>
+    </a-button>
+
+    <a-button key="ModifyLibraryHour" type="primary" v-if="
+        this.$store.state.currentUser.username &&
+        !this.$store.state.currentUser.isPatron &&
+        !this.$store.state.currentUser.isLibrarian
+      " >
+        <router-link :to="{ name: 'ModifyLibraryHour' }">
+                Modify Library Hour
+        </router-link>
     </a-button>
   </div>
 </template>

@@ -11,17 +11,17 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "RemoveLibraryHours",
+  name: "ModifyLibraryHours",
   data() {
     return {
       hours: [],
-      oldLibraryHour: "",
+      newLibraryHour: "",
       dayOfWeek: "", 
       startTime: "", 
       endTime: "",
       response: [],
       responseStatus: null,
-      removeHourError: "",
+      modifyHourError: "",
       daysOfWeek: [],
       results: [],
       visible: false,
@@ -54,10 +54,6 @@ export default {
             if (this.hours[i].dayOfWeek=="SATURDAY") daysOfWeek[5] = true; 
             if (this.hours[i].dayOfWeek=="SUNDAY") daysOfWeek[6] = true; 
             }
-            console.log("it exists: ", daysOfWeek[0]);
-            console.log("it exists: ", daysOfWeek[3]);
-            console.log("it exists: ", daysOfWeek[6]);
-
 
     });
   }, 
@@ -65,7 +61,7 @@ export default {
   methods: {
     showModal: function () {
       this.visible = true;
-      this.removeHourError = "";
+      this.modifyHourError = "";
     },
 
     handleOk: function (e) {
@@ -73,23 +69,23 @@ export default {
       this.visible = false;
     },
 
-    // calls the delete controller method when the "remove library hour" button is pressed
+    // calls the post controller method when the "modify library hour" button is pressed
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         console.log("Recieved values of form: ", values);
         if (!err) {
           console.log("Recieved values of form: ", values);
-          this.oldLibraryHour = values;
-          console.log("any object", this.oldLibraryHour.startTime);
-          AXIOS.delete(
-            "/api/libraryhour/remove_library_hour?currentUserId=admin" +
+          this.newLibraryHour = values;
+          console.log("any object", this.newLibraryHour.startTime);
+          AXIOS.put(
+            "/api/libraryhour/modify_library_hour?currentUserId=admin" +
             "&dayOfWeek=" +
-            this.oldLibraryHour.dayOfWeek +
+            this.newLibraryHour.dayOfWeek +
             "&startTime=" +
-            this.oldLibraryHour.startTime +
+            this.newLibraryHour.startTime +
             "&endTime=" +
-            this.oldLibraryHour.endTime
+            this.newLibraryHour.endTime
           )
             .then((res) => {
               console.log("RESPONSE: " + res.status);
@@ -108,8 +104,8 @@ export default {
               console.log("CATCH: ");
               this.visible = true;
               var errorMsg = e.response.data;
-              this.removeHourError = errorMsg;
-              alert(this.removeHourError); 
+              this.modifyHourError = errorMsg;
+              alert(this.modifyHourError); 
             });
         }
       });
