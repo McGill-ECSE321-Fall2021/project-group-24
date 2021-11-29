@@ -75,12 +75,10 @@ Every librarian can view each other's shifts
                     View Shifts
                   </router-link>
                 </a-button>
-                <a-button
-                  v-if="!currentUser.isLibrarian"
-                  type="danger"
-                  @click="deleteLibrarian()"
-                >
-                  Delete Librarian
+                <a-button v-if="!currentUser.isLibrarian" type="danger"> 
+                    <router-link :to="{ name: 'DeleteLibrarian' }">
+                        Delete Librarian
+                    </router-link>
                 </a-button>
               </div>
             </a-layout>

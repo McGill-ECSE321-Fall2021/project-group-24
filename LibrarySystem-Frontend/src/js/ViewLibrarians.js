@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { Axios } from "axios";
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
@@ -24,6 +24,7 @@ export default {
       form: this.$form.createForm(this, { name: "coordinated" }),
       librarianResults: [], // stores the librarians that match the search
       librarians: [], // array of all librarians
+      idNum: "",
       // attributes of Librarian
     };
   },
@@ -38,13 +39,11 @@ export default {
           return response.data;
         })
         .catch((e) => {
-          console.log(e);
+          console.log(e)
         });
     }
   },
   methods: {
-    //   verifyPatron() {}, // TODO
-    //   deletePatron() {}, // TODO
     search: function (query) {
       this.librarianResults = [];
       if (query.length == 0) {
