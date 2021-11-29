@@ -178,7 +178,7 @@ public class UserService {
 		if (firstName.length() == 0 || lastName.length() == 0) {
 			throw new IllegalArgumentException("First and last name must not be blank");
 		}
-
+		
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		return user;
