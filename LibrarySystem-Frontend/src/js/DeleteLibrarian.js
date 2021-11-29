@@ -25,15 +25,17 @@ export default {
       
     };
   },
+  methods: {
   handleSubmit(e) {
     e.preventDefault();
     this.form.validateFields((err, values) => {
+      console.log("id num : ",values); 
       // if no errors, send the delete request to the backend api
       if (!err) {
         this.idNum = values;
-        console.log("ID NUM: ", idNum);
+        console.log("ID NUM: ", this.idNum);
         AXIOS.delete(
-          "/api/librarians/delete/"+this.idNum+"?currentUserId=admin" 
+          "/api/librarians/delete/"+this.idNum.idNumber+"/?currentUserId=admin" 
         )
           .then((res) => {
             console.log("RESPONSE: " + res.status);
@@ -56,5 +58,5 @@ export default {
       }
     });
   },
-
+  },
 };
