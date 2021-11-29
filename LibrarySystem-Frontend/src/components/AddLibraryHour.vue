@@ -70,6 +70,11 @@
                 <a-button type="primary" html-type="submit"> Add Library Hour </a-button>
             </a-form-item>
         </a-form>
+        <div> 
+            <router-link :to="{ name: 'Homepage' }" >
+                Back to homepage
+            </router-link>
+        </div>
 
     </div>
 </template>
