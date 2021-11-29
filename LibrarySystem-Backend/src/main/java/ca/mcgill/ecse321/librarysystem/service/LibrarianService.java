@@ -41,7 +41,7 @@ public class LibrarianService {
 
     if (isHeadLibrarian(currentUserId)) {
       String idNum =
-        firstName + "Librarian-" + toList(librarianRepo.findAll()).size();
+        firstName + toList(librarianRepo.findAll()).size() + "-L";
 
       Librarian librarian = new Librarian();
       librarian.setUsername(username);

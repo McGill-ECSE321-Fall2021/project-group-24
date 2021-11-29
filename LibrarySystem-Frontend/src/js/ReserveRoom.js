@@ -18,7 +18,7 @@ export default {
   name: "ReserveRoom",
   data() {
     return {
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       ...this.$route.params,
       form: this.$form.createForm(this, { name: "coordinated" }),
       error: "",
@@ -68,7 +68,6 @@ export default {
         };
       }
       console.log(res.data);
-      console.log(this.daysToHide);
     });
     AXIOS.get(
       "api/roombookings/privateview_roombookings/room/" + this.room.roomNum

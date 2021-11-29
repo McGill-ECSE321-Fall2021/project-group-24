@@ -14,7 +14,7 @@ export default {
   name: "ReserveItem",
   data() {
     return {
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       ...this.$route.params,
       form: this.$form.createForm(this, { name: "coordinated" }),
       error: "",

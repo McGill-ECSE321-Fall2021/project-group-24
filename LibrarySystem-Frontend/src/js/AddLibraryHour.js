@@ -10,11 +10,11 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl },
 });
 
+// "nev" library hour and its attributes are exported
 export default {
   name: "AddLibraryHours",
   data() {
     return {
-      libraryHours: [],
       newLibraryHour: "",
       dayOfWeek: "", 
       startTime: "", 
@@ -30,13 +30,13 @@ export default {
   }, 
 
   methods: {
+    // shows error as dialogue window in the browser
     showModal: function () {
       this.visible = true;
       this.addHourError = "";
     },
-
+    // if no error, don't show anything
     handleOk: function (e) {
-      console.log(e);
       this.visible = false;
     },
 
@@ -44,9 +44,8 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
-        console.log("Recieved values of form: ", values);
+        // if no errors, send the post request to the backend api
         if (!err) {
-          console.log("Recieved values of form: ", values);
           this.newLibraryHour = values;
           console.log("any object", this.newLibraryHour.startTime);
           AXIOS.post(
@@ -62,11 +61,13 @@ export default {
               console.log("RESPONSE: " + res.status);
               this.visible = true;
               this.responseStatus = res.status;
+              // if successfully added the hour, send user to homepage
               if (this.responseStatus == 201) {
                 this.$router.replace({ name: "Homepage" });
               }
               return res.status;
             })
+            // display errors in the dialogue window
             .catch((e) => {
               console.log("CATCH: ");
               this.visible = true;

@@ -1,5 +1,5 @@
 <template>
-<!-- Shows all librarians. 
+  <!-- Shows all librarians. 
 The user (a librarian or the head-librarian) can either scroll through the cards or use the search bar
 Librarians cannot view each other's usernames or id, but the head-librarian can.
 Head-librarian also has buttons to add and delete librarians. 
@@ -42,7 +42,7 @@ Every librarian can view each other's shifts
                   <strong>Username:</strong>
                   {{ librarian.username }}
                 </span>
-                <span v-if="!currentUser.isLibrarian"> 
+                <span v-if="!currentUser.isLibrarian">
                   <br />
                   <strong>Librarian id:</strong>
                   {{ librarian.idNum }}
@@ -70,13 +70,15 @@ Every librarian can view each other's shifts
                 </span>
               </p>
               <div style="20%">
-                <a-button type="primary"> 
-                    <router-link :to="{ name: 'ViewShifts'}"> 
-                        View Shifts
-                    </router-link>
+                <a-button type="primary">
+                  <router-link :to="{ name: 'BrowseAllShifts' }">
+                    View Shifts
+                  </router-link>
                 </a-button>
-                <a-button v-if="!currentUser.isLibrarian" type="danger" @click="deleteLibrarian()">
-                    Delete Librarian
+                <a-button v-if="!currentUser.isLibrarian" type="danger"> 
+                    <router-link :to="{ name: 'DeleteLibrarian' }">
+                        Delete Librarian
+                    </router-link>
                 </a-button>
               </div>
             </a-layout>
@@ -84,11 +86,11 @@ Every librarian can view each other's shifts
         </div>
       </div>
       <br />
-      <div> 
-        <a-button v-if="!currentUser.isLibrarian" type="primary">        
-            <router-link :to="{ name: 'AddLibrarian' }">
-                Add Librarian
-            </router-link>
+      <div>
+        <a-button v-if="!currentUser.isLibrarian" type="primary">
+          <router-link :to="{ name: 'AddLibrarian' }">
+            Add Librarian
+          </router-link>
         </a-button>
       </div>
     </div>
@@ -124,5 +126,5 @@ Every librarian can view each other's shifts
       </a-modal>
     </div>
   </div>
-</template> 
-<script src="../js/ViewLibrarians.js"></script> 
+</template>
+<script src="../js/ViewLibrarians.js"></script>

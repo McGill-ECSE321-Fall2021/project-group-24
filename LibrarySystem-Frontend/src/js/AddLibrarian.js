@@ -11,7 +11,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "users",
+  name: "AddLibrarian",
   data() {
     return {
       users: [],
@@ -103,7 +103,7 @@ export default {
               console.log("THEN: ");
               // if new librarian is successfully created, go back to previous web page
               if (this.responseStatus == 200) {
-                this.$router.replace({ name: "ViewLibrarians" });
+                this.$router.replace({ name: "ViewLibrarians" }); 
               }
               return res.status;
             })

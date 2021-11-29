@@ -39,7 +39,6 @@ export default {
     },
 
     createPatron: function (firstName, lastName, isResident, address) {
-      console.log(username);
       if ((isResident.value = "isResident")) {
         isResident = "true";
       } else if ((isResident.value = "isNotResident")) {
@@ -85,9 +84,8 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log("Recieved values of form: ", values);
           this.user = values;
-          console.log("any object", this.user.address);
+
           AXIOS.post(
             "/api/patron/create_patron_irl/?first=" +
               this.user.firstName +
@@ -99,21 +97,14 @@ export default {
               this.user.address
           )
             .then((res) => {
-              console.log("RESPONSE: " + res.status);
               this.visible = true;
               this.responseStatus = res.status;
-              console.log(res.data);
-              // console.log("HI");
-              // this.$store.commit("changeUser", res.data);
-              console.log("THEN: ");
               if (this.responseStatus == 200) {
-                // window.location.href = "http://127.0.0.1:8087/#/"
                 this.$router.replace({ name: "Homepage" });
               }
               return res.status;
             })
             .catch((e) => {
-              console.log("CATCH: ");
               this.visible = true;
               var errorMsg = e.response.data;
               this.userError = errorMsg;

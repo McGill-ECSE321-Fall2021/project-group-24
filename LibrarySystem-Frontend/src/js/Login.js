@@ -12,6 +12,7 @@ var AXIOS = axios.create({
 
 export default {
   name: "users",
+
   data() {
     return {
       users: [],
@@ -54,8 +55,13 @@ export default {
               this.visible = true;
               this.responseStatus = res.status;
               if (this.responseStatus == 200) {
-                this.$store.commit("changeUser", res.data);
+                window.sessionStorage.setItem(
+                  "currentUser",
+                  JSON.stringify(res.data)
+                );
+
                 this.$router.replace({ name: "Homepage" });
+                location.reload();
               }
               return res.status;
             })

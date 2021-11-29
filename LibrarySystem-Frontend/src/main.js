@@ -22,11 +22,11 @@ const store = new Vuex.Store({
   },
   mutations: {
     changeUser(state, user) {
-      console.log("hhhh");
       state.currentUser = user;
     },
   },
 });
+
 /* eslint-disable no-new */
 new Vue({
   el: "#app",

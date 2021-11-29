@@ -19,14 +19,13 @@ export default {
       visible: false,
       items: [],
       reservations: [],
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       loading: true,
       reservationResults: [],
       itemResults: [],
     };
   },
   created: async function () {
-    console.log(this.currentUser.idNum);
     if (this.currentUser.isPatron) {
       await AXIOS.get(
         "api/itemReservations/patron/" +

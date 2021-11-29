@@ -20,8 +20,7 @@ export default {
       error: "",
       response: "",
       events: [],
-      currentUser: this.$store.state.currentUser,
-      responseStatus: null,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       form: this.$form.createForm(this, { name: "coordinated" }),
       patronResults: [], // stores the patrons that match the search
       patrons: [], // list of all patrons

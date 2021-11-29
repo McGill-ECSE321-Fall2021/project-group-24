@@ -14,7 +14,7 @@ export default {
   name: "rooms",
   data() {
     return {
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       rooms: [],
       newRoom: "",
       roomError: "",

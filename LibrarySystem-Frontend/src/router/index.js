@@ -25,6 +25,7 @@ import DeleteAccount from "@/components/DeleteAccount";
 import ViewAllPatrons from "@/components/ViewAllPatrons";
 import ViewLibrarians from "@/components/ViewLibrarians";
 import AddLibrarian from "@/components/AddLibrarian";
+import DeleteLibrarian from "@/components/DeleteLibrarian"
 Vue.use(Router);
 
 export default new Router({
@@ -140,7 +141,11 @@ export default new Router({
       name: "AddLibrarian",
       component: AddLibrarian,
     },
-
+    {
+      path: "/delete_librarian",
+      name: "DeleteLibrarian",
+      component: DeleteLibrarian,
+    },
     {
       path: "/edit",
       name: "EditAccountDetails",
