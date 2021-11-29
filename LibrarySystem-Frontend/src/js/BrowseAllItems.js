@@ -20,12 +20,11 @@ export default {
       response: [],
       results: [],
       visible: false,
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       today: new Date().toJSON().slice(0, 10),
     };
   },
   created: function () {
-    console.log(this.today);
     //Use this to run the 'get' controller method. If you need to pass a parameter, do "/api/items/all", {params: {itemTitle}}
     AXIOS.get("/api/items/all")
       .then((response) => {

@@ -6,9 +6,7 @@
       style="font-size: 60px; color: #000000"
       >Library System Application</router-link
     >
-    <h4 v-if="this.$store.state.currentUser.username">
-      Hello, {{ this.$store.state.currentUser.username }}
-    </h4>
+    <h4 v-if="currentUser.username">Hello, {{ currentUser.username }}</h4>
     <!--Navigation Menu starting with "Homepage" on the furthest left and other tabs to its right 
       Depending on the type of user accessing the website, different tabs in the menu are available.
       e.g. "View Librarians" is accessible only if the user is logged in as a librarian, 
@@ -19,10 +17,7 @@
       <a-menu
         v-model="current"
         mode="horizontal"
-        v-if="
-          this.$store.state.currentUser.username &&
-          !this.$store.state.currentUser.isPatron
-        "
+        v-if="currentUser.username && !currentUser.isPatron"
       >
         <a-menu-item key="Homepage">
           <router-link :to="{ name: 'Homepage' }">Home </router-link>
@@ -31,10 +26,7 @@
           <span slot="title" class="submenu-title-wrapper">Manage Items</span>
           <a-menu-item
             key="CreateNewItem"
-            v-if="
-              this.$store.state.currentUser.username &&
-              !this.$store.state.currentUser.isPatron
-            "
+            v-if="currentUser.username && !currentUser.isPatron"
             ><router-link :to="{ name: 'CreateNewItem' }">
               Create New Item
             </router-link></a-menu-item
@@ -44,11 +36,7 @@
               >Browse Items</router-link
             >
           </a-menu-item>
-
-          <a-menu-item
-            key="BrowseItemReservations"
-            v-if="this.$store.state.currentUser.username"
-          >
+          <a-menu-item key="BrowseItemReservations" v-if="currentUser.username">
             <router-link :to="{ name: 'BrowseItemReservations' }">
               Browse Reservations
             </router-link>
@@ -58,10 +46,7 @@
           <span slot="title" class="submenu-title-wrapper"> Manage Rooms</span>
           <a-menu-item
             key="CreateNewRoom"
-            v-if="
-              this.$store.state.currentUser.username &&
-              !this.$store.state.currentUser.isPatron
-            "
+            v-if="currentUser.username && !currentUser.isPatron"
           >
             <router-link :to="{ name: 'CreateNewRoom' }">
               Create New Room
@@ -72,10 +57,7 @@
               Browse Rooms
             </router-link>
           </a-menu-item>
-          <a-menu-item
-            key="BrowseRoomBookings"
-            v-if="this.$store.state.currentUser.username"
-          >
+          <a-menu-item key="BrowseRoomBookings" v-if="currentUser.username">
             <router-link :to="{ name: 'BrowseRoomBookings' }">
               Browse Room Bookings
             </router-link>
@@ -87,10 +69,7 @@
           >
           <a-menu-item
             key="ViewAllPatrons"
-            v-if="
-              this.$store.state.currentUser.username &&
-              !this.$store.state.currentUser.isPatron
-            "
+            v-if="currentUser.username && !currentUser.isPatron"
           >
             <router-link :to="{ name: 'ViewAllPatrons' }">
               View all Patrons
@@ -98,10 +77,7 @@
           </a-menu-item>
           <a-menu-item
             key="SignUpIRL"
-            v-if="
-              this.$store.state.currentUser.username &&
-              !this.$store.state.currentUser.isPatron
-            "
+            v-if="currentUser.username && !currentUser.isPatron"
           >
             <router-link :to="{ name: 'SignupIRL' }">
               Sign Up for Patron
@@ -109,20 +85,14 @@
           </a-menu-item>
         </a-sub-menu>
         <a-sub-menu
-          v-if="
-            this.$store.state.currentUser.username &&
-            this.$store.state.currentUser.username === 'admin'
-          "
+          v-if="currentUser.username && currentUser.username === 'admin'"
         >
           <span slot="title" class="submenu-title-wrapper">
             Manage Librarians</span
           >
           <a-menu-item
             key="ViewLibrarians"
-            v-if="
-              this.$store.state.currentUser.username &&
-              !this.$store.state.currentUser.isPatron
-            "
+            v-if="currentUser.username && !currentUser.isPatron"
           >
             <router-link :to="{ name: 'ViewLibrarians' }">
               View Librarians
@@ -134,30 +104,21 @@
             </router-link>
           </a-menu-item>
         </a-sub-menu>
-        <a-menu-item
-          key="LoginPage"
-          v-if="!this.$store.state.currentUser.username"
-        >
+        <a-menu-item key="LoginPage" v-if="!currentUser.username">
           <router-link :to="{ name: 'LoginPage' }"> Sign in </router-link>
         </a-menu-item>
 
-        <a-menu-item
-          key="SignupPage"
-          v-if="!this.$store.state.currentUser.username"
-        >
+        <a-menu-item key="SignupPage" v-if="!currentUser.username">
           <router-link :to="{ name: 'SignupPage' }"> Sign up </router-link>
         </a-menu-item>
 
-        <a-menu-item
-          key="EditAccountDetails"
-          v-if="this.$store.state.currentUser.username"
-        >
+        <a-menu-item key="EditAccountDetails" v-if="currentUser.username">
           <router-link :to="{ name: 'EditAccountDetails' }"
             >Settings</router-link
           >
         </a-menu-item>
 
-        <a-menu-item key="Logout" v-if="this.$store.state.currentUser.username">
+        <a-menu-item key="Logout" v-if="currentUser.username">
           <a @click="logout">Logout</a>
         </a-menu-item>
       </a-menu>
@@ -169,9 +130,8 @@
         v-model="current"
         mode="horizontal"
         v-if="
-          !this.$store.state.currentUser.username ||
-          (this.$store.state.currentUser.username &&
-            this.$store.state.currentUser.isPatron)
+          !currentUser.username ||
+          (currentUser.username && currentUser.isPatron)
         "
       >
         <a-menu-item key="Homepage">
@@ -187,38 +147,26 @@
             Browse Rooms
           </router-link>
         </a-menu-item>
-        <a-menu-item
-          key="BrowseRoomBookings"
-          v-if="this.$store.state.currentUser.username"
-        >
+        <a-menu-item key="BrowseRoomBookings" v-if="currentUser.username">
           <router-link :to="{ name: 'BrowseRoomBookings' }">
             Browse Room Bookings
           </router-link>
         </a-menu-item>
-        <a-menu-item
-          key="LoginPage"
-          v-if="!this.$store.state.currentUser.username"
-        >
+        <a-menu-item key="LoginPage" v-if="!currentUser.username">
           <router-link :to="{ name: 'LoginPage' }"> Sign in </router-link>
         </a-menu-item>
 
-        <a-menu-item
-          key="SignupPage"
-          v-if="!this.$store.state.currentUser.username"
-        >
+        <a-menu-item key="SignupPage" v-if="!currentUser.username">
           <router-link :to="{ name: 'SignupPage' }"> Sign up </router-link>
         </a-menu-item>
 
-        <a-menu-item
-          key="EditAccountDetails"
-          v-if="this.$store.state.currentUser.username"
-        >
+        <a-menu-item key="EditAccountDetails" v-if="currentUser.username">
           <router-link :to="{ name: 'EditAccountDetails' }"
             >Settings</router-link
           >
         </a-menu-item>
 
-        <a-menu-item key="Logout" v-if="this.$store.state.currentUser.username">
+        <a-menu-item key="Logout" v-if="currentUser.username">
           <a @click="logout">Logout</a>
         </a-menu-item>
       </a-menu>
@@ -249,13 +197,21 @@ export default {
   methods: {
     logout: function () {
       //When a user logouts they are redirected to the homepage
-      AXIOS.post("api/user/logout/" + this.$store.state.currentUser.username)
+      AXIOS.post("api/user/logout/" + this.currentUser.username)
         .then((res) => {
           this.visible = true;
           this.responseStatus = res.status;
           if (this.responseStatus == 200) {
-            this.$store.commit("changeUser", "null");
-            this.$router.push({ name: "Homepage" });
+            window.sessionStorage.setItem(
+              "currentUser",
+              JSON.stringify({ username: null, password: null, isPatron: null })
+            );
+            this.currentUser = {
+              username: null,
+              password: null,
+              isPatron: null,
+            };
+            this.$router.replace({ name: "Homepage" });
           }
           return res.status;
         })
@@ -269,7 +225,17 @@ export default {
   data() {
     return {
       current: [this.$route.name],
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
     };
+  },
+  created: function () {
+    if (this.currentUser == null || this.currentUser.username == null) {
+      sessionStorage.setItem(
+        "currentUser",
+        JSON.stringify({ username: null, password: null, isPatron: null })
+      );
+      this.currentUser = sessionStorage.getItem("currentUser");
+    }
   },
 };
 </script>

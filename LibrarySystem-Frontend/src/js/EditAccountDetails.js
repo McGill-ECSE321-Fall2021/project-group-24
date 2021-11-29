@@ -21,7 +21,7 @@ export default {
       responseStatus: null,
       results: [],
       visible: false,
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       formLayout: "horizontal",
       form: this.$form.createForm(this, { name: "coordinated" }),
       user: null,
@@ -41,15 +41,15 @@ export default {
     },
 
     goHome() {
-      this.$router.push("/");
+      this.$router.push({ name: "Homepage" });
     },
 
     goToChangePassword() {
-      this.$router.push("/changePassword");
+      this.$router.push({ name: "ChangePassword" });
     },
 
     goToDeleteAccount() {
-      this.$router.push("/deleteAccount");
+      this.$router.push({ name: "DeleteAccount" });
     },
 
     handleSubmit(e) {
@@ -95,13 +95,15 @@ export default {
                         .then((res) => {
                           this.visible = true;
                           this.responseStatus = res.status;
-                          this.$store.commit("changeUser", res.data);
+                          window.sessionStorage.setItem(
+                            "currentUser",
+                            JSON.stringify(res.data)
+                          );
                           if (
                             this.responseStatus == 200 ||
                             this.responseStatus === 201
                           ) {
                             this.response = "User Information saved";
-                            //this.$router.push("EditAccountDetails");
                           }
                           return res.status;
                         })

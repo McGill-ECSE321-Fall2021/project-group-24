@@ -20,7 +20,7 @@ export default {
       response: [],
       results: [],
       visible: false,
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
     };
   },
   created: function () {
@@ -77,8 +77,8 @@ export default {
     reservePressed: function (room) {
       this.$router.push({ name: "ReserveRoom", params: { room } });
     },
-    updatePressed: function(room) {
+    updatePressed: function (room) {
       this.$router.push({ name: "UpdateRoom", params: { room } });
-    }
+    },
   },
 };

@@ -22,7 +22,7 @@ export default {
       responseStatus: null,
       results: [],
       visible: false,
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       formLayout: "horizontal",
       form: this.$form.createForm(this, { name: "coordinated" }),
       user: null,
@@ -107,8 +107,10 @@ export default {
               this.visible = true;
               this.responseStatus = res.status;
               if (this.responseStatus === 200) {
-                this.$store.commit("changeUser", res.data);
-                this.userError = "";
+                window.sessionStorage.setItem(
+                  "currentUser",
+                  JSON.stringify(res.data)
+                );
                 this.response = "Password changed";
                 //this.$router.push("EditAccountDetails");
               }

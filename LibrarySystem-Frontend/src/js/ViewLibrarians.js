@@ -20,21 +20,18 @@ export default {
       error: "",
       response: "",
       events: [],
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       form: this.$form.createForm(this, { name: "coordinated" }),
       librarianResults: [], // stores the librarians that match the search
       librarians: [], // array of all librarians
       // attributes of Librarian
-      
     };
   },
   // gets all librarians when the page has loaded
   created: async function () {
     if (!this.currentUser.isPatron) {
-      console.log("lkdsjf lksd flkjsfd "); 
       await AXIOS.get("/api/librarians/all?currentUserId=admin")
         .then((response) => {
-          console.log(response.data);
           this.librarians = response.data;
           this.librarianResults = response.data;
           this.loading = false;
@@ -46,8 +43,8 @@ export default {
     }
   },
   methods: {
- //   verifyPatron() {}, // TODO
- //   deletePatron() {}, // TODO
+    //   verifyPatron() {}, // TODO
+    //   deletePatron() {}, // TODO
     search: function (query) {
       this.librarianResults = [];
       if (query.length == 0) {

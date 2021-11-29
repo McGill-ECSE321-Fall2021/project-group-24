@@ -20,7 +20,7 @@ export default {
     return {
       libraryHours: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
       events: [],
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
     };
   },
   created: function () {
@@ -102,9 +102,7 @@ export default {
                 "librarian" + (librarians.indexOf(res.data[i].librarianId) % 7),
             },
           ];
-          console.log(this.events[i - 1]);
         }
-        console.log(this.events);
       })
       .catch((e) => {
         console.log(e);

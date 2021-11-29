@@ -26,7 +26,7 @@ export default {
       error: "",
       response: "",
       events: [],
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       form: this.$form.createForm(this, { name: "coordinated" }),
       libraryHours: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
       daysToHide: [1, 2, 3, 4, 5, 6, 7],

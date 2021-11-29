@@ -19,9 +19,9 @@
       key="AddLibraryHour"
       type="primary"
       v-if="
-        this.$store.state.currentUser.username &&
-        !this.$store.state.currentUser.isPatron &&
-        !this.$store.state.currentUser.isLibrarian
+        currentUser.username &&
+        !currentUser.isPatron &&
+        !currentUser.isLibrarian
       "
     >
       <router-link :to="{ name: 'AddLibraryHour' }">
@@ -33,9 +33,9 @@
       key="RemoveLibraryHour"
       type="primary"
       v-if="
-        this.$store.state.currentUser.username &&
-        !this.$store.state.currentUser.isPatron &&
-        !this.$store.state.currentUser.isLibrarian &&
+        currentUser.username &&
+        !currentUser.isPatron &&
+        !currentUser.isLibrarian &&
         hours.length != 0
       "
     >
@@ -48,9 +48,9 @@
       key="ModifyLibraryHour"
       type="primary"
       v-if="
-        this.$store.state.currentUser.username &&
-        !this.$store.state.currentUser.isPatron &&
-        !this.$store.state.currentUser.isLibrarian &&
+        currentUser.username &&
+        !currentUser.isPatron &&
+        !currentUser.isLibrarian &&
         hours.length != 0
       "
     >
@@ -154,31 +154,6 @@
               {{ item.nextAvailableDate }}</span
             >
           </p>
-          <div style="20%">
-            <a-button
-              v-if="currentUser.username && item.isReservable"
-              @click="reservePressed(item)"
-              >Reserve item</a-button
-            >
-            <a-button
-              v-if="
-                currentUser.isPatron == false &&
-                item.isReservable &&
-                item.nextAvailableDate == today
-              "
-              @click="checkoutPressed(item)"
-            >
-              Checkout Item for Patron
-            </a-button>
-
-            <a-button
-              type="danger"
-              v-if="currentUser.isPatron == false && item.nextAvailableDate"
-              @click="deleteItem(item.itemNumber, currentUser.idNum)"
-            >
-              Delete item
-            </a-button>
-          </div>
         </a-layout>
       </a-card>
 

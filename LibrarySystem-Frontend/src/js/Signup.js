@@ -47,7 +47,6 @@ export default {
       address,
       email
     ) {
-      console.log(username);
       if ((isResident.value = "isResident")) {
         isResident = "true";
       } else if ((isResident.value = "isNotResident")) {
@@ -121,9 +120,8 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log("Recieved values of form: ", values);
           this.user = values;
-          console.log("any object", this.user.email);
+
           AXIOS.post(
             "/api/patron/create_patron_online/?username=" +
               this.user.username +
@@ -141,13 +139,9 @@ export default {
               this.user.email
           )
             .then((res) => {
-              console.log("RESPONSE: " + res.status);
               this.visible = true;
               this.responseStatus = res.status;
-              console.log(res.data);
-              // console.log("HI");
-              // this.$store.commit("changeUser", res.data);
-              console.log("THEN: ");
+
               if (this.responseStatus == 200) {
                 AXIOS.post(
                   "/api/user/login" +
@@ -159,8 +153,11 @@ export default {
                   .then((res) => {
                     this.visible = true;
                     this.responseStatus = res.status;
-                    console.log(res.data);
-                    this.$store.commit("changeUser", res.data);
+
+                    window.sessionStorage.setItem(
+                      "currentUser",
+                      JSON.stringify(res.data)
+                    );
                     if (this.responseStatus == 200) {
                       // window.location.href = "http://127.0.0.1:8087/#/";
                       this.$router.replace({ name: "Homepage" });
@@ -178,7 +175,6 @@ export default {
               return res.status;
             })
             .catch((e) => {
-              console.log("CATCH: ");
               this.visible = true;
               var errorMsg = e.response.data;
               this.userError = errorMsg;
