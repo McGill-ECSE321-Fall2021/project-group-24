@@ -202,24 +202,6 @@
         </div>
       </div>
       <br />
-      <div id="searchbar">
-        <!-- <a-modal v-model="visible" title="Error" :footer="null" :header="null">
-        <a-alert
-          v-if="this.roomError"
-          message=" "
-          :description="this.roomError"
-          type="error"
-          show-icon
-        />
-        <a-alert
-          v-if="!this.roomError"
-          message=" "
-          description="There was an unexpected error"
-          type="error"
-          show-icon
-        />
-      </a-modal> -->
-      </div>
     </div>
     <div v-if="loading" style="align-self: center; margin: auto; width: 70%">
       <a-card style="align-rooms: center; margin-top: 20px"

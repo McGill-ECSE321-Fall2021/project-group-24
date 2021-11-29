@@ -21,6 +21,14 @@
           Browse Rooms
         </router-link>
       </a-menu-item>
+      <a-menu-item
+        key="BrowseRoomBookings"
+        v-if="this.$store.state.currentUser.username"
+      >
+        <router-link :to="{ name: 'BrowseRoomBookings' }">
+          Browse Room Bookings
+        </router-link>
+      </a-menu-item>
 
       <a-menu-item
         key="BrowseItemReservations"
@@ -58,6 +66,17 @@
         <router-link :to="{ name: 'LoginPage' }"> Sign in </router-link>
       </a-menu-item>
       <a-menu-item
+        key="ViewAllPatrons"
+        v-if="
+          this.$store.state.currentUser.username &&
+          !this.$store.state.currentUser.isPatron
+        "
+      >
+        <router-link :to="{ name: 'ViewAllPatrons' }">
+          View all Patrons
+        </router-link>
+      </a-menu-item>
+      <a-menu-item
         key="SignUpIRL"
         v-if="
           this.$store.state.currentUser.username &&
@@ -74,19 +93,13 @@
       >
         <router-link :to="{ name: 'SignupPage' }"> Sign up </router-link>
       </a-menu-item>
+
       <a-menu-item
-        key="BrowseRoomBookings"
+        key="EditAccountDetails"
         v-if="this.$store.state.currentUser.username"
       >
-        <router-link :to="{ name: 'BrowseRoomBookings' }">
-          Browse Room Bookings
-        </router-link>
-      </a-menu-item>
-
-      <a-menu-item key="EditAccountDetails" v-if="this.$store.state.currentUser.username">
         <router-link :to="{ name: 'EditAccountDetails' }">Settings</router-link>
       </a-menu-item>
-
 
       <a-menu-item key="Logout" v-if="this.$store.state.currentUser.username">
         <a @click="logout">Logout</a>

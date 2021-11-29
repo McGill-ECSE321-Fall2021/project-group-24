@@ -15,12 +15,13 @@ import BrowseRoomBookings from "@/components/BrowseRoomBookings";
 import LoginPage from "@/components/Login.vue";
 import SignupPage from "@/components/Signup";
 import SignupIRL from "@/components/SignupIRL";
-import AddLibraryHour from "@/components/AddLibraryHour"; 
+import AddLibraryHour from "@/components/AddLibraryHour";
 import RemoveLibraryHour from "@/components/RemoveLibraryHour";
 import ModifyLibraryHour from "@/components/ModifyLibraryHour";
 import EditAccountDetails from "@/components/EditAccountDetails";
 import ChangePassword from "@/components/ChangePassword";
 import DeleteAccount from "@/components/DeleteAccount";
+import ViewAllPatrons from "@/components/ViewAllPatrons";
 Vue.use(Router);
 
 export default new Router({
@@ -59,6 +60,11 @@ export default new Router({
       path: "/browse_rooms",
       name: "BrowseAllRooms",
       component: BrowseAllRooms,
+    },
+    {
+      path: "/browse_roombookings",
+      name: "BrowseRoomBookings",
+      component: BrowseRoomBookings,
     },
     //http://127.0.0.1:8087/#/create_item
     {
@@ -112,10 +118,11 @@ export default new Router({
       component: BrowseItemReservations,
     },
     {
-      path: "/browse_roombookings",
-      name: "BrowseRoomBookings",
-      component: BrowseRoomBookings,
+      path: "/view_patrons",
+      name: "ViewAllPatrons",
+      component: ViewAllPatrons,
     },
+
     {
       path: "/edit",
       name: "EditAccountDetails",
@@ -130,7 +137,6 @@ export default new Router({
       path: "/deleteAccount",
       name: "DeleteAccount",
       component: DeleteAccount,
-    }
-  
+    },
   ],
 });
