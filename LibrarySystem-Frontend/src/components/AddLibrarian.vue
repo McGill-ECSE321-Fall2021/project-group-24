@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div key='ADDLIB' >
     <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
     <div >
         <a-form
@@ -13,7 +13,7 @@
                     v-decorator="[
                         'firstName',
                             {
-                                rules: [{ required: true, message: 'Please enter your first name.' }],
+                                rules: [{ required: true, message: 'Please enter their first name.' }],
                             },
                     ]"
                 />
@@ -25,7 +25,7 @@
                     v-decorator="[
                         'lastName',
                             {
-                                rules: [{ required: true, message: 'Please enter your last name.' }],
+                                rules: [{ required: true, message: 'Please enter their last name.' }],
                             },
                     ]"
                 />
@@ -49,7 +49,7 @@
                     v-decorator="[
                         'password',
                             {
-                                rules: [{ required: true, message: 'Please input your password!'} , {validator: validateToNextPassword}],
+                                rules: [{ required: true, message: 'Please input their password!'} , {validator: validateToNextPassword}],
                             },
                     ]"
                     type="password"
@@ -62,7 +62,7 @@
                     v-decorator="[
                         'confirm',
                             {
-                                rules: [{required: true, message: 'Please confirm your password!'}, {validator: compareToFirstPassword}],
+                                rules: [{required: true, message: 'Please confirm their password!'}, {validator: compareToFirstPassword}],
                             },
                     ]"
                     type="password"
@@ -76,7 +76,7 @@
                     v-decorator="[
                         'email',
                         {
-                        rules: [{type: 'email', message: 'The input is not valid E-mail!'}, {required: true, message: 'Please input your E-mail!'}]
+                        rules: [{type: 'email', message: 'The input is not valid E-mail!'}, {required: true, message: 'Please input their E-mail!'}]
                         }
                     ]"
                 />

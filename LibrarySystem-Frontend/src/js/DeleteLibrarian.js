@@ -11,7 +11,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "ViewLibrarians",
+  name: "DeleteLibrarian",
   data() {
     return {
       visible: false, 
@@ -31,7 +31,7 @@ export default {
       // if no errors, send the delete request to the backend api
       if (!err) {
         this.idNum = values;
-        console.log(idNum);
+        console.log("ID NUM: ", idNum);
         AXIOS.delete(
           "/api/librarians/delete/"+this.idNum+"?currentUserId=admin" 
         )

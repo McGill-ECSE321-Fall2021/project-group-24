@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div key="DELLIB" >
     <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
     <div >
         <a-form
@@ -35,14 +35,14 @@
     <div>
       <a-modal v-model="visible" title="Error" :footer="null" :header="null">
         <a-alert
-          v-if="this.userError"
+          v-if="this.error"
           message=" "
-          :description="this.userError"
+          :description="this.error"
           type="error"
           show-icon
         />
         <a-alert
-          v-if="!this.userError"
+          v-if="!this.error"
           message=" "
           description="There was an unexpected error"
           type="error"
@@ -54,4 +54,4 @@
   </div>
 </template>
 
-<script src="../js/AddLibrarian.js"></script>
+<script src="../js/DeleteLibrarian.js"></script>
