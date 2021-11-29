@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Homepage from "@/components/Homepage";
 // Import your component here
 import BrowseAllItems from "@/components/BrowseAllItems";
+import BrowseAllShifts from "@/components/BrowseAllShifts";
 import CreateNewRoom from "@/components/CreateNewRoom";
 import BrowseAllRooms from "@/components/BrowseAllRooms";
 import CreateNewItem from "@/components/CreateNewItem";
@@ -22,7 +23,7 @@ import EditAccountDetails from "@/components/EditAccountDetails";
 import ChangePassword from "@/components/ChangePassword";
 import DeleteAccount from "@/components/DeleteAccount";
 import ViewAllPatrons from "@/components/ViewAllPatrons";
-import ViewLibrarians from "@/components/ViewLibrarians"; 
+import ViewLibrarians from "@/components/ViewLibrarians";
 import AddLibrarian from "@/components/AddLibrarian";
 Vue.use(Router);
 
@@ -118,6 +119,11 @@ export default new Router({
       path: "/browse_reservations",
       name: "BrowseItemReservations",
       component: BrowseItemReservations,
+    },
+    {
+      path: "/browse_shifts",
+      name: "BrowseAllShifts",
+      component: BrowseAllShifts,
     },
     {
       path: "/view_patrons",

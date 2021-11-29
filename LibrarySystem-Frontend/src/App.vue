@@ -1,4 +1,4 @@
-<template> 
+<template>
   <!--Application header -->
   <div id="app">
     <router-link
@@ -9,13 +9,12 @@
     <h4 v-if="this.$store.state.currentUser.username">
       Hello, {{ this.$store.state.currentUser.username }}
     </h4>
-  <!--Navigation Menu starting with "Homepage" on the furthest left and other tabs to its right 
+    <!--Navigation Menu starting with "Homepage" on the furthest left and other tabs to its right 
       Depending on the type of user accessing the website, different tabs in the menu are available.
       e.g. "View Librarians" is accessible only if the user is logged in as a librarian, 
       while "Browse Items" is accessible by any user (if those not logged-in)
   -->
     <a-menu v-model="current" mode="horizontal">
-
       <a-menu-item key="Homepage">
         <router-link :to="{ name: 'Homepage' }">Home</router-link>
       </a-menu-item>
@@ -27,6 +26,12 @@
       <a-menu-item key="BrowseAllRooms">
         <router-link :to="{ name: 'BrowseAllRooms' }">
           Browse Rooms
+        </router-link>
+      </a-menu-item>
+
+      <a-menu-item key="BrowseAllShifts">
+        <router-link :to="{ name: 'BrowseAllShifts' }">
+          Browse Shifts
         </router-link>
       </a-menu-item>
 
@@ -56,8 +61,9 @@
         "
         ><router-link :to="{ name: 'CreateNewItem' }">
           Create New Item
-        </router-link></a-menu-item>
-        
+        </router-link></a-menu-item
+      >
+
       <a-menu-item
         key="CreateNewRoom"
         v-if="
@@ -76,7 +82,7 @@
       >
         <router-link :to="{ name: 'LoginPage' }"> Sign in </router-link>
       </a-menu-item>
-      
+
       <a-menu-item
         key="ViewAllPatrons"
         v-if="
@@ -130,7 +136,6 @@
       <a-menu-item key="Logout" v-if="this.$store.state.currentUser.username">
         <a @click="logout">Logout</a>
       </a-menu-item>
-
     </a-menu>
     <br />
     <router-view></router-view>
