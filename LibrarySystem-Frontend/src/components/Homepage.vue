@@ -37,7 +37,8 @@
     <a-button key="ModifyLibraryHour" type="primary" v-if="
         this.$store.state.currentUser.username &&
         !this.$store.state.currentUser.isPatron &&
-        !this.$store.state.currentUser.isLibrarian
+        !this.$store.state.currentUser.isLibrarian && 
+        hours.length!=0
       " >
         <router-link :to="{ name: 'ModifyLibraryHour' }">
                 Modify Library Hour

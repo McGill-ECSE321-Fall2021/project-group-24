@@ -44,7 +44,7 @@
                 </a-select>
             </a-form-item>  
             -->
-            <a-form-item label="Remove the Library Hour for the Following Day">
+                <a-form-item label="Remove the Library Hour for the Following Day">
                 <a-select
                     v-decorator="[
                         'dayOfWeek',
