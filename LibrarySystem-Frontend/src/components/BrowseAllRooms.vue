@@ -1,4 +1,7 @@
 <template>
+  <!-- @Author Saagar
+  In this view, anyone can browse rooms to see information about them.
+Librarians can also delete or modify rooms. -->
   <div>
     <div id="searchbar">
       <!--This is searchbar from AntDesign-->
@@ -22,8 +25,10 @@
           <a-button v-if="currentUser.username" @click="reservePressed(room)">
             Reserve room
           </a-button>
-          <a-button type="dashed" @click="updatePressed(room)"
-          v-if="currentUser.username && !currentUser.isPatron"
+          <a-button
+            type="dashed"
+            @click="updatePressed(room)"
+            v-if="currentUser.username && !currentUser.isPatron"
             >Update room</a-button
           >
           <a-button

@@ -1,4 +1,10 @@
 <template>
+  <!-- @author Saagar Arya
+  This page allows anyone to browse through all the items.
+It also features a search bar for them to filter items.
+Logged in patrons can also reserve items from this screen
+Librarians can also delete, checkout items, or return them from reservations.
+ -->
   <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
   <div>
     <div id="searchbar">

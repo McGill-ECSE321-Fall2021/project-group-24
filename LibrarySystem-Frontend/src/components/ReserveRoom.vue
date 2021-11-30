@@ -1,4 +1,7 @@
 <template>
+  <!-- This page allows a patron to reserve a room for themselves, and allows a librarian
+to reserve a room for any patron. It also features a calendar that shows
+preexisting room bookings. -->
   <div>
     <h1>Reserve room:</h1>
     <a-card :key="room.roomNum" style="align-items: center; margin-top: 20px">

@@ -1,4 +1,3 @@
-@@ -0,0 +1,87 @@
 <template>
   <div>
     <div v-if="!loading">
@@ -86,11 +85,8 @@
                   cancel-text="No"
                   @confirm="deletePatron(patron.idNum)"
                 >
-
-                  <a-button type="danger" >
-                    Delete Patron
-                  </a-button>
-                </a-popconfirm>  
+                  <a-button type="danger"> Delete Patron </a-button>
+                </a-popconfirm>
               </div>
             </a-layout>
           </a-card>

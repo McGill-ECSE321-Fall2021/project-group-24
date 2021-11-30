@@ -1,4 +1,8 @@
 <template>
+  <!-- This is a page where a librarian can checkout
+an item for a patron. They enter the patron's id num, and
+if they already have a reservation for right now it will mark it as checked out,
+however if there is no reservation it will create one. -->
   <div>
     <h1>Checkout item:</h1>
     <div style="align-self: center; margin: auto; width: 70%">

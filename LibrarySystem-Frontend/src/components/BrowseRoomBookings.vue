@@ -1,4 +1,6 @@
 <template>
+  <!-- This page allows patrons to browse their own room bookings,
+while librarians can see all room bookings. -->
   <div>
     <div v-if="!loading">
       <div id="searchbar">

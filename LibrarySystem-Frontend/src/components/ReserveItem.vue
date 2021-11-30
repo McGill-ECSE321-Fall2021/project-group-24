@@ -1,4 +1,6 @@
 <template>
+  <!-- This page allows a patron to reserve an item for themselves
+, or librarian to reserve an item for a patron. -->
   <div>
     <h1>Reserve item:</h1>
     <a-card

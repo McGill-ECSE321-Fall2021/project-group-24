@@ -1,4 +1,7 @@
 <template>
+  <!-- Page to browse all item reservations. For a patron,
+they only see their own reservations, while librarians see
+all of them -->
   <div>
     <div v-if="!loading">
       <div id="searchbar">
