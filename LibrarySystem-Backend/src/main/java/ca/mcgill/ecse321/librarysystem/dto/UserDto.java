@@ -4,108 +4,108 @@ import javax.persistence.Id;
 
 public class UserDto {
 
-	private String username;
-	private String password;
-	private String email;
+  private String username;
+  private String password;
+  private String email;
 
-	@Id
-	private String idNum;
+  @Id
+  private String idNum;
 
-	private String firstName;
-	private String lastName;
-	private String address;
-	private boolean isLoggedIn;
-	private boolean isPatron;
+  private String firstName;
+  private String lastName;
+  private String address;
+  private boolean isLoggedIn;
+  private boolean isPatron;
 
-	public UserDto() {}
+  public UserDto() {}
 
-	public UserDto(
-		String user,
-		String pass,
-		String id,
-		String mail,
-		String first,
-		String last,
-		String Address,
-		boolean isLoggedIn,
-		boolean isPatron
-	) {
-		this.username = user;
-		this.password = pass;
-		this.email = mail;
-		this.idNum = id;
-		this.firstName = first;
-		this.lastName = last;
-		this.address = Address;
-		this.isLoggedIn = isLoggedIn;
-		this.isPatron = isPatron;
-	}
+  public UserDto(
+    String user,
+    String pass,
+    String id,
+    String mail,
+    String first,
+    String last,
+    String Address,
+    boolean isLoggedIn,
+    boolean isPatron
+  ) {
+    this.username = user;
+    this.password = pass;
+    this.email = mail;
+    this.idNum = id;
+    this.firstName = first;
+    this.lastName = last;
+    this.address = Address;
+    this.isLoggedIn = isLoggedIn;
+    this.isPatron = isPatron;
+  }
 
-	public String getIdNum() {
-		return idNum;
-	}
+  public String getIdNum() {
+    return idNum;
+  }
 
-	public void setIdNum(String timeSlotId) {
-		this.idNum = timeSlotId;
-	}
+  public void setIdNum(String timeSlotId) {
+    this.idNum = timeSlotId;
+  }
 
-	public String getUsername() {
-		return this.username;
-	}
+  public String getUsername() {
+    return this.username;
+  }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-	public String getPassword() {
-		return this.password;
-	}
+  public String getPassword() {
+    return this.password;
+  }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-	public String getEmail() {
-		return this.email;
-	}
+  public String getEmail() {
+    return this.email;
+  }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-	public String getFirstName() {
-		return this.firstName;
-	}
+  public String getFirstName() {
+    return this.firstName;
+  }
 
-	public boolean getIsPatron() {
-		return this.isPatron;
-	}
+  public boolean getIsPatron() {
+    return this.isPatron;
+  }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-	public String getLastName() {
-		return this.lastName;
-	}
+  public String getLastName() {
+    return this.lastName;
+  }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+  public void setAddress(String address) {
+    this.address = address;
+  }
 
-	public String getAddress() {
-		return this.address;
-	}
+  public String getAddress() {
+    return this.address;
+  }
 
-	public void setIsLoggedIn(boolean x) {
-		this.isLoggedIn = x;
-	}
+  public void setIsLoggedIn(boolean x) {
+    this.isLoggedIn = x;
+  }
 
-	public boolean getIsLoggedIn() {
-		return this.isLoggedIn;
-	}
+  public boolean getIsLoggedIn() {
+    return this.isLoggedIn;
+  }
 }

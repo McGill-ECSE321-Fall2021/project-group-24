@@ -67,9 +67,7 @@ public class ItemReservationService {
     );
     Patron patron = patronRepository.findUserByIdNum(idNum);
     if (patron == null) {
-    	throw new IllegalArgumentException(
-    	        "Patron does not exist"
-    	      );
+      throw new IllegalArgumentException("Patron does not exist");
     }
     boolean hasPermission = false;
     if (
@@ -327,7 +325,7 @@ public class ItemReservationService {
     String currentUserId,
     String itemReservationId
   ) {
-	  System.out.println(itemReservationId);
+    System.out.println(itemReservationId);
     ItemReservation reservation = itemReservationRepository.findItemReservationByItemReservationId(
       itemReservationId
     );
@@ -375,12 +373,10 @@ public class ItemReservationService {
   @Transactional
   public ItemReservation returnItemFromReservation(
     String currentUserId,
-    String itemN
-  umber 
-  
-    String i
-  emReservationId = n 
-  Item item = itemRepository.findItemByItemNumber(itemNumber);
+    String itemNumber
+  ) {
+    String itemReservationId = null;
+    Item item = itemRepository.findItemByItemNumber(itemNumber);
     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
       currentUserId
     );
@@ -415,7 +411,9 @@ public class ItemReservationService {
       itemReservationRepository.save(reservation);
       return reservation;
     } else {
-      throw new IllegalArgumentException("Item did not have a previous reservation");
+      throw new IllegalArgumentException(
+        "Item did not have a previous reservation"
+      );
     }
   }
 
@@ -450,8 +448,8 @@ public class ItemReservationService {
       currentHeadLibrarian != null &&
       currentHeadLibrarian.getIsLoggedIn()
     ) {
-  hasPermission = true;  
-  }
+      hasPermission = true;
+    }
     if (!hasPermission) {
       throw new IllegalArgumentException(
         "Only a librarian or the patron who's reservation they are can see them"
@@ -490,10 +488,10 @@ public class ItemReservationService {
     if (
       currentLibrarian != null &&
       currentLibrarian.getIsLoggedIn() ||
-     curr
-  n
-    currentHeadLibrarian.getIsLoggedIn()
-  )    hasPermission = true;
+      currentHeadLibrarian != null &&
+      currentHeadLibrarian.getIsLoggedIn()
+    ) {
+      hasPermission = true;
     }
     if (!hasPermission) {
       throw new IllegalArgumentException(
@@ -502,9 +500,8 @@ public class ItemReservationService {
     }
     return itemReservationRepository.findItemReservationsByItemNumber(
       itemNumber
-   
+    );
   }
-  
 
   /***
    * @author saagararya
@@ -639,7 +636,10 @@ public class ItemReservationService {
     for (ItemReservation r : reservationsByItemNumber) {
       if (latestReservation == null) {
         latestReservation = r;
-      } else if (latestReservation.getEndDate().before(r.getStartDate()) || latestReservation.getEndDate().equals(r.getStartDate())) {
+      } else if (
+        latestReservation.getEndDate().before(r.getStartDate()) ||
+        latestReservation.getEndDate().equals(r.getStartDate())
+      ) {
         latestReservation = r;
       }
     }

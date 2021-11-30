@@ -18,7 +18,8 @@ public class MusicAlbumDto extends ItemDto {
     String currentReservationId,
     String itemNumber,
     String artist,
-    String recordingLabel, Date nextAvailableDate
+    String recordingLabel,
+    Date nextAvailableDate
   ) {
     this.itemTitle = itemTitle;
     this.description = description;

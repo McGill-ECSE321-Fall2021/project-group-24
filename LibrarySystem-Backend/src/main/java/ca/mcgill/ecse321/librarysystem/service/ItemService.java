@@ -30,41 +30,49 @@ public class ItemService {
   // creates book, returns it so we know it's not null
   @Transactional
   public Book createBook(
-      String currentUserId,
-      String itemTitle,
-      String description,
-      String imageUrl,
-      String genre,
-      Date publishDate,
-      boolean isReservable,
-      String author,
-      String publisher) {
+    String currentUserId,
+    String itemTitle,
+    String description,
+    String imageUrl,
+    String genre,
+    Date publishDate,
+    boolean isReservable,
+    String author,
+    String publisher
+  ) {
     validBookInput(
-        currentUserId,
-        itemTitle,
-        description,
-        imageUrl,
-        genre,
-        publishDate,
-        isReservable,
-        author,
-        publisher);
+      currentUserId,
+      itemTitle,
+      description,
+      imageUrl,
+      genre,
+      publishDate,
+      isReservable,
+      author,
+      publisher
+    );
     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
-        currentUserId);
+      currentUserId
+    );
     HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
-        currentUserId);
-    if (currentLibrarian == null ||
-        !currentLibrarian.getIsLoggedIn() &&
-            (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())) {
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
       throw new IllegalArgumentException(
-          "You do not have permission to create an item");
+        "You do not have permission to create an item"
+      );
     }
 
     if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
 
-    String itemNumber = "Book-" + getAllBooks().size() + itemTitle.replace(" ", "-");
+    String itemNumber =
+      "Book-" + getAllBooks().size() + itemTitle.replace(" ", "-");
     Book book = new Book();
     book.setItemTitle(itemTitle);
     book.setDescription(description);
@@ -84,23 +92,32 @@ public class ItemService {
   @Transactional
   public Item deleteItem(String currentUserId, String itemNumber) {
     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
-        currentUserId);
+      currentUserId
+    );
     HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
-        currentUserId);
-    if (currentLibrarian == null ||
-        !currentLibrarian.getIsLoggedIn() &&
-            (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())) {
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
       throw new IllegalArgumentException(
-          "You do not have permission to delete this item");
+        "You do not have permission to delete this item"
+      );
     }
     Item gone = itemRepository.findItemByItemNumber(itemNumber);
     Date today = Date.valueOf(LocalDate.now());
     for (ItemReservation reservation : itemReservationRepository.findItemReservationsByItemNumber(
-        itemNumber)) {
-      if (reservation.getStartDate().after(today) ||
-          reservation.getEndDate().after(today)) {
+      itemNumber
+    )) {
+      if (
+        reservation.getStartDate().after(today) ||
+        reservation.getEndDate().after(today)
+      ) {
         throw new IllegalArgumentException(
-            "Item has future reservations, cannot delete");
+          "Item has future reservations, cannot delete"
+        );
       }
     }
     itemRepository.delete(gone);
@@ -109,30 +126,37 @@ public class ItemService {
 
   @Transactional
   public Archive createArchive(
-      String currentUserId,
-      String itemTitle,
-      String description,
-      String imageUrl,
-      String genre,
-      Date publishDate,
-      boolean isReservable) {
+    String currentUserId,
+    String itemTitle,
+    String description,
+    String imageUrl,
+    String genre,
+    Date publishDate,
+    boolean isReservable
+  ) {
     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
-        currentUserId);
+      currentUserId
+    );
     HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
-        currentUserId);
-    if (currentLibrarian == null ||
-        !currentLibrarian.getIsLoggedIn() &&
-            (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())) {
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
       throw new IllegalArgumentException(
-          "You do not have permission to create an item reservation");
+        "You do not have permission to create an item reservation"
+      );
     }
 
     if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
-    String itemNumber = "Archive-" +
-        itemRepository.findItemsByType(Item.Type.Archive).size() +
-        itemTitle.replace(" ", "-");
+    String itemNumber =
+      "Archive-" +
+      itemRepository.findItemsByType(Item.Type.Archive).size() +
+      itemTitle.replace(" ", "-");
     Archive archive = new Archive();
     archive.setItemTitle(itemTitle);
     archive.setDescription(description);
@@ -148,31 +172,38 @@ public class ItemService {
 
   @Transactional
   public MusicAlbum createMusicAlbum(
-      String currentUserId,
-      String itemTitle,
-      String description,
-      String imageUrl,
-      String genre,
-      Date publishDate,
-      boolean isReservable,
-      String artist,
-      String recordingLabel) {
+    String currentUserId,
+    String itemTitle,
+    String description,
+    String imageUrl,
+    String genre,
+    Date publishDate,
+    boolean isReservable,
+    String artist,
+    String recordingLabel
+  ) {
     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
-        currentUserId);
+      currentUserId
+    );
     HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
-        currentUserId);
-    if (currentLibrarian == null ||
-        !currentLibrarian.getIsLoggedIn() &&
-            (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())) {
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
       throw new IllegalArgumentException(
-          "You do not have permission to create an item reservation");
+        "You do not have permission to create an item reservation"
+      );
     }
     if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
-    String itemNumber = "MusicAlbum-" +
-        itemRepository.findItemsByType(Item.Type.MusicAlbum).size() +
-        itemTitle.replace(" ", "-");
+    String itemNumber =
+      "MusicAlbum-" +
+      itemRepository.findItemsByType(Item.Type.MusicAlbum).size() +
+      itemTitle.replace(" ", "-");
     MusicAlbum musicAlbum = new MusicAlbum();
     musicAlbum.setItemTitle(itemTitle);
     musicAlbum.setDescription(description);
@@ -190,31 +221,38 @@ public class ItemService {
 
   @Transactional
   public PrintedMedia createPrintedMedia(
-      String currentUserId,
-      String itemTitle,
-      String description,
-      String imageUrl,
-      String genre,
-      Date publishDate,
-      boolean isReservable,
-      String issueNumber) {
+    String currentUserId,
+    String itemTitle,
+    String description,
+    String imageUrl,
+    String genre,
+    Date publishDate,
+    boolean isReservable,
+    String issueNumber
+  ) {
     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
-        currentUserId);
+      currentUserId
+    );
     HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
-        currentUserId);
-    if (currentLibrarian == null ||
-        !currentLibrarian.getIsLoggedIn() &&
-            (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())) {
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
       throw new IllegalArgumentException(
-          "You do not have permission to create an item reservation");
+        "You do not have permission to create an item reservation"
+      );
     }
 
     if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
-    String itemNumber = "PrintedMedia-" +
-        itemRepository.findItemsByType(Item.Type.MusicAlbum).size() +
-        itemTitle.replace(" ", "-");
+    String itemNumber =
+      "PrintedMedia-" +
+      itemRepository.findItemsByType(Item.Type.MusicAlbum).size() +
+      itemTitle.replace(" ", "-");
     PrintedMedia printedMedia = new PrintedMedia();
     printedMedia.setItemTitle(itemTitle);
     printedMedia.setDescription(description);
@@ -231,34 +269,41 @@ public class ItemService {
 
   @Transactional
   public Movie createMovie(
-      String currentUserId,
-      String itemTitle,
-      String description,
-      String imageUrl,
-      String genre,
-      Date publishDate,
-      boolean isReservable,
-      String productionCompany,
-      String movieCast,
-      String director,
-      String producer) {
+    String currentUserId,
+    String itemTitle,
+    String description,
+    String imageUrl,
+    String genre,
+    Date publishDate,
+    boolean isReservable,
+    String productionCompany,
+    String movieCast,
+    String director,
+    String producer
+  ) {
     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
-        currentUserId);
+      currentUserId
+    );
     HeadLibrarian currentHeadLibrarian = headLibrarianRepository.findUserByIdNum(
-        currentUserId);
-    if (currentLibrarian == null ||
-        !currentLibrarian.getIsLoggedIn() &&
-            (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())) {
+      currentUserId
+    );
+    if (
+      currentLibrarian == null ||
+      !currentLibrarian.getIsLoggedIn() &&
+      (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
+    ) {
       throw new IllegalArgumentException(
-          "You do not have permission to create an item reservation");
+        "You do not have permission to create an item reservation"
+      );
     }
 
     if (itemTitle.length() == 0) {
       throw new IllegalArgumentException("Item must have a title");
     }
-    String itemNumber = "Movie-" +
-        itemRepository.findItemsByType(Item.Type.Movie).size() +
-        itemTitle.replace(" ", "-");
+    String itemNumber =
+      "Movie-" +
+      itemRepository.findItemsByType(Item.Type.Movie).size() +
+      itemTitle.replace(" ", "-");
     Movie movie = new Movie();
     movie.setItemTitle(itemTitle);
     movie.setDescription(description);

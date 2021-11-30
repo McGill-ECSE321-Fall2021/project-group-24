@@ -24,377 +24,401 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/items")
 public class ItemController {
 
-	@Autowired
-	private ItemService itemService;
-	@Autowired
-	private ItemReservationService itemReservationService;
+  @Autowired
+  private ItemService itemService;
 
-	/***
-	 *
-	 * @return list of all items
-	 */
-	@GetMapping(value = { "/all/", "/all" })
-	public List<ItemDto> getAllItems() {
-		System.out.println("Flag Get");
-		return itemService
-			.getAll()
-			.stream()
-			.map(lib -> convertToDto(lib))
-			.collect(Collectors.toList());
-	}
+  @Autowired
+  private ItemReservationService itemReservationService;
 
-	/***
-	 * @param itemNumber
-	 * @return get single item
-	 */
-	@GetMapping(value = { "/{itemNumber}", "/{itemNumber}/" })
-	public ResponseEntity<?> getItem(@PathVariable("itemNumber") String itemNumber) {
-		Item item = itemService.getItem(itemNumber);
-		try {
-			return new ResponseEntity<Object>(convertToDto(item), HttpStatus.OK);
-		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
+  /***
+   *
+   * @return list of all items
+   */
+  @GetMapping(value = { "/all/", "/all" })
+  public List<ItemDto> getAllItems() {
+    System.out.println("Flag Get");
+    return itemService
+      .getAll()
+      .stream()
+      .map(lib -> convertToDto(lib))
+      .collect(Collectors.toList());
+  }
 
-	/***
-	 *
-	 * @param itemTitle
-	 * @param description
-	 * @param imageURL
-	 * @param publisher
-	 * @param author
-	 * @param genre
-	 * @param publishDate
-	 * @param isReservable
-	 * @param currentUserId
-	 * @return
-	 */
-	@PostMapping(value = { "/create_book/{", "/create_book" })
-	public ResponseEntity<?> createBook(
-		@RequestParam String itemTitle,
-		@RequestParam String description,
-		@RequestParam String imageURL,
-		@RequestParam String publisher,
-		@RequestParam String author,
-		@RequestParam String genre,
-		@RequestParam String publishDate,
-		@RequestParam boolean isReservable,
-		@RequestParam String currentUserId
-	) {
-		try {
-			Book book = itemService.createBook(
-				currentUserId,
-				itemTitle,
-				description,
-				imageURL,
-				genre,
-				Date.valueOf(LocalDate.parse(publishDate)),
-				isReservable,
-				author,
-				publisher
-			);
-			return new ResponseEntity<Object>(convertToBookDto(book), HttpStatus.OK);
-		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
+  /***
+   * @param itemNumber
+   * @return get single item
+   */
+  @GetMapping(value = { "/{itemNumber}", "/{itemNumber}/" })
+  public ResponseEntity<?> getItem(
+    @PathVariable("itemNumber") String itemNumber
+  ) {
+    Item item = itemService.getItem(itemNumber);
+    try {
+      return new ResponseEntity<Object>(convertToDto(item), HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
 
-	/***
-	 *
-	 * @param itemTitle
-	 * @param description
-	 * @param imageURL
-	 * @param genre
-	 * @param publishDate
-	 * @param isReservable
-	 * @param movieCast
-	 * @param productionCompany
-	 * @param director
-	 * @param producer
-	 * @param currentUserId
-	 * @return
-	 */
-	@PostMapping(value = { "/create_movie", "/create_movie/" })
-	public ResponseEntity<?> createMovie(
-		@RequestParam String itemTitle,
-		@RequestParam String description,
-		@RequestParam String imageURL,
-		@RequestParam String genre,
-		@RequestParam String publishDate,
-		@RequestParam boolean isReservable,
-		@RequestParam String movieCast,
-		@RequestParam String productionCompany,
-		@RequestParam String director,
-		@RequestParam String producer,
-		@RequestParam String currentUserId
-	) {
-		try {
-			Movie movie = itemService.createMovie(
-				currentUserId,
-				itemTitle,
-				description,
-				imageURL,
-				genre,
-				Date.valueOf(LocalDate.parse(publishDate)),
-				isReservable,
-				productionCompany,
-				movieCast,
-				director,
-				producer
-			);
-			return new ResponseEntity<Object>(convertToMovieDto(movie), HttpStatus.OK);
-		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
+  /***
+   *
+   * @param itemTitle
+   * @param description
+   * @param imageURL
+   * @param publisher
+   * @param author
+   * @param genre
+   * @param publishDate
+   * @param isReservable
+   * @param currentUserId
+   * @return
+   */
+  @PostMapping(value = { "/create_book/{", "/create_book" })
+  public ResponseEntity<?> createBook(
+    @RequestParam String itemTitle,
+    @RequestParam String description,
+    @RequestParam String imageURL,
+    @RequestParam String publisher,
+    @RequestParam String author,
+    @RequestParam String genre,
+    @RequestParam String publishDate,
+    @RequestParam boolean isReservable,
+    @RequestParam String currentUserId
+  ) {
+    try {
+      Book book = itemService.createBook(
+        currentUserId,
+        itemTitle,
+        description,
+        imageURL,
+        genre,
+        Date.valueOf(LocalDate.parse(publishDate)),
+        isReservable,
+        author,
+        publisher
+      );
+      return new ResponseEntity<Object>(convertToBookDto(book), HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
 
-	/***
-	 *
-	 * @param itemTitle
-	 * @param description
-	 * @param imageURL
-	 * @param genre
-	 * @param publishDate
-	 * @param isReservable
-	 * @param currentUserId
-	 * @return
-	 */
-	@PostMapping(value = { "/create_archive", "/create_archive/" })
-	public ResponseEntity<?> createArchive(
-		@RequestParam String itemTitle,
-		@RequestParam String description,
-		@RequestParam String imageURL,
-		@RequestParam String genre,
-		@RequestParam String publishDate,
-		@RequestParam boolean isReservable,
-		@RequestParam String currentUserId
-	) {
-		System.out.println("Flag Post");
+  /***
+   *
+   * @param itemTitle
+   * @param description
+   * @param imageURL
+   * @param genre
+   * @param publishDate
+   * @param isReservable
+   * @param movieCast
+   * @param productionCompany
+   * @param director
+   * @param producer
+   * @param currentUserId
+   * @return
+   */
+  @PostMapping(value = { "/create_movie", "/create_movie/" })
+  public ResponseEntity<?> createMovie(
+    @RequestParam String itemTitle,
+    @RequestParam String description,
+    @RequestParam String imageURL,
+    @RequestParam String genre,
+    @RequestParam String publishDate,
+    @RequestParam boolean isReservable,
+    @RequestParam String movieCast,
+    @RequestParam String productionCompany,
+    @RequestParam String director,
+    @RequestParam String producer,
+    @RequestParam String currentUserId
+  ) {
+    try {
+      Movie movie = itemService.createMovie(
+        currentUserId,
+        itemTitle,
+        description,
+        imageURL,
+        genre,
+        Date.valueOf(LocalDate.parse(publishDate)),
+        isReservable,
+        productionCompany,
+        movieCast,
+        director,
+        producer
+      );
+      return new ResponseEntity<Object>(
+        convertToMovieDto(movie),
+        HttpStatus.OK
+      );
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
 
-		try {
-			Archive archive = itemService.createArchive(
-				currentUserId,
-				itemTitle,
-				description,
-				imageURL,
-				genre,
-				Date.valueOf(LocalDate.parse(publishDate)),
-				isReservable
-			);
-			return new ResponseEntity<Object>(convertToArchiveDto(archive), HttpStatus.OK);
-		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
+  /***
+   *
+   * @param itemTitle
+   * @param description
+   * @param imageURL
+   * @param genre
+   * @param publishDate
+   * @param isReservable
+   * @param currentUserId
+   * @return
+   */
+  @PostMapping(value = { "/create_archive", "/create_archive/" })
+  public ResponseEntity<?> createArchive(
+    @RequestParam String itemTitle,
+    @RequestParam String description,
+    @RequestParam String imageURL,
+    @RequestParam String genre,
+    @RequestParam String publishDate,
+    @RequestParam boolean isReservable,
+    @RequestParam String currentUserId
+  ) {
+    System.out.println("Flag Post");
 
-	/***
-	 *
-	 * @param itemTitle
-	 * @param description
-	 * @param imageURL
-	 * @param genre
-	 * @param publishDate
-	 * @param isReservable
-	 * @param currentUserId
-	 * @param artist
-	 * @param recordingLabel
-	 * @return
-	 */
-	@PostMapping(value = { "/create_musicAlbum", "/create_musicAlbum/" })
-	public ResponseEntity<?> createMusicAlbum(
-		@RequestParam String itemTitle,
-		@RequestParam String description,
-		@RequestParam String imageURL,
-		@RequestParam String genre,
-		@RequestParam String publishDate,
-		@RequestParam boolean isReservable,
-		@RequestParam String currentUserId,
-		@RequestParam String artist,
-		@RequestParam String recordingLabel
-	) {
-		System.out.println("Flag Post");
+    try {
+      Archive archive = itemService.createArchive(
+        currentUserId,
+        itemTitle,
+        description,
+        imageURL,
+        genre,
+        Date.valueOf(LocalDate.parse(publishDate)),
+        isReservable
+      );
+      return new ResponseEntity<Object>(
+        convertToArchiveDto(archive),
+        HttpStatus.OK
+      );
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
 
-		try {
-			MusicAlbum musicAlbum = itemService.createMusicAlbum(
-				currentUserId,
-				itemTitle,
-				description,
-				imageURL,
-				genre,
-				Date.valueOf(LocalDate.parse(publishDate)),
-				isReservable,
-				artist,
-				recordingLabel
-			);
-			return new ResponseEntity<Object>(convertToMusicAlbumDto(musicAlbum), HttpStatus.OK);
-		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
+  /***
+   *
+   * @param itemTitle
+   * @param description
+   * @param imageURL
+   * @param genre
+   * @param publishDate
+   * @param isReservable
+   * @param currentUserId
+   * @param artist
+   * @param recordingLabel
+   * @return
+   */
+  @PostMapping(value = { "/create_musicAlbum", "/create_musicAlbum/" })
+  public ResponseEntity<?> createMusicAlbum(
+    @RequestParam String itemTitle,
+    @RequestParam String description,
+    @RequestParam String imageURL,
+    @RequestParam String genre,
+    @RequestParam String publishDate,
+    @RequestParam boolean isReservable,
+    @RequestParam String currentUserId,
+    @RequestParam String artist,
+    @RequestParam String recordingLabel
+  ) {
+    System.out.println("Flag Post");
 
-	/***
-	 *
-	 * @param itemTitle
-	 * @param description
-	 * @param imageURL
-	 * @param genre
-	 * @param publishDate
-	 * @param isReservable
-	 * @param currentUserId
-	 * @param issueNumber
-	 * @return
-	 */
-	@PostMapping(value = { "/create_printedMedia", "/create_printedMedia/" })
-	public ResponseEntity<?> createPrintedMedia(
-		@RequestParam String itemTitle,
-		@RequestParam String description,
-		@RequestParam String imageURL,
-		@RequestParam String genre,
-		@RequestParam String publishDate,
-		@RequestParam boolean isReservable,
-		@RequestParam String currentUserId,
-		@RequestParam String issueNumber
-	) {
-		System.out.println("Flag Post");
+    try {
+      MusicAlbum musicAlbum = itemService.createMusicAlbum(
+        currentUserId,
+        itemTitle,
+        description,
+        imageURL,
+        genre,
+        Date.valueOf(LocalDate.parse(publishDate)),
+        isReservable,
+        artist,
+        recordingLabel
+      );
+      return new ResponseEntity<Object>(
+        convertToMusicAlbumDto(musicAlbum),
+        HttpStatus.OK
+      );
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
 
-		try {
-			PrintedMedia printedMedia = itemService.createPrintedMedia(
-				currentUserId,
-				itemTitle,
-				description,
-				imageURL,
-				genre,
-				Date.valueOf(LocalDate.parse(publishDate)),
-				isReservable,
-				issueNumber
-			);
-			return new ResponseEntity<Object>(
-				convertToPrintedMediaDto(printedMedia),
-				HttpStatus.OK
-			);
-		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
+  /***
+   *
+   * @param itemTitle
+   * @param description
+   * @param imageURL
+   * @param genre
+   * @param publishDate
+   * @param isReservable
+   * @param currentUserId
+   * @param issueNumber
+   * @return
+   */
+  @PostMapping(value = { "/create_printedMedia", "/create_printedMedia/" })
+  public ResponseEntity<?> createPrintedMedia(
+    @RequestParam String itemTitle,
+    @RequestParam String description,
+    @RequestParam String imageURL,
+    @RequestParam String genre,
+    @RequestParam String publishDate,
+    @RequestParam boolean isReservable,
+    @RequestParam String currentUserId,
+    @RequestParam String issueNumber
+  ) {
+    System.out.println("Flag Post");
 
-	/***
-	 *
-	 * @param itemNumber
-	 * @param currentUserId
-	 * @return
-	 */
-	@DeleteMapping(value = { "/delete/{itemNumber}", "/delete/{itemNumber}/" })
-	public ResponseEntity<?> deleteItem(
-		@PathVariable("itemNumber") String itemNumber,
-		@RequestParam String currentUserId
-	) {
-		Item item = itemService.getItem(itemNumber);
-		try {
-			itemService.deleteItem(currentUserId, itemNumber);
-			String deletedItem =
-				"Deleted item of type " +
-				item.getType().toString() +
-				" with itemNumber " +
-				itemNumber;
-			return new ResponseEntity<Object>(deletedItem, HttpStatus.OK);
-		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
+    try {
+      PrintedMedia printedMedia = itemService.createPrintedMedia(
+        currentUserId,
+        itemTitle,
+        description,
+        imageURL,
+        genre,
+        Date.valueOf(LocalDate.parse(publishDate)),
+        isReservable,
+        issueNumber
+      );
+      return new ResponseEntity<Object>(
+        convertToPrintedMediaDto(printedMedia),
+        HttpStatus.OK
+      );
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
 
-	private ItemDto convertToDto(Item item) {
-		if (item.getType().equals(Item.Type.Book)) {
-			return convertToBookDto((Book) item);
-		} else if (item.getType().equals(Item.Type.Archive)) {
-			return convertToArchiveDto((Archive) item);
-		} else if (item.getType().equals(Item.Type.Movie)) {
-			return convertToMovieDto((Movie) item);
-		} else if (item.getType().equals(Item.Type.PrintedMedia)) {
-			return convertToPrintedMediaDto((PrintedMedia) item);
-		} else {
-			return convertToMusicAlbumDto((MusicAlbum) item);
-		}
-	}
+  /***
+   *
+   * @param itemNumber
+   * @param currentUserId
+   * @return
+   */
+  @DeleteMapping(value = { "/delete/{itemNumber}", "/delete/{itemNumber}/" })
+  public ResponseEntity<?> deleteItem(
+    @PathVariable("itemNumber") String itemNumber,
+    @RequestParam String currentUserId
+  ) {
+    Item item = itemService.getItem(itemNumber);
+    try {
+      itemService.deleteItem(currentUserId, itemNumber);
+      String deletedItem =
+        "Deleted item of type " +
+        item.getType().toString() +
+        " with itemNumber " +
+        itemNumber;
+      return new ResponseEntity<Object>(deletedItem, HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
 
-	private BookDto convertToBookDto(Book book) {
-		Date nextAvailableDate = itemReservationService.findNextAvailabilityForItem(book.getItemNumber());
-		BookDto bookDto = new BookDto(
-			book.getItemTitle(),
-			book.getDescription(),
-			book.getImageUrl(),
-			book.getPublisher(),
-			book.getAuthor(),
-			book.getGenre(),
-			book.getPublishDate(),
-			book.getIsReservable(),
-			book.getCurrentReservationId(),
-			book.getItemNumber(),nextAvailableDate
-		);
-		return bookDto;
-	}
+  private ItemDto convertToDto(Item item) {
+    if (item.getType().equals(Item.Type.Book)) {
+      return convertToBookDto((Book) item);
+    } else if (item.getType().equals(Item.Type.Archive)) {
+      return convertToArchiveDto((Archive) item);
+    } else if (item.getType().equals(Item.Type.Movie)) {
+      return convertToMovieDto((Movie) item);
+    } else if (item.getType().equals(Item.Type.PrintedMedia)) {
+      return convertToPrintedMediaDto((PrintedMedia) item);
+    } else {
+      return convertToMusicAlbumDto((MusicAlbum) item);
+    }
+  }
 
-	private ArchiveDto convertToArchiveDto(Archive archive) {
-		
-		ArchiveDto archiveDto = new ArchiveDto(
-			archive.getItemTitle(),
-			archive.getDescription(),
-			archive.getImageUrl(),
-			archive.getGenre(),
-			archive.getPublishDate(),
-			archive.getIsReservable(),
-			archive.getCurrentReservationId(),
-			archive.getItemNumber(),itemReservationService.findNextAvailabilityForItem(archive.getItemNumber())
-		);
-		return archiveDto;
-	}
+  private BookDto convertToBookDto(Book book) {
+    Date nextAvailableDate = itemReservationService.findNextAvailabilityForItem(
+      book.getItemNumber()
+    );
+    BookDto bookDto = new BookDto(
+      book.getItemTitle(),
+      book.getDescription(),
+      book.getImageUrl(),
+      book.getPublisher(),
+      book.getAuthor(),
+      book.getGenre(),
+      book.getPublishDate(),
+      book.getIsReservable(),
+      book.getCurrentReservationId(),
+      book.getItemNumber(),
+      nextAvailableDate
+    );
+    return bookDto;
+  }
 
-	private MovieDto convertToMovieDto(Movie movie) {
-		MovieDto movieDto = new MovieDto(
-			movie.getItemTitle(),
-			movie.getDescription(),
-			movie.getImageUrl(),
-			movie.getGenre(),
-			movie.getPublishDate(),
-			movie.getIsReservable(),
-			movie.getCurrentReservationId(),
-			movie.getItemNumber(),
-			movie.getProductionCompany(),
-			movie.getMovieCast(),
-			movie.getDirector(),
-			movie.getProducer(),itemReservationService.findNextAvailabilityForItem(movie.getItemNumber())
-		);
-		return movieDto;
-	}
+  private ArchiveDto convertToArchiveDto(Archive archive) {
+    ArchiveDto archiveDto = new ArchiveDto(
+      archive.getItemTitle(),
+      archive.getDescription(),
+      archive.getImageUrl(),
+      archive.getGenre(),
+      archive.getPublishDate(),
+      archive.getIsReservable(),
+      archive.getCurrentReservationId(),
+      archive.getItemNumber(),
+      itemReservationService.findNextAvailabilityForItem(
+        archive.getItemNumber()
+      )
+    );
+    return archiveDto;
+  }
 
-	private PrintedMediaDto convertToPrintedMediaDto(PrintedMedia printedMedia) {
-		PrintedMediaDto printedMediaDto = new PrintedMediaDto(
-			printedMedia.getItemTitle(),
-			printedMedia.getDescription(),
-			printedMedia.getImageUrl(),
-			printedMedia.getGenre(),
-			printedMedia.getPublishDate(),
-			printedMedia.getIsReservable(),
-			printedMedia.getCurrentReservationId(),
-			printedMedia.getItemNumber(),
-			printedMedia.getIssueNumber(),itemReservationService.findNextAvailabilityForItem(printedMedia.getItemNumber())
-		);
-		return printedMediaDto;
-	}
+  private MovieDto convertToMovieDto(Movie movie) {
+    MovieDto movieDto = new MovieDto(
+      movie.getItemTitle(),
+      movie.getDescription(),
+      movie.getImageUrl(),
+      movie.getGenre(),
+      movie.getPublishDate(),
+      movie.getIsReservable(),
+      movie.getCurrentReservationId(),
+      movie.getItemNumber(),
+      movie.getProductionCompany(),
+      movie.getMovieCast(),
+      movie.getDirector(),
+      movie.getProducer(),
+      itemReservationService.findNextAvailabilityForItem(movie.getItemNumber())
+    );
+    return movieDto;
+  }
 
-	private MusicAlbumDto convertToMusicAlbumDto(MusicAlbum musicAlbum) {
-		MusicAlbumDto musicAlbumDto = new MusicAlbumDto(
-			musicAlbum.getItemTitle(),
-			musicAlbum.getDescription(),
-			musicAlbum.getImageUrl(),
-			musicAlbum.getGenre(),
-			musicAlbum.getPublishDate(),
-			musicAlbum.getIsReservable(),
-			musicAlbum.getCurrentReservationId(),
-			musicAlbum.getItemNumber(),
-			musicAlbum.getArtist(),
-			musicAlbum.getRecordingLabel(),itemReservationService.findNextAvailabilityForItem(musicAlbum.getItemNumber())
-		);
-		return musicAlbumDto;
-	}
+  private PrintedMediaDto convertToPrintedMediaDto(PrintedMedia printedMedia) {
+    PrintedMediaDto printedMediaDto = new PrintedMediaDto(
+      printedMedia.getItemTitle(),
+      printedMedia.getDescription(),
+      printedMedia.getImageUrl(),
+      printedMedia.getGenre(),
+      printedMedia.getPublishDate(),
+      printedMedia.getIsReservable(),
+      printedMedia.getCurrentReservationId(),
+      printedMedia.getItemNumber(),
+      printedMedia.getIssueNumber(),
+      itemReservationService.findNextAvailabilityForItem(
+        printedMedia.getItemNumber()
+      )
+    );
+    return printedMediaDto;
+  }
+
+  private MusicAlbumDto convertToMusicAlbumDto(MusicAlbum musicAlbum) {
+    MusicAlbumDto musicAlbumDto = new MusicAlbumDto(
+      musicAlbum.getItemTitle(),
+      musicAlbum.getDescription(),
+      musicAlbum.getImageUrl(),
+      musicAlbum.getGenre(),
+      musicAlbum.getPublishDate(),
+      musicAlbum.getIsReservable(),
+      musicAlbum.getCurrentReservationId(),
+      musicAlbum.getItemNumber(),
+      musicAlbum.getArtist(),
+      musicAlbum.getRecordingLabel(),
+      itemReservationService.findNextAvailabilityForItem(
+        musicAlbum.getItemNumber()
+      )
+    );
+    return musicAlbumDto;
+  }
 }

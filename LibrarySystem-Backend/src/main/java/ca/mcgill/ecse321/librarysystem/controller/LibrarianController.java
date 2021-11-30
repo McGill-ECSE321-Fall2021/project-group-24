@@ -69,18 +69,15 @@ public class LibrarianController {
       return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
-  
-  @PostMapping(value = {"/verify", "/verify/"})
-  public ResponseEntity<?> verifyPatron(
-	@RequestParam String idNum	  
-  ){
-	  try {
-		  Patron patron = librarianService.verifyPatron(idNum);
-		  return new ResponseEntity<Object>(patron.getIdNum(), HttpStatus.OK);
-	  }catch(IllegalArgumentException e) {
-		  return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-	  }
-	  
+
+  @PostMapping(value = { "/verify", "/verify/" })
+  public ResponseEntity<?> verifyPatron(@RequestParam String idNum) {
+    try {
+      Patron patron = librarianService.verifyPatron(idNum);
+      return new ResponseEntity<Object>(patron.getIdNum(), HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   //delete to delete/fire a librarian

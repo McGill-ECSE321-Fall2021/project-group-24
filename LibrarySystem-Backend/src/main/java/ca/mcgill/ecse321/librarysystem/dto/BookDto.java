@@ -18,7 +18,8 @@ public class BookDto extends ItemDto {
     Date publishDate,
     boolean isReservable,
     String currentReservationId,
-    String itemNumber, Date nextAvailableDate
+    String itemNumber,
+    Date nextAvailableDate
   ) {
     this.itemTitle = itemTitle;
     this.description = description;

@@ -1,29 +1,32 @@
 <template>
-  <div key="DELLIB" >
+  <div key="DELLIB">
     <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
-    <div >
-        <a-form
-            :form="form"
-            :label-col="{ span: 7 }"
-            :wrapper-col="{ span: 12 }"
-            @submit="handleSubmit"
-        >
-            <a-form-item label="ID Number of librarian to be deleted" >
-                <a-input
-                    v-decorator="[
-                        'idNumber',
-                            {
-                                rules: [{ required: true, message: 'Please enter their ID number.' }],
-                            },
-                    ]"
-                />
-            </a-form-item>      
+    <div>
+      <a-form
+        :form="form"
+        :label-col="{ span: 7 }"
+        :wrapper-col="{ span: 12 }"
+        @submit="handleSubmit"
+      >
+        <a-form-item label="ID Number of librarian to be deleted">
+          <a-input
+            v-decorator="[
+              'idNumber',
+              {
+                rules: [
+                  { required: true, message: 'Please enter their ID number.' },
+                ],
+              },
+            ]"
+          />
+        </a-form-item>
 
-            <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-                <a-button type="danger" html-type="submit"> Delete Librarian </a-button>
-            </a-form-item>
-        </a-form>
-
+        <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
+          <a-button type="danger" html-type="submit">
+            Delete Librarian
+          </a-button>
+        </a-form-item>
+      </a-form>
     </div>
 
     <div>
@@ -50,7 +53,6 @@
         />
       </a-modal>
     </div>
-    
   </div>
 </template>
 
