@@ -153,7 +153,6 @@ export default {
                   .then((res) => {
                     this.visible = true;
                     this.responseStatus = res.status;
-
                     window.sessionStorage.setItem(
                       "currentUser",
                       JSON.stringify(res.data)
