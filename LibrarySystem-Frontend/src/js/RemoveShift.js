@@ -57,11 +57,10 @@ export default {
             console.log("RESPONSE: " + res.status);
             this.visible = true;
             this.responseStatus = res.status;
-            // if successfully added the shift, tell user it works
+            // if successfully deleted the shift, go to view shifts
             if (this.responseStatus == 201) {
-              alert("shift removed successfully"); 
+             this.$router.replace({ name: "BrowseAllShifts" });
             }
-            return res.status;
           })
           // display errors in the dialogue window
           .catch((e) => {
