@@ -20,13 +20,13 @@
           :hoverable="false"
         >
           <img
-            v-if="item.imageURL"
+            v-if="item.imageUrl"
             :alt="item.imageTitle"
-            :src="item.imageURL"
+            :src="item.imageUrl"
             style="width: 100%"
           />
           <img
-            v-if="!item.imageURL"
+            v-if="!item.imageUrl"
             :alt="item.imageTitle"
             style="width: 100%"
             src="https://islandpress.org/sites/default/files/default_book_cover_2015.jpg"
