@@ -88,11 +88,6 @@
               <br />
               <strong>Producer:</strong> {{ item.producer }}
             </span>
-
-            <span v-if="item.publisher">
-              <br />
-              <strong>Publisher:</strong> {{ item.publisher }}
-            </span>
             <br />
             <strong>Genre:</strong> {{ item.genre }}
             <br />
