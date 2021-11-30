@@ -1,5 +1,6 @@
 <template>
-  <!-- This page allows patrons to browse their own room bookings,
+  <!-- author: Selena
+This page allows patrons to browse their own room bookings,
 while librarians can see all room bookings. -->
   <div>
     <div v-if="!loading">
@@ -11,13 +12,15 @@ while librarians can see all room bookings. -->
           @search="search"
         />
       </div>
-
+      <!-- display all roombookings as a list of Cards -->
       <div style="align-self: center; margin: auto; width: 70%">
+        <!-- when there are no room bookings -->
         <h1 v-if="roombookingResults.length == 0">
           <p />
           No room bookings
         </h1>
         <div v-if="roombookingResults.length != 0">
+          <!-- each card contains information about one roombooking, such as room number, date, start and end time  -->
           <a-card
             v-for="(roombooking, index) in roombookingResults"
             :key="index"
@@ -65,6 +68,7 @@ while librarians can see all room bookings. -->
                   <strong>Day:</strong> {{ roombooking.dayOfWeek }}
                 </span>
               </p>
+              <!-- modify and delete buttons -->
               <div style="20%">
                 <a-button
                   type="primary"
@@ -74,6 +78,7 @@ while librarians can see all room bookings. -->
                 >
                   Modify
                 </a-button>
+                <!-- modify button brings up a modal that shows the avaliability of the room, and input fields for data, start time and end time -->
                 <a-modal
                   title="Modify Room booking"
                   :footer="null"
@@ -98,6 +103,7 @@ while librarians can see all room bookings. -->
                         create: false,
                       }"
                     />
+                    <!-- data and time picker from AntDesign -->
                     <a-date-picker
                       @change="changeDate"
                       :disabled-date="disabledEndDate"
@@ -122,6 +128,7 @@ while librarians can see all room bookings. -->
                         >Modify room booking</a-button
                       >
                     </a-form-item>
+                    <!-- hidden elements are used to send information to the js file -->
                     <a-form-item
                       style="
                         width: 0;
@@ -163,6 +170,7 @@ while librarians can see all room bookings. -->
                       />
                     </a-form-item>
                   </a-form>
+                  <!-- modal for error message or confirmation that a roombooking is modified -->
                   <a-modal
                     v-model="modalVisible"
                     :title="error ? 'Error' : 'Message'"
@@ -185,6 +193,7 @@ while librarians can see all room bookings. -->
                     />
                   </a-modal>
                 </a-modal>
+                <!-- button for deleting room booking -->
                 <a-button
                   type="danger"
                   @click="
@@ -204,6 +213,7 @@ while librarians can see all room bookings. -->
       </div>
       <br />
     </div>
+    <!-- graphics for loading data -->
     <div v-if="loading" style="align-self: center; margin: auto; width: 70%">
       <a-card style="align-rooms: center; margin-top: 20px"
         ><a-skeleton active /><a-skeleton active /></a-card
@@ -214,6 +224,7 @@ while librarians can see all room bookings. -->
         ><a-skeleton active /><a-skeleton active
       /></a-card>
     </div>
+
     <div id="searchbar">
       <a-modal
         v-model="visible"
@@ -240,6 +251,7 @@ while librarians can see all room bookings. -->
 
 <script src="../js/BrowseRoomBookings.js"></script>
 <style>
+/* styles for the search bar and colors on the calendar */
 #searchbar {
   padding-left: 20%;
   padding-right: 20%;
