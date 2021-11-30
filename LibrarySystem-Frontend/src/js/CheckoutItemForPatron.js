@@ -35,7 +35,7 @@ export default {
               "/byPatron/" +
               values.idNum +
               "?currentUserId=" +
-              this.currentUser.username
+              this.currentUser.idNum
           )
             .then((res) => {
               this.response = "Successfully checked out for patron";

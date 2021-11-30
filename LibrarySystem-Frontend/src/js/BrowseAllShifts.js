@@ -57,7 +57,7 @@ export default {
         this.libraryHours[daysOfWeek.indexOf(res.data[i].dayOfWeek) + 1] = {
           from: startTimeMinutes,
           to: endTimeMinutes,
-          class: "business-hours",
+          class: "business",
         };
       }
     });
@@ -98,8 +98,7 @@ export default {
               deletable: false,
               resizable: false,
               draggable: false,
-              class:
-                "librarian" + (librarians.indexOf(res.data[i].librarianId) % 7),
+              class: "lib" + (librarians.indexOf(res.data[i].librarianId) % 7),
             },
           ];
         }

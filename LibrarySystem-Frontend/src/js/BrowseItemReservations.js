@@ -58,13 +58,14 @@ export default {
     if (this.reservations.length == 0) {
       this.loading = false;
     } else {
-      var counter = 0;
       await Promise.all(
         this.reservations.map((reservation) =>
           AXIOS.get("/api/items/" + reservation.itemNumber).then((response) => {
-            this.items[counter] = { ...response.data };
-            counter++;
-            if (counter == this.reservations.length) {
+            this.items[this.reservations.indexOf(reservation)] = {
+              ...response.data,
+            };
+
+            if (this.items.length == this.reservations.length) {
               this.loading = false;
             }
           })
@@ -79,7 +80,7 @@ export default {
       this.itemResults = [];
       if (query.length == 0) {
         this.reservationResults = this.reservations;
-        this.itemResults = this.items;
+        this.itemResults = [];
       } else {
         this.reservationResults = this.reservations.filter(
           (reservation, index) => {
@@ -125,8 +126,15 @@ export default {
           this.response = "";
         });
     },
+    checkoutPressed: function (item) {
+      this.$router.push({ name: "CheckoutItem", params: { item } });
+    },
 
     cancelReservation: function (itemReservationId, currentUserId, index) {
+      console.log(itemReservationId);
+      console.log(index);
+      console.log(this.itemResults);
+      console.log(this.reservationResults);
       AXIOS.delete(
         "/api/itemReservations/cancel/" +
           itemReservationId +
@@ -134,10 +142,12 @@ export default {
           currentUserId
       )
         .then((response) => {
+          console.log(itemReservationId);
           this.visible = true;
           this.response = "Reservation Cancelled!";
           this.error = "";
           this.reservations.splice(index, 1);
+          // location.reload();
         })
         .catch((e) => {
           this.visible = true;

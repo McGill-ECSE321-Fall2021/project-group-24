@@ -50,6 +50,11 @@
         >
           <p style="text-align: left">{{ item.description }}</p>
           <p style="text-align: left">
+            <span v-if="item.type">
+              <br />
+              <strong>Type:</strong> {{ item.type }}
+            </span>
+
             <span v-if="item.author">
               <br />
               <strong>Author:</strong> {{ item.author }}
@@ -69,6 +74,7 @@
               {{ item.recordingLabel }}
             </span>
             <span v-if="item.productionCompany">
+              <br />
               <strong>Production Company:</strong>
               {{ item.productionCompany }}
             </span>
@@ -89,6 +95,7 @@
               <strong>Producer:</strong> {{ item.producer }}
             </span>
             <br />
+
             <strong>Genre:</strong> {{ item.genre }}
             <br />
             <strong>Publish date:</strong> {{ item.publishDate }}
@@ -114,6 +121,12 @@
             >
               Checkout Item for Patron
             </a-button>
+            <a-button
+              v-if="currentUser.isPatron == false && item.isReservable"
+              @click="returnItem(item.itemNumber, currentUser.idNum)"
+            >
+              Return item from a reservation
+            </a-button>
 
             <a-button
               type="danger"
@@ -129,18 +142,21 @@
     <br />
 
     <div id="searchbar">
-      <a-modal v-model="visible" title="Error" :footer="null" :header="null">
+      <a-modal
+        v-model="visible"
+        :title="this.error ? 'Error' : 'Message'"
+        :footer="null"
+        :header="null"
+      >
         <a-alert
-          v-if="this.itemError"
-          message=" "
-          :description="this.itemError"
-          type="error"
+          v-if="!this.error"
+          :message="this.response"
+          type="success"
           show-icon
         />
         <a-alert
-          v-if="!this.itemError"
-          message=" "
-          description="There was an unexpected error"
+          v-if="this.error"
+          :message="this.error"
           type="error"
           show-icon
         />

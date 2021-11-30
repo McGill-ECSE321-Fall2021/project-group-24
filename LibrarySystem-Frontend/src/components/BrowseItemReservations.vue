@@ -23,13 +23,13 @@
               :hoverable="false"
             >
               <img
-                v-if="itemResults[index].imageURL"
+                v-if="itemResults[index].imageUrl"
                 :alt="itemResults[index].imageTitle"
-                :src="itemResults[index].imageURL"
+                :src="itemResults[index].imageUrl"
                 style="width: 100%"
               />
               <img
-                v-if="!itemResults[index].imageURL"
+                v-if="!itemResults[index].imageUrl"
                 :alt="itemResults[index].imageTitle"
                 style="width: 100%"
                 src="https://islandpress.org/sites/default/files/default_book_cover_2015.jpg"
@@ -95,11 +95,6 @@
                   <br />
                   <strong>Producer:</strong> {{ itemResults[index].producer }}
                 </span>
-
-                <span v-if="itemResults[index].publisher">
-                  <br />
-                  <strong>Publisher:</strong> {{ itemResults[index].publisher }}
-                </span>
                 <br />
                 <strong>Genre:</strong> {{ itemResults[index].genre }}
                 <br />
@@ -109,7 +104,10 @@
                 <strong>Reservation Start Date:</strong>
                 {{ reservation.startDate }}
                 <br />
-                <strong>Reservation end date</strong>
+                <strong>Reservation:</strong>
+                {{ reservation.itemReservationId }}
+                <br />
+                <strong>Reservation End Date:</strong>
                 {{ reservation.endDate }}
                 <br />
                 <strong>Checked out?</strong>
@@ -146,6 +144,16 @@
                   "
                 >
                   Cancel Reservation
+                </a-button>
+                <a-button
+                  v-if="
+                    currentUser.isPatron == false &&
+                    itemResults[index].isReservable &&
+                    !itemResults[index].currentReservationId
+                  "
+                  @click="checkoutPressed(itemResults[index])"
+                >
+                  Checkout Item for Patron
                 </a-button>
               </div>
             </a-layout>

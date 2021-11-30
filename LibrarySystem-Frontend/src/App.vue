@@ -104,6 +104,16 @@
             </router-link>
           </a-menu-item>
         </a-sub-menu>
+
+        <a-menu-item
+          v-if="currentUser.username && currentUser.username != 'admin'"
+          key="BrowseAllShifts"
+        >
+          <router-link :to="{ name: 'BrowseAllShifts' }">
+            Browse Shifts
+          </router-link>
+        </a-menu-item>
+
         <a-menu-item key="LoginPage" v-if="!currentUser.username">
           <router-link :to="{ name: 'LoginPage' }"> Sign in </router-link>
         </a-menu-item>
@@ -145,6 +155,11 @@
         <a-menu-item key="BrowseAllRooms">
           <router-link :to="{ name: 'BrowseAllRooms' }">
             Browse Rooms
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="BrowseItemReservations" v-if="currentUser.username">
+          <router-link :to="{ name: 'BrowseItemReservations' }">
+            Browse Reservations
           </router-link>
         </a-menu-item>
         <a-menu-item key="BrowseRoomBookings" v-if="currentUser.username">

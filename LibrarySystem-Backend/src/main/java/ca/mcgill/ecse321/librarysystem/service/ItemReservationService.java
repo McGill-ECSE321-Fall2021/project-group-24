@@ -327,9 +327,11 @@ public class ItemReservationService {
     String currentUserId,
     String itemReservationId
   ) {
+	  System.out.println(itemReservationId);
     ItemReservation reservation = itemReservationRepository.findItemReservationByItemReservationId(
       itemReservationId
     );
+    System.out.println(reservation.getItemReservationId());
     String idNum = reservation.getIdNum();
     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
       currentUserId
@@ -373,10 +375,12 @@ public class ItemReservationService {
   @Transactional
   public ItemReservation returnItemFromReservation(
     String currentUserId,
-    String itemNumber
-  ) {
-    String itemReservationId = null;
-    Item item = itemRepository.findItemByItemNumber(itemNumber);
+    String itemN
+  umber 
+  
+    String i
+  emReservationId = n 
+  Item item = itemRepository.findItemByItemNumber(itemNumber);
     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
       currentUserId
     );
@@ -411,13 +415,14 @@ public class ItemReservationService {
       itemReservationRepository.save(reservation);
       return reservation;
     } else {
-      return null;
+      throw new IllegalArgumentException("Item did not have a previous reservation");
     }
   }
 
   /***
-   * @author saagararya
-   * @param currentUserId
+   author
+  saagararya 
+   @param currentUserId
    * @param itemNumber
    * @param idNum
    * @return
@@ -445,8 +450,8 @@ public class ItemReservationService {
       currentHeadLibrarian != null &&
       currentHeadLibrarian.getIsLoggedIn()
     ) {
-      hasPermission = true;
-    }
+  hasPermission = true;  
+  }
     if (!hasPermission) {
       throw new IllegalArgumentException(
         "Only a librarian or the patron who's reservation they are can see them"
@@ -485,10 +490,10 @@ public class ItemReservationService {
     if (
       currentLibrarian != null &&
       currentLibrarian.getIsLoggedIn() ||
-      currentHeadLibrarian != null &&
-      currentHeadLibrarian.getIsLoggedIn()
-    ) {
-      hasPermission = true;
+     curr
+  n
+    currentHeadLibrarian.getIsLoggedIn()
+  )    hasPermission = true;
     }
     if (!hasPermission) {
       throw new IllegalArgumentException(
@@ -497,8 +502,9 @@ public class ItemReservationService {
     }
     return itemReservationRepository.findItemReservationsByItemNumber(
       itemNumber
-    );
+   
   }
+  
 
   /***
    * @author saagararya

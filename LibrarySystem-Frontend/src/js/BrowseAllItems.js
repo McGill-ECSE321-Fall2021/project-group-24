@@ -16,8 +16,8 @@ export default {
     return {
       items: [],
       newItem: "",
-      itemError: "",
-      response: [],
+      error: "",
+      response: "",
       results: [],
       visible: false,
       currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
@@ -33,14 +33,14 @@ export default {
       })
       .catch((e) => {
         this.visible = true;
-        this.itemError = e;
+        this.error = e;
       });
   },
   //this is where you add custom functions / methods you want to use in your vue file. Here we have removeError to clear the error message, and createBook to create books
   methods: {
     showModal: function () {
       this.visible = true;
-      this.itemError = "";
+      this.error = "";
     },
     handleOk: function (e) {
       console.log(e);
@@ -75,7 +75,10 @@ export default {
             (item.artist &&
               item.artist.toLowerCase().includes(query.toLowerCase())) ||
             (item.recordingLabel &&
-              item.recordingLabel.toLowerCase().includes(query.toLowerCase()))
+              item.recordingLabel
+                .toLowerCase()
+                .includes(query.toLowerCase())) ||
+            (item.type && item.type.toLowerCase().includes(query.toLowerCase()))
           ) {
             return true;
           }
@@ -96,7 +99,7 @@ export default {
         .catch((e) => {
           this.visible = true;
           var errorMsg = e.response.data.error;
-          this.itemError = errorMsg;
+          this.error = errorMsg;
         });
     },
     checkoutPressed: function (item) {
@@ -104,6 +107,27 @@ export default {
     },
     reservePressed: function (item) {
       this.$router.push({ name: "ReserveItem", params: { item } });
+    },
+    returnItem: function (itemNumber, currentUserId) {
+      AXIOS.put(
+        "/api/itemReservations/return_item/" +
+          itemNumber +
+          "?currentUserId=" +
+          currentUserId
+      )
+        .then((response) => {
+          console.log("returned");
+          this.response = "returned!";
+          this.visible = true;
+          this.error = "";
+        })
+        .catch((e) => {
+          console.log("error");
+          this.visible = true;
+          var errorMsg = e.response.data.error;
+          this.error = errorMsg ? errorMsg : "The item is not checked out";
+          this.response = "";
+        });
     },
   },
 };

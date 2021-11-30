@@ -23,10 +23,12 @@
             Reserve room
           </a-button>
           <a-button type="dashed" @click="updatePressed(room)"
+          v-if="currentUser.username && !currentUser.isPatron"
             >Update room</a-button
           >
           <a-button
             type="danger"
+            v-if="currentUser.username && !currentUser.isPatron"
             @click="deleteRoom(room.roomNum, currentUser.username)"
           >
             Delete room
