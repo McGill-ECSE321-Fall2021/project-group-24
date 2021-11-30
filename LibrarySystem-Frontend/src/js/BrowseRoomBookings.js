@@ -1,4 +1,5 @@
 import axios from "axios";
+// author: Selena
 import VueCal from "vue-cal";
 import "vue-cal/dist/vuecal.css";
 import moment from "moment";
@@ -18,7 +19,7 @@ export default {
   name: "roombookings",
   data() {
     return {
-      today: new Date().toJSON().slice(0, 10),
+      today: new Date().toJSON().slice(0, 10), // today's date
       confirmLoading: false,
       loading: true,
       visible: false, // the modify booking model
@@ -28,18 +29,22 @@ export default {
       events: [],
       currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       form: this.$form.createForm(this, { name: "coordinated" }),
+      // variables for the calendar
       libraryHours: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
       daysToHide: [1, 2, 3, 4, 5, 6, 7],
       startTime: "",
       endTime: "",
       date: "",
+      // results of the search function
       roombookingResults: [],
+      // list of all roombookings
       roombookings: [],
       roomNum: "",
       timeSlotId: "",
     };
   },
   created: async function () {
+    // if the current user is a patron, calls the controller method for getting all the roombookings for that patron
     if (this.currentUser.isPatron) {
       await AXIOS.get(
         "api/roombookings/view_roombookings/patron/" +
@@ -57,6 +62,7 @@ export default {
           console.log(e);
         });
     } else {
+      // if the current user is a librarian, call the controller method for getting all the room bookings
       await AXIOS.get(
         "api/roombookings/view_roombookings" +
           "?currentUserId=" +
@@ -75,12 +81,14 @@ export default {
   },
   methods: {
     moment,
+    // methods for the date picker and time picker
     changeStartTime: function (newStartTime) {
       this.startTime = newStartTime;
     },
     changeEndTime: function (newEndTime) {
       this.endTime = newEndTime;
     },
+    // when the user clicks on modify for a specific room booking
     showModal(roomNum, timeSlotId) {
       AXIOS.get("api/libraryhour/view_library_hours").then((res) => {
         var daysOfWeek = [
@@ -92,7 +100,7 @@ export default {
           "SATURDAY",
           "SUNDAY",
         ];
-        this.daysToHide = [1, 2, 3, 4, 5, 6, 7];
+        this.daysToHide = [1, 2, 3, 4, 5, 6, 7]; // hide the days without a library hour from the calendar to reduce clutter
         this.libraryHours = {
           1: {},
           2: {},
@@ -127,6 +135,7 @@ export default {
         }
         console.log(res.data);
       });
+      // getting existing room bookings and show them as "events" on the calendar to indicate unavaliability
       AXIOS.get("api/roombookings/privateview_roombookings/room/" + roomNum)
         .then((res) => {
           console.log("GETTING ROOOOM BOOKINGS");
@@ -149,7 +158,6 @@ export default {
               },
             ];
           }
-          console.log(res.data);
         })
         .catch((e) => {
           console.log(e);
@@ -160,12 +168,13 @@ export default {
       console.log("Clicked cancel button");
       this.visible = false;
     },
+    // method for modifying room booking
     handleSubmit(e) {
       e.preventDefault();
-      console.log("hi");
       this.form.validateFields((err, values) => {
         // console.log(values);
         if (!err) {
+          // getting inputs from the form
           var startTime = new Date(this.startTime);
           startTime =
             (startTime.getHours() < 10
@@ -181,6 +190,7 @@ export default {
             ":" +
             (endTime.getMinutes() == 0 ? "00" : endTime.getMinutes());
           var date = this.date;
+          // calling controller method with inputs
           AXIOS.put(
             "/api/roombookings/update_roombooking" +
               "?currentUserId=" +
@@ -200,7 +210,7 @@ export default {
               this.response = "Successfully modified Room Booking";
               this.modalVisible = true;
               this.error = "";
-              console.log("help");
+              // reloading the page to show changes
               for (var i = 0; i < this.roombookings.length; i++) {
                 if (this.roombookings[i].timeSlotId == this.timeSlotId) {
                   this.roombookings[i].startTime = this.startTime
@@ -222,6 +232,7 @@ export default {
         }
       });
     },
+    // function for the search bar, users can search room bookings by room number, patrons idnum (for librarinas) and the date of the booking
     search: function (query) {
       this.roombookingResults = [];
       if (query.length == 0) {

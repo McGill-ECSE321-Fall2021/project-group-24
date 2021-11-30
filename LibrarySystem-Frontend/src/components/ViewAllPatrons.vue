@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- author: Selena and Nafis
+    this page allows librarians and head librarian to see the list of patrons (in person and online), and allows them to delete a patron or verify a patron -->
     <div v-if="!loading">
       <div id="searchbar">
         <!--This is searchbar from AntDesign-->
@@ -9,12 +11,15 @@
           @search="search"
         />
       </div>
-
+      <!-- shows no patrons when there's no patrons -->
       <div style="align-self: center; margin: auto; width: 70%">
         <h1 v-if="patronResults.length == 0">
           <p />
           No patrons
         </h1>
+        <!-- display list of patrons as list of Cards
+        each Card has information about the patron such as username, first and last name, address, whether or not the patron is verified,
+        password is hidden from the libraian for security purposes -->
         <div v-if="patronResults.length != 0">
           <a-card
             v-for="(patron, index) in patronResults"
@@ -74,6 +79,7 @@
                   {{ patron.resident }}
                 </span>
               </p>
+              <!-- buttons for verifying and deleting a patron -->
               <div style="20%">
                 <a-button type="primary" @click="verifyPatron(patron.idNum)">
                   Verify Patron
@@ -94,6 +100,7 @@
       </div>
       <br />
     </div>
+    <!-- skeleton for loading the patrons from the database -->
     <div v-if="loading" style="align-self: center; margin: auto; width: 70%">
       <a-card style="align-rooms: center; margin-top: 20px"
         ><a-skeleton active /><a-skeleton active /></a-card

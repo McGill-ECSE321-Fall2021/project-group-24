@@ -1,7 +1,9 @@
 <template>
+  <!-- author: Selena
+      this page allowed patrons, librarian and head librarian to sign in -->
   <div>
-    <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
     <div>
+      <!-- form to collect username and password as inputs -->
       <a-form
         :form="form"
         :label-col="{ span: 6 }"
@@ -38,12 +40,13 @@
         </a-form-item>
       </a-form>
     </div>
+    <!-- a link to the sign in page for patrons that don't have an account -->
     <div>
       <router-link :to="{ name: 'SignupPage' }"
         >Don't have an account? Sign up here</router-link
       >
     </div>
-
+    <!-- error modal: shows the specific error from the backend to inform the user what went wrong, if the backend is not connected, showes "There was an unexpected error" -->
     <div>
       <a-modal v-model="visible" title="Error" :footer="null" :header="null">
         <a-alert
@@ -64,6 +67,8 @@
     </div>
   </div>
 </template>
+
+<!-- javascript for calling he controlller method -->
 <script src="../js/Login.js"></script>
 
 <style scoped></style>

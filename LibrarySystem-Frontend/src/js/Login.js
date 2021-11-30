@@ -1,4 +1,5 @@
 import axios from "axios";
+// author: Selena
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
@@ -14,6 +15,7 @@ export default {
   name: "users",
 
   data() {
+    // initializing variables to return
     return {
       users: [],
       newUser: "",
@@ -29,6 +31,7 @@ export default {
   },
 
   methods: {
+    // modal to display error/message
     showModal: function () {
       this.visible = true;
       this.userError = "";
@@ -37,13 +40,14 @@ export default {
       console.log(e);
       this.visible = false;
     },
+    // collecting form inputs and calling the login function from the controller
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
           this.user = values;
-
+          // post request
           AXIOS.post(
             "/api/user/login" +
               "?username=" +
@@ -55,11 +59,12 @@ export default {
               this.visible = true;
               this.responseStatus = res.status;
               if (this.responseStatus == 200) {
+                // if successful, set the current user of the session to be the user returned from the log in method
                 window.sessionStorage.setItem(
                   "currentUser",
                   JSON.stringify(res.data)
                 );
-
+                // sends the user to the home page
                 this.$router.replace({ name: "Homepage" });
                 location.reload();
               }
