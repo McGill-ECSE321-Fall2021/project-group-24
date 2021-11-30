@@ -70,10 +70,8 @@ Every librarian can view each other's shifts
                 </span>
               </p>
               <div style="20%">
-                <a-button type="primary">
-                  <router-link :to="{ name: 'BrowseAllShifts' }">
+                <a-button type="primary" @click="viewShiftsPressed(librarian.idNum)">
                     View Shifts
-                  </router-link>
                 </a-button>
                 <a-button v-if="!currentUser.isLibrarian" type="danger"> 
                     <router-link :to="{ name: 'DeleteLibrarian' }">

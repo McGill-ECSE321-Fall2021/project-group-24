@@ -25,7 +25,9 @@ import DeleteAccount from "@/components/DeleteAccount";
 import ViewAllPatrons from "@/components/ViewAllPatrons";
 import ViewLibrarians from "@/components/ViewLibrarians";
 import AddLibrarian from "@/components/AddLibrarian";
-import DeleteLibrarian from "@/components/DeleteLibrarian"
+import DeleteLibrarian from "@/components/DeleteLibrarian";
+import AddShift from "@/components/AddShift"; 
+import ViewLibrarianShifts from "@/components/ViewLibrarianShifts"; 
 Vue.use(Router);
 
 export default new Router({
@@ -145,6 +147,16 @@ export default new Router({
       path: "/delete_librarian",
       name: "DeleteLibrarian",
       component: DeleteLibrarian,
+    },
+    {
+      path: "/view_librarian_shifts",
+      name: "ViewLibrarianShifts",
+      component: ViewLibrarianShifts,
+    },
+    {
+      path: "/add_shift",
+      name: "AddShift",
+      component: AddShift,
     },
     {
       path: "/edit",

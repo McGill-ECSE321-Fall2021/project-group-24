@@ -1,6 +1,9 @@
 <template>
+    <!-- Weekly calendar of every shift. Head-librarian has buttons to add & delete shifts -->
+
   <div style="margin-left: 15%; margin-right: 15%; margin-top: 2.5%">
-    <h4>If you can see red, then a library hour is not covered by a shift!</h4>
+    <h4>If you can see red, then a library hour is not covered by a shift!</h4> 
+
     <vue-cal
       :disable-views="['day', 'years', 'year', 'month']"
       hide-view-selector
@@ -16,6 +19,12 @@
         create: false,
       }"
     />
+    <!-- Link to go back to previous webpage -->
+    <div>
+      <router-link :to="{ name: 'ViewLibrarians' }"
+        >Back to View Librarians
+      </router-link>
+    </div>
   </div>
 </template>
 <script src="../js/BrowseAllShifts.js"></script>

@@ -1,8 +1,8 @@
 <template>
     <div >
-    <!-- Head-librarian selects day of week then inputs opening time and closing time
-         Then they press submit when they are done. If no errors, they are taken back to the homepage. 
-         Otherwise, an alert pops up and they can retry. 
+    <!-- Head-librarian selects the librarian and day of week from the given options, then they input a start and end time. 
+        If there's no errors, they will be sent back to the "BrowseAllShifts" webpage. 
+        Otherwise, an alert will pop up to notify them of the error.
       -->
 
         <a-form
@@ -11,6 +11,7 @@
             :wrapper-col="{ span: 12 }"
             @submit="handleSubmit"
         >   
+                <!-- Select Day of Week -->
                 <a-form-item label="Day Of Week">
                 <a-select
                     v-decorator="[
@@ -45,6 +46,24 @@
                 </a-select>
             </a-form-item>  
 
+            <!-- Select Librarian -->    
+
+            <a-form-item label="Select Librarian">
+                <a-select
+                    v-decorator="[
+                        'librarian',
+                        { rules: [{ required: true, message: 'Please select Librarian.' }] },
+                    ]"
+                    
+                    placeholder="Please choose a librarian."
+                >
+                    <a-select-option v-for="librarian in librarians" v-bind:key="librarian.idNum" :value="librarian.idNum"  >
+                        {{librarian.firstName + " " + librarian.lastName}}
+                    </a-select-option>
+
+                </a-select>
+            </a-form-item>  
+
 
             <a-form-item label="Opening Time" >
                 <a-input
@@ -70,18 +89,18 @@
             </a-form-item>
 
             <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-                <a-button type="primary" html-type="submit"> Add Library Hour </a-button>
+                <a-button type="primary" html-type="submit"> Add Shift </a-button>
             </a-form-item>
         </a-form>
         <div> 
-            <router-link :to="{ name: 'Homepage' }" >
-                Back to homepage
+            <router-link :to="{ name: 'ViewLibrarians' }" >
+                Back to View Librarians
             </router-link>
         </div>
 
     </div>
 </template>
-<script src="../js/AddLibraryHour.js"></script>
+<script src="../js/AddShift.js"></script>
 <style scoped>
     .white--text /deep/ label {
     color: white;

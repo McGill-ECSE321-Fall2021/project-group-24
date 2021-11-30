@@ -44,6 +44,11 @@ export default {
     }
   },
   methods: {
+    // sends the librarian that has been selected the ViewLibrarianShifts 
+    viewShiftsPressed: function(idNum) {
+      this.$router.push({ name: "ViewLibrarianShifts", params: { idNum }});
+    },
+    // very basic search by last name, username, or email.
     search: function (query) {
       this.librarianResults = [];
       if (query.length == 0) {

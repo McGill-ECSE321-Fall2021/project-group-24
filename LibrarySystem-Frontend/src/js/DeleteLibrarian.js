@@ -26,6 +26,7 @@ export default {
     };
   },
   methods: {
+  // handles what happens when submit button is pressed
   handleSubmit(e) {
     e.preventDefault();
     this.form.validateFields((err, values) => {
