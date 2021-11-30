@@ -61,6 +61,7 @@
         </a-button>
       </a-form-item>
     </a-form>
+    <!-- Back button to return to Homepage -->
     <div>
       <router-link :to="{ name: 'Homepage' }"> Back to homepage </router-link>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Displays all of the librarian's shifts -->
+    <!-- Displays all of the selected librarian's shifts -->
     <h5 id="special header">
       {{ librarian.firstName + " " + librarian.lastName + "'s" + " Shifts" }}
     </h5>
@@ -14,7 +14,7 @@
       </h6>
     </div>
 
-    <!-- Head-librarian can add & delete shifts -->
+    <!-- Head-librarian has buttons enabling them to add & delete shifts -->
     <div>
       <a-button
         type="primary"
