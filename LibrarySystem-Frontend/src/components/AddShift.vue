@@ -65,24 +65,24 @@
             </a-form-item>  
 
 
-            <a-form-item label="Opening Time" >
+            <a-form-item label="Starting Time" >
                 <a-input
                     v-decorator="[
                         'startTime',
                             {
-                                rules: [{ required: true, message: 'Please enter the opening time.' }],
+                                rules: [{ required: true, message: 'Please enter the starting time.' }],
                             },
                     ]"
                 />
             </a-form-item>
 
 
-            <a-form-item label="Closing Time" >
+            <a-form-item label="Ending Time" >
                 <a-input
                     v-decorator="[
                         'endTime',
                             {
-                                rules: [{ required: true, message: 'Please enter the closing time.' }],
+                                rules: [{ required: true, message: 'Please enter the ending time.' }],
                             },
                     ]"
                 />

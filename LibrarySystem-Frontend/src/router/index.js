@@ -28,6 +28,7 @@ import AddLibrarian from "@/components/AddLibrarian";
 import DeleteLibrarian from "@/components/DeleteLibrarian";
 import AddShift from "@/components/AddShift"; 
 import ViewLibrarianShifts from "@/components/ViewLibrarianShifts"; 
+import RemoveShift from "@/components/RemoveShift"; 
 Vue.use(Router);
 
 export default new Router({
@@ -157,6 +158,11 @@ export default new Router({
       path: "/add_shift",
       name: "AddShift",
       component: AddShift,
+    },
+    {
+      path: "/remove_shift",
+      name: "RemoveShift",
+      component: RemoveShift,
     },
     {
       path: "/edit",

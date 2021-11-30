@@ -26,10 +26,16 @@ export default {
     console.log(JSON.parse(sessionStorage.getItem("currentUser")));
 
     AXIOS.get("api/shift/view_librarian_shifts?currentUserId=admin&librarianId="+
-      this.idNum
+      this.librarian.idNum
     ).then((res) => {
       this.shifts = res.data;
       console.log(res.data);
     });
   },
+  methods: {
+  // sends the librarian that you want to remove shifts for while changing the webpage
+  removeShiftPressed: function (librarian) {
+    this.$router.push({ name: "RemoveShift", params: { librarian }});
+  }
+},
 };

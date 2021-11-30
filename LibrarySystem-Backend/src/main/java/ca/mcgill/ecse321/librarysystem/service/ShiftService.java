@@ -79,8 +79,7 @@ public class ShiftService {
       dayOfWeek.toString() +
       librarianId +
       startTime.toString() +
-      endTime.toString() +
-      shiftRepo.count();
+      endTime.toString();
     shift.setTimeSlotId(timeSlotId);
     shift.setStartTime(startTime);
     shift.setLibrarianId(librarianId);

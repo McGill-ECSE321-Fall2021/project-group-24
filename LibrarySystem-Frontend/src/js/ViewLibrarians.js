@@ -25,6 +25,7 @@ export default {
       librarianResults: [], // stores the librarians that match the search
       librarians: [], // array of all librarians
       idNum: "",
+      librarian: "",
       // attributes of Librarian
     };
   },
@@ -45,8 +46,8 @@ export default {
   },
   methods: {
     // sends the librarian that has been selected the ViewLibrarianShifts 
-    viewShiftsPressed: function(idNum) {
-      this.$router.push({ name: "ViewLibrarianShifts", params: { idNum }});
+    viewShiftsPressed: function(librarian) {
+      this.$router.push({ name: "ViewLibrarianShifts", params: { librarian }});
     },
     // very basic search by last name, username, or email.
     search: function (query) {

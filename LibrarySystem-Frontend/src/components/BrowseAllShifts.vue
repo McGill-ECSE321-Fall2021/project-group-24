@@ -19,10 +19,10 @@
         create: false,
       }"
     />
-    <!-- Link to go back to previous webpage -->
+    <!-- Link to go to View Librarians page -->
     <div>
       <router-link :to="{ name: 'ViewLibrarians' }"
-        >Back to View Librarians
+        >To View Librarians
       </router-link>
     </div>
   </div>

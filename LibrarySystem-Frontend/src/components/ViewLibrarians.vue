@@ -70,7 +70,7 @@ Every librarian can view each other's shifts
                 </span>
               </p>
               <div style="20%">
-                <a-button type="primary" @click="viewShiftsPressed(librarian.idNum)">
+                <a-button type="primary" @click="viewShiftsPressed(librarian)">
                     View Shifts
                 </a-button>
                 <a-button v-if="!currentUser.isLibrarian" type="danger"> 
