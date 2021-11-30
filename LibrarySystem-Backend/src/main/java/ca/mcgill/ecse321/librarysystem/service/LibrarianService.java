@@ -40,8 +40,7 @@ public class LibrarianService {
     System.out.print(headLibrarianRepository);
 
     if (isHeadLibrarian(currentUserId)) {
-      String idNum =
-        firstName + toList(librarianRepo.findAll()).size() + "-L";
+      String idNum = firstName + toList(librarianRepo.findAll()).size() + "-L";
 
       Librarian librarian = new Librarian();
       librarian.setUsername(username);
@@ -129,21 +128,20 @@ public class LibrarianService {
     }
     return true;
   }
-  
+
   //verifyPatron written by Nafis
   public Patron verifyPatron(String id) {
-	  Patron patron = patronRepo.findPatronByIdNum(id);
-	  if(patron == null) {
-		  throw new IllegalArgumentException("Patron with this ID does not exist.");
-	  }
-	  if(patron.getIsVerified()==true) {
-		  throw new IllegalArgumentException("Patron is already verified.");
-	  }
-	  patron.setIsVerified(true);
-	  patronRepo.save(patron);
-	  return patron;
+    Patron patron = patronRepo.findPatronByIdNum(id);
+    if (patron == null) {
+      throw new IllegalArgumentException("Patron with this ID does not exist.");
+    }
+    if (patron.getIsVerified() == true) {
+      throw new IllegalArgumentException("Patron is already verified.");
+    }
+    patron.setIsVerified(true);
+    patronRepo.save(patron);
+    return patron;
   }
-  
 
   public static <T> List<T> toList(Iterable<T> iterable) {
     List<T> resultList = new ArrayList<T>();

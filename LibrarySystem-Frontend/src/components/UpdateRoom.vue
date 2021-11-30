@@ -28,7 +28,9 @@
           </a-input>
         </a-form-item>
         <a-form-item>
-          <a-button html-type="submit" type="primary">Confirm Room Update</a-button>
+          <a-button html-type="submit" type="primary"
+            >Confirm Room Update</a-button
+          >
         </a-form-item>
       </a-form>
       <a-modal

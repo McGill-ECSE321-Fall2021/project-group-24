@@ -19,9 +19,9 @@ public abstract class ItemDto {
   public String getItemNumber() {
     return this.itemNumber;
   }
-  
+
   public Date getNextAvailableDate() {
-	  return this.nextAvailableDate;
+    return this.nextAvailableDate;
   }
 
   public String getItemTitle() {

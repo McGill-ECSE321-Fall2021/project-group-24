@@ -160,12 +160,12 @@ public class LibraryHourService {
   @Transactional
   public List<LibraryHour> getAllLibraryHours() {
     List<LibraryHour> libraryHours = toList(libraryHourRepo.findAll());
-    LibraryHourComparator libraryHourComparator = new LibraryHourComparator(); 
+    LibraryHourComparator libraryHourComparator = new LibraryHourComparator();
     Collections.sort(libraryHours, libraryHourComparator);
     //removed otherwise website crashes if no library hours
-//    if (libraryHours.size() == 0) throw new IllegalArgumentException(
-//      "No library hours exist"
-//    );
+    //    if (libraryHours.size() == 0) throw new IllegalArgumentException(
+    //      "No library hours exist"
+    //    );
     return libraryHours;
   }
 
@@ -176,17 +176,19 @@ public class LibraryHourService {
     }
     return resultList;
   }
-  
+
   public class LibraryHourComparator implements Comparator<LibraryHour> {
-	  @Override
-	  public int compare(LibraryHour hour1, LibraryHour hour2) {
-		  if (hour1.getDayOfWeek().ordinal()>hour2.getDayOfWeek().ordinal()) {
-			  return 1; 
-		  }
-		  else if (hour1.getDayOfWeek().ordinal()<hour2.getDayOfWeek().ordinal()) {
-			  return -1;
-		  }
-		  return 0; // shouldn't happen as we can't have two library hours on same day
-	  }
+
+    @Override
+    public int compare(LibraryHour hour1, LibraryHour hour2) {
+      if (hour1.getDayOfWeek().ordinal() > hour2.getDayOfWeek().ordinal()) {
+        return 1;
+      } else if (
+        hour1.getDayOfWeek().ordinal() < hour2.getDayOfWeek().ordinal()
+      ) {
+        return -1;
+      }
+      return 0; // shouldn't happen as we can't have two library hours on same day
+    }
   }
 }
