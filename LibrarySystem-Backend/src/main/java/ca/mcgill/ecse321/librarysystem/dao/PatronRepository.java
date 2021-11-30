@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 public interface PatronRepository extends CrudRepository<Patron, String> {
   Patron findPatronByIdNum(String idNum);
   Patron findUserByIdNum(String idNum);
-  Patron findPatronByUsername(String username); 
+  Patron findPatronByUsername(String username);
   void deletePatronByIdNum(String idNum);
 }

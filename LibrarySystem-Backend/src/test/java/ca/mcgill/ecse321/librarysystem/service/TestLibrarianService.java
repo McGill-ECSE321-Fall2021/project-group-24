@@ -10,11 +10,8 @@ import static org.mockito.Mockito.lenient;
 
 import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
-
 import java.util.ArrayList;
-
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -57,7 +54,6 @@ public class TestLibrarianService {
   private static final String testUsername = "bobUsername";
 
   private static final String testPassword = "bobPassword";
-
 
   @BeforeEach
   public void setMockOutput() {

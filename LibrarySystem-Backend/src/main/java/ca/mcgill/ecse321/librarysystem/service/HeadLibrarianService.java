@@ -49,8 +49,6 @@ public class HeadLibrarianService {
   public List<HeadLibrarian> getAllHeadLibrarians() {
     return toList(headLibrarianRepo.findAll());
   }
-  
-  
 
   public <T> List<T> toList(Iterable<T> iterable) {
     List<T> resultList = new ArrayList<T>();

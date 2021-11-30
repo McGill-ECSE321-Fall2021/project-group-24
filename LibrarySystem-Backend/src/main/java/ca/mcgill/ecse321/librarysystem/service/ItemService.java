@@ -17,6 +17,7 @@ public class ItemService {
 
   @Autowired
   ItemRepository itemRepository;
+
   @Autowired
   ItemReservationRepository itemReservationRepository;
 
@@ -62,7 +63,7 @@ public class ItemService {
       (currentHeadLibrarian == null || !currentHeadLibrarian.getIsLoggedIn())
     ) {
       throw new IllegalArgumentException(
-        "You do not have permission to create an item reservation"
+        "You do not have permission to create an item"
       );
     }
 
@@ -70,7 +71,8 @@ public class ItemService {
       throw new IllegalArgumentException("Item must have a title");
     }
 
-    String itemNumber = "Book-" + getAllBooks().size() + itemTitle.trim();
+    String itemNumber =
+      "Book-" + getAllBooks().size() + itemTitle.replace(" ", "-");
     Book book = new Book();
     book.setItemTitle(itemTitle);
     book.setDescription(description);
@@ -86,7 +88,7 @@ public class ItemService {
     return book;
   }
 
-  //remove item
+  // remove item
   @Transactional
   public Item deleteItem(String currentUserId, String itemNumber) {
     Librarian currentLibrarian = librarianRepository.findUserByIdNum(
@@ -106,10 +108,17 @@ public class ItemService {
     }
     Item gone = itemRepository.findItemByItemNumber(itemNumber);
     Date today = Date.valueOf(LocalDate.now());
-    for (ItemReservation reservation : itemReservationRepository.findItemReservationsByItemNumber(itemNumber)) {
-    	if (reservation.getStartDate().after(today) || reservation.getEndDate().after(today)) {
-    		throw new IllegalArgumentException("Item has future reservations, cannot delete");
-    	}
+    for (ItemReservation reservation : itemReservationRepository.findItemReservationsByItemNumber(
+      itemNumber
+    )) {
+      if (
+        reservation.getStartDate().after(today) ||
+        reservation.getEndDate().after(today)
+      ) {
+        throw new IllegalArgumentException(
+          "Item has future reservations, cannot delete"
+        );
+      }
     }
     itemRepository.delete(gone);
     return gone;
@@ -147,7 +156,7 @@ public class ItemService {
     String itemNumber =
       "Archive-" +
       itemRepository.findItemsByType(Item.Type.Archive).size() +
-      itemTitle.trim();
+      itemTitle.replace(" ", "-");
     Archive archive = new Archive();
     archive.setItemTitle(itemTitle);
     archive.setDescription(description);
@@ -194,7 +203,7 @@ public class ItemService {
     String itemNumber =
       "MusicAlbum-" +
       itemRepository.findItemsByType(Item.Type.MusicAlbum).size() +
-      itemTitle.trim();
+      itemTitle.replace(" ", "-");
     MusicAlbum musicAlbum = new MusicAlbum();
     musicAlbum.setItemTitle(itemTitle);
     musicAlbum.setDescription(description);
@@ -243,7 +252,7 @@ public class ItemService {
     String itemNumber =
       "PrintedMedia-" +
       itemRepository.findItemsByType(Item.Type.MusicAlbum).size() +
-      itemTitle.trim();
+      itemTitle.replace(" ", "-");
     PrintedMedia printedMedia = new PrintedMedia();
     printedMedia.setItemTitle(itemTitle);
     printedMedia.setDescription(description);
@@ -294,7 +303,7 @@ public class ItemService {
     String itemNumber =
       "Movie-" +
       itemRepository.findItemsByType(Item.Type.Movie).size() +
-      itemTitle.trim();
+      itemTitle.replace(" ", "-");
     Movie movie = new Movie();
     movie.setItemTitle(itemTitle);
     movie.setDescription(description);
@@ -326,7 +335,7 @@ public class ItemService {
 
   @Transactional
   public List<Item> getAllBooks() {
-	  List<Item> items = itemRepository.findItemsByType(Item.Type.Book);
+    List<Item> items = itemRepository.findItemsByType(Item.Type.Book);
     return toList(items);
   }
 

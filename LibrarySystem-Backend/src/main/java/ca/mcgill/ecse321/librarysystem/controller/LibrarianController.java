@@ -70,6 +70,16 @@ public class LibrarianController {
     }
   }
 
+  @PostMapping(value = { "/verify", "/verify/" })
+  public ResponseEntity<?> verifyPatron(@RequestParam String idNum) {
+    try {
+      Patron patron = librarianService.verifyPatron(idNum);
+      return new ResponseEntity<Object>(patron.getIdNum(), HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
   //delete to delete/fire a librarian
   @DeleteMapping(value = { "/delete/{idNum}", "/delete/{idNum}/" })
   public ResponseEntity<?> deleteLibrarian(

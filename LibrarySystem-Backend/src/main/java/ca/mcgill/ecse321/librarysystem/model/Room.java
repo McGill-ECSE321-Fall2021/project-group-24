@@ -9,14 +9,15 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Room {
+
   @Id
   private String roomNum;
+
   private int capacity;
 
   @ElementCollection
   private Set<RoomBooking> roomBookings;
 
-  
   @OneToMany(cascade = { CascadeType.ALL })
   public Set<RoomBooking> getRoomBookings() {
     return this.roomBookings;
@@ -25,6 +26,7 @@ public class Room {
   public void setRoomBookings(Set<RoomBooking> theRoomBookings) {
     this.roomBookings = theRoomBookings;
   }
+
   public String getRoomNum() {
     return this.roomNum;
   }

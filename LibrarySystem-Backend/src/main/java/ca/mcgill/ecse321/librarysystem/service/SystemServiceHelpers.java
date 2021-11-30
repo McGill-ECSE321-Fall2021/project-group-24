@@ -4,7 +4,6 @@ import java.sql.Date;
 
 public class SystemServiceHelpers {
 
-
   public static void validInput(
     String firstName,
     String lastName,
@@ -107,6 +106,4 @@ public class SystemServiceHelpers {
       itemTitle == null || itemTitle.trim().length() == 0
     ) throw new IllegalArgumentException("Item must have a title");
   }
-
-
 }

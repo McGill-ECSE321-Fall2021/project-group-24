@@ -14,9 +14,14 @@ public abstract class ItemDto {
   protected boolean isReservable;
   protected String currentReservationId;
   protected Item.Type type;
+  protected Date nextAvailableDate;
 
   public String getItemNumber() {
     return this.itemNumber;
+  }
+
+  public Date getNextAvailableDate() {
+    return this.nextAvailableDate;
   }
 
   public String getItemTitle() {
