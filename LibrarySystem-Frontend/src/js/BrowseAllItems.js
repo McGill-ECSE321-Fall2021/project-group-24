@@ -29,32 +29,6 @@ export default {
     AXIOS.get("/api/items/all")
       .then((response) => {
         this.items = response.data;
-
-        // this is how I added an example item to be shown. This is just because when we start the database it resets everything lol
-        this.items = [
-          ...this.items,
-          {
-            itemTitle: "Percy Jackson and the Lightning Thief",
-            itemNumber: "percy1",
-            imageURL:
-              "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1400602609l/28187.jpg",
-            description:
-              "Twelve-year-old Percy Jackson is on the most dangerous quest of his life. With the help of a satyr and a daughter of Athena, Percy must journey across the United States to catch a thief who has stolen the original weapon of mass destruction — Zeus’ master bolt. Along the way, he must face a host of mythological enemies determined to stop him. Most of all, he must come to terms with a father he has never known, and an Oracle that has warned him of betrayal by a friend.",
-            publisher: "Disney Hyperion",
-            author: "Rick Riordan",
-            genre: "Seggs",
-            publishDate: "2016-06-12",
-          },
-          {
-            itemTitle: "music",
-            itemNumber: "album1",
-            description: "description of the album",
-            genre: "horror",
-            publishDate: "2021-09-22",
-            artist: "nafis",
-            recordingLabel: "arman",
-          },
-        ];
         this.results = this.items;
       })
       .catch((e) => {
