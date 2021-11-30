@@ -26,7 +26,7 @@ export default {
     console.log(JSON.parse(sessionStorage.getItem("currentUser")));
 
     AXIOS.get("api/shift/view_librarian_shifts?currentUserId=admin&librarianId="+
-      this.librarian.idNum
+      this.idNum
     ).then((res) => {
       this.shifts = res.data;
       console.log(res.data);
