@@ -2,26 +2,18 @@ package ca.mcgill.ecse321.librarysystem.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
 
 import ca.mcgill.ecse321.librarysystem.dao.*;
 import ca.mcgill.ecse321.librarysystem.model.*;
 import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import org.hibernate.annotations.SourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -48,12 +40,8 @@ public class TestBookService {
   private ItemService bookService;
 
   private static final String correctString = "test";
-  private static final String wrongString = "wrong";
   private static final Date correctDate = Date.valueOf("2021-11-10");
-  private static final Date wrongDate = Date.valueOf("2019-01-10");
   private static final String emptyString = "";
-  private static final int testID = 1;
-  private static final int wrongID = 0;
 
   @BeforeEach
   public void setMockOutput() {

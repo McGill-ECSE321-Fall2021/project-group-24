@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.librarysystem.model;
 import java.sql.Date;
 import java.util.Set;
 import javax.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

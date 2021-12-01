@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.librarysystem.dao;
 
-import ca.mcgill.ecse321.librarysystem.model.Book;
 import ca.mcgill.ecse321.librarysystem.model.Item;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
