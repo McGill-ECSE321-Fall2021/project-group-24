@@ -1,4 +1,6 @@
 <template>
+  <!-- This is the template for the form 
+it uses ant design and the tabs to create a form for 5 different items and to get their inputs -->
   <div>
     <h4>Select which type of item to create:</h4>
     <a-tabs default-active-key="Book" @change="callback">

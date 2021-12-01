@@ -29,6 +29,7 @@ export default {
   },
 
   methods: {
+    //method to show the alert message
     showModal: function () {
       this.visible = true;
       this.roomError = "";
@@ -37,7 +38,7 @@ export default {
       console.log(e);
       this.visible = false;
     },
-
+    //when the user clicks on the create button
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
