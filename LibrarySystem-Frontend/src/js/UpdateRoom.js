@@ -32,7 +32,7 @@ export default {
       console.log(e);
       this.visible = false;
     },
-
+// Main method responsible for obtaining values from form and posting them to the controller
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {

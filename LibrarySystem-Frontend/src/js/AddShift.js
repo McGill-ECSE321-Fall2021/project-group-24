@@ -10,7 +10,7 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl },
 });
 
-// "nev" library hour and its attributes are exported
+// "new" shift and its attributes are exported
 export default {
   name: "AddShift",
   data() {

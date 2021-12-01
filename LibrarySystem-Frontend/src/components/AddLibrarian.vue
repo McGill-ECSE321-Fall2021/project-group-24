@@ -1,6 +1,6 @@
 <template>
   <div key="ADDLIB">
-    <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
+    <!-- Page for the Head-librarian to add a librarian (e.g. a new hire). Inputs are account info -->
     <div>
       <a-form
         :form="form"
@@ -104,13 +104,13 @@
             ]"
           />
         </a-form-item>
-
+        <!-- Button to submit info when done inputting -->
         <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
           <a-button type="primary" html-type="submit"> Add Librarian </a-button>
         </a-form-item>
       </a-form>
     </div>
-
+    <!-- Button to go back to the "View Librarians" page -->
     <div>
       <router-link :to="{ name: 'ViewLibrarians' }"
         >Back to View Librarians

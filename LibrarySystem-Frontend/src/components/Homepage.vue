@@ -1,5 +1,5 @@
 <template>
-  <!-- Home page shows operating hours for the library.
+  <!-- Home page shows operating hours for the library. A featured item is also shown below the hours. 
      If the head librarian (admin) is logged in, 
      buttons appear that allow them to add, modify, and remove the hours.
 -->

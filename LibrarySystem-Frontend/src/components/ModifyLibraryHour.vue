@@ -1,6 +1,8 @@
 <template>
   <div>
-    <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
+    <!--Allows the head-librarian to modify the operating hours by selecting the day of week and entering a new open/close time
+        Will throw an error if there's not already a library hour for that day
+    -->
 
     <a-form
       :form="form"

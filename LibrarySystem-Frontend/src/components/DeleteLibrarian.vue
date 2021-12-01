@@ -1,6 +1,6 @@
 <template>
   <div key="DELLIB">
-    <!--Make sure you only have one element in your template, or you will have an error. Wrap everything with a div -->
+    <!--AHead-Librarian deletes a librarian by entering the desired ID number-->
     <div>
       <a-form
         :form="form"
@@ -20,7 +20,7 @@
             ]"
           />
         </a-form-item>
-
+        <!-- Submit button -->
         <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
           <a-button type="danger" html-type="submit">
             Delete Librarian
@@ -28,7 +28,7 @@
         </a-form-item>
       </a-form>
     </div>
-
+    <!-- Button to return to the "View Librarians" webpage without doing anything -->
     <div>
       <router-link :to="{ name: 'ViewLibrarians' }"
         >Back to View Librarians

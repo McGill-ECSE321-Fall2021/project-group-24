@@ -1,3 +1,4 @@
+<!-- This vue file is responsible for handling the front-end aspects of the room updating process -->
 <template>
   <div>
     <h1>Update Room:</h1>

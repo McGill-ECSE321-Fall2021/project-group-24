@@ -34,12 +34,13 @@ export default {
   },
 
   methods: {
+    //logs the keys when the tabs are switched
     callback(key) {
       console.log(key);
       this.keys = key;
       console.log("KEYS: " + this.keys);
     },
-
+    //method to show the alert message
     showModal: function () {
       this.visible = true;
       this.roomError = "";
@@ -48,7 +49,8 @@ export default {
       console.log(e);
       this.visible = false;
     },
-
+    //when the user clicks on the create button
+    //there are 5 different methods for the 5 different item create buttons
     handleBookSubmit(e) {
       e.preventDefault();
       this.formForBook.validateFields((err, values) => {

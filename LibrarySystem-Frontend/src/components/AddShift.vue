@@ -77,11 +77,12 @@
           ]"
         />
       </a-form-item>
-
+      <!-- Submit button -->
       <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
         <a-button type="primary" html-type="submit"> Add Shift </a-button>
       </a-form-item>
     </a-form>
+    <!-- Button to go back to the "View Librarians" webpage without submitting anything-->
     <div>
       <router-link :to="{ name: 'ViewLibrarians' }">
         Back to View Librarians

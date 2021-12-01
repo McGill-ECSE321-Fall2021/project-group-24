@@ -1,4 +1,5 @@
 <template>
+  <!-- A form is used to get the inputs to create a room -->
   <div id="form">
     <div id="input">
       <h2>Create Rooms</h2>
