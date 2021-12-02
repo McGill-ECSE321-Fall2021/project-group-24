@@ -6,8 +6,8 @@ const RoomCard = ({room, buttons}) => {
   return (
     <Card
       style={{
+        margin: '2.5%',
         width: '45%',
-        marginHorizontal: '2.5%',
         borderRadius: 15,
         elevation: 2,
         marginVertical: 5,

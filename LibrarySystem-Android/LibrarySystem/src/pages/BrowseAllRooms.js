@@ -1,14 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
-import {FlatList, View, Image} from 'react-native';
-import {
-  Button,
-  Card,
-  Text,
-  Title,
-  Paragraph,
-  DefaultTheme,
-} from 'react-native-paper';
+import {FlatList} from 'react-native';
+import {Button, DefaultTheme, Searchbar} from 'react-native-paper';
 import axios from 'axios';
 import RoomCard from '../components/RoomCard';
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
@@ -17,54 +10,70 @@ var AXIOS = axios.create({
   baseURL: baseUrl,
 });
 
-const getRooms = (setLoading, setRooms) => {
-  AXIOS.get('/api/rooms/view_all_rooms/')
-    .then(res => {
-      setRooms(res.data);
-      setLoading(false);
-      console.log(res.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
-};
-
 const BrowseAllRooms = ({navigation}) => {
   const [loading, setLoading] = useState(true);
   const [rooms, setRooms] = useState([]);
+  const [results, setResults] = useState([]);
+
+  const getRooms = () => {
+    AXIOS.get('/api/rooms/view_all_rooms/')
+      .then(res => {
+        setRooms(res.data);
+        setLoading(false);
+        setResults(res.data);
+        console.log(res.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const search = query => {
+    setResults(
+      rooms.filter(room => {
+        if (room.roomNum.toLowerCase().includes(query.toLowerCase())) {
+          return true;
+        } else {
+          return false;
+        }
+      }),
+    );
+  };
+
   useEffect(() => {
-    getRooms(setLoading, setRooms);
+    getRooms();
   }, []);
   return (
-    <FlatList
-      data={rooms}
-      numColumns={2}
-      columnWrapperStyle={{marginHorizontal: 20}}
-      refreshing={loading}
-      style={{alignSelf: 'center'}}
-      onRefresh={() => {
-        setLoading(true);
-        getRooms(setLoading, setRooms);
-      }}
-      renderItem={({item}) => {
-        console.log(item);
-        return (
-          <RoomCard
-            room={item}
-            buttons={
-              DefaultTheme.currentUser.username && (
-                <Button
-                  onPress={() => {
-                    navigation.navigate('ReserveRoom', {room: item});
-                  }}>
-                  Reserve
-                </Button>
-              )
-            }
-          />
-        );
-      }}
-    />
+    <>
+      <Searchbar onChangeText={search} />
+      <FlatList
+        data={results}
+        numColumns={2}
+        refreshing={loading}
+        style={{alignSelf: 'center', width: '100%'}}
+        onRefresh={() => {
+          setLoading(true);
+          getRooms();
+        }}
+        renderItem={({item}) => {
+          return (
+            <RoomCard
+              room={item}
+              buttons={
+                DefaultTheme.currentUser.username && (
+                  <Button
+                    onPress={() => {
+                      navigation.navigate('ReserveRoom', {room: item});
+                    }}>
+                    Reserve
+                  </Button>
+                )
+              }
+            />
+          );
+        }}
+      />
+    </>
   );
 };
 
