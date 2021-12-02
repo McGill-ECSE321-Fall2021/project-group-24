@@ -19,15 +19,35 @@ var AXIOS = axios.create({
 });
 
 const getRoomBookings = (setLoading, setRoomBookings) => {
-  AXIOS.get('/api/roombookings/view_roombookings?currentUserId=admin')
-    .then(res => {
-      setRoomBookings(res.data);
-      setLoading(false);
-      console.log(res.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
+  if (!DefaultTheme.currentUser.isPatron) {
+    AXIOS.get(
+      '/api/roombookings/view_roombookings?currentUserId=' +
+        DefaultTheme.currentUser.idNum,
+    )
+      .then(res => {
+        setRoomBookings(res.data);
+        setLoading(false);
+        console.log(res.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  } else {
+    AXIOS.get(
+      'api/roombookings/view_roombookings/patron/' +
+        DefaultTheme.currentUser.idNum +
+        '?currentUserId=' +
+        DefaultTheme.currentUser.idNum,
+    )
+      .then(response => {
+        setRoomBookings(res.data);
+        setLoading(false);
+        console.log(res.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
 };
 
 const ViewAllRoomBookings = () => {
@@ -45,7 +65,7 @@ const ViewAllRoomBookings = () => {
       style={{alignSelf: 'center'}}
       onRefresh={() => {
         setLoading(true);
-        getRoomBookings(setLoading, setRooms);
+        getRoomBookings(setLoading, setRoomBookings);
       }}
       renderItem={({item}) => {
         console.log(item);
@@ -58,22 +78,20 @@ const ViewAllRoomBookings = () => {
                   AXIOS.delete(
                     '/api/roombookings/delete_roombooking' +
                       '?currentUserId=' +
-                      currentUserId +
+                      DefaultTheme.currentUser.idNum +
                       '&timeSlotId=' +
-                      timeSlotId,
-                  )
-                    .then(response => {
-                      this.visible = true;
-                      this.response = 'Room Booking Cancelled';
-                      this.error = '';
-                      this.roombookings.splice(index, 1);
-                    })
-                    .catch(e => {
-                      this.visible = true;
-                      var errorMsg = e.response.data;
-                      this.error = errorMsg;
-                      this.response = '';
-                    });
+                      item.timeSlotId,
+                  );
+                  // .then(response => {
+                  //   this.response = 'Room Booking Cancelled';
+                  //   this.roombookings.splice(index, 1);
+                  // })
+                  // .catch(e => {
+                  //   this.visible = true;
+                  //   var errorMsg = e.response.data;
+                  //   this.error = errorMsg;
+                  //   this.response = '';
+                  // });
                 }}>
                 Cancel
               </Button>
