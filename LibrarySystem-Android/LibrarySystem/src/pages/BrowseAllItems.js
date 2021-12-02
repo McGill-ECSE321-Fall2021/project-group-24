@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
-import {Button, Searchbar} from 'react-native-paper';
+import {DefaultTheme, Button, Searchbar} from 'react-native-paper';
 
 import axios from 'axios';
 import ItemCard from '../components/ItemCard';
@@ -100,14 +100,29 @@ const BrowseAllItems = ({navigation}) => {
               //On this page, we want the reserve button, but on the ReserveItem page,
               //we do not need any buttons.
               buttons={
-                <Button
-                  //this is how to pass an object to the next page. Take a look at
-                  //ReserveRoom.js to see how the item is used there.
-                  onPress={() => {
-                    navigation.navigate('ReserveItem', {item});
-                  }}>
-                  Reserve
-                </Button>
+                <>
+                  {DefaultTheme.currentUser.username && (
+                    <Button
+                      //this is how to pass an object to the next page. Take a look at
+                      //ReserveRoom.js to see how the item is used there.
+                      onPress={() => {
+                        navigation.navigate('ReserveItem', {item});
+                      }}>
+                      Reserve
+                    </Button>
+                  )}
+                  {DefaultTheme.currentUser.username &&
+                    !DefaultTheme.currentUser.isPatron && (
+                      <Button
+                        //this is how to pass an object to the next page. Take a look at
+                        //ReserveRoom.js to see how the item is used there.
+                        onPress={() => {
+                          navigation.navigate('CheckoutItem', {item});
+                        }}>
+                        Checkout
+                      </Button>
+                    )}
+                </>
               }
             />
           );

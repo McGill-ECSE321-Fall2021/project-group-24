@@ -18,6 +18,7 @@ import SignUpForPatron from './src/pages/SignUpForPatron';
 import SignUpOnline from './src/pages/SignUpOnline';
 import ViewAllLibrarians from './src/pages/ViewAllLibrarians';
 import ViewAllPatrons from './src/pages/ViewAllPatrons';
+import CheckoutItem from './src/pages/CheckoutItem';
 import ViewAllRoomBookings from './src/pages/ViewAllRoomBookings';
 import ViewAllShifts from './src/pages/ViewAllShifts';
 import axios from 'axios';
@@ -51,6 +52,28 @@ const ItemsStack = () => {
         name="ReserveItem"
         component={ReserveItem}
         options={{title: 'Reserve Item'}}
+      />
+      <Stack.Screen
+        name="CheckoutItem"
+        component={CheckoutItem}
+        options={{title: 'Checkout item'}}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const ItemReservationsStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen
+        name="BrowseItemReservations"
+        component={BrowseItemReservations}
+        options={{title: 'Browse Browse Item Reservations'}}
+      />
+      <Stack.Screen
+        name="CheckoutItem"
+        component={CheckoutItem}
+        options={{title: 'Checkout item'}}
       />
     </Stack.Navigator>
   );
@@ -157,7 +180,7 @@ const App = () => {
                           icon="book-account"
                           label="Browse Item Reservations"
                           onPress={() => {
-                            props.navigation.navigate('BrowseItemReservations');
+                            props.navigation.navigate('ItemReservationsStack');
                           }}
                         />
                       )}
@@ -306,9 +329,9 @@ const App = () => {
               component={ItemsStack}
               options={{title: 'Items'}}
             />
-            <Stack.Screen
-              name="BrowseItemReservations"
-              component={BrowseItemReservations}
+            <Drawer.Screen
+              name="ItemReservationsStack"
+              component={ItemReservationsStack}
               options={{title: 'Item Reservations'}}
             />
             <Drawer.Screen
