@@ -1,10 +1,11 @@
-import React from 'react';
-import {View, Image} from 'react-native';
-import {Card, Title, Paragraph} from 'react-native-paper';
+import React, {useState} from 'react';
+import {View, Image, Text} from 'react-native';
+import {Card, Title, Paragraph, ActivityIndicator} from 'react-native-paper';
 
 //this component takes in an 'item' object as a parameter and a buttons object that contains
 //any buttons that we want to render.
 const ItemCard = ({item, buttons}) => {
+  const [loading, setLoading] = useState(true);
   return (
     <Card
       style={{
@@ -25,10 +26,26 @@ const ItemCard = ({item, buttons}) => {
               flex: 1,
               resizeMode: 'contain',
             }}
+            loadingIndicatorSource={<Text>loading</Text>}
+            onLoadEnd={() => {
+              setLoading(false);
+              console.log('loaded');
+            }}
             source={{
               uri: item.imageUrl,
             }}
           />
+          {loading && (
+            <View
+              style={{
+                width: '32%',
+                position: 'absolute',
+                alignSelf: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={{textAlign: 'center'}}>No image</Text>
+            </View>
+          )}
           {/*
           Flex allows us to have this View take up 2/{total flex} amount of space.
           This view has a flex of 2, and the image has a flex of 1, so the image will
