@@ -6,8 +6,8 @@ const RoomBookingCard = ({roombooking, buttons}) => {
   return (
     <Card
       style={{
-        width: '95%',
-        marginHorizontal: '2.5%',
+        alignSelf: 'center',
+        width: '90%',
         borderRadius: 15,
         elevation: 2,
         marginVertical: 10,
