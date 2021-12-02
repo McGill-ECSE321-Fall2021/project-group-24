@@ -148,17 +148,19 @@ const App = () => {
                           props.navigation.navigate('ItemsStack');
                         }}
                       />
-                      <PaperDrawer.Item
-                        style={
-                          ({marginBottom: '3.5%'},
-                          currentIndex == 2 && {backgroundColor: 'lightgray'})
-                        }
-                        icon="book-account"
-                        label="Browse Item Reservations"
-                        onPress={() => {
-                          props.navigation.navigate('BrowseItemReservations');
-                        }}
-                      />
+                      {DefaultTheme.currentUser.username && (
+                        <PaperDrawer.Item
+                          style={
+                            ({marginBottom: '3.5%'},
+                            currentIndex == 2 && {backgroundColor: 'lightgray'})
+                          }
+                          icon="book-account"
+                          label="Browse Item Reservations"
+                          onPress={() => {
+                            props.navigation.navigate('BrowseItemReservations');
+                          }}
+                        />
+                      )}
                     </PaperDrawer.Section>
                     <PaperDrawer.Section style={{marginVertical: '3.5%'}}>
                       <PaperDrawer.Item
@@ -171,64 +173,79 @@ const App = () => {
                           props.navigation.navigate('RoomsStack');
                         }}
                       />
-                      <PaperDrawer.Item
-                        style={
-                          ({marginBottom: '3.5%'},
-                          currentIndex == 4 && {backgroundColor: 'lightgray'})
-                        }
-                        icon="calendar-clock"
-                        label="View All Room Bookings"
-                        onPress={() => {
-                          props.navigation.navigate('ViewAllRoomBookings');
-                        }}
-                      />
+                      {DefaultTheme.currentUser.username && (
+                        <PaperDrawer.Item
+                          style={
+                            ({marginBottom: '3.5%'},
+                            currentIndex == 4 && {backgroundColor: 'lightgray'})
+                          }
+                          icon="calendar-clock"
+                          label="View All Room Bookings"
+                          onPress={() => {
+                            props.navigation.navigate('ViewAllRoomBookings');
+                          }}
+                        />
+                      )}
                     </PaperDrawer.Section>
-                    <PaperDrawer.Section>
-                      <PaperDrawer.Item
-                        icon="badge-account-horizontal-outline"
-                        label="View All Librarians"
-                        style={
-                          currentIndex == 5 && {backgroundColor: 'lightgray'}
-                        }
-                        onPress={() => {
-                          props.navigation.navigate('ViewAllLibrarians');
-                        }}
-                      />
-                      <PaperDrawer.Item
-                        icon="account-group"
-                        label="View All Patrons"
-                        style={
-                          currentIndex == 6 && {backgroundColor: 'lightgray'}
-                        }
-                        onPress={() => {
-                          props.navigation.navigate('ViewAllPatrons');
-                        }}
-                      />
-                      <PaperDrawer.Item
-                        style={
-                          ({marginBottom: '3.5%'},
-                          currentIndex == 7 && {backgroundColor: 'lightgray'})
-                        }
-                        icon="timetable"
-                        label="View All Shifts"
-                        onPress={() => {
-                          props.navigation.navigate('ViewAllShifts');
-                        }}
-                      />
-                    </PaperDrawer.Section>
-                    <PaperDrawer.Section style={{marginTop: '3.5%'}}>
-                      <PaperDrawer.Item
-                        style={
-                          ({marginBottom: '3.5%'},
-                          currentIndex == 8 && {backgroundColor: 'lightgray'})
-                        }
-                        icon="account-edit-outline"
-                        label="Edit Account"
-                        onPress={() => {
-                          props.navigation.navigate('EditAccount');
-                        }}
-                      />
-                    </PaperDrawer.Section>
+                    {DefaultTheme.currentUser.username &&
+                      !DefaultTheme.currentUser.isPatron && (
+                        <PaperDrawer.Section>
+                          {DefaultTheme.currentUser.idNum == 'admin' && (
+                            <PaperDrawer.Item
+                              icon="badge-account-horizontal-outline"
+                              label="View All Librarians"
+                              style={
+                                currentIndex == 5 && {
+                                  backgroundColor: 'lightgray',
+                                }
+                              }
+                              onPress={() => {
+                                props.navigation.navigate('ViewAllLibrarians');
+                              }}
+                            />
+                          )}
+                          <PaperDrawer.Item
+                            icon="account-group"
+                            label="View All Patrons"
+                            style={
+                              currentIndex == 6 && {
+                                backgroundColor: 'lightgray',
+                              }
+                            }
+                            onPress={() => {
+                              props.navigation.navigate('ViewAllPatrons');
+                            }}
+                          />
+                          <PaperDrawer.Item
+                            style={
+                              ({marginBottom: '3.5%'},
+                              currentIndex == 7 && {
+                                backgroundColor: 'lightgray',
+                              })
+                            }
+                            icon="timetable"
+                            label="View All Shifts"
+                            onPress={() => {
+                              props.navigation.navigate('ViewAllShifts');
+                            }}
+                          />
+                        </PaperDrawer.Section>
+                      )}
+                    {DefaultTheme.currentUser.username && (
+                      <PaperDrawer.Section style={{marginTop: '3.5%'}}>
+                        <PaperDrawer.Item
+                          style={
+                            ({marginBottom: '3.5%'},
+                            currentIndex == 8 && {backgroundColor: 'lightgray'})
+                          }
+                          icon="account-edit-outline"
+                          label="Edit Account"
+                          onPress={() => {
+                            props.navigation.navigate('EditAccount');
+                          }}
+                        />
+                      </PaperDrawer.Section>
+                    )}
                   </View>
                   {DefaultTheme.currentUser.username ? (
                     <PaperDrawer.Item
