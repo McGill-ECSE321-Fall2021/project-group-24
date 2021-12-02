@@ -10,7 +10,7 @@ const Homepage = ({navigation}) => {
       <Button
         title="Go to items"
         onPress={() => {
-          navigation.navigate('Items');
+          navigation.navigate('ItemsStack');
         }}>
         see items
       </Button>

@@ -1,19 +1,62 @@
-import React from 'react';
-import {View, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+
+import {FlatList, View, Image} from 'react-native';
+import {Button, Card, Text, Title, Paragraph} from 'react-native-paper';
 import axios from 'axios';
-import {ScrollView} from 'react-native-gesture-handler';
+import RoomCard from '../components/RoomCard';
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
 //this is from vue js file
 var AXIOS = axios.create({
   baseURL: baseUrl,
 });
 
-const BrowseAllItems = () => {
+const getRooms = (setLoading, setRooms) => {
+  AXIOS.get('/api/rooms/view_all_rooms/')
+    .then(res => {
+      setRooms(res.data);
+      setLoading(false);
+      console.log(res.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+};
+
+const BrowseAllRooms = ({navigation}) => {
+  const [loading, setLoading] = useState(true);
+  const [rooms, setRooms] = useState([]);
+  useEffect(() => {
+    getRooms(setLoading, setRooms);
+  }, []);
   return (
-    <ScrollView>
-      <Text>Browse all rooms page</Text>
-    </ScrollView>
+    <FlatList
+      data={rooms}
+      numColumns={2}
+      columnWrapperStyle={{marginHorizontal: 20}}
+      refreshing={loading}
+      style={{alignSelf: 'center'}}
+      onRefresh={() => {
+        setLoading(true);
+        getRooms(setLoading, setRooms);
+      }}
+      renderItem={({item}) => {
+        console.log(item);
+        return (
+          <RoomCard
+            room={item}
+            buttons={
+              <Button
+                onPress={() => {
+                  navigation.navigate('ReserveRoom', {room: item});
+                }}>
+                Reserve
+              </Button>
+            }
+          />
+        );
+      }}
+    />
   );
 };
 
-export default BrowseAllItems;
+export default BrowseAllRooms;

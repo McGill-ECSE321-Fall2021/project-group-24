@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createStackNavigator} from '@react-navigation/stack';
 
 import BrowseAllItems from './src/pages/BrowseAllItems';
 import BrowseAllRooms from './src/pages/BrowseAllRooms';
@@ -34,9 +35,43 @@ import {
 } from 'react-native-paper';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ScrollView} from 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+const ItemsStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen
+        name="BrowseAllItems"
+        component={BrowseAllItems}
+        options={{title: 'Browse Items'}}
+      />
+      <Stack.Screen
+        name="ReserveItem"
+        component={ReserveItem}
+        options={{title: 'Reserve Item'}}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const RoomsStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen
+        name="BrowseAllRooms"
+        component={BrowseAllRooms}
+        options={{title: 'Browse Rooms'}}
+      />
+      <Stack.Screen
+        name="ReserveRoom"
+        component={ReserveRoom}
+        options={{title: 'Reserve Room'}}
+      />
+    </Stack.Navigator>
+  );
+};
 
 const getCurrentUser = () => {
   AsyncStorage.getItem('currentUser').then(value => {
@@ -47,17 +82,16 @@ const getCurrentUser = () => {
         isPatron: null,
         first: null,
       });
-      DefaultTheme.setAppLoading(true);
-      DefaultTheme.setAppLoading(false);
+      DefaultTheme.setLoading(true);
+      DefaultTheme.setLoading(false);
     } else {
       DefaultTheme.setCurrentUser(JSON.parse(value));
-      DefaultTheme.setAppLoading(true);
-      DefaultTheme.setAppLoading(false);
+      DefaultTheme.setLoading(true);
+      DefaultTheme.setLoading(false);
     }
   });
 };
 
-getCurrentUser();
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({
@@ -66,14 +100,16 @@ const App = () => {
     isPatron: null,
     first: null,
   });
-
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+  //add functions to theme, so they are available globally
   DefaultTheme.setCurrentUser = setCurrentUser;
-  DefaultTheme.setAppLoading = setLoading;
+  DefaultTheme.setLoading = setLoading;
   DefaultTheme.currentUser = currentUser;
   DefaultTheme.getCurrentUser = getCurrentUser;
 
   if (!loading) {
-    console.log(DefaultTheme.currentUser);
     return (
       <PaperProvider>
         <NavigationContainer>
@@ -103,7 +139,7 @@ const App = () => {
                         icon="bookshelf"
                         label="Items"
                         onPress={() => {
-                          props.navigation.navigate('BrowseAllItems');
+                          props.navigation.navigate('ItemsStack');
                         }}
                       />
                       <PaperDrawer.Item
@@ -120,7 +156,7 @@ const App = () => {
                         icon="google-classroom"
                         label="Rooms"
                         onPress={() => {
-                          props.navigation.navigate('BrowseAllRooms');
+                          props.navigation.navigate('RoomsStack');
                         }}
                       />
                       <PaperDrawer.Item
@@ -215,20 +251,21 @@ const App = () => {
               options={{title: 'Homepage'}}
             />
             <Drawer.Screen
-              name="BrowseAllItems"
-              component={BrowseAllItems}
-              options={{title: 'Browse Items'}}
+              name="ItemsStack"
+              component={ItemsStack}
+              options={{title: 'Items'}}
             />
             <Drawer.Screen
-              name="BrowseAllRooms"
-              component={BrowseAllRooms}
-              options={{title: 'Browse Rooms'}}
+              name="RoomsStack"
+              component={RoomsStack}
+              options={{title: 'Rooms'}}
             />
-            <Drawer.Screen
+            <Stack.Screen
               name="BrowseItemReservations"
               component={BrowseItemReservations}
               options={{title: 'Item Reservations'}}
             />
+
             <Drawer.Screen
               name="EditAccount"
               component={EditAccount}
@@ -238,16 +275,6 @@ const App = () => {
               name="Login"
               component={Login}
               options={{title: 'Login'}}
-            />
-            <Drawer.Screen
-              name="ReserveItem"
-              component={ReserveItem}
-              options={{title: 'Reserve Item'}}
-            />
-            <Drawer.Screen
-              name="ReserveRoom"
-              component={ReserveRoom}
-              options={{title: 'Reserve Room'}}
             />
 
             <Drawer.Screen
