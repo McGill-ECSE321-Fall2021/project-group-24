@@ -10,44 +10,42 @@ var AXIOS = axios.create({
   baseURL: baseUrl,
 });
 //same as vue file
-const getItems = (setLoading, setItems) => {
-  AXIOS.get('/api/items/all/')
-    .then(res => {
-      setItems(res.data);
-      setLoading(false);
-      console.log(res.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
-};
 
 const BrowseAllItems = ({navigation}) => {
+  const getItems = () => {
+    AXIOS.get('/api/items/all/')
+      .then(res => {
+        setItems(res.data);
+        setLoading(false);
+        setResults(res.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
   //use 'state variables' for when you want data to change. ie for when u pull from database
   const [loading, setLoading] = useState(true);
   //the items array is initialized to an empty array '[]', and 'setItems' is a function for when
   //you want to update the items array
   const [items, setItems] = useState([]);
+  const [results, setResults] = useState([]);
 
   //use this 'useEffect' when you only want something to happen the first time the page is rendered only
   useEffect(() => {
-    getItems(setLoading, setItems);
+    getItems();
   }, []);
 
   return (
     //a flatlist takes in an array as 'data', and a function 'renderItem' tells it what to render for each
     //element in the array.
     <FlatList
-      data={() => {
-        return items.filter(item => {
-          return true;
-        });
-      }}
+      data={items}
       //refreshing and onRefresh let the user swipe down to refresh the page.
       refreshing={loading}
       onRefresh={() => {
         setLoading(true);
-        getItems(setLoading, setItems);
+        getItems();
       }}
       renderItem={({item}) => {
         return (

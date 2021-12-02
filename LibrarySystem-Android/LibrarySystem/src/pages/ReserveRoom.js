@@ -34,6 +34,44 @@ const ReserveRoom = ({route, navigation}) => {
 
   const [error, setError] = useState('');
   const [response, setResponse] = useState('');
+
+  const submitReservation = () => {
+    AXIOS.post(
+      'api/roombookings/add_roombooking/?currentUserId=' +
+        DefaultTheme.currentUser.idNum +
+        '&idNum=' +
+        idNum +
+        '&roomNum=' +
+        route.params.room.roomNum +
+        '&date=' +
+        moment(date).format('YYYY-MM-DD') +
+        '&startTime=' +
+        (startTime.getHours() < 10
+          ? '0' + startTime.getHours()
+          : startTime.getHours()) +
+        ':' +
+        (startTime.getMinutes() == 0 ? '00' : startTime.getMinutes()) +
+        '&endTime=' +
+        (endTime.getHours() < 10
+          ? '0' + endTime.getHours()
+          : endTime.getHours()) +
+        ':' +
+        (endTime.getMinutes() == 0 ? '00' : endTime.getMinutes()),
+    )
+      .then(res => {
+        setResponse(res.data);
+        setError('');
+        console.log(res.data);
+      })
+      .catch(e => {
+        setResponse('');
+        if (e.response.data.error) {
+          setError(e.response.data.error);
+        } else {
+          setError(e.response.data);
+        }
+      });
+  };
   return (
     <>
       <ScrollView>
@@ -140,15 +178,7 @@ const ReserveRoom = ({route, navigation}) => {
       </ScrollView>
       <FAB
         onPress={() => {
-          submitReservation(
-            idNum,
-            route.params.room.roomNum,
-            date,
-            startTime,
-            endTime,
-            setError,
-            setResponse,
-          );
+          submitReservation();
         }}
         style={{
           zIndex: 1,
@@ -161,50 +191,6 @@ const ReserveRoom = ({route, navigation}) => {
       />
     </>
   );
-};
-
-const submitReservation = (
-  idNum,
-  roomNum,
-  date,
-  startTime,
-  endTime,
-  setError,
-  setResponse,
-) => {
-  startTime =
-    (startTime.getHours() < 10
-      ? '0' + startTime.getHours()
-      : startTime.getHours()) +
-    ':' +
-    (startTime.getMinutes() == 0 ? '00' : startTime.getMinutes());
-
-  endTime =
-    (endTime.getHours() < 10 ? '0' + endTime.getHours() : endTime.getHours()) +
-    ':' +
-    (endTime.getMinutes() == 0 ? '00' : endTime.getMinutes());
-
-  date = moment(date).format('YYYY-MM-DD');
-  AXIOS.post(
-    'api/roombookings/add_roombooking/?currentUserId=' +
-      DefaultTheme.currentUser.idNum +
-      '&idNum=' +
-      idNum +
-      '&roomNum=' +
-      roomNum +
-      '&date=' +
-      date +
-      '&startTime=' +
-      startTime +
-      '&endTime=' +
-      endTime,
-  )
-    .then(res => {
-      setResponse(res.data);
-    })
-    .catch(e => {
-      setError(e.response.data);
-    });
 };
 
 export default ReserveRoom;

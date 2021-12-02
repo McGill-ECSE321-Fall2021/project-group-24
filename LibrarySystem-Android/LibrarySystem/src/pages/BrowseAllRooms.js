@@ -17,23 +17,23 @@ var AXIOS = axios.create({
   baseURL: baseUrl,
 });
 
-const getRooms = (setLoading, setRooms) => {
-  AXIOS.get('/api/rooms/view_all_rooms/')
-    .then(res => {
-      setRooms(res.data);
-      setLoading(false);
-      console.log(res.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
-};
-
 const BrowseAllRooms = ({navigation}) => {
   const [loading, setLoading] = useState(true);
   const [rooms, setRooms] = useState([]);
+
+  const getRooms = () => {
+    AXIOS.get('/api/rooms/view_all_rooms/')
+      .then(res => {
+        setRooms(res.data);
+        setLoading(false);
+        console.log(res.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
   useEffect(() => {
-    getRooms(setLoading, setRooms);
+    getRooms();
   }, []);
   return (
     <FlatList
@@ -44,7 +44,7 @@ const BrowseAllRooms = ({navigation}) => {
       style={{alignSelf: 'center'}}
       onRefresh={() => {
         setLoading(true);
-        getRooms(setLoading, setRooms);
+        getRooms();
       }}
       renderItem={({item}) => {
         console.log(item);
