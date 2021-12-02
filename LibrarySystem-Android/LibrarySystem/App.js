@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useRoute} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -115,6 +115,7 @@ const App = () => {
         <NavigationContainer>
           <Drawer.Navigator
             drawerContent={props => {
+              var currentIndex = props.navigation.getState().index;
               return (
                 <>
                   <View style={{flex: 1}}>
@@ -125,7 +126,10 @@ const App = () => {
                     </Title>
                     <PaperDrawer.Section style={{marginVertical: '3.5%'}}>
                       <PaperDrawer.Item
-                        style={{marginBottom: '3.5%'}}
+                        style={
+                          ({marginBottom: '3.5%'},
+                          currentIndex == 0 && {backgroundColor: 'lightgray'})
+                        }
                         icon="home"
                         label="Homepage"
                         onPress={() => {
@@ -135,7 +139,9 @@ const App = () => {
                     </PaperDrawer.Section>
                     <PaperDrawer.Section style={{marginVertical: '3.5%'}}>
                       <PaperDrawer.Item
-                        style={{borderColor: '#CBAACB', borderWidth: 0}}
+                        style={
+                          currentIndex == 1 && {backgroundColor: 'lightgray'}
+                        }
                         icon="bookshelf"
                         label="Items"
                         onPress={() => {
@@ -143,7 +149,10 @@ const App = () => {
                         }}
                       />
                       <PaperDrawer.Item
-                        style={{marginBottom: '3.5%'}}
+                        style={
+                          ({marginBottom: '3.5%'},
+                          currentIndex == 2 && {backgroundColor: 'lightgray'})
+                        }
                         icon="book-account"
                         label="Browse Item Reservations"
                         onPress={() => {
@@ -155,12 +164,18 @@ const App = () => {
                       <PaperDrawer.Item
                         icon="google-classroom"
                         label="Rooms"
+                        style={
+                          currentIndex == 3 && {backgroundColor: 'lightgray'}
+                        }
                         onPress={() => {
                           props.navigation.navigate('RoomsStack');
                         }}
                       />
                       <PaperDrawer.Item
-                        style={{marginBottom: '3.5%'}}
+                        style={
+                          ({marginBottom: '3.5%'},
+                          currentIndex == 4 && {backgroundColor: 'lightgray'})
+                        }
                         icon="calendar-clock"
                         label="View All Room Bookings"
                         onPress={() => {
@@ -172,6 +187,9 @@ const App = () => {
                       <PaperDrawer.Item
                         icon="badge-account-horizontal-outline"
                         label="View All Librarians"
+                        style={
+                          currentIndex == 5 && {backgroundColor: 'lightgray'}
+                        }
                         onPress={() => {
                           props.navigation.navigate('ViewAllLibrarians');
                         }}
@@ -179,12 +197,18 @@ const App = () => {
                       <PaperDrawer.Item
                         icon="account-group"
                         label="View All Patrons"
+                        style={
+                          currentIndex == 6 && {backgroundColor: 'lightgray'}
+                        }
                         onPress={() => {
                           props.navigation.navigate('ViewAllPatrons');
                         }}
                       />
                       <PaperDrawer.Item
-                        style={{marginBottom: '3.5%'}}
+                        style={
+                          ({marginBottom: '3.5%'},
+                          currentIndex == 7 && {backgroundColor: 'lightgray'})
+                        }
                         icon="timetable"
                         label="View All Shifts"
                         onPress={() => {
@@ -194,7 +218,10 @@ const App = () => {
                     </PaperDrawer.Section>
                     <PaperDrawer.Section style={{marginTop: '3.5%'}}>
                       <PaperDrawer.Item
-                        style={{marginBottom: '3.5%'}}
+                        style={
+                          ({marginBottom: '3.5%'},
+                          currentIndex == 8 && {backgroundColor: 'lightgray'})
+                        }
                         icon="account-edit-outline"
                         label="Edit Account"
                         onPress={() => {
@@ -262,26 +289,40 @@ const App = () => {
               component={ItemsStack}
               options={{title: 'Items'}}
             />
-            <Drawer.Screen
-              name="RoomsStack"
-              component={RoomsStack}
-              options={{title: 'Rooms'}}
-            />
             <Stack.Screen
               name="BrowseItemReservations"
               component={BrowseItemReservations}
               options={{title: 'Item Reservations'}}
             />
-
+            <Drawer.Screen
+              name="RoomsStack"
+              component={RoomsStack}
+              options={{title: 'Rooms'}}
+            />
+            <Drawer.Screen
+              name="ViewAllRoomBookings"
+              component={ViewAllRoomBookings}
+              options={{title: 'View All Room Bookings'}}
+            />
+            <Drawer.Screen
+              name="ViewAllLibrarians"
+              component={ViewAllLibrarians}
+              options={{title: 'View All Librarians'}}
+            />
+            <Drawer.Screen
+              name="ViewAllPatrons"
+              component={ViewAllPatrons}
+              options={{title: 'View All Patrons'}}
+            />
+            <Drawer.Screen
+              name="ViewAllShifts"
+              component={ViewAllShifts}
+              options={{title: 'View All Shifts'}}
+            />
             <Drawer.Screen
               name="EditAccount"
               component={EditAccount}
               options={{title: 'Edit Account'}}
-            />
-            <Drawer.Screen
-              name="Login"
-              component={Login}
-              options={{title: 'Login'}}
             />
 
             <Drawer.Screen
@@ -295,24 +336,9 @@ const App = () => {
               options={{title: 'Sign Up Online'}}
             />
             <Drawer.Screen
-              name="ViewAllLibrarians"
-              component={ViewAllLibrarians}
-              options={{title: 'View All Librarians'}}
-            />
-            <Drawer.Screen
-              name="ViewAllPatrons"
-              component={ViewAllPatrons}
-              options={{title: 'View All Patrons'}}
-            />
-            <Drawer.Screen
-              name="ViewAllRoomBookings"
-              component={ViewAllRoomBookings}
-              options={{title: 'View All Room Bookings'}}
-            />
-            <Drawer.Screen
-              name="ViewAllShifts"
-              component={ViewAllShifts}
-              options={{title: 'View All Shifts'}}
+              name="Login"
+              component={Login}
+              options={{title: 'Login'}}
             />
           </Drawer.Navigator>
         </NavigationContainer>
