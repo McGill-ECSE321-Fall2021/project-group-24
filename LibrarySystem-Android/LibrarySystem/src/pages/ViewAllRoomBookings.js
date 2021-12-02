@@ -5,7 +5,8 @@ import {
   Button,
   Card,
   Text,
-  Title,
+  Portal,
+  Dialog,
   Paragraph,
   DefaultTheme,
 } from 'react-native-paper';
@@ -19,9 +20,15 @@ var AXIOS = axios.create({
 });
 
 const getRoomBookings = (setLoading, setRoomBookings) => {
+  console.log(
+    baseUrl +
+      'api/roombookings/view_roombookings?currentUserId=' +
+      DefaultTheme.currentUser.idNum,
+  );
   if (!DefaultTheme.currentUser.isPatron) {
     AXIOS.get(
-      '/api/roombookings/view_roombookings?currentUserId=' +
+      baseUrl +
+        'api/roombookings/view_roombookings?currentUserId=' +
         DefaultTheme.currentUser.idNum,
     )
       .then(res => {
@@ -39,7 +46,7 @@ const getRoomBookings = (setLoading, setRoomBookings) => {
         '?currentUserId=' +
         DefaultTheme.currentUser.idNum,
     )
-      .then(response => {
+      .then(res => {
         setRoomBookings(res.data);
         setLoading(false);
         console.log(res.data);
@@ -53,53 +60,83 @@ const getRoomBookings = (setLoading, setRoomBookings) => {
 const ViewAllRoomBookings = () => {
   const [loading, setLoading] = useState(true);
   const [roombookings, setRoomBookings] = useState([]);
+
+  const [error, setError] = useState('');
+  const [response, setResponse] = useState('');
   useEffect(() => {
     getRoomBookings(setLoading, setRoomBookings);
   }, []);
   return (
-    <FlatList
-      data={roombookings}
-      numColumns={2}
-      columnWrapperStyle={{marginHorizontal: 20}}
-      refreshing={loading}
-      style={{alignSelf: 'center'}}
-      onRefresh={() => {
-        setLoading(true);
-        getRoomBookings(setLoading, setRoomBookings);
-      }}
-      renderItem={({item}) => {
-        console.log(item);
-        return (
-          <RoomBookingCard
-            roombooking={item}
-            buttons={
-              <Button
-                onPress={() => {
-                  AXIOS.delete(
-                    '/api/roombookings/delete_roombooking' +
-                      '?currentUserId=' +
-                      DefaultTheme.currentUser.idNum +
-                      '&timeSlotId=' +
-                      item.timeSlotId,
-                  );
-                  // .then(response => {
-                  //   this.response = 'Room Booking Cancelled';
-                  //   this.roombookings.splice(index, 1);
-                  // })
-                  // .catch(e => {
-                  //   this.visible = true;
-                  //   var errorMsg = e.response.data;
-                  //   this.error = errorMsg;
-                  //   this.response = '';
-                  // });
-                }}>
-                Cancel
-              </Button>
-            }
-          />
-        );
-      }}
-    />
+    <>
+      <FlatList
+        data={roombookings}
+        numColumns={2}
+        columnWrapperStyle={{marginHorizontal: 20}}
+        refreshing={loading}
+        style={{alignSelf: 'center'}}
+        onRefresh={() => {
+          setLoading(true);
+          getRoomBookings(setLoading, setRoomBookings);
+        }}
+        renderItem={({item}) => {
+          console.log(item);
+          return (
+            <RoomBookingCard
+              roombooking={item}
+              buttons={
+                <Button
+                  onPress={() => {
+                    AXIOS.delete(
+                      '/api/roombookings/delete_roombooking' +
+                        '?currentUserId=' +
+                        DefaultTheme.currentUser.idNum +
+                        '&timeSlotId=' +
+                        item.timeSlotId,
+                    )
+                      .then(res => {
+                        setResponse('Room booking cancelled');
+                        setError('');
+                        console.log(res.data);
+                      })
+                      .catch(e => {
+                        setResponse('');
+                        if (e.response.data.error) {
+                          setError(e.response.data.error);
+                        } else {
+                          setError(e.response.data);
+                        }
+                      });
+                  }}>
+                  Cancel
+                </Button>
+              }
+            />
+          );
+        }}
+      />
+      <Portal>
+        <Dialog visible={error || response}>
+          <Dialog.Title>{error ? 'Error' : 'Response'}</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>{error ? error : response}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button
+              onPress={() => {
+                if (error) {
+                  setError('');
+                  setResponse('');
+                } else {
+                  setError('');
+                  setResponse('');
+                }
+              }}>
+              Ok
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    </>
   );
 };
 
