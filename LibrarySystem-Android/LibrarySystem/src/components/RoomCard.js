@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image} from 'react-native';
+import {Flatlist, View, Image} from 'react-native';
 import {Button, Card, Title, Paragraph} from 'react-native-paper';
 
 const RoomCard = ({room, buttons}) => {
