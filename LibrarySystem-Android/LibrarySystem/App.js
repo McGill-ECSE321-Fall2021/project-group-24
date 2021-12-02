@@ -214,20 +214,27 @@ const App = () => {
                             DefaultTheme.currentUser.username,
                         )
                           .then(res => {
-                            if (res.status == 200) {
-                              AsyncStorage.setItem(
-                                'currentUser',
-                                JSON.stringify({
-                                  username: null,
-                                  password: null,
-                                  isPatron: null,
-                                  first: null,
-                                }),
-                              );
-                            }
+                            AsyncStorage.setItem(
+                              'currentUser',
+                              JSON.stringify({
+                                username: null,
+                                password: null,
+                                isPatron: null,
+                                first: null,
+                              }),
+                            );
                             getCurrentUser();
                           })
                           .catch(e => {
+                            AsyncStorage.setItem(
+                              'currentUser',
+                              JSON.stringify({
+                                username: null,
+                                password: null,
+                                isPatron: null,
+                                first: null,
+                              }),
+                            );
                             console.log(e);
                           });
                       }}

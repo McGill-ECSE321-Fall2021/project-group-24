@@ -38,7 +38,11 @@ const BrowseAllItems = ({navigation}) => {
     //a flatlist takes in an array as 'data', and a function 'renderItem' tells it what to render for each
     //element in the array.
     <FlatList
-      data={items}
+      data={() => {
+        return items.filter(item => {
+          return true;
+        });
+      }}
       //refreshing and onRefresh let the user swipe down to refresh the page.
       refreshing={loading}
       onRefresh={() => {

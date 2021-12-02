@@ -1,7 +1,14 @@
 import React, {useEffect, useState} from 'react';
 
 import {FlatList, View, Image} from 'react-native';
-import {Button, Card, Text, Title, Paragraph} from 'react-native-paper';
+import {
+  Button,
+  Card,
+  Text,
+  Title,
+  Paragraph,
+  DefaultTheme,
+} from 'react-native-paper';
 import axios from 'axios';
 import RoomCard from '../components/RoomCard';
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
@@ -45,12 +52,14 @@ const BrowseAllRooms = ({navigation}) => {
           <RoomCard
             room={item}
             buttons={
-              <Button
-                onPress={() => {
-                  navigation.navigate('ReserveRoom', {room: item});
-                }}>
-                Reserve
-              </Button>
+              DefaultTheme.currentUser.username && (
+                <Button
+                  onPress={() => {
+                    navigation.navigate('ReserveRoom', {room: item});
+                  }}>
+                  Reserve
+                </Button>
+              )
             }
           />
         );
