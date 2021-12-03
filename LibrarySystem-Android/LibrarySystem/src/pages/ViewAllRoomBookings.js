@@ -1,17 +1,16 @@
 // author: selena
 import React, {useEffect, useState} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList} from 'react-native';
 import {
   Button,
-  Card,
-  Text,
   Portal,
   Dialog,
   Paragraph,
   DefaultTheme,
 } from 'react-native-paper';
 import axios from 'axios';
-import {ScrollView} from 'react-native-gesture-handler';
+import {useIsFocused} from '@react-navigation/native';
+
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
 import RoomBookingCard from '../components/RoomBookingCard';
 //this is from vue js file
@@ -36,7 +35,6 @@ const ViewAllRoomBookings = () => {
         .then(res => {
           setRoomBookings(res.data);
           setLoading(false);
-          console.log(res.data);
         })
         .catch(e => {
           console.log(e);
@@ -58,10 +56,12 @@ const ViewAllRoomBookings = () => {
         });
     }
   };
-
+  // I added isFocused so that when the screen is focused again, it automatically refreshes.
+  // -- Saagar
+  const isFocused = useIsFocused();
   useEffect(() => {
     getRoomBookings();
-  }, []);
+  }, [isFocused]);
   return (
     <>
       <FlatList
