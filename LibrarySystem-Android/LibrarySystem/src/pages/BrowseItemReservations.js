@@ -11,8 +11,10 @@ import {
   Paragraph,
   DefaultTheme,
   Searchbar,
+  ActivityIndicator,
+  Colors,
 } from 'react-native-paper';
-import ItemReservationCard from '../components/ItemReservationCard';
+import ItemCard from '../components/ItemCard';
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
 //this is from vue js file
 var AXIOS = axios.create({
@@ -21,12 +23,13 @@ var AXIOS = axios.create({
 
 const BrowseItemReservations = () => {
   const [loading, setLoading] = useState(true);
+  const [reservations, setReservations] = useState([]);
   const [itemReservations, setItemReservations] = useState([]);
-  const [items, setItems] = useState([]);
   const [itemResults, setItemResults] = useState([]);
-
+  const [items, setItems] = useState([]);
   const [error, setError] = useState('');
   const [response, setResponse] = useState('');
+  const [results, setResults] = useState([]);
 
   const getItemReservations = () => {
     if (DefaultTheme.currentUser.isPatron) {
@@ -38,10 +41,12 @@ const BrowseItemReservations = () => {
           DefaultTheme.currentUser.idNum,
       )
         .then(res => {
+          setReservations(res.data);
           setItemReservations(res.data);
-          setLoading(false);
           console.log('ITEM reservations if');
           console.log(res.data);
+          getItems(res.data);
+          setResults(res.data);
         })
         .catch(e => {
           console.log(e);
@@ -53,33 +58,48 @@ const BrowseItemReservations = () => {
           DefaultTheme.currentUser.idNum,
       )
         .then(res => {
+          setReservations(res.data);
           setItemReservations(res.data);
-          setLoading(false);
-          console.log('ITEM reservations else');
-          console.log(res.data);
+          console.log('reservations');
+          console.log(reservations.length);
+          console.log('ITEM RESERVATIONS');
+          console.log(itemReservations.length);
+          getItems(res.data);
+          setResults(res.data);
         })
         .catch(e => {
           console.log(e);
         });
     }
-    // if (itemReservations.length == 0) {
-    //   setLoading(false);
-    // } else {
-    //   Promise.all(
-    //     itemReservations.map(reservation =>
-    //       AXIOS.get('/api/items/' + reservation.itemNumber).then(res => {
-    //         setItems[itemReservations.indexOf(reservation)] = {
-    //           ...res.data,
-    //         };
+  };
 
-    //         if (items.length == itemReservations.length) {
-    //           setLoading(false);
-    //         }
-    //       }),
-    //     ),
-    //   );
-    //   setItemResults(items);
-    // }
+  const getItems = copyOfReservations => {
+    console.log('copy of res');
+
+    console.log(copyOfReservations);
+    if (copyOfReservations.length == 0) {
+      console.log('length is 0');
+      setLoading(false);
+    } else {
+      console.log('copyOfReservations');
+
+      console.log(copyOfReservations);
+      copyOfReservations.map(reservation => {
+        AXIOS.get('/api/items/' + reservation.itemNumber).then(res => {
+          var copyOfItems = items;
+          copyOfItems[copyOfReservations.indexOf(reservation)] = res.data;
+          setItems(copyOfItems);
+          console.log('hello');
+
+          console.log(reservation);
+          if (items.length == copyOfReservations.length) {
+            setItemResults(items);
+
+            setLoading(false);
+          }
+        });
+      });
+    }
   };
 
   const search = query => {
@@ -127,54 +147,88 @@ const BrowseItemReservations = () => {
   return (
     <>
       <Searchbar onChangeText={search} />
-      <FlatList
-        data={(itemReservations, items)}
-        refreshing={loading}
-        onRefresh={() => {
-          setLoading(true);
-          getItemReservations();
-        }}
-        renderItem={({item}) => {
-          console.log('Item Reservation: ' + item);
-          console.log('Item Title: ' + item.idNum);
+      {loading ? (
+        <ActivityIndicator
+          style={{flex: 1}}
+          animating={true}
+          color={Colors.blue800}
+        />
+      ) : (
+        <FlatList
+          data={itemReservations}
+          refreshing={loading}
+          onRefresh={() => {
+            setLoading(true);
+            getItemReservations();
+          }}
+          renderItem={({item, index}) => {
+            console.log('item index');
 
-          return (
-            <ItemReservationCard
-              item={item}
-              buttons={
-                <Button
-                  onPress={() => {
-                    AXIOS.delete(
-                      '/api/roombookings/delete_roombooking' +
-                        '?currentUserId=' +
-                        DefaultTheme.currentUser.idNum +
-                        '&timeSlotId=' +
-                        item.timeSlotId,
-                    )
-                      .then(res => {
-                        setResponse('Room booking cancelled');
-                        setError('');
-                        console.log('hi' + res.data);
-                        setLoading(true);
-                        getItemReservations();
-                      })
-                      .catch(e => {
-                        setResponse('');
-                        if (e.response.data.error) {
-                          setError(e.response.data.error);
-                        } else {
-                          setError(e.response.data);
-                        }
-                      });
-                  }}>
-                  Cancel
-                </Button>
-              }
-            />
-          );
-        }}
-      />
-      {/* <Portal>
+            console.log(items[index]);
+
+            return (
+              <ItemCard
+                item={items[index]}
+                reservationDetails={reservations[index]}
+                buttons={
+                  <>
+                    <Button
+                      onPress={() => {
+                        AXIOS.put(
+                          '/api/itemReservations/renew/' +
+                            reservations[index].itemReservationId +
+                            '?currentUserId=' +
+                            DefaultTheme.currentUser.idNum,
+                        )
+                          .then(res => {
+                            setResponse('Item Renewed!');
+                            setError('');
+                            getItemReservations();
+                          })
+                          .catch(e => {
+                            setResponse('');
+                            if (e.response.data.error) {
+                              setError(e.response.data.error);
+                            } else {
+                              setError(e.response.data);
+                            }
+                          });
+                      }}>
+                      Renew
+                    </Button>
+
+                    <Button
+                      onPress={() => {
+                        AXIOS.delete(
+                          '/api/itemReservations/cancel/' +
+                            reservations[index].itemReservationId +
+                            '?currentUserId=' +
+                            DefaultTheme.currentUser.idNum,
+                        )
+                          .then(res => {
+                            setResponse('Item Reservation Cancelled');
+                            setError('');
+                            getItemReservations();
+                          })
+                          .catch(e => {
+                            setResponse('');
+                            if (e.response.data.error) {
+                              setError(e.response.data.error);
+                            } else {
+                              setError(e.response.data);
+                            }
+                          });
+                      }}>
+                      Cancel
+                    </Button>
+                  </>
+                }
+              />
+            );
+          }}
+        />
+      )}
+      <Portal>
         <Dialog visible={error || response}>
           <Dialog.Title>{error ? 'Error' : 'Response'}</Dialog.Title>
           <Dialog.Content>
@@ -195,7 +249,7 @@ const BrowseItemReservations = () => {
             </Button>
           </Dialog.Actions>
         </Dialog>
-      </Portal> */}
+      </Portal>
     </>
   );
 };
