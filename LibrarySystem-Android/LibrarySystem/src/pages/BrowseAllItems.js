@@ -114,6 +114,8 @@ const BrowseAllItems = ({navigation}) => {
                   {DefaultTheme.currentUser.username &&
                     !DefaultTheme.currentUser.isPatron && (
                       <Button
+                        item={item}
+                        buttons={null}
                         //this is how to pass an object to the next page. Take a look at
                         //ReserveRoom.js to see how the item is used there.
                         onPress={() => {
