@@ -4,7 +4,7 @@ import {Button, Card, Title, Paragraph, Text} from 'react-native-paper';
 
 // Author: Arman
 // The card for each librarian has their name, address, & email, as well as a button to view their shifts
-const LibrarianCard = ({librarian, Dbutton, Vbutton}) => {
+const LibrarianCard = ({librarian, Dbutton, someShiftsButton}) => {
   return (
     <Card
       style={{
@@ -20,8 +20,9 @@ const LibrarianCard = ({librarian, Dbutton, Vbutton}) => {
         <Paragraph>Last Name: {librarian.lastName}</Paragraph>
         <Paragraph>Address: {librarian.address}</Paragraph>
         <Paragraph>Email: {librarian.email}</Paragraph>
-      </Card.Content>
+      </Card.Content>      
       <Card.Actions style={{alignSelf: 'center'}}>{someShiftsButton}</Card.Actions>
+
     </Card>
   );
 };

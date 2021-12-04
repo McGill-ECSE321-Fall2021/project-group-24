@@ -1,10 +1,19 @@
 // @author: Arman
-import React from 'react';
-import {View, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, View} from 'react-native';
+import {
+  Button,
+  Card,
+  Text,
+  Portal,
+  Dialog,
+  Paragraph,
+  DefaultTheme,
+} from 'react-native-paper';
 import axios from 'axios';
 import {ScrollView} from 'react-native-gesture-handler';
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
-import LibrarianCard from '../components/LibrarianCard';
+import LibrarianCard from '../components/LibrarianCard.js';
 
 //this is from the vue js file
 var AXIOS = axios.create({
@@ -63,7 +72,7 @@ const ViewAllLibrarians = () => {
                 // button for viewing this librarian's shifts
                 <Button
                   onPress={() => {
-                    AXIOS.post('/api/librarians/view_librarian_shifts/?currentUserId=admin&librarianId=' + item.idNum)
+                    AXIOS.post('/api/shift/view_librarian_shifts/?currentUserId=admin&librarianId=admin')
                       .then(res => {
                         setResponse('Their shifts: ' + res.data);
                         setError('');
