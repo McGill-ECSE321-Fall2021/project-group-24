@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 import {TextInput, Button, DefaultTheme} from 'react-native-paper';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,7 +10,7 @@ var AXIOS = axios.create({
   baseURL: baseUrl,
 });
 
-const Login = () => {
+const Login = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [hidePass, setHidePass] = useState(true);
@@ -46,6 +46,13 @@ const Login = () => {
             });
         }}>
         Login
+      </Button>
+      <Button
+        labelStyle={{color: 'green'}}
+        onPress={() => {
+          navigation.navigate('SignUpOnline');
+        }}>
+        Don't have an account? Sign up here!
       </Button>
     </View>
   );

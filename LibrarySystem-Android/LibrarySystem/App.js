@@ -252,6 +252,19 @@ const App = () => {
                               props.navigation.navigate('ViewAllShifts');
                             }}
                           />
+                          <PaperDrawer.Item
+                            style={
+                              ({marginBottom: '3.5%'},
+                              currentIndex == 8 && {
+                                backgroundColor: 'lightgray',
+                              })
+                            }
+                            icon="account-plus"
+                            label="Sign Up For Patron"
+                            onPress={() => {
+                              props.navigation.navigate('SignUpForPatron');
+                            }}
+                          />
                         </PaperDrawer.Section>
                       )}
                     {DefaultTheme.currentUser.username && (
