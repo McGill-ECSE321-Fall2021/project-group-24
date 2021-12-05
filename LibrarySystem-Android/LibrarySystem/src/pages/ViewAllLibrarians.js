@@ -1,4 +1,3 @@
-// @author: Arman
 import React, {useEffect, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {
@@ -14,6 +13,9 @@ import axios from 'axios';
 import {ScrollView} from 'react-native-gesture-handler';
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
 import LibrarianCard from '../components/LibrarianCard.js';
+import { useNavigation } from '@react-navigation/core';
+// Author: Arman. Gives list of all librarians for other librarians to view.
+// Also provides a button for a calendar of everyone's shifts and a button to view a particular librarian's shifts
 
 //this is from the vue js file
 var AXIOS = axios.create({
@@ -42,6 +44,7 @@ const ViewAllLibrarians = () => {
         });
     }
   };
+  const navigation = useNavigation(); 
   // get list of librarians once the page is loaded
   useEffect(() => {
     getLibrarians();
@@ -50,7 +53,8 @@ const ViewAllLibrarians = () => {
     <>
     <Button 
       title="View All Shifts"
-      onPress={() => this.props.navigate('ViewAllShifts')}> 
+      onPress={() => navigation.navigate('ViewAllShifts')}>
+        View All Shifts
       </Button>
     
       {/* displays the list of librarians */}
@@ -69,17 +73,28 @@ const ViewAllLibrarians = () => {
               librarian={item}
 
               someShiftsButton={
-                // button for viewing this librarian's shifts
+               // button for viewing this librarian's shifts
                 <Button
                   onPress={() => {
-                    AXIOS.post('/api/shift/view_librarian_shifts/?currentUserId=admin&librarianId=admin')
+                    AXIOS.get('/api/shift/view_librarian_shifts/?currentUserId=admin&librarianId='
+                    +item.idNum)
                       .then(res => {
-                        setResponse('Their shifts: ' + res.data);
-                        setError('');
+                        let shifts = [];
+                        shifts = res.data; 
+                        // makes the shifts into a readable format, with each shift given a row (format "Monday 9:00-18:00")
+                        for (var i=0; i<shifts.length; i++) {
+                          shifts [i] = "\n" + (shifts[i].dayOfWeek[0] + shifts[i].dayOfWeek.slice(1).toLowerCase()
+                          + ' ' + shifts[i].startTime.substring(0, 5) +' - ' +  shifts[i].endTime.substring(0,5)); 
+                        }
+                        // removes the comma between shifts
+                        let shiftsText = shifts.join(''); 
+                        // displays the shifts via the response dialog box
+                        setResponse( item.firstName + ' ' + item.lastName + "'s " + 'Shifts:  ' + shiftsText);
+                        setError(''); 
                         console.log(res.data);
                       })
                       .catch(e => {
-                        setResponse('');
+                       // setResponse("");
                         if (e.response.data.error) {
                           setError(e.response.data.error);
                         } else {
@@ -89,6 +104,7 @@ const ViewAllLibrarians = () => {
                   }}>
                   View Their Shifts
                 </Button>
+  
               }
             />
           );

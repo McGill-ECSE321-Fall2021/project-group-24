@@ -23,6 +23,12 @@ import ViewAllRoomBookings from './src/pages/ViewAllRoomBookings';
 import ViewAllShifts from './src/pages/ViewAllShifts';
 import axios from 'axios';
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
+
+// Author: Saagar. 
+// This file describes the navigation menu with the various sections 
+// Also determines who is currently logged-in so that they are given access to the appropriate menus. 
+// For example, only librarians can access "ViewLibrarians"
+
 //this is from vue js file
 var AXIOS = axios.create({
   baseURL: baseUrl,

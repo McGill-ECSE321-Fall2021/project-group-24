@@ -4,7 +4,7 @@ import {Button, Card, Title, Paragraph, Text} from 'react-native-paper';
 
 // Author: Arman
 // The card for each librarian has their name, address, & email, as well as a button to view their shifts
-const LibrarianCard = ({librarian, Dbutton, someShiftsButton}) => {
+const LibrarianCard = ({librarian, someShiftsButton}) => {
   return (
     <Card
       style={{

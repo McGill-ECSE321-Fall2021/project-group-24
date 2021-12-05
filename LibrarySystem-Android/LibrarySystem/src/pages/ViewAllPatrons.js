@@ -1,4 +1,4 @@
-// author: selena
+
 import React, {useEffect, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {
@@ -14,6 +14,9 @@ import axios from 'axios';
 import {ScrollView} from 'react-native-gesture-handler';
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
 import PatronCard from '../components/PatronCard';
+
+// author: selena
+// Lists all patrons for librarians to view, as well as buttons to delete and to verify the patrons. 
 
 //this is from vue js file
 var AXIOS = axios.create({
