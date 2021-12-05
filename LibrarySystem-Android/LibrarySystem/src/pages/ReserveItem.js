@@ -14,8 +14,7 @@ import {
   Paragraph,
   Headline,
 } from 'react-native-paper';
-import DatePicker from 'react-native-date-picker';
-import moment from 'moment';
+
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
 //this is from vue js file
 var AXIOS = axios.create({
@@ -23,7 +22,6 @@ var AXIOS = axios.create({
 });
 
 const ReserveItem = ({route, navigation}) => {
-  console.log(route.params);
   const [idNum, setIdNum] = useState(
     DefaultTheme.currentUser.isPatron ? DefaultTheme.currentUser.idNum : '',
   );
