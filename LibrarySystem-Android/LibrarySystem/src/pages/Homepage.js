@@ -23,9 +23,10 @@ const Homepage = ({navigation}) => {
 
 
   const getHours = () => {
-     
+     // Retrieves operating hours with get request and reformats so they are presentable
      AXIOS.get("/api/libraryhour/view_library_hours").then(res => {
        let hours = res.data; 
+      // E.g. Monday 9:00 - 18:00
       for (var i=0; i<hours.length; i++) {
         hours[i] =  (hours[i].dayOfWeek[0] + hours[i].dayOfWeek.slice(1).toLowerCase()
         + ' ' + hours[i].startTime.substring(0, 5) +' - ' +  hours[i].endTime.substring(0,5))
@@ -44,8 +45,7 @@ const Homepage = ({navigation}) => {
 
   return (
     <View>
-      <Text style={styles.welcome}>Hi</Text>
-      <Text style={styles.welcome}>{DefaultTheme.currentUser.username}</Text>
+      <Text style={styles.welcome}>Hi {DefaultTheme.currentUser.username}</Text>
       <Text style={styles.header}> Library Operating Hours </Text>
       <Text style={styles.h2} onLayout={getHours}> {hour} </Text>
 
