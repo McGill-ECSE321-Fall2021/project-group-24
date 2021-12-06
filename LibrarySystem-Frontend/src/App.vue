@@ -85,7 +85,7 @@
           </a-menu-item>
         </a-sub-menu>
         <a-sub-menu
-          v-if="currentUser.username && currentUser.username === 'admin'"
+          v-if="currentUser.username && !currentUser.isPatron"
         >
           <span slot="title" class="submenu-title-wrapper">
             Manage Librarians</span
