@@ -103,17 +103,12 @@ public class LibrarianService {
 
   @Transactional
   public List<Librarian> getAllLibrarians(String userId) {
-    if (isHeadLibrarian(userId)) {
+   
       if (toList(librarianRepo.findAll()).size() == 0) {
         throw new IllegalArgumentException("No librarians found.");
       } else {
         return toList(librarianRepo.findAll());
       }
-    } else {
-      throw new IllegalArgumentException(
-        "You are not authorized to do this. Only the Head Librarian can."
-      );
-    }
   }
 
   //helper method to check if the user is a head librarian
