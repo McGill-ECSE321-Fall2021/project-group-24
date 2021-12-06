@@ -19,14 +19,14 @@
       <a-button
         type="primary"
         key="AddShift"
-        v-if="currentUser.username && !currentUser.isLibrarian"
+        v-if="currentUser.username=='admin'"
       >
         <router-link :to="{ name: 'AddShift' }"> Add Shift </router-link>
       </a-button>
       <a-button
         type="primary"
         key="RemoveShift"
-        v-if="currentUser.username && !currentUser.isLibrarian"
+        v-if="currentUser.username=='admin'"
         @click="removeShiftPressed(librarian)"
       >
         Remove Shift
