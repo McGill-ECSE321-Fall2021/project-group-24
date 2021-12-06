@@ -102,6 +102,8 @@ const RoomsStack = () => {
   );
 };
 
+
+
 const getCurrentUser = () => {
   AsyncStorage.getItem('currentUser').then(value => {
     if (value == null) {
@@ -126,6 +128,7 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState({
     username: null,
     password: null,
+    idNum: null,
     isPatron: null,
     first: null,
   });

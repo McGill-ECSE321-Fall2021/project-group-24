@@ -12,6 +12,11 @@ var AXIOS = axios.create({
   baseURL: baseUrl,
 });
 
+//Author: Nafis
+//This page deals with the page that allows librarians to
+//register an in-person account. This page can only be accessed
+//by a librarian or head librarian.
+
 const SignUpForPatron = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const[lastName, setLastName] = useState('');

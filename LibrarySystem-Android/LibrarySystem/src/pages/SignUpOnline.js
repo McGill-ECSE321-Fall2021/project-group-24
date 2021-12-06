@@ -12,6 +12,12 @@ var AXIOS = axios.create({
   baseURL: baseUrl,
 });
 
+//Author: Nafis
+//This file deals with the Sign Up Online page. Users can use this
+//page to sign up for an online patron account. Once a new account is
+//made, the user will be redirected to the login page to sign in, 
+//before they can access all the features.
+
 const SignUpOnline = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const[lastName, setLastName] = useState('');
