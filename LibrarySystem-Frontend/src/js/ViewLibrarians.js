@@ -20,7 +20,7 @@ export default {
       error: "",
       response: "",
       events: [],
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
       form: this.$form.createForm(this, { name: "coordinated" }),
       librarianResults: [], // stores the librarians that match the search
       librarians: [], // array of all librarians
