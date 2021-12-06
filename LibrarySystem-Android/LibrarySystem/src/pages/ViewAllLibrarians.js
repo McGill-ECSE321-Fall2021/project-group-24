@@ -13,7 +13,7 @@ import axios from 'axios';
 import {ScrollView} from 'react-native-gesture-handler';
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
 import LibrarianCard from '../components/LibrarianCard.js';
-import { useNavigation } from '@react-navigation/core';
+import {useNavigation} from '@react-navigation/core';
 // Author: Arman. Gives list of all librarians for other librarians to view.
 // Also provides a button for a calendar of everyone's shifts and a button to view a particular librarian's shifts
 
@@ -29,6 +29,7 @@ const ViewAllLibrarians = () => {
 
   const [error, setError] = useState('');
   const [response, setResponse] = useState('');
+  const [title, setTitle] = useState('');
 
   // Uses http get request on backend, only for librarians
   const getLibrarians = () => {
@@ -44,19 +45,19 @@ const ViewAllLibrarians = () => {
         });
     }
   };
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   // get list of librarians once the page is loaded
   useEffect(() => {
     getLibrarians();
   }, []);
   return (
     <>
-    <Button 
-      title="View All Shifts"
-      onPress={() => navigation.navigate('ViewAllShifts')}>
+      <Button
+        title="View All Shifts"
+        onPress={() => navigation.navigate('ViewAllShifts')}>
         View All Shifts
       </Button>
-    
+
       {/* displays the list of librarians */}
       <FlatList
         data={librarians}
@@ -68,33 +69,45 @@ const ViewAllLibrarians = () => {
         renderItem={({item}) => {
           console.log(item);
           return (
-  
             <LibrarianCard
               librarian={item}
-
               someShiftsButton={
-               // button for viewing this librarian's shifts
+                // button for viewing this librarian's shifts
                 <Button
                   onPress={() => {
-                    AXIOS.get('/api/shift/view_librarian_shifts/?currentUserId=admin&librarianId='
-                    +item.idNum)
+                    AXIOS.get(
+                      '/api/shift/view_librarian_shifts/?currentUserId=admin&librarianId=' +
+                        item.idNum,
+                    )
                       .then(res => {
                         let shifts = [];
-                        shifts = res.data; 
+                        shifts = res.data;
                         // makes the shifts into a readable format, with each shift given a row (format "Monday 9:00-18:00")
-                        for (var i=0; i<shifts.length; i++) {
-                          shifts [i] = "\n" + (shifts[i].dayOfWeek[0] + shifts[i].dayOfWeek.slice(1).toLowerCase()
-                          + ' ' + shifts[i].startTime.substring(0, 5) +' - ' +  shifts[i].endTime.substring(0,5)); 
+                        for (var i = 0; i < shifts.length; i++) {
+                          shifts[i] =
+                            '\n' +
+                            (shifts[i].dayOfWeek[0] +
+                              shifts[i].dayOfWeek.slice(1).toLowerCase() +
+                              ' ' +
+                              shifts[i].startTime.substring(0, 5) +
+                              ' - ' +
+                              shifts[i].endTime.substring(0, 5));
                         }
                         // removes the comma between shifts
-                        let shiftsText = shifts.join(''); 
+                        let shiftsText = shifts.join('');
                         // displays the shifts via the response dialog box
-                        setResponse( item.firstName + ' ' + item.lastName + "'s " + 'Shifts:  ' + shiftsText);
-                        setError(''); 
-                        console.log(res.data);
+                        setTitle(
+                          item.firstName +
+                            ' ' +
+                            item.lastName +
+                            "'s " +
+                            'Shifts:  ',
+                        );
+                        setResponse(shiftsText);
+                        setError('');
                       })
                       .catch(e => {
-                       // setResponse("");
+                        // setResponse("");
                         if (e.response.data.error) {
                           setError(e.response.data.error);
                         } else {
@@ -104,7 +117,6 @@ const ViewAllLibrarians = () => {
                   }}>
                   View Their Shifts
                 </Button>
-  
               }
             />
           );
@@ -113,7 +125,7 @@ const ViewAllLibrarians = () => {
       {/*Dialog box shows errors or the librarian's shifts */}
       <Portal>
         <Dialog visible={error || response}>
-          <Dialog.Title>{error ? 'Error' : 'Response'}</Dialog.Title>
+          <Dialog.Title>{error ? 'Error' : title}</Dialog.Title>
           <Dialog.Content>
             <Paragraph>{error ? error : response}</Paragraph>
           </Dialog.Content>
@@ -121,6 +133,7 @@ const ViewAllLibrarians = () => {
             <Button
               onPress={() => {
                 setError('');
+                setTitle('');
                 setResponse('');
               }}>
               Ok
@@ -131,6 +144,5 @@ const ViewAllLibrarians = () => {
     </>
   );
 };
-
 
 export default ViewAllLibrarians;
