@@ -8,7 +8,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import BrowseAllItems from './src/pages/BrowseAllItems';
 import BrowseAllRooms from './src/pages/BrowseAllRooms';
 import BrowseItemReservations from './src/pages/BrowseItemReservations';
-import EditAccount from './src/pages/EditAccount';
+import Settings from './src/pages/Settings';
 
 import Homepage from './src/pages/Homepage';
 import Login from './src/pages/Login';
@@ -281,9 +281,9 @@ const App = () => {
                             currentIndex == 8 && {backgroundColor: 'lightgray'})
                           }
                           icon="account-edit-outline"
-                          label="Edit Account"
+                          label="Settings"
                           onPress={() => {
-                            props.navigation.navigate('EditAccount');
+                            props.navigation.navigate('Settings');
                           }}
                         />
                       </PaperDrawer.Section>
@@ -379,9 +379,9 @@ const App = () => {
               options={{title: 'View All Shifts'}}
             />
             <Drawer.Screen
-              name="EditAccount"
-              component={EditAccount}
-              options={{title: 'Edit Account'}}
+              name="Settings"
+              component={Settings}
+              options={{title: 'Settings'}}
             />
 
             <Drawer.Screen

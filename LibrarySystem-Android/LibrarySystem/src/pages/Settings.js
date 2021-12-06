@@ -8,7 +8,7 @@ var AXIOS = axios.create({
   baseURL: baseUrl,
 });
 
-const EditAccount = () => {
+const Settings = () => {
   return (
     <ScrollView>
       <Text>edit account page</Text>
@@ -16,4 +16,4 @@ const EditAccount = () => {
   );
 };
 
-export default EditAccount;
+export default Settings;
