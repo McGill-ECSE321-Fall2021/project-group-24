@@ -49,7 +49,6 @@ const ViewAllRoomBookings = () => {
         .then(res => {
           setRoomBookings(res.data);
           setLoading(false);
-          console.log(res.data);
         })
         .catch(e => {
           console.log(e);
@@ -72,7 +71,6 @@ const ViewAllRoomBookings = () => {
           getRoomBookings(setLoading, setRoomBookings);
         }}
         renderItem={({item}) => {
-          console.log(item);
           return (
             <RoomBookingCard
               roombooking={item}
@@ -89,7 +87,7 @@ const ViewAllRoomBookings = () => {
                       .then(res => {
                         setResponse('Room booking cancelled');
                         setError('');
-                        console.log(res.data);
+
                         setLoading(true);
                         getRoomBookings();
                       })

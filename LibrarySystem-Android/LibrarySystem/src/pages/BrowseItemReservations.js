@@ -44,11 +44,9 @@ const BrowseItemReservations = () => {
             reserves.map(reservation => {
               AXIOS.get('/api/items/' + reservation.itemNumber).then(res => {
                 var copyOfItems = items;
-                copyOfItems[reserves.indexOf(reservation)] = reserves;
+                copyOfItems[reserves.indexOf(reservation)] = res.data;
                 setItems(copyOfItems);
-                console.log('hello');
 
-                console.log(reservation);
                 if (items.length == reserves.length) {
                   setLoading(false);
                 }
@@ -82,8 +80,6 @@ const BrowseItemReservations = () => {
                     setTimeout(() => {
                       setLoading(false);
                     }, 1000);
-                    console.log('heeeeee');
-                    console.log(items);
                   }
                 },
               );
@@ -118,8 +114,8 @@ const BrowseItemReservations = () => {
           renderItem={({item, index}) => {
             return (
               <ItemCard
-                key={index}
-                item={item}
+                key={items}
+                item={items[index]}
                 reservationDetails={reservations[index]}
                 buttons={
                   <>

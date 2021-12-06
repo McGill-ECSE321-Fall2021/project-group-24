@@ -1,18 +1,11 @@
 import React, {useState} from 'react';
 import {View, Image, Text} from 'react-native';
-import {
-  Card,
-  Title,
-  Paragraph,
-  ActivityIndicator,
-  Divider,
-} from 'react-native-paper';
+import {Card, Title, Paragraph} from 'react-native-paper';
 
 //this component takes in an 'item' object as a parameter and a buttons object that contains
 //any buttons that we want to render.
 const ItemCard = ({item, reservationDetails, buttons}) => {
   const [loading, setLoading] = useState(true);
-
   return (
     <Card
       style={{
@@ -36,7 +29,6 @@ const ItemCard = ({item, reservationDetails, buttons}) => {
             loadingIndicatorSource={<Text>loading</Text>}
             onLoadEnd={() => {
               setLoading(false);
-              console.log('loaded');
             }}
             source={{
               uri: item.imageUrl,
