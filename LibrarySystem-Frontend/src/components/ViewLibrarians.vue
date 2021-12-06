@@ -37,12 +37,12 @@ Every librarian can view each other's shifts
               "
             >
               <p style="text-align: left">
-                <span v-if="!currentUser.isLibrarian">
+                <span v-if="currentUser.username == "admin"">
                   <br />
                   <strong>Username:</strong>
                   {{ librarian.username }}
                 </span>
-                <span v-if="!currentUser.isLibrarian">
+                <span v-if="currentUser.username == "admin"">
                   <br />
                   <strong>Librarian id:</strong>
                   {{ librarian.idNum }}
@@ -73,7 +73,7 @@ Every librarian can view each other's shifts
                 <a-button type="primary" @click="viewShiftsPressed(librarian)">
                   View Shifts
                 </a-button>
-                <a-button v-if="!currentUser.isLibrarian" type="danger">
+                <a-button v-if="currentUser.username=="admin"" type="danger">
                   <router-link :to="{ name: 'DeleteLibrarian' }">
                     Delete Librarian
                   </router-link>
@@ -85,7 +85,7 @@ Every librarian can view each other's shifts
       </div>
       <br />
       <div>
-        <a-button v-if="!currentUser.isLibrarian" type="primary">
+        <a-button v-if="currentUser.username=="admin"" type="primary">
           <router-link :to="{ name: 'AddLibrarian' }">
             Add Librarian
           </router-link>
