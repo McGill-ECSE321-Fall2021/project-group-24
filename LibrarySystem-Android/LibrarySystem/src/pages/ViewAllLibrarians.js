@@ -38,7 +38,6 @@ const ViewAllLibrarians = () => {
         .then(res => {
           setLibrarians(res.data);
           setLoading(false);
-          console.log(res.data);
         })
         .catch(e => {
           console.log(e);
@@ -67,7 +66,6 @@ const ViewAllLibrarians = () => {
           getLibrarians(setLoading, setLibrarians);
         }}
         renderItem={({item}) => {
-          console.log(item);
           return (
             <LibrarianCard
               librarian={item}

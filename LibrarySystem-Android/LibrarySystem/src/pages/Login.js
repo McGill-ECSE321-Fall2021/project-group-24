@@ -42,7 +42,6 @@ const Login = ({navigation}) => {
         />
         <Button
           onPress={() => {
-            console.log('hi');
             AXIOS.post(
               '/api/user/login' +
                 '?username=' +

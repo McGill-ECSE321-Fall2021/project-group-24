@@ -34,7 +34,6 @@ const ViewAllPatrons = () => {
         .then(res => {
           setPatrons(res.data);
           setLoading(false);
-          console.log(res.data);
         })
         .catch(e => {
           console.log(e);
@@ -56,7 +55,6 @@ const ViewAllPatrons = () => {
           getPatrons(setLoading, setPatrons);
         }}
         renderItem={({item}) => {
-          console.log(item);
           return (
             <PatronCard
               patron={item}
@@ -73,7 +71,7 @@ const ViewAllPatrons = () => {
                       .then(res => {
                         setResponse('Patron deleted');
                         setError('');
-                        console.log(res.data);
+
                         setLoading(true);
                         getPatrons();
                       })
@@ -94,10 +92,9 @@ const ViewAllPatrons = () => {
                 <Button
                   onPress={() => {
                     AXIOS.post('/api/librarians/verify/?idNum=' + item.idNum)
-                      .then(res => {
+                      .then(() => {
                         setResponse('Patron succesfully verified');
                         setError('');
-                        console.log(res.data);
                         setLoading(true);
                         getPatrons();
                       })
