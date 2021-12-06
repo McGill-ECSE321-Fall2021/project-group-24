@@ -19,9 +19,7 @@
       key="AddLibraryHour"
       type="primary"
       v-if="
-        currentUser.username &&
-        !currentUser.isPatron &&
-        !currentUser.isLibrarian
+     currentUser.username=='admin'
       "
     >
       <router-link :to="{ name: 'AddLibraryHour' }">
@@ -33,9 +31,7 @@
       key="RemoveLibraryHour"
       type="primary"
       v-if="
-        currentUser.username &&
-        !currentUser.isPatron &&
-        !currentUser.isLibrarian &&
+        currentUser.username=='admin' &&
         hours.length != 0
       "
     >
@@ -48,9 +44,7 @@
       key="ModifyLibraryHour"
       type="primary"
       v-if="
-        currentUser.username &&
-        !currentUser.isPatron &&
-        !currentUser.isLibrarian &&
+        currentUser.username=='admin' &&
         hours.length != 0
       "
     >
