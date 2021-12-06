@@ -18,7 +18,7 @@ export default {
     return {
       shifts: [],
       ...this.$route.params, // receives the librarian that has been "sent" from ViewLibrains webpage
-      currentUser: this.$store.state.currentUser,
+      currentUser: JSON.parse(sessionStorage.getItem("currentUser")),
     };
   },
 
