@@ -13,8 +13,6 @@ var AXIOS = axios.create({
 });
 
 const Homepage = ({navigation}) => {
-  const [error, setError] = useState('');
-
   const [hour, setHour] = useState([]);
   DefaultTheme.getHours = getHours;
 
@@ -37,11 +35,7 @@ const Homepage = ({navigation}) => {
         setHour(hours);
       })
       .catch(e => {
-        if (e.response.data.error) {
-          setError(e.response.data.error);
-        } else {
-          setError(e.response.data);
-        }
+        console.log(e);
       });
   };
 

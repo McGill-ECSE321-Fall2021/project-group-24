@@ -58,7 +58,7 @@ const ReserveRoom = ({route, navigation}) => {
         ':' +
         (endTime.getMinutes() == 0 ? '00' : endTime.getMinutes()),
     )
-      .then(res => {
+      .then(() => {
         setResponse('Room Booking Created');
         setError('');
         navigation.navigate('ViewAllRoomBookings');

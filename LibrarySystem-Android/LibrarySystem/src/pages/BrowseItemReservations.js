@@ -1,16 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, FlatList, Animated} from 'react-native';
+import {FlatList} from 'react-native';
 import axios from 'axios';
-import {ScrollView} from 'react-native-gesture-handler';
+
 import {
   Button,
-  Card,
-  Text,
   Portal,
   Dialog,
   Paragraph,
   DefaultTheme,
-  Searchbar,
   ActivityIndicator,
   Colors,
 } from 'react-native-paper';
@@ -119,10 +116,6 @@ const BrowseItemReservations = () => {
             getItemReservations();
           }}
           renderItem={({item, index}) => {
-            console.log('item index');
-
-            console.log(items[index]);
-
             return (
               <ItemCard
                 key={index}
@@ -138,7 +131,7 @@ const BrowseItemReservations = () => {
                             '?currentUserId=' +
                             DefaultTheme.currentUser.idNum,
                         )
-                          .then(res => {
+                          .then(() => {
                             setResponse('Item Renewed!');
                             setError('');
                             getItemReservations();

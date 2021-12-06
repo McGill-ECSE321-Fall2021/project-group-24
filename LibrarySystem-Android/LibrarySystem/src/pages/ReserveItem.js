@@ -39,7 +39,7 @@ const ReserveItem = ({route, navigation}) => {
         route.params.item.itemNumber +
         '&isCheckedOut=false',
     )
-      .then(res => {
+      .then(() => {
         setResponse('Item Reservation Created');
         setError('');
       })

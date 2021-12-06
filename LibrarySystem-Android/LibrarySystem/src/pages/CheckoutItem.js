@@ -12,10 +12,8 @@ import {
   Dialog,
   Portal,
   Paragraph,
-  Headline,
 } from 'react-native-paper';
-import DatePicker from 'react-native-date-picker';
-import moment from 'moment';
+
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
 //this is from vue js file
 var AXIOS = axios.create({
@@ -23,7 +21,6 @@ var AXIOS = axios.create({
 });
 
 const CheckoutItem = ({route, navigation}) => {
-  console.log(route.params);
   const [idNum, setIdNum] = useState(
     route.params.idNum ? route.params.idNum : '',
   );
@@ -40,7 +37,7 @@ const CheckoutItem = ({route, navigation}) => {
         '?currentUserId=' +
         DefaultTheme.currentUser.idNum,
     )
-      .then(res => {
+      .then(() => {
         setResponse('Item Checked Out');
         setError('');
       })
