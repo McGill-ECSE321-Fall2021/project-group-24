@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, FlatList} from 'react-native';
+import {View, FlatList, Animated} from 'react-native';
 import axios from 'axios';
 import {ScrollView} from 'react-native-gesture-handler';
 import {
@@ -24,12 +24,10 @@ var AXIOS = axios.create({
 const BrowseItemReservations = () => {
   const [loading, setLoading] = useState(true);
   const [reservations, setReservations] = useState([]);
-  const [itemReservations, setItemReservations] = useState([]);
-  const [itemResults, setItemResults] = useState([]);
+
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
   const [response, setResponse] = useState('');
-  const [results, setResults] = useState([]);
 
   const getItemReservations = () => {
     if (DefaultTheme.currentUser.isPatron) {
@@ -42,11 +40,24 @@ const BrowseItemReservations = () => {
       )
         .then(res => {
           setReservations(res.data);
-          setItemReservations(res.data);
-          console.log('ITEM reservations if');
-          console.log(res.data);
-          getItems(res.data);
-          setResults(res.data);
+          var reserves = res.data;
+          if (reserves.length == 0) {
+            setLoading(false);
+          } else {
+            reserves.map(reservation => {
+              AXIOS.get('/api/items/' + reservation.itemNumber).then(res => {
+                var copyOfItems = items;
+                copyOfItems[reserves.indexOf(reservation)] = reserves;
+                setItems(copyOfItems);
+                console.log('hello');
+
+                console.log(reservation);
+                if (items.length == reserves.length) {
+                  setLoading(false);
+                }
+              });
+            });
+          }
         })
         .catch(e => {
           console.log(e);
@@ -59,13 +70,28 @@ const BrowseItemReservations = () => {
       )
         .then(res => {
           setReservations(res.data);
-          setItemReservations(res.data);
-          console.log('reservations');
-          console.log(reservations.length);
-          console.log('ITEM RESERVATIONS');
-          console.log(itemReservations.length);
-          getItems(res.data);
-          setResults(res.data);
+          var reserves = res.data;
+          if (reserves.length == 0) {
+            setLoading(false);
+          } else {
+            reserves.map(reservation => {
+              AXIOS.get('/api/items/' + reservation.itemNumber).then(
+                itemRes => {
+                  var copyOfItems = items;
+                  copyOfItems[reserves.indexOf(reservation)] = itemRes.data;
+                  setItems(copyOfItems);
+
+                  if (items.length == reserves.length) {
+                    setTimeout(() => {
+                      setLoading(false);
+                    }, 1000);
+                    console.log('heeeeee');
+                    console.log(items);
+                  }
+                },
+              );
+            });
+          }
         })
         .catch(e => {
           console.log(e);
@@ -73,80 +99,11 @@ const BrowseItemReservations = () => {
     }
   };
 
-  const getItems = copyOfReservations => {
-    console.log('copy of res');
-
-    console.log(copyOfReservations);
-    if (copyOfReservations.length == 0) {
-      console.log('length is 0');
-      setLoading(false);
-    } else {
-      console.log('copyOfReservations');
-
-      console.log(copyOfReservations);
-      copyOfReservations.map(reservation => {
-        AXIOS.get('/api/items/' + reservation.itemNumber).then(res => {
-          var copyOfItems = items;
-          copyOfItems[copyOfReservations.indexOf(reservation)] = res.data;
-          setItems(copyOfItems);
-          console.log('hello');
-
-          console.log(reservation);
-          if (items.length == copyOfReservations.length) {
-            setItemResults(items);
-
-            setLoading(false);
-          }
-        });
-      });
-    }
-  };
-
-  const search = query => {
-    setResults(
-      items.filter(item => {
-        if (
-          item.itemTitle.toLowerCase().includes(query.toLowerCase()) ||
-          item.itemNumber.toLowerCase().includes(query.toLowerCase()) ||
-          item.description.toLowerCase().includes(query.toLowerCase()) ||
-          (item.author &&
-            item.author.toLowerCase().includes(query.toLowerCase())) ||
-          (item.genre &&
-            item.genre.toLowerCase().includes(query.toLowerCase())) ||
-          (item.publisher &&
-            item.publisher.toLowerCase().includes(query.toLowerCase())) ||
-          (item.issueNumber &&
-            item.issueNumber.toLowerCase().includes(query.toLowerCase())) ||
-          (item.movieCase &&
-            item.movieCase.toLowerCase().includes(query.toLowerCase())) ||
-          (item.productionCompany &&
-            item.productionCompany
-              .toLowerCase()
-              .includes(query.toLowerCase())) ||
-          (item.director &&
-            item.director.toLowerCase().includes(query.toLowerCase())) ||
-          (item.producer &&
-            item.producer.toLowerCase().includes(query.toLowerCase())) ||
-          (item.artist &&
-            item.artist.toLowerCase().includes(query.toLowerCase())) ||
-          (item.recordingLabel &&
-            item.recordingLabel.toLowerCase().includes(query.toLowerCase())) ||
-          (item.type && item.type.toLowerCase().includes(query.toLowerCase()))
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      }),
-    );
-  };
-
   useEffect(() => {
     getItemReservations();
   }, []);
   return (
     <>
-      <Searchbar onChangeText={search} />
       {loading ? (
         <ActivityIndicator
           style={{flex: 1}}
@@ -155,7 +112,7 @@ const BrowseItemReservations = () => {
         />
       ) : (
         <FlatList
-          data={itemReservations}
+          data={items}
           refreshing={loading}
           onRefresh={() => {
             setLoading(true);
@@ -168,7 +125,8 @@ const BrowseItemReservations = () => {
 
             return (
               <ItemCard
-                item={items[index]}
+                key={index}
+                item={item}
                 reservationDetails={reservations[index]}
                 buttons={
                   <>
