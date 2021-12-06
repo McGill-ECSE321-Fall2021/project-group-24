@@ -14,6 +14,7 @@ var AXIOS = axios.create({
 
 const Homepage = ({navigation}) => {
   const [error, setError] = useState('');
+
   const [hour, setHour] = useState([]);
   DefaultTheme.getHours = getHours;
 
