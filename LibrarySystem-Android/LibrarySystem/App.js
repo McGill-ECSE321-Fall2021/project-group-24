@@ -42,6 +42,7 @@ import {
 } from 'react-native-paper';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -149,7 +150,9 @@ const App = () => {
             drawerContent={props => {
               var currentIndex = props.navigation.getState().index;
               return (
+               
                 <>
+                <ScrollView>
                   <View style={{flex: 1}}>
                     <Title style={{alignSelf: 'center', paddingTop: '5%'}}>
                       {DefaultTheme.currentUser.username
@@ -219,10 +222,11 @@ const App = () => {
                         />
                       )}
                     </PaperDrawer.Section>
+
                     {DefaultTheme.currentUser.username &&
                       !DefaultTheme.currentUser.isPatron && (
                         <PaperDrawer.Section>
-                          {DefaultTheme.currentUser.idNum == 'admin' && (
+                          {!DefaultTheme.currentUser.isPatron && (
                             <PaperDrawer.Item
                               icon="badge-account-horizontal-outline"
                               label="View All Librarians"
@@ -337,7 +341,10 @@ const App = () => {
                         props.navigation.navigate('Login');
                       }}
                     />
+
                   )}
+                </ScrollView> 
+
                 </>
               );
             }}>
