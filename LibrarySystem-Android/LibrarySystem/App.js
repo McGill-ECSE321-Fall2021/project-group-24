@@ -223,7 +223,7 @@ const App = () => {
                     {DefaultTheme.currentUser.username &&
                       !DefaultTheme.currentUser.isPatron && (
                         <PaperDrawer.Section>
-                          {DefaultTheme.currentUser.idNum == 'admin' && (
+                          {!DefaultTheme.currentUser.isPatron && (
                             <PaperDrawer.Item
                               icon="badge-account-horizontal-outline"
                               label="View All Librarians"
