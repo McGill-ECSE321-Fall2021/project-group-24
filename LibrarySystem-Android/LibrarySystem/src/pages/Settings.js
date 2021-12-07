@@ -202,50 +202,6 @@ const Settings = ({navigation}) => {
             }}>
             Change Password
           </Button>
-
-          <Headline
-            style={{
-              textAlign: 'center',
-              fontWeight: 'bold',
-              marginVertical: '15%',
-            }}>
-            Delete Account:
-          </Headline>
-          <TextInput
-            mode="outlined"
-            label={'UserID'}
-            value={enterUserID}
-            onChangeText={saveEnteredUserID}
-            placeholder="Enter ID of account you want to delete."
-          />
-
-          <Button
-            mode="outlined"
-            onPress={() => {
-              AXIOS.delete(
-                '/api/patron/delete_patron/' +
-                  enterUserID +
-                  '/?currentUserId=' +
-                  userID,
-              )
-                .then(res => {
-                  if (res.status == 200) {
-                    setResponse('Deleted account successfully.');
-                    setError('');
-
-                    navigation.navigate('Homepage');
-                  }
-                })
-                .catch(e => {
-                  if (e.response.data.error) {
-                    setError(e.response.data.error);
-                  } else {
-                    setError(e.response.data);
-                  }
-                });
-            }}>
-            Delete Account
-          </Button>
         </View>
       </ScrollView>
 
