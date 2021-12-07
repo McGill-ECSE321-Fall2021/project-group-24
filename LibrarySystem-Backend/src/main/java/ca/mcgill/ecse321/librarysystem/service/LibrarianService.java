@@ -100,7 +100,7 @@ public class LibrarianService {
       );
     }
   }
-
+  // Author: Kevin. Method returns a list of all the librarians
   @Transactional
   public List<Librarian> getAllLibrarians(String userId) {
    
