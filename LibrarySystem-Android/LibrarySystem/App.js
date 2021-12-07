@@ -42,7 +42,7 @@ import {
 } from 'react-native-paper';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -103,8 +103,6 @@ const RoomsStack = () => {
   );
 };
 
-
-
 const getCurrentUser = () => {
   AsyncStorage.getItem('currentUser').then(value => {
     if (value == null) {
@@ -150,121 +148,145 @@ const App = () => {
             drawerContent={props => {
               var currentIndex = props.navigation.getState().index;
               return (
-               
                 <>
-                <ScrollView>
-                  <View style={{flex: 1}}>
-                    <Title style={{alignSelf: 'center', paddingTop: '5%'}}>
-                      {DefaultTheme.currentUser.username
-                        ? 'Hi, ' + DefaultTheme.currentUser.firstName
-                        : 'Not Logged In'}
-                    </Title>
-                    <PaperDrawer.Section style={{marginVertical: '3.5%'}}>
-                      <PaperDrawer.Item
-                        style={
-                          ({marginBottom: '3.5%'},
-                          currentIndex == 0 && {backgroundColor: 'lightgray'})
-                        }
-                        icon="home"
-                        label="Homepage"
-                        onPress={() => {
-                          props.navigation.navigate('Homepage');
-                        }}
-                      />
-                    </PaperDrawer.Section>
-                    <PaperDrawer.Section style={{marginVertical: '3.5%'}}>
-                      <PaperDrawer.Item
-                        style={
-                          currentIndex == 1 && {backgroundColor: 'lightgray'}
-                        }
-                        icon="bookshelf"
-                        label="Items"
-                        onPress={() => {
-                          props.navigation.navigate('ItemsStack');
-                        }}
-                      />
-                      {DefaultTheme.currentUser.username && (
+                  <ScrollView>
+                    <View style={{flex: 1}}>
+                      <Title style={{alignSelf: 'center', paddingTop: '5%'}}>
+                        {DefaultTheme.currentUser.username
+                          ? 'Hi, ' + DefaultTheme.currentUser.firstName
+                          : 'Not Logged In'}
+                      </Title>
+                      <PaperDrawer.Section style={{marginVertical: '3.5%'}}>
                         <PaperDrawer.Item
                           style={
                             ({marginBottom: '3.5%'},
-                            currentIndex == 2 && {backgroundColor: 'lightgray'})
+                            currentIndex == 0 && {backgroundColor: 'lightgray'})
                           }
-                          icon="book-account"
-                          label="Browse Item Reservations"
+                          icon="home"
+                          label="Homepage"
                           onPress={() => {
-                            props.navigation.navigate('ItemReservationsStack');
+                            props.navigation.navigate('Homepage');
                           }}
                         />
-                      )}
-                    </PaperDrawer.Section>
-                    <PaperDrawer.Section style={{marginVertical: '3.5%'}}>
-                      <PaperDrawer.Item
-                        icon="google-classroom"
-                        label="Rooms"
-                        style={
-                          currentIndex == 3 && {backgroundColor: 'lightgray'}
-                        }
-                        onPress={() => {
-                          props.navigation.navigate('RoomsStack');
-                        }}
-                      />
-                      {DefaultTheme.currentUser.username && (
+                      </PaperDrawer.Section>
+                      <PaperDrawer.Section style={{marginVertical: '3.5%'}}>
                         <PaperDrawer.Item
                           style={
-                            ({marginBottom: '3.5%'},
-                            currentIndex == 4 && {backgroundColor: 'lightgray'})
+                            currentIndex == 1 && {backgroundColor: 'lightgray'}
                           }
-                          icon="calendar-clock"
-                          label="View All Room Bookings"
+                          icon="bookshelf"
+                          label="Items"
                           onPress={() => {
-                            props.navigation.navigate('ViewAllRoomBookings');
+                            props.navigation.navigate('ItemsStack');
                           }}
                         />
-                      )}
-                    </PaperDrawer.Section>
+                        {DefaultTheme.currentUser.username && (
+                          <PaperDrawer.Item
+                            style={
+                              ({marginBottom: '3.5%'},
+                              currentIndex == 2 && {
+                                backgroundColor: 'lightgray',
+                              })
+                            }
+                            icon="book-account"
+                            label="Browse Item Reservations"
+                            onPress={() => {
+                              props.navigation.navigate(
+                                'ItemReservationsStack',
+                              );
+                            }}
+                          />
+                        )}
+                      </PaperDrawer.Section>
+                      <PaperDrawer.Section style={{marginVertical: '3.5%'}}>
+                        <PaperDrawer.Item
+                          icon="google-classroom"
+                          label="Rooms"
+                          style={
+                            currentIndex == 3 && {backgroundColor: 'lightgray'}
+                          }
+                          onPress={() => {
+                            props.navigation.navigate('RoomsStack');
+                          }}
+                        />
+                        {DefaultTheme.currentUser.username && (
+                          <PaperDrawer.Item
+                            style={
+                              ({marginBottom: '3.5%'},
+                              currentIndex == 4 && {
+                                backgroundColor: 'lightgray',
+                              })
+                            }
+                            icon="calendar-clock"
+                            label="View All Room Bookings"
+                            onPress={() => {
+                              props.navigation.navigate('ViewAllRoomBookings');
+                            }}
+                          />
+                        )}
+                      </PaperDrawer.Section>
 
-                    {DefaultTheme.currentUser.username &&
-                      !DefaultTheme.currentUser.isPatron && (
-                        <PaperDrawer.Section>
-                          {!DefaultTheme.currentUser.isPatron && (
+                      {DefaultTheme.currentUser.username &&
+                        !DefaultTheme.currentUser.isPatron && (
+                          <PaperDrawer.Section>
+                            {!DefaultTheme.currentUser.isPatron && (
+                              <PaperDrawer.Item
+                                icon="badge-account-horizontal-outline"
+                                label="View All Librarians"
+                                style={
+                                  currentIndex == 5 && {
+                                    backgroundColor: 'lightgray',
+                                  }
+                                }
+                                onPress={() => {
+                                  props.navigation.navigate(
+                                    'ViewAllLibrarians',
+                                  );
+                                }}
+                              />
+                            )}
                             <PaperDrawer.Item
-                              icon="badge-account-horizontal-outline"
-                              label="View All Librarians"
+                              icon="account-group"
+                              label="View All Patrons"
                               style={
-                                currentIndex == 5 && {
+                                currentIndex == 6 && {
                                   backgroundColor: 'lightgray',
                                 }
                               }
                               onPress={() => {
-                                props.navigation.navigate('ViewAllLibrarians');
+                                props.navigation.navigate('ViewAllPatrons');
                               }}
                             />
-                          )}
-                          <PaperDrawer.Item
-                            icon="account-group"
-                            label="View All Patrons"
-                            style={
-                              currentIndex == 6 && {
-                                backgroundColor: 'lightgray',
+                            <PaperDrawer.Item
+                              style={
+                                ({marginBottom: '3.5%'},
+                                currentIndex == 7 && {
+                                  backgroundColor: 'lightgray',
+                                })
                               }
-                            }
-                            onPress={() => {
-                              props.navigation.navigate('ViewAllPatrons');
-                            }}
-                          />
-                          <PaperDrawer.Item
-                            style={
-                              ({marginBottom: '3.5%'},
-                              currentIndex == 7 && {
-                                backgroundColor: 'lightgray',
-                              })
-                            }
-                            icon="timetable"
-                            label="View All Shifts"
-                            onPress={() => {
-                              props.navigation.navigate('ViewAllShifts');
-                            }}
-                          />
+                              icon="timetable"
+                              label="View All Shifts"
+                              onPress={() => {
+                                props.navigation.navigate('ViewAllShifts');
+                              }}
+                            />
+                            <PaperDrawer.Item
+                              style={
+                                ({marginBottom: '3.5%'},
+                                currentIndex == 8 && {
+                                  backgroundColor: 'lightgray',
+                                })
+                              }
+                              icon="account-plus"
+                              label="Sign Up For Patron"
+                              onPress={() => {
+                                props.navigation.navigate('SignUpForPatron');
+                              }}
+                            />
+                          </PaperDrawer.Section>
+                        )}
+                      {DefaultTheme.currentUser.username && (
+                        <PaperDrawer.Section style={{marginTop: '3.5%'}}>
                           <PaperDrawer.Item
                             style={
                               ({marginBottom: '3.5%'},
@@ -272,79 +294,63 @@ const App = () => {
                                 backgroundColor: 'lightgray',
                               })
                             }
-                            icon="account-plus"
-                            label="Sign Up For Patron"
+                            icon="account-edit-outline"
+                            label="Settings"
                             onPress={() => {
-                              props.navigation.navigate('SignUpForPatron');
+                              props.navigation.navigate('Settings');
                             }}
                           />
                         </PaperDrawer.Section>
                       )}
-                    {DefaultTheme.currentUser.username && (
-                      <PaperDrawer.Section style={{marginTop: '3.5%'}}>
-                        <PaperDrawer.Item
-                          style={
-                            ({marginBottom: '3.5%'},
-                            currentIndex == 8 && {backgroundColor: 'lightgray'})
-                          }
-                          icon="account-edit-outline"
-                          label="Settings"
-                          onPress={() => {
-                            props.navigation.navigate('Settings');
-                          }}
-                        />
-                      </PaperDrawer.Section>
+                    </View>
+                    {DefaultTheme.currentUser.username ? (
+                      <PaperDrawer.Item
+                        style={{backgroundColor: '#FF968A'}}
+                        icon="account"
+                        label="Logout"
+                        onPress={() => {
+                          AXIOS.post(
+                            'api/user/logout/' +
+                              DefaultTheme.currentUser.username,
+                          )
+                            .then(res => {
+                              AsyncStorage.setItem(
+                                'currentUser',
+                                JSON.stringify({
+                                  username: null,
+                                  password: null,
+                                  isPatron: null,
+                                  first: null,
+                                }),
+                              );
+                              getCurrentUser();
+                            })
+                            .catch(e => {
+                              AsyncStorage.setItem(
+                                'currentUser',
+                                JSON.stringify({
+                                  username: null,
+                                  password: null,
+                                  isPatron: null,
+                                  first: null,
+                                }),
+                              );
+                              getCurrentUser();
+                              console.log(e);
+                            });
+                        }}
+                      />
+                    ) : (
+                      <PaperDrawer.Item
+                        style={{backgroundColor: '#FF968A'}}
+                        icon="account"
+                        label="Login"
+                        onPress={() => {
+                          props.navigation.navigate('Login');
+                        }}
+                      />
                     )}
-                  </View>
-                  {DefaultTheme.currentUser.username ? (
-                    <PaperDrawer.Item
-                      style={{backgroundColor: '#FF968A'}}
-                      icon="account"
-                      label="Logout"
-                      onPress={() => {
-                        AXIOS.post(
-                          'api/user/logout/' +
-                            DefaultTheme.currentUser.username,
-                        )
-                          .then(res => {
-                            AsyncStorage.setItem(
-                              'currentUser',
-                              JSON.stringify({
-                                username: null,
-                                password: null,
-                                isPatron: null,
-                                first: null,
-                              }),
-                            );
-                            getCurrentUser();
-                          })
-                          .catch(e => {
-                            AsyncStorage.setItem(
-                              'currentUser',
-                              JSON.stringify({
-                                username: null,
-                                password: null,
-                                isPatron: null,
-                                first: null,
-                              }),
-                            );
-                            console.log(e);
-                          });
-                      }}
-                    />
-                  ) : (
-                    <PaperDrawer.Item
-                      style={{backgroundColor: '#FF968A'}}
-                      icon="account"
-                      label="Login"
-                      onPress={() => {
-                        props.navigation.navigate('Login');
-                      }}
-                    />
-
-                  )}
-                </ScrollView> 
-
+                  </ScrollView>
                 </>
               );
             }}>
