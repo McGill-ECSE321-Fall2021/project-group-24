@@ -69,6 +69,8 @@ const ItemsStack = () => {
   );
 };
 
+// stack navigation for the view item reservation page, screens stack on top of each other as you click buttons on the screen
+// so that you can press the back button to go back
 const ItemReservationsStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -86,6 +88,7 @@ const ItemReservationsStack = () => {
   );
 };
 
+// stack navigation for view all rooms
 const RoomsStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -142,6 +145,7 @@ const App = () => {
 
   if (!loading) {
     return (
+      // custimized component for the drawer navigation bar using react-native-paper
       <PaperProvider>
         <NavigationContainer>
           <Drawer.Navigator
@@ -150,12 +154,14 @@ const App = () => {
               return (
                 <>
                   <ScrollView>
+                    {/* greeting for the user that says hi,+user's first name or not logged in  */}
                     <View style={{flex: 1}}>
                       <Title style={{alignSelf: 'center', paddingTop: '5%'}}>
                         {DefaultTheme.currentUser.username
                           ? 'Hi, ' + DefaultTheme.currentUser.firstName
                           : 'Not Logged In'}
                       </Title>
+                      {/* pages that are similar (room/roombooking) are organized in a section, so that  */}
                       <PaperDrawer.Section style={{marginVertical: '3.5%'}}>
                         <PaperDrawer.Item
                           style={
@@ -180,6 +186,8 @@ const App = () => {
                             props.navigation.navigate('ItemsStack');
                           }}
                         />
+                        {/* browse item reservation is only visible to users that are logged in, 
+                        so it is are displayed only DefaultTheme.currentUser.username is not null  */}
                         {DefaultTheme.currentUser.username && (
                           <PaperDrawer.Item
                             style={
@@ -226,6 +234,8 @@ const App = () => {
                         )}
                       </PaperDrawer.Section>
 
+                      {/* View All Librarians is only visible to librarians that are logged in, 
+                        so it is are displayed only DefaultTheme.currentUser.username is not null AND not a patron */}
                       {DefaultTheme.currentUser.username &&
                         !DefaultTheme.currentUser.isPatron && (
                           <PaperDrawer.Section>
@@ -354,6 +364,7 @@ const App = () => {
                 </>
               );
             }}>
+            {/* navigation for each screen */}
             <Drawer.Screen
               name="Homepage"
               component={Homepage}
