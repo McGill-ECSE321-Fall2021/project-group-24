@@ -6,11 +6,19 @@ It uses a SQL, relational table based database hosted by Heroku.
 In order to implement our library booking system solution, we watched the tutorials for ECSE 321 by Tony.
 Frontend was build with vue.js, and is available at[https://librarysystem-frontend-321.herokuapp.com/#/](https://librarysystem-frontend-321.herokuapp.com/#/)
 
+# [Project Report](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Home)
+
+# [Sprint 4](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Sprint-4)
+* [Android app documentation](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Android-App-Documentation)
+* [Frontend website documentation](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Frontend-Website-Documentation)
+* [Member Contributions](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Sprint-4-Member-Contributions)
+* [Meeting Minutes & Design Decisions](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Deliverable-4-Meeting-Minutes-&-Design-Decisions)
+
 # [Sprint 3](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Sprint-3)
 * [Architecture Model](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Architecture-Model)
 * [Meeting Minutes](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Meeting-Minutes-Spint-3)
 * [Member Contributions](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Member-Contributions-Sprint-3)
-* [Deployed Frontend](https://librarysystem-frontend-321.herokuapp.com/#/)
+* [Deployment Documentation](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Deployment-Documentation)
 
 # [Sprint 2](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Sprint-2)
 * [Software QA Plan and Report](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Software-Quality-Assurance-Plan-and-Report)
@@ -31,6 +39,5 @@ Frontend was build with vue.js, and is available at[https://librarysystem-fronte
 * [Meeting Minutes](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Sprint-1:-Meeting-Minutes)
 * [Success Spectrum](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Sprint-1:-Success-Spectrum)
 * [Testing Documentation](https://github.com/McGill-ECSE321-Fall2021/project-group-24/wiki/Testing-Documentation)
-
 Selena Jin, Saagar Arya, Kevin Nam, Nafis Rahman, Arman Shroff-Mehrabadi, Nima Hemati
 
