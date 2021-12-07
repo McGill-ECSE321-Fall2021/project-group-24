@@ -105,7 +105,7 @@ const BrowseItemReservations = () => {
         />
       ) : (
         <FlatList
-          data={items}
+          data={reservations}
           refreshing={loading}
           onRefresh={() => {
             setLoading(true);
@@ -114,7 +114,7 @@ const BrowseItemReservations = () => {
           renderItem={({item, index}) => {
             return (
               <ItemCard
-                key={items}
+                key={index}
                 item={items[index]}
                 reservationDetails={reservations[index]}
                 buttons={
