@@ -86,7 +86,7 @@ const ReserveItem = ({route, navigation}) => {
                   } else {
                     setError('');
                     setResponse('');
-                    navigation.navigate('ItemReservationsStack');
+                    navigation.pop();
                   }
                 }}>
                 Confirm

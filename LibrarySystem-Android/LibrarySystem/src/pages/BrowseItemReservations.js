@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Colors,
 } from 'react-native-paper';
+import {useIsFocused} from '@react-navigation/native';
 import ItemCard from '../components/ItemCard';
 const baseUrl = 'https://librarysystem-backend-321.herokuapp.com/';
 //this is from vue js file
@@ -41,17 +42,21 @@ const BrowseItemReservations = () => {
           if (reserves.length == 0) {
             setLoading(false);
           } else {
-            reserves.map(reservation => {
-              AXIOS.get('/api/items/' + reservation.itemNumber).then(res => {
-                var copyOfItems = items;
-                copyOfItems[reserves.indexOf(reservation)] = res.data;
-                setItems(copyOfItems);
+            Promise.all(
+              reserves.map(async reservation => {
+                await AXIOS.get('/api/items/' + reservation.itemNumber).then(
+                  res => {
+                    var copyOfItems = items;
+                    copyOfItems[reserves.indexOf(reservation)] = res.data;
+                    setItems(copyOfItems);
 
-                if (items.length == reserves.length) {
-                  setLoading(false);
-                }
-              });
-            });
+                    if (items.length == reserves.length) {
+                      setLoading(false);
+                    }
+                  },
+                );
+              }),
+            );
           }
         })
         .catch(e => {
@@ -69,21 +74,22 @@ const BrowseItemReservations = () => {
           if (reserves.length == 0) {
             setLoading(false);
           } else {
-            reserves.map(reservation => {
-              AXIOS.get('/api/items/' + reservation.itemNumber).then(
-                itemRes => {
-                  var copyOfItems = items;
-                  copyOfItems[reserves.indexOf(reservation)] = itemRes.data;
-                  setItems(copyOfItems);
+            Promise.all(
+              reserves.map(async reservation => {
+                await AXIOS.get('/api/items/' + reservation.itemNumber).then(
+                  itemRes => {
+                    console.log('doing');
+                    var copyOfItems = items;
+                    copyOfItems[reserves.indexOf(reservation)] = itemRes.data;
+                    setItems(copyOfItems);
 
-                  if (items.length == reserves.length) {
-                    setTimeout(() => {
+                    if (items.length == res.data.length) {
                       setLoading(false);
-                    }, 1000);
-                  }
-                },
-              );
-            });
+                    }
+                  },
+                );
+              }),
+            );
           }
         })
         .catch(e => {
@@ -91,10 +97,11 @@ const BrowseItemReservations = () => {
         });
     }
   };
-
+  const isFocused = useIsFocused();
   useEffect(() => {
+    setLoading(true);
     getItemReservations();
-  }, []);
+  }, [isFocused]);
   return (
     <>
       {loading ? (
@@ -112,68 +119,72 @@ const BrowseItemReservations = () => {
             getItemReservations();
           }}
           renderItem={({item, index}) => {
-            return (
-              <ItemCard
-                key={index}
-                item={items[index]}
-                reservationDetails={reservations[index]}
-                buttons={
-                  <>
-                    <Button
-                      onPress={() => {
-                        console.log(reservations[index].itemReservationId);
-                        console.log(DefaultTheme.currentUser.idNum);
-                        AXIOS.put(
-                          '/api/itemReservations/renew/' +
-                            reservations[index].itemReservationId +
-                            '?currentUserId=' +
-                            DefaultTheme.currentUser.idNum,
-                        )
-                          .then(() => {
-                            setResponse('Item Renewed!');
-                            setError('');
-                            getItemReservations();
-                          })
-                          .catch(e => {
-                            setResponse('');
-                            if (e.response.data.error) {
-                              setError(e.response.data.error);
-                            } else {
-                              setError(e.response.data);
-                            }
-                          });
-                      }}>
-                      Renew
-                    </Button>
+            if (!items[index]) {
+              setLoading(true);
+              getItemReservations();
+            } else
+              return (
+                <ItemCard
+                  key={index}
+                  item={items[index]}
+                  reservationDetails={reservations[index]}
+                  buttons={
+                    <>
+                      <Button
+                        onPress={() => {
+                          AXIOS.put(
+                            '/api/itemReservations/renew/' +
+                              reservations[index].itemReservationId +
+                              '?currentUserId=' +
+                              DefaultTheme.currentUser.idNum,
+                          )
+                            .then(() => {
+                              setResponse('Item Renewed!');
+                              setError('');
+                              getItemReservations();
+                            })
+                            .catch(e => {
+                              setResponse('');
+                              if (e.response.data.error) {
+                                setError(e.response.data.error);
+                              } else {
+                                setError(e.response.data);
+                              }
+                            });
+                        }}>
+                        Renew
+                      </Button>
 
-                    <Button
-                      onPress={() => {
-                        AXIOS.delete(
-                          '/api/itemReservations/cancel/' +
-                            reservations[index].itemReservationId +
-                            '?currentUserId=' +
-                            DefaultTheme.currentUser.idNum,
-                        )
-                          .then(res => {
-                            setResponse('Item Reservation Cancelled');
-                            setError('');
-                            getItemReservations();
-                          })
-                          .catch(e => {
-                            setResponse('');
-                            if (e.response.data.error) {
-                              setError(e.response.data.error);
-                            } else {
-                              setError(e.response.data);
-                            }
-                          });
-                      }}>
-                      Cancel
-                    </Button>
-                  </>
-                }
-              />
-            );
+                      <Button
+                        onPress={() => {
+                          AXIOS.delete(
+                            '/api/itemReservations/cancel/' +
+                              reservations[index].itemReservationId +
+                              '?currentUserId=' +
+                              DefaultTheme.currentUser.idNum,
+                          )
+                            .then(res => {
+                              setResponse('Item Reservation Cancelled');
+                              setError('');
+                              setLoading(true);
+                              getItemReservations();
+                            })
+                            .catch(e => {
+                              setResponse('');
+
+                              if (e.response.data.error) {
+                                setError(e.response.data.error);
+                              } else {
+                                setError(e.response.data);
+                              }
+                            });
+                        }}>
+                        Cancel
+                      </Button>
+                    </>
+                  }
+                />
+              );
           }}
         />
       )}
