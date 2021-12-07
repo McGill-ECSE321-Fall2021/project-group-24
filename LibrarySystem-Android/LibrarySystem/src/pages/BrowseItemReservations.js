@@ -121,6 +121,8 @@ const BrowseItemReservations = () => {
                   <>
                     <Button
                       onPress={() => {
+                        console.log(reservations[index].itemReservationId);
+                        console.log(DefaultTheme.currentUser.idNum);
                         AXIOS.put(
                           '/api/itemReservations/renew/' +
                             reservations[index].itemReservationId +
