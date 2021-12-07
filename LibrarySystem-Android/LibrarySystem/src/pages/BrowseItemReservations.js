@@ -19,7 +19,7 @@ var AXIOS = axios.create({
   baseURL: baseUrl,
 });
 
-const BrowseItemReservations = () => {
+const BrowseItemReservations = ({navigation}) => {
   const [loading, setLoading] = useState(true);
   const [reservations, setReservations] = useState([]);
 
@@ -181,6 +181,20 @@ const BrowseItemReservations = () => {
                         }}>
                         Cancel
                       </Button>
+                      {!items[index].isCheckedOut && (
+                        <Button
+                          item={items[index]}
+                          buttons={null}
+                          //this is how to pass an object to the next page. Take a look at
+                          //ReserveRoom.js to see how the item is used there.
+                          onPress={() => {
+                            navigation.navigate('CheckoutItem', {
+                              item: items[index],
+                            });
+                          }}>
+                          Checkout
+                        </Button>
+                      )}
                     </>
                   }
                 />

@@ -21,6 +21,7 @@ var AXIOS = axios.create({
 });
 
 const CheckoutItem = ({route, navigation}) => {
+  console.log(route.params.item);
   const [idNum, setIdNum] = useState(
     route.params.idNum ? route.params.idNum : '',
   );

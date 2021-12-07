@@ -1,6 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
-import {DefaultTheme, Button, Searchbar} from 'react-native-paper';
+import {
+  DefaultTheme,
+  Button,
+  Searchbar,
+  Portal,
+  Dialog,
+  Paragraph,
+} from 'react-native-paper';
 
 import axios from 'axios';
 import ItemCard from '../components/ItemCard';
@@ -12,6 +19,8 @@ var AXIOS = axios.create({
 //same as vue file
 
 const BrowseAllItems = ({navigation}) => {
+  const [error, setError] = useState('');
+  const [response, setResponse] = useState('');
   const getItems = () => {
     AXIOS.get('/api/items/all/')
       .then(res => {
@@ -89,6 +98,7 @@ const BrowseAllItems = ({navigation}) => {
           getItems();
         }}
         renderItem={({item}) => {
+          console.log(item);
           return (
             //ItemCard is a component I made in /src/components, so that
             //any time we want to edit the way an item is shown, it will
@@ -112,7 +122,10 @@ const BrowseAllItems = ({navigation}) => {
                     </Button>
                   )}
                   {DefaultTheme.currentUser.username &&
-                    !DefaultTheme.currentUser.isPatron && (
+                    !DefaultTheme.currentUser.isPatron &&
+                    !item.currentReservationId &&
+                    item.nextAvailableDate ==
+                      new Date().toJSON().slice(0, 10) && (
                       <Button
                         item={item}
                         buttons={null}
@@ -124,12 +137,64 @@ const BrowseAllItems = ({navigation}) => {
                         Checkout
                       </Button>
                     )}
+                  {DefaultTheme.currentUser.username &&
+                    !DefaultTheme.currentUser.isPatron && (
+                      <Button
+                        item={item}
+                        buttons={null}
+                        onPress={() => {
+                          AXIOS.put(
+                            '/api/itemReservations/return_item/' +
+                              item.itemNumber +
+                              '?currentUserId=' +
+                              DefaultTheme.currentUser.idNum,
+                          )
+                            .then(() => {
+                              console.log('returned');
+                              setResponse('Returned!');
+                              setError('');
+                            })
+                            .catch(e => {
+                              console.log('error');
+                              setResponse('');
+                              if (e.response.data.error) {
+                                setError(e.response.data.error);
+                              } else {
+                                setError(e.response.data);
+                              }
+                            });
+                        }}>
+                        Return
+                      </Button>
+                    )}
                 </>
               }
             />
           );
         }}
       />
+      <Portal>
+        <Dialog visible={error || response}>
+          <Dialog.Title>{error ? 'Error' : 'Response'}</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>{error ? error : response}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button
+              onPress={() => {
+                if (error) {
+                  setError('');
+                  setResponse('');
+                } else {
+                  setError('');
+                  setResponse('');
+                }
+              }}>
+              Confirm
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </>
   );
 };
