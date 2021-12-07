@@ -46,6 +46,7 @@ export default {
       console.log(e);
       this.visible = false;
     },
+    // Searches through items by their different attributes (title, author, etc) to find possible matches for the query.
     search: function (query) {
       this.results = [];
       if (query.length == 0) {
@@ -85,6 +86,7 @@ export default {
         });
       }
     },
+    // Sends delete request to backend
     deleteItem: function (itemNumber, currentUserId) {
       console.log(itemNumber);
       AXIOS.delete(
