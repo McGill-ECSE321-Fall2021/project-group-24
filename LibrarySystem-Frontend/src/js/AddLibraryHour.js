@@ -10,7 +10,7 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl },
 });
 
-// "nev" library hour and its attributes are exported
+// "new" library hour and its attributes are exported
 export default {
   name: "AddLibraryHours",
   data() {
@@ -40,7 +40,8 @@ export default {
       this.visible = false;
     },
 
-
+    // When submit button is pressed, post request is sent to the backend to add a hour. 
+    // User is then taken to the homepage. 
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
